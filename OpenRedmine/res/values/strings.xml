@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenRedmine</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_access_to">Access</string>
+    <string name="menu_setting_label_accessurl">Access URL</string>
+    <string name="menu_setting_edit_accessurl">Access to redmine URL</string>
+    <string name="menu_setting_label_accesstoken">Access Token</string>
+    <string name="menu_setting_edit_accesstoken">0e7c82.... 40charactors</string>
+    <string name="menu_setting_label_authid">ID</string>
+    <string name="menu_setting_edit_authid">Authcation ID</string>
+    <string name="menu_setting_label_authpasswd">Password</string>
+    <string name="menu_setting_edit_authpasswd">Authcation Password</string>
+    <string name="menu_setting_edit_name">Name</string>
+    <string name="menu_setting_label_name">Label Name</string>
+    <string name="menu_setting_button_save">Save</string>
+    <string name="add_new_item">Add</string>
+    <string name="menu_setting_check_auth">HTTP Authentication</string>
+
+</resources>

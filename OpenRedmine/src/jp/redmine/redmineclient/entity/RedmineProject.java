@@ -5,7 +5,12 @@ import com.j256.ormlite.field.types.DateTimeType;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineProjects {
+public class RedmineProject {
+	public final static String ID = "id";
+	public final static String CONNECTION = "connection";
+	public final static String PROJECT_ID = "project_id";
+	public final static String NAME = "name";
+
     @DatabaseField(generatedId = true)
     private Integer id;
     @DatabaseField(uniqueIndexName="target",foreign = true, foreignAutoRefresh = true)

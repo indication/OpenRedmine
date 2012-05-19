@@ -16,5 +16,13 @@
     <string name="menu_setting_button_save">Save</string>
     <string name="add_new_item">Add</string>
     <string name="menu_setting_check_auth">HTTP Authentication</string>
+    <string name="menu_setting_list_menu_title">%1$s :</string>
+    <string name="menu_setting_list_menu_edit">Edit</string>
+    <string name="menu_setting_list_menu_delete">Delete</string>
+    <string name="menu_settings_loading">Retreiving item data...</string>
+    <string name="menu_confirm_delete_msg">Are you sure you want to delete this connection?</string>
+    <string name="menu_config_delete_yes">Yes</string>
+    <string name="menu_config_delete_no">No</string>
+    <string name="app_description">description</string>
 
 </resources>

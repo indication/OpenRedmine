@@ -1,0 +1,111 @@
+package jp.redmine.redmineclient;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import jp.redmine.redmineclient.db.RedmineProjectModel;
+import jp.redmine.redmineclient.entity.RedmineProject;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+public class RedmineProjectListActivity extends Activity  {
+	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
+
+	private ArrayAdapter<RedmineProject> listAdapter;
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.connectionlist);
+
+		ListView list = (ListView)findViewById(R.id.listConnectionList);
+		listAdapter = new ArrayAdapter<RedmineProject>(
+				this,android.R.layout.simple_list_item_1
+				,new ArrayList<RedmineProject>());
+
+		list.setAdapter(listAdapter);
+
+		onReload();
+
+		//リスト項目がクリックされた時の処理
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
+				//ListView listView = (ListView) parent;
+				//RedmineProject item = (RedmineProject) listView.getItemAtPosition(position);
+				//onItemSelect(item.Id());
+			}
+		});
+
+		/*
+		//リスト項目が長押しされた時の処理
+		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				ListView listView = (ListView) parent;
+				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
+				Bundle bundle = new Bundle();
+				bundle.putInt(DIALOG_PARAM_ID, item.Id());
+				bundle.putString(DIALOG_PARAM_NAME, item.Name());
+				showDialog(DIALOG_ITEM_ACTION, bundle);
+				return false;
+			}
+		});
+		*/
+	}
+
+	protected void onReload(){
+		SelectDataTask task = new SelectDataTask(this);
+		task.execute("");
+	}
+
+
+	private class SelectDataTask extends AsyncTask<String, Integer, List<RedmineProject>> {
+		private ProgressDialog dialog;
+		private Context parentContext;
+		public SelectDataTask(final Context tex){
+			parentContext = tex;
+		}
+		// can use UI thread here
+		protected void onPreExecute() {
+			dialog = new ProgressDialog(parentContext);
+			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
+			dialog.show();
+		}
+
+		@Override
+		protected List<RedmineProject> doInBackground(String ... params) {
+			RedmineProjectModel model = new RedmineProjectModel(getBaseContext());
+			List<RedmineProject> con = new ArrayList<RedmineProject>();
+			try {
+				con = model.fetchAll();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return con;
+		}
+
+		// can use UI thread here
+		@Override
+		protected void onPostExecute(List<RedmineProject> b) {
+			listAdapter.notifyDataSetInvalidated();
+			listAdapter.clear();
+			for (RedmineProject i : b){
+				listAdapter.add(i);
+			}
+			listAdapter.notifyDataSetChanged();
+			if (dialog.isShowing()) {
+				dialog.dismiss();
+			}
+
+		}
+
+	}
+
+}

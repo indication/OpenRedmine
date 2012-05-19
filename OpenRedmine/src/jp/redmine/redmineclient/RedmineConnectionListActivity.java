@@ -21,10 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
-public class OpenRedmineActivity extends Activity {
+public class RedmineConnectionListActivity extends Activity {
 	static final int DIALOG_ITEM_ACTION = 0;
 	static final int DIALOG_CONFIRM_DELETE = 1;
 	static final String DIALOG_PARAM_ID = "ID";
@@ -41,30 +40,19 @@ public class OpenRedmineActivity extends Activity {
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
 		listAdapter = new ArrayAdapter<RedmineConnection>(
-        		this,android.R.layout.simple_list_item_1,new ArrayList<RedmineConnection>());
+				this,android.R.layout.simple_list_item_1
+				,new ArrayList<RedmineConnection>());
 
-		Button test = new Button(this);
-		test.setText(R.string.add_new_item);
-		test.setOnClickListener(new Button.OnClickListener() {
-
-			public void onClick(View v) {
-				Intent intent = new Intent( getApplicationContext(), RedmineConnectionActivity.class );
-				intent.putExtra(RedmineConnectionActivity.INTENT_INT_ID, -1);
-				startActivity( intent );
-			}
-		});
-		list.addFooterView(test);
 		list.setAdapter(listAdapter);
 
 		onReload();
 
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long arg3) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				onItemEdit(item.Id());
+				onItemSelect(item.Id());
 			}
 		});
 
@@ -82,6 +70,11 @@ public class OpenRedmineActivity extends Activity {
 		});
 	}
 
+	protected void onItemSelect(int id){
+		Intent intent = new Intent( getApplicationContext(), RedmineConnectionActivity.class );
+		intent.putExtra(RedmineProjectListActivity.INTENT_INT_CONNECTION_ID, id);
+		startActivity( intent );
+	}
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -92,11 +85,13 @@ public class OpenRedmineActivity extends Activity {
 		SelectDataTask task = new SelectDataTask(this);
 		task.execute("");
 	}
+	protected void onItemNew(){
+		onItemEdit(-1);
+	}
 	protected void onItemEdit(int itemid){
 		Intent intent = new Intent( getApplicationContext(), RedmineConnectionActivity.class );
 		intent.putExtra(RedmineConnectionActivity.INTENT_INT_ID, itemid);
 		startActivity( intent );
-		//onReload();
 	}
 
 	protected void onItemDelete(int itemid){
@@ -112,10 +107,15 @@ public class OpenRedmineActivity extends Activity {
 	protected Dialog onCreateDialog(int id,final Bundle arg) {
 		Dialog dialog = null;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(String.format("%1$s :", arg.getString(DIALOG_PARAM_NAME)));
+		builder.setTitle(String.format(
+				this.getString(R.string.menu_setting_list_menu_title)
+				, arg.getString(DIALOG_PARAM_NAME)));
 		switch(id) {
 		case DIALOG_ITEM_ACTION:
-			final CharSequence[] items = {"Edit","Delete"};
+			final CharSequence[] items = {
+				 this.getString(R.string.menu_setting_list_menu_edit)
+				,this.getString(R.string.menu_setting_list_menu_delete)
+				};
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int item) {
 					switch(item){
@@ -129,22 +129,22 @@ public class OpenRedmineActivity extends Activity {
 						break;
 					default:
 					}
-					//
 				}
 			});
 			dialog = builder.create();
 
 			break;
 		case DIALOG_CONFIRM_DELETE:
-			//@todo confirm action
-			builder.setMessage("Are you sure you want to exit?")
+			builder.setMessage(getString(R.string.menu_confirm_delete_msg))
 				.setCancelable(false)
-				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				.setPositiveButton(getString(R.string.menu_config_delete_yes)
+						, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						onItemDelete(arg.getInt(DIALOG_PARAM_ID));
 					}
 				})
-				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getString(R.string.menu_config_delete_no)
+						, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.cancel();
 					}
@@ -162,14 +162,13 @@ public class OpenRedmineActivity extends Activity {
 	private class SelectDataTask extends AsyncTask<String, Integer, List<RedmineConnection>> {
 		private ProgressDialog dialog;
 		private Context parentContext;
-		@SuppressWarnings("unused")
 		public SelectDataTask(final Context tex){
 			parentContext = tex;
 		}
 		// can use UI thread here
 		protected void onPreExecute() {
 			dialog = new ProgressDialog(parentContext);
-			dialog.setMessage("Retreiving item data...");
+			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
 			dialog.show();
 		}
 
@@ -203,27 +202,27 @@ public class OpenRedmineActivity extends Activity {
 	}
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        super.onCreateOptionsMenu( menu );
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate( R.menu.main, menu );
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		super.onCreateOptionsMenu( menu );
 
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-    	switch ( item.getItemId() )
-    	{
-    		case R.id.menu_access_to:
-    		{
-    			//Intent intent = new Intent( this, RedmineConnectionListActivity.class );
-    			//startActivity( intent );
-    			return true;
-    		}
-    	}
-    	return super.onOptionsItemSelected(item);
-    }
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate( R.menu.main, menu );
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch ( item.getItemId() )
+		{
+			case R.id.menu_access_addnew:
+			{
+				onItemNew();
+				return true;
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

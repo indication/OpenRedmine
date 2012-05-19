@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <group android:id="@+id/menu_access" android:checkableBehavior="none" android:enabled="true" android:visible="true">
-        <item android:id="@+id/menu_access_to" android:enabled="true" android:title="@string/menu_access_to" android:visible="true"></item>
+        <item android:id="@+id/menu_access_addnew" android:visible="true" android:title="@string/add_new_item" android:enabled="true"></item>
     </group>
     
 

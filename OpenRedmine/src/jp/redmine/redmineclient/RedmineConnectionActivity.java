@@ -1,19 +1,13 @@
 package jp.redmine.redmineclient;
 
 import java.sql.SQLException;
-import java.util.List;
-
 import jp.redmine.redmineclient.entity.RedmineConnection;
-
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.query.SetValue;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class RedmineConnectionActivity extends Activity {
@@ -39,7 +33,6 @@ public class RedmineConnectionActivity extends Activity {
 		form.buttonSave.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View view) {
 				completeSave();
-
 			}
 		});
 

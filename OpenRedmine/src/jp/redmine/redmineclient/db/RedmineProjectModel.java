@@ -4,8 +4,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+
 import jp.redmine.redmineclient.entity.RedmineProject;
 import android.content.Context;
+import android.util.Log;
 
 
 public class RedmineProjectModel extends BaseModel<DatabaseHelper> {
@@ -32,12 +35,12 @@ public class RedmineProjectModel extends BaseModel<DatabaseHelper> {
 	}
 
 	public RedmineProject fetchById(int connection, int projectId) throws SQLException{
-		RedmineProject item = dao.queryForFirst(dao.queryBuilder()
-				.where()
-				.eq(RedmineProject.CONNECTION, connection)
-				.eq(RedmineProject.PROJECT_ID, projectId)
-				.prepare()
-			);
+		PreparedQuery<RedmineProject> query = dao.queryBuilder().where()
+		.eq(RedmineProject.CONNECTION, connection)
+		.eq(RedmineProject.PROJECT_ID, projectId)
+		.prepare();
+		Log.d("RedmineProject",query.getStatement());
+		RedmineProject item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineProject();
 		return item;
@@ -49,6 +52,11 @@ public class RedmineProjectModel extends BaseModel<DatabaseHelper> {
 		if(item == null)
 			item = new RedmineProject();
 		return item;
+	}
+
+	public int insert(RedmineProject item) throws SQLException{
+		int count = dao.create(item);
+		return count;
 	}
 
 	public int update(RedmineProject item) throws SQLException{

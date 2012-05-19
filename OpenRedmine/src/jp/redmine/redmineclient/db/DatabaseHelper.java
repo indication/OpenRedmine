@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.db;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineProject;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,6 +25,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		try {
 			//自動生成
 			TableUtils.createTable(arg1, RedmineConnection.class);
+			TableUtils.createTable(arg1, RedmineProject.class);
 
 		} catch (SQLException e) {
 			// TODO 自動生成された catch ブロック

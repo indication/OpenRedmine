@@ -1,19 +1,19 @@
 package jp.redmine.redmineclient.entity;
 
+import java.util.Date;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.types.DateTimeType;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
 public class RedmineProject {
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection";
+	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
     private Integer id;
-    @DatabaseField(uniqueIndexName="target",foreign = true, foreignAutoRefresh = true)
+    @DatabaseField(uniqueIndexName="target",foreign = true,foreignColumnName="id", columnName= "connection_id", foreignAutoRefresh = true)
     private RedmineConnection connection;
     @DatabaseField(uniqueIndexName="target")
     private Integer project_id;
@@ -24,11 +24,17 @@ public class RedmineProject {
     @DatabaseField
     private String description;
     @DatabaseField
-    private DateTimeType created;
+    private String homepage;
     @DatabaseField
-    private DateTimeType modified;
+    private Date created;
+    @DatabaseField
+    private Date modified;
 
 
+    @Override
+    public String toString(){
+    	return name;
+    }
 
 
     /**
@@ -95,6 +101,18 @@ public class RedmineProject {
 		return description;
 	}
 	/**
+	 * @param homepage セットする homepage
+	 */
+	public void Homepage(String homepage) {
+		this.homepage = homepage;
+	}
+	/**
+	 * @return homepage
+	 */
+	public String Homepage() {
+		return homepage;
+	}
+	/**
 	 * @param connection セットする connection
 	 */
 	public void RedmineConnection(RedmineConnection connection) {
@@ -109,25 +127,25 @@ public class RedmineProject {
 	/**
 	 * @param created セットする created
 	 */
-	public void Created(DateTimeType created) {
+	public void Created(Date created) {
 		this.created = created;
 	}
 	/**
 	 * @return created
 	 */
-	public DateTimeType Created() {
+	public Date Created() {
 		return created;
 	}
 	/**
 	 * @param modified セットする modified
 	 */
-	public void Modified(DateTimeType modified) {
+	public void Modified(Date modified) {
 		this.modified = modified;
 	}
 	/**
 	 * @return modified
 	 */
-	public DateTimeType Modified() {
+	public Date Modified() {
 		return modified;
 	}
 

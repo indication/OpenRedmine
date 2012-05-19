@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class RedmineConnectionActivity extends Activity {
 				idEditing = -1;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e("RedmineConnectionActivity","loadData",e);
 		}
 
     }
@@ -82,8 +83,9 @@ public class RedmineConnectionActivity extends Activity {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e("RedmineConnectionActivity","completeSave",e);
 		}
+		//@todo tostring
 		Toast.makeText(getApplicationContext(),
 				"Has been saved.", Toast.LENGTH_SHORT).show();
 		this.finish();

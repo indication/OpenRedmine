@@ -71,7 +71,7 @@ public class RedmineConnectionListActivity extends Activity {
 	}
 
 	protected void onItemSelect(int id){
-		Intent intent = new Intent( getApplicationContext(), RedmineConnectionActivity.class );
+		Intent intent = new Intent( getApplicationContext(), RedmineProjectListActivity.class );
 		intent.putExtra(RedmineProjectListActivity.INTENT_INT_CONNECTION_ID, id);
 		startActivity( intent );
 	}

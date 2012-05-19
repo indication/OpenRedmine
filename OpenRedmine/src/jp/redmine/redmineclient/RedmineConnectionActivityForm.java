@@ -47,6 +47,7 @@ public class RedmineConnectionActivityForm {
 				for(int idx = 0; idx < formHttpAuth.getChildCount(); idx++){
 					View item = formHttpAuth.getChildAt(idx);
 					item.setEnabled(flag);
+					//item.setFocusable(flag);
 					if( !flag && item.isFocused() ){
 						//@todo have to lost forcus on here!!!
 					}

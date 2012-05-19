@@ -1,9 +1,11 @@
 package jp.redmine.redmineclient.external;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 abstract public class BaseParser<TYPE> {
 	protected XmlPullParser xml;
 	public volatile List<DataCreationHandler<TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<TYPE>>();
@@ -11,8 +13,16 @@ abstract public class BaseParser<TYPE> {
 		this.xml = xml;
 	}
 
-	abstract public void parse();
+	abstract public void parse() throws XmlPullParserException, IOException;
 
+	protected String getNextText() throws XmlPullParserException, IOException{
+		String work = "";
+		if(xml.next() == XmlPullParser.TEXT){
+			work = xml.getText();
+		}
+		if(work == null)	work = "";
+		return work;
+	}
 	public void registerDataCreation(DataCreationHandler<TYPE> ev){
 		this.handlerDataCreation.add(ev);
 	}

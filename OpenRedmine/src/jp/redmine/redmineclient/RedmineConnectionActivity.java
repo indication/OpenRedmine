@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient;
 
 import java.sql.SQLException;
+
+import jp.redmine.redmineclient.db.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import com.j256.ormlite.dao.Dao;
 import android.app.Activity;

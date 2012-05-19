@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
 
-import jp.redmine.redmineclient.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.content.Context;
 

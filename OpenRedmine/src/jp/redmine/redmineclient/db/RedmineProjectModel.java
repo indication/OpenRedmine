@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
-import jp.redmine.redmineclient.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import android.content.Context;
 

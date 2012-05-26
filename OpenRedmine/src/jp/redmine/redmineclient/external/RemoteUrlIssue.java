@@ -10,10 +10,6 @@ import android.text.format.DateFormat;
 public class RemoteUrlIssue extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
 
-	public RemoteUrlIssue(String url, versions version, requests request) {
-		super(url, version, request);
-	}
-
 	public void filterLimit(int limit){
 		params.put("limit", Integer.toString(limit));
 	}
@@ -57,7 +53,8 @@ public class RemoteUrlIssue extends RemoteUrl {
 		return versions.v110;
 	}
 	@Override
-	public Uri.Builder getUrl() {
+	public Uri.Builder getUrl(String baseurl) {
+		Uri.Builder url = convertUrl(baseurl);
 		url.appendEncodedPath("/issues."+getExtention());
 		for(Entry<String,String> data : params.entrySet()){
 			url.appendQueryParameter(data.getKey(), data.getValue());

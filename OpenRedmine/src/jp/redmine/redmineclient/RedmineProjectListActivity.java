@@ -122,8 +122,7 @@ public class RedmineProjectListActivity extends Activity  {
 								}
 							}
 						} catch (SQLException e) {
-							// TODO 自動生成された catch ブロック
-							e.printStackTrace();
+							Log.e("SelectDataTask","onData",e);
 						}
 
 					}
@@ -131,14 +130,14 @@ public class RedmineProjectListActivity extends Activity  {
 
 
 
-				RemoteUrlProjects url = new RemoteUrlProjects(info.Url(),versions.v130,requests.xml);
+				RemoteUrlProjects url = new RemoteUrlProjects();
 				Fetcher fetch = new Fetcher();
 				fetch.setIgnoreSSLVerification(true);
 				fetch.setRemoteurl(url);
-				if(info.Auth()){
-					fetch.setAuthentication(info.AuthId(), info.AuthPasswd());
-				}
-				fetch.fetchData();
+				//if(info.Auth()){
+				//	fetch.setAuthentication(info.AuthId(), info.AuthPasswd());
+				//}
+				fetch.fetchData(info);
 				fetch.Parse();
 
 

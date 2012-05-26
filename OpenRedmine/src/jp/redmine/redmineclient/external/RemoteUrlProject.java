@@ -1,6 +1,6 @@
 package jp.redmine.redmineclient.external;
 
-import android.net.Uri.Builder;
+import android.net.Uri;
 
 public class RemoteUrlProject extends RemoteUrl {
 	private String ProjectID;
@@ -9,9 +9,6 @@ public class RemoteUrlProject extends RemoteUrl {
 		public static String Trackers = "trackers";
 		public static String IssueCategories = "issue_categories";
 
-	}
-	public RemoteUrlProject(String url, versions version, requests request) {
-		super(url, version, request);
 	}
 
 	public void setProjectID(String id){
@@ -32,7 +29,8 @@ public class RemoteUrlProject extends RemoteUrl {
 	}
 
 	@Override
-	public Builder getUrl() {
+	public Uri.Builder getUrl(String baseurl) {
+		Uri.Builder url = convertUrl(baseurl);
 		url.appendEncodedPath("/projects/"+ProjectID+"."+getExtention());
 		if(!"".equals(Includes)) {
 			url.appendQueryParameter("include", Includes);

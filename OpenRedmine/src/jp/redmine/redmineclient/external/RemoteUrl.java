@@ -3,7 +3,6 @@ package jp.redmine.redmineclient.external;
 import android.net.Uri;
 
 public abstract class RemoteUrl {
-	protected Uri.Builder url;
 	protected versions version;
 	protected requests request;
 	public enum versions {
@@ -17,12 +16,15 @@ public abstract class RemoteUrl {
 		,xml
 	}
 
-	public RemoteUrl(String url,versions version,requests request){
-		Uri data = Uri.parse(url);
-		this.url =  data.buildUpon();
-		this.version = version;
+	public void setupRequest(requests request){
 		this.request = request;
 	}
+
+	public void setupVersion(versions version){
+		this.version = version;
+	}
+
+
 
 	public boolean IsSupported(){
 		if( getMinVersion().ordinal() <= version.ordinal()
@@ -33,7 +35,12 @@ public abstract class RemoteUrl {
 		}
 	}
 
-	abstract public Uri.Builder getUrl();
+	protected Uri.Builder convertUrl(String url){
+		Uri data = Uri.parse(url);
+		return data.buildUpon();
+	}
+
+	abstract public Uri.Builder getUrl(String baseurl);
 	public versions getMinVersion(){
 		return versions.min;
 	}

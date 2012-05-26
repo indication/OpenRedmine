@@ -1,14 +1,32 @@
 package jp.redmine.redmineclient.external;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
 import javax.net.ssl.HttpsURLConnection;
+
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.external.lib.FakeSocketFactory;
+
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.scheme.SocketFactory;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.net.Uri;
 import android.util.Xml;
 
 public class Fetcher {
@@ -30,25 +48,12 @@ public class Fetcher {
 		isIgnoreSSLVerification = verify;
 	}
 
-	public boolean fetchData() throws Throwable{
+	public boolean fetchData(RedmineConnection connectinfo) throws Throwable{
 
-		URL url = new URL(remoteurl.getUrl().toString());
-		if(isIgnoreSSLVerification){
-			HttpsURLConnection.setDefaultHostnameVerifier(new FakeHostnameVerifier());
-		}
-		URLConnection connection = url.openConnection();
-		if(isIgnoreSSLVerification){
-			//HttpsURLConnection.setDefaultHostnameVerifier(null);
-		}
-		status = connection.getHeaderFieldInt("Status", 0);
-		if(status == 200){
-			xmlPullParser.setInput(connection.getInputStream(), "UTF-8");
-		} else if(isStatusSuccess(status)) {
-			// do nothing -- there is no data
-		} else {
-			xmlPullParser.setInput(connection.getInputStream(), "UTF-8");
-			return false;
-		}
+		Connection con = new Connection(connectinfo);
+		//con.requestGet()
+		con.setupRemoteUrl(remoteurl);
+		xmlPullParser.setInput(con.requestGet(), "UTF-8");
 		return true;
 	}
 
@@ -127,9 +132,6 @@ public class Fetcher {
 			return new
 			PasswordAuthentication(username, password.toCharArray());
 		}
-		//public String myGetRequestingPrompt(){
-		//	return super.getRequestingPrompt();
-		//}
 	}
 
 	private static class FakeHostnameVerifier implements javax.net.ssl.HostnameVerifier {

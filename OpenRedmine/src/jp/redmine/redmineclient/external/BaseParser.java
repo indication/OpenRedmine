@@ -6,10 +6,16 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+
+import android.util.Log;
 abstract public class BaseParser<TYPE> {
 	protected XmlPullParser xml;
 	public volatile List<DataCreationHandler<TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<TYPE>>();
 	public void setXml(XmlPullParser xml){
+		if (xml == null){
+			Log.e("ProjectParser", "xml is null");
+			return;
+		}
 		this.xml = xml;
 	}
 
@@ -36,7 +42,7 @@ abstract public class BaseParser<TYPE> {
 			try {
 				ev.onData(data);
 			} catch (RuntimeException e) {
-				//log("Unexpected exception in listener", e);
+				Log.e("notifyDataCreation","Catch exception",e);
 				this.handlerDataCreation.remove(ev);
 			}
 		}

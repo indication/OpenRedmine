@@ -7,6 +7,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
@@ -28,8 +29,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(arg1, RedmineProject.class);
 
 		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+			Log.e("DatabaseHelper","onCreate",e);
 		}
 	}
 

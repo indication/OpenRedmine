@@ -104,6 +104,7 @@ public class RedmineConnectionListActivity extends Activity {
 		onReload();
 	}
 
+	@Override
 	protected Dialog onCreateDialog(int id,final Bundle arg) {
 		Dialog dialog = null;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -166,6 +167,7 @@ public class RedmineConnectionListActivity extends Activity {
 			parentContext = tex;
 		}
 		// can use UI thread here
+		@Override
 		protected void onPreExecute() {
 			dialog = new ProgressDialog(parentContext);
 			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
@@ -213,6 +215,7 @@ public class RedmineConnectionListActivity extends Activity {
 		return true;
 	}
 
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		switch ( item.getItemId() )

@@ -79,6 +79,9 @@ public class Connection {
 	}
 
 	private void setApiKey(AbstractHttpMessage msg){
+		if("".equals(connection.Token())){
+			return;
+		}
 		msg.setHeader("X-Redmine-API-Key", connection.Token());
 	}
 

@@ -113,7 +113,7 @@ public class RedmineProjectListActivity extends Activity  {
 						Log.d("SelectDataTask","OnData Called");
 						try {
 							RedmineProject project = model.fetchById(id, data.ProjectId());
-							if(project == null){
+							if(project.Id() == null){
 								data.RedmineConnection(info);
 								model.insert(data);
 							} else {

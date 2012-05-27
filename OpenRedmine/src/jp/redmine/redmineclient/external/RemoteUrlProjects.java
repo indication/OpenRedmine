@@ -11,7 +11,7 @@ public class RemoteUrlProjects extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("/projects." + getExtention());
+		url.appendEncodedPath("projects." + getExtention());
 		return url;
 	}
 }

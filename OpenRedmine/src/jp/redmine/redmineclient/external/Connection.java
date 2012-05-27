@@ -97,7 +97,7 @@ public class Connection {
 
 
 
-	public InputStream requestGet() throws IOException, URISyntaxException{
+	public InputStream requestGet(){
 		final CircularByteBuffer cbb = new CircularByteBuffer(CircularByteBuffer.INFINITE_SIZE);
 		Thread t = new Thread(new Runnable() {
 			public void run() {

@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
+
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
@@ -13,15 +15,21 @@ public class ProjectParser extends BaseParser<RedmineProject> {
 
 	@Override
 	public void parse() throws XmlPullParserException, IOException {
+		if (xml == null){
+			Log.e("ProjectParser", "xml is null");
+			return;
+		}
 		int eventType = xml.getEventType();
 		RedmineProject item = null;
-
+		Log.d("ProjectParser","start parse");
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			eventType = xml.next();
 			switch (eventType){
 			case XmlPullParser.START_DOCUMENT:
+				Log.d("ProjectParser","START_DOCUMENT");
 				break;
 			case XmlPullParser.START_TAG:
+				Log.d("ProjectParser","START_TAG ".concat(xml.getName()));
 				if("project".equalsIgnoreCase(xml.getName())){
 					item = new RedmineProject();
 				} else if(item != null){
@@ -29,12 +37,14 @@ public class ProjectParser extends BaseParser<RedmineProject> {
 				}
 				break;
 			case XmlPullParser.END_TAG:
+				Log.d("ProjectParser","END_TAG ".concat(xml.getName()));
 				if("project".equalsIgnoreCase(xml.getName())){
 					notifyDataCreation(item);
 					item = null;
 				}
 				break;
 			case XmlPullParser.TEXT:
+				Log.d("ProjectParser","TEXT ".concat(xml.getText()));
 				break;
 			}
 		}
@@ -47,7 +57,7 @@ public class ProjectParser extends BaseParser<RedmineProject> {
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.Id(Integer.parseInt(work));
+			item.ProjectId(Integer.parseInt(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.Name(getNextText());
 		} else if("identifier".equalsIgnoreCase(xml.getName())){

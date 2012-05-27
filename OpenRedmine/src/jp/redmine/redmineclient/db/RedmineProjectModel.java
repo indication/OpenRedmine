@@ -29,14 +29,16 @@ public class RedmineProjectModel extends BaseModel<DatabaseHelper> {
 	public List<RedmineProject> fetchAll(int connection) throws SQLException{
 		List<RedmineProject> item;
 		item = dao.queryForEq(RedmineProject.CONNECTION, connection);
-		if(item == null)
+		if(item == null){
 			item = new ArrayList<RedmineProject>();
+		}
 		return item;
 	}
 
 	public RedmineProject fetchById(int connection, int projectId) throws SQLException{
 		PreparedQuery<RedmineProject> query = dao.queryBuilder().where()
 		.eq(RedmineProject.CONNECTION, connection)
+		.and()
 		.eq(RedmineProject.PROJECT_ID, projectId)
 		.prepare();
 		Log.d("RedmineProject",query.getStatement());

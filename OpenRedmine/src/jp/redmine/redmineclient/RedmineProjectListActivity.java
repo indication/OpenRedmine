@@ -14,8 +14,6 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.external.DataCreationHandler;
 import jp.redmine.redmineclient.external.Fetcher;
 import jp.redmine.redmineclient.external.ProjectParser;
-import jp.redmine.redmineclient.external.RemoteUrl.requests;
-import jp.redmine.redmineclient.external.RemoteUrl.versions;
 import jp.redmine.redmineclient.external.RemoteUrlProjects;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -89,6 +87,7 @@ public class RedmineProjectListActivity extends Activity  {
 			parentContext = tex;
 		}
 		// can use UI thread here
+		@Override
 		protected void onPreExecute() {
 			dialog = new ProgressDialog(parentContext);
 			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
@@ -103,6 +102,7 @@ public class RedmineProjectListActivity extends Activity  {
 			List<RedmineProject> projects = new ArrayList<RedmineProject>();
 			RedmineConnectionModel connection = new RedmineConnectionModel(getBaseContext());
 
+			Log.d("SelectDataTask","ProjectParser Start");
 
 			try {
 				ProjectParser parser = new ProjectParser();
@@ -110,9 +110,11 @@ public class RedmineProjectListActivity extends Activity  {
 
 				parser.registerDataCreation(new DataCreationHandler<RedmineProject>() {
 					public void onData(RedmineProject data) {
+						Log.d("SelectDataTask","OnData Called");
 						try {
 							RedmineProject project = model.fetchById(id, data.ProjectId());
-							if(project.Id() == 0){
+							if(project == null){
+								data.RedmineConnection(info);
 								model.insert(data);
 							} else {
 								if(project.Modified().after(data.Modified())){
@@ -128,18 +130,12 @@ public class RedmineProjectListActivity extends Activity  {
 					}
 				});
 
-
-
 				RemoteUrlProjects url = new RemoteUrlProjects();
 				Fetcher fetch = new Fetcher();
-				fetch.setIgnoreSSLVerification(true);
 				fetch.setRemoteurl(url);
-				//if(info.Auth()){
-				//	fetch.setAuthentication(info.AuthId(), info.AuthPasswd());
-				//}
+				fetch.setParser(parser);
 				fetch.fetchData(info);
 				fetch.Parse();
-
 
 				projects = model.fetchAll(id);
 			} catch (SQLException e) {

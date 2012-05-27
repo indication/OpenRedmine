@@ -22,6 +22,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,6 +49,10 @@ public class RedmineProjectListActivity extends Activity  {
 		list.setAdapter(listAdapter);
 
 		onReload();
+
+		if(listAdapter.getCount() == 0){
+			onRefresh();
+		}
 
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -75,12 +82,31 @@ public class RedmineProjectListActivity extends Activity  {
 	protected void onReload(){
 		Intent intent = getIntent();
 		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		SelectDataTask task = new SelectDataTask(this);
-		task.execute(id);
+		final RedmineProjectModel model = new RedmineProjectModel(getBaseContext());
+
+		List<RedmineProject> projects = new ArrayList<RedmineProject>();
+		try {
+			projects = model.fetchAll(id);
+		} catch (SQLException e) {
+			Log.e("SelectDataTask","doInBackground",e);
+		} catch (Throwable e) {
+			Log.e("SelectDataTask","doInBackground",e);
+		}
+		listAdapter.notifyDataSetInvalidated();
+		listAdapter.clear();
+		for (RedmineProject i : projects){
+			listAdapter.add(i);
+		}
+		listAdapter.notifyDataSetChanged();
 	}
 
+	protected void onRefresh(){
+		Intent intent = getIntent();
+		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
+		(new SelectDataTask(this)).execute(id);
+	}
 
-	private class SelectDataTask extends AsyncTask<Integer, Integer, List<RedmineProject>> {
+	private class SelectDataTask extends AsyncTask<Integer, Integer, Integer> {
 		private ProgressDialog dialog;
 		private Context parentContext;
 		public SelectDataTask(final Context tex){
@@ -95,11 +121,10 @@ public class RedmineProjectListActivity extends Activity  {
 		}
 
 		@Override
-		protected List<RedmineProject> doInBackground(Integer ... params) {
+		protected Integer doInBackground(Integer ... params) {
 			final RedmineProjectModel model = new RedmineProjectModel(getBaseContext());
 			final int id = params[0];
 
-			List<RedmineProject> projects = new ArrayList<RedmineProject>();
 			RedmineConnectionModel connection = new RedmineConnectionModel(getBaseContext());
 
 			Log.d("SelectDataTask","ProjectParser Start");
@@ -137,7 +162,6 @@ public class RedmineProjectListActivity extends Activity  {
 				fetch.fetchData(info);
 				fetch.Parse();
 
-				projects = model.fetchAll(id);
 			} catch (SQLException e) {
 				Log.e("SelectDataTask","doInBackground",e);
 			} catch (XmlPullParserException e) {
@@ -147,25 +171,39 @@ public class RedmineProjectListActivity extends Activity  {
 			} catch (Throwable e) {
 				Log.e("SelectDataTask","doInBackground",e);
 			}
-
-			return projects;
+			return id;
 		}
-
-
 		// can use UI thread here
 		@Override
-		protected void onPostExecute(List<RedmineProject> b) {
-			listAdapter.notifyDataSetInvalidated();
-			listAdapter.clear();
-			for (RedmineProject i : b){
-				listAdapter.add(i);
-			}
-			listAdapter.notifyDataSetChanged();
+		protected void onPostExecute(Integer b) {
+			onReload();
 			if (dialog.isShowing()) {
 				dialog.dismiss();
 			}
-
 		}
+	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		super.onCreateOptionsMenu( menu );
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate( R.menu.projects, menu );
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch ( item.getItemId() )
+		{
+			case R.id.menu_projects_refresh:
+			{
+				this.onRefresh();
+				return true;
+			}
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

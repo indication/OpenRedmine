@@ -26,5 +26,6 @@
     <string name="app_description">description</string>
     <string name="preference_category_network">Network</string>
     <string name="preference_network_allow_untrusted_cert">Allow untrusted certification</string>
+    <string name="menu_refresh">Refresh list</string>
 
 </resources>

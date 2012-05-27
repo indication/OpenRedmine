@@ -9,8 +9,8 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,6 +28,7 @@ public class RedmineConnectionListActivity extends Activity {
 	static final int DIALOG_CONFIRM_DELETE = 1;
 	static final String DIALOG_PARAM_ID = "ID";
 	static final String DIALOG_PARAM_NAME = "NAME";
+	private NotificationManager notifManager;
 	private ArrayAdapter<RedmineConnection> listAdapter;
 
 
@@ -37,6 +38,9 @@ public class RedmineConnectionListActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connectionlist);
+
+		notifManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
 		listAdapter = new ArrayAdapter<RedmineConnection>(
@@ -82,9 +86,9 @@ public class RedmineConnectionListActivity extends Activity {
 	}
 
 	protected void onReload(){
-		SelectDataTask task = new SelectDataTask(this);
-		task.execute("");
+		(new SelectDataTask()).execute("");
 	}
+
 	protected void onItemNew(){
 		onItemEdit(-1);
 	}
@@ -107,12 +111,17 @@ public class RedmineConnectionListActivity extends Activity {
 	@Override
 	protected Dialog onCreateDialog(int id,final Bundle arg) {
 		Dialog dialog = null;
+		Notification notif = new Notification();
+		notif.vibrate = new long[]{50,100};
+		notifManager.notify(R.string.app_name, notif);
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(String.format(
 				this.getString(R.string.menu_setting_list_menu_title)
 				, arg.getString(DIALOG_PARAM_NAME)));
 		switch(id) {
 		case DIALOG_ITEM_ACTION:
+
 			final CharSequence[] items = {
 				 this.getString(R.string.menu_setting_list_menu_edit)
 				,this.getString(R.string.menu_setting_list_menu_delete)
@@ -161,19 +170,6 @@ public class RedmineConnectionListActivity extends Activity {
 
 
 	private class SelectDataTask extends AsyncTask<String, Integer, List<RedmineConnection>> {
-		private ProgressDialog dialog;
-		private Context parentContext;
-		public SelectDataTask(final Context tex){
-			parentContext = tex;
-		}
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			dialog = new ProgressDialog(parentContext);
-			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
-			dialog.show();
-		}
-
 		@Override
 		protected List<RedmineConnection> doInBackground(String ... params) {
 			RedmineConnectionModel model = new RedmineConnectionModel(getBaseContext());
@@ -195,9 +191,6 @@ public class RedmineConnectionListActivity extends Activity {
 				listAdapter.add(i);
 			}
 			listAdapter.notifyDataSetChanged();
-			if (dialog.isShowing()) {
-				dialog.dismiss();
-			}
 
 		}
 
@@ -211,7 +204,7 @@ public class RedmineConnectionListActivity extends Activity {
 		super.onCreateOptionsMenu( menu );
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.main, menu );
+		inflater.inflate( R.menu.connection, menu );
 		return true;
 	}
 

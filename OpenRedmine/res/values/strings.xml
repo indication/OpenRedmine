@@ -7,9 +7,9 @@
     <string name="menu_setting_edit_accessurl">Access to redmine URL</string>
     <string name="menu_setting_label_accesstoken">Access Token</string>
     <string name="menu_setting_edit_accesstoken">0e7c82.... 40charactors</string>
-    <string name="menu_setting_label_authid">ID</string>
+    <string name="menu_setting_label_authid">ID (Optional)</string>
     <string name="menu_setting_edit_authid">Authcation ID</string>
-    <string name="menu_setting_label_authpasswd">Password</string>
+    <string name="menu_setting_label_authpasswd">Password (Optional)</string>
     <string name="menu_setting_edit_authpasswd">Authcation Password</string>
     <string name="menu_setting_edit_name">Name</string>
     <string name="menu_setting_label_name">Label Name</string>
@@ -27,5 +27,7 @@
     <string name="preference_category_network">Network</string>
     <string name="preference_network_allow_untrusted_cert">Allow untrusted certification</string>
     <string name="menu_refresh">Refresh list</string>
+    <string name="menu_setting_permit_unsafe">Permit unsafe SSL connection</string>
+    <string name="menu_setting_label_certkey">Certification key (Optional)</string>
 
 </resources>

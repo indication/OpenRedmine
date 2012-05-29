@@ -19,6 +19,9 @@ public class RedmineConnectionActivityForm {
 	public Button buttonSave;
 	public CheckBox checkHttpAuth;
 	public LinearLayout formHttpAuth;
+	public LinearLayout formPermitUnsafe;
+	public CheckBox checkUnsafeConnection;
+	public EditText editCertKey;
 	public RedmineConnectionActivityForm(Activity activity){
 		this.activity = activity;
 		this.setup();
@@ -34,27 +37,39 @@ public class RedmineConnectionActivityForm {
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
 		formHttpAuth = (LinearLayout)activity.findViewById(R.id.formHttpAuth);
 		checkHttpAuth = (CheckBox)activity.findViewById(R.id.checkHttpAuth);
-
+		formPermitUnsafe = (LinearLayout)activity.findViewById(R.id.formPermitUnsafe);
+		checkUnsafeConnection = (CheckBox)activity.findViewById(R.id.checkPermitUnsafe);
+		editCertKey = (EditText)activity.findViewById(R.id.editCertKey);
 	}
 
 	public void setupEvents(){
 		checkHttpAuth.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
-
 			public void onCheckedChanged(CompoundButton compoundbutton, boolean flag) {
-				//formHttpAuth.setEnabled(flag);
-				//editAuthID.setEnabled(flag);
-				//editAuthPasswd.setEnabled(flag);
-				for(int idx = 0; idx < formHttpAuth.getChildCount(); idx++){
-					View item = formHttpAuth.getChildAt(idx);
-					item.setEnabled(flag);
-					//item.setFocusable(flag);
-					if( !flag && item.isFocused() ){
-						//@todo have to lost forcus on here!!!
-					}
-				}
+				performSetEnabled(formHttpAuth,flag);
+			}
+		});
+		checkUnsafeConnection.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton compoundbutton, boolean flag) {
+				performSetEnabled(formPermitUnsafe,flag);
 			}
 		});
 
+	}
+
+	public void setupDefaults(){
+		performSetEnabled(formHttpAuth,checkHttpAuth.isChecked());
+		performSetEnabled(formPermitUnsafe,checkUnsafeConnection.isChecked());
+	}
+
+	protected void performSetEnabled(LinearLayout form,boolean flag){
+		for(int idx = 0; idx < form.getChildCount(); idx++){
+			View item = form.getChildAt(idx);
+			item.setEnabled(flag);
+			//item.setFocusable(flag);
+			if( !flag && item.isFocused() ){
+				//@todo have to lost forcus on here!!!
+			}
+		}
 	}
 
 	public void setValue(RedmineConnection rd){
@@ -65,7 +80,9 @@ public class RedmineConnectionActivityForm {
 		checkHttpAuth.setChecked(rd.Auth());
 		editAuthID.setText(rd.AuthId());
 		editAuthPasswd.setText(rd.AuthPasswd());
-		formHttpAuth.setEnabled(rd.Auth());
+		checkUnsafeConnection.setChecked(rd.isPermitUnsafe());
+		editCertKey.setText(rd.getCertKey());
+		setupDefaults();
 	}
 	public void getValue(RedmineConnection rd){
 
@@ -75,6 +92,8 @@ public class RedmineConnectionActivityForm {
 		rd.Auth(checkHttpAuth.isChecked());
 		rd.AuthId(editAuthID.getText().toString());
 		rd.AuthPasswd(editAuthPasswd.getText().toString());
+		rd.setPermitUnsafe(checkUnsafeConnection.isChecked());
+		rd.setCertKey(editCertKey.getText().toString());
 	}
 }
 

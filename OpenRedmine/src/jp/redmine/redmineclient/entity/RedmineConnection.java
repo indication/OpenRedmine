@@ -21,6 +21,10 @@ public class RedmineConnection {
     private String authid;
     @DatabaseField
     private String authpass;
+    @DatabaseField
+    private boolean permitunsafe;
+    @DatabaseField
+    private String certkey;
 
     @Override
     public String toString(){
@@ -125,6 +129,34 @@ public class RedmineConnection {
 	 */
 	public String AuthPasswd() {
 		return authpass;
+	}
+
+	/**
+	 * @param permitunsafe セットする permitunsafe
+	 */
+	public void setPermitUnsafe(boolean permitunsafe) {
+		this.permitunsafe = permitunsafe;
+	}
+
+	/**
+	 * @return permitunsafe
+	 */
+	public boolean isPermitUnsafe() {
+		return permitunsafe;
+	}
+
+	/**
+	 * @param certkey セットする certkey
+	 */
+	public void setCertKey(String certkey) {
+		this.certkey = certkey;
+	}
+
+	/**
+	 * @return certkey
+	 */
+	public String getCertKey() {
+		return certkey;
 	}
 
 }

@@ -26,7 +26,8 @@
         android:layout_height="wrap_content"
         android:text="@string/menu_setting_label_accessurl"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+
+
     <EditText
         android:id="@+id/editURL"
         android:layout_width="match_parent"
@@ -101,12 +102,38 @@
             android:singleLine="true" />
 
     </LinearLayout>
-
+
+    <CheckBox
+        android:id="@+id/checkPermitUnsafe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_setting_permit_unsafe" />
+
+    <LinearLayout
+        android:id="@+id/formPermitUnsafe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp" >
+	    <TextView
+	        android:id="@+id/textView6"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/menu_setting_label_certkey"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	    <EditText
+	        android:id="@+id/editCertKey"
+	        android:layout_width="match_parent"
+	        android:layout_height="82dp"
+	        android:ems="10"
+	        android:inputType="textMultiLine" />
+
+    </LinearLayout>
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/menu_setting_button_save"
-        />
+        android:text="@string/menu_setting_button_save" />
 
 </LinearLayout>

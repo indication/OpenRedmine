@@ -71,6 +71,9 @@ public class RedmineConnectionActivity extends Activity {
 	protected void completeSave(){
 		if (helper == null)
 			return;
+		if(!form.Validate())
+			return;
+
 		try {
 			RedmineConnection con = new RedmineConnection();
 			Dao<RedmineConnection, Integer> projectDao = helper.getDao(RedmineConnection.class);
@@ -78,7 +81,7 @@ public class RedmineConnectionActivity extends Activity {
 			if(idEditing == -1){
 				projectDao.create(con);
 			} else {
-				con.Id(idEditing);
+				con.setId(idEditing);
 				projectDao.update(con);
 			}
 

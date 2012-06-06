@@ -6,19 +6,20 @@ import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import android.content.Context;
 import android.util.Log;
 
 
-public class RedmineProjectModel extends BaseModel<DatabaseHelper> {
+public class RedmineProjectModel extends BaseCacheModel<DatabaseCacheHelper> {
 	protected Dao<RedmineProject, Integer> dao;
 	public RedmineProjectModel(Context context) {
 		super(context);
 		try {
 			dao = getHelper().getDao(RedmineProject.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e("RedmineProjectModel","getDao",e);
 		}
 	}
 
@@ -74,4 +75,18 @@ public class RedmineProjectModel extends BaseModel<DatabaseHelper> {
 		return count;
 	}
 
+	public void refreshItem(RedmineConnection info,RedmineProject data) throws SQLException{
+
+		RedmineProject project = this.fetchById(info.getId(), data.ProjectId());
+		if(project.Id() == null){
+			data.RedmineConnection(info);
+			this.insert(data);
+		} else {
+			if(project.Modified().after(data.Modified())){
+				data.Id(project.Id());
+				data.RedmineConnection(info);
+				this.update(data);
+			}
+		}
+	}
 }

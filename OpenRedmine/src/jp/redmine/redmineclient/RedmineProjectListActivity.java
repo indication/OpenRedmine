@@ -9,12 +9,24 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.RedmineConnectionModel;
 import jp.redmine.redmineclient.db.RedmineProjectModel;
+import jp.redmine.redmineclient.db.RedmineStatusModel;
+import jp.redmine.redmineclient.db.RedmineTrackerModel;
+import jp.redmine.redmineclient.db.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineTracker;
+import jp.redmine.redmineclient.entity.RedmineStatus;
+import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.external.DataCreationHandler;
 import jp.redmine.redmineclient.external.Fetcher;
-import jp.redmine.redmineclient.external.ProjectParser;
+import jp.redmine.redmineclient.external.ParserProject;
+import jp.redmine.redmineclient.external.ParserStatus;
+import jp.redmine.redmineclient.external.ParserTracker;
+import jp.redmine.redmineclient.external.ParserUser;
 import jp.redmine.redmineclient.external.RemoteUrlProjects;
+import jp.redmine.redmineclient.external.RemoteUrlStatus;
+import jp.redmine.redmineclient.external.RemoteUrlTrackers;
+import jp.redmine.redmineclient.external.RemoteUrlUsers;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -83,7 +95,6 @@ public class RedmineProjectListActivity extends Activity  {
 		Intent intent = getIntent();
 		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
 		final RedmineProjectModel model = new RedmineProjectModel(getBaseContext());
-
 		List<RedmineProject> projects = new ArrayList<RedmineProject>();
 		try {
 			projects = model.fetchAll(id);
@@ -122,54 +133,23 @@ public class RedmineProjectListActivity extends Activity  {
 
 		@Override
 		protected Integer doInBackground(Integer ... params) {
-			final RedmineProjectModel model = new RedmineProjectModel(getBaseContext());
+			final RedmineConnectionModel connection =
+				new RedmineConnectionModel(getBaseContext());
 			final int id = params[0];
 
-			RedmineConnectionModel connection = new RedmineConnectionModel(getBaseContext());
-
-			Log.d("SelectDataTask","ProjectParser Start");
-
+			RedmineConnection info = null;
+			Log.d("SelectDataTask","ParserProject Start");
 			try {
-				ProjectParser parser = new ProjectParser();
-				final RedmineConnection info = connection.fetchById(id);
-
-				parser.registerDataCreation(new DataCreationHandler<RedmineProject>() {
-					public void onData(RedmineProject data) {
-						Log.d("SelectDataTask","OnData Called");
-						try {
-							RedmineProject project = model.fetchById(id, data.ProjectId());
-							if(project.Id() == null){
-								data.RedmineConnection(info);
-								model.insert(data);
-							} else {
-								if(project.Modified().after(data.Modified())){
-									data.Id(project.Id());
-									data.RedmineConnection(info);
-									model.update(data);
-								}
-							}
-						} catch (SQLException e) {
-							Log.e("SelectDataTask","onData",e);
-						}
-
-					}
-				});
-
-				RemoteUrlProjects url = new RemoteUrlProjects();
-				Fetcher fetch = new Fetcher();
-				fetch.setRemoteurl(url);
-				fetch.setParser(parser);
-				fetch.fetchData(info);
-				fetch.Parse();
-
+				info = connection.fetchById(id);
 			} catch (SQLException e) {
-				Log.e("SelectDataTask","doInBackground",e);
-			} catch (XmlPullParserException e) {
-				Log.e("SelectDataTask","doInBackground",e);
-			} catch (IOException e) {
-				Log.e("SelectDataTask","doInBackground",e);
-			} catch (Throwable e) {
-				Log.e("SelectDataTask","doInBackground",e);
+				Log.e("SelectDataTask","ParserProject",e);
+			}
+
+			if(info != null) {
+				fetchProject(info);
+				fetchUsers(info);
+				fetchTrackers(info);
+				fetchStatus(info);
 			}
 			return id;
 		}
@@ -179,6 +159,124 @@ public class RedmineProjectListActivity extends Activity  {
 			onReload();
 			if (dialog.isShowing()) {
 				dialog.dismiss();
+			}
+		}
+
+		protected void fetchProject(RedmineConnection info){
+			final RedmineProjectModel model =
+				new RedmineProjectModel(getBaseContext());
+			RemoteUrlProjects url = new RemoteUrlProjects();
+			Fetcher<RedmineConnection> fetch = new Fetcher<RedmineConnection>();
+			ParserProject parser = new ParserProject();
+			parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
+				public void onData(RedmineConnection con,RedmineProject data) {
+					Log.d("ParserProject","OnData Called");
+					try {
+						model.refreshItem(con,data);
+					} catch (SQLException e) {
+						Log.e("ParserProject","onData",e);
+					}
+				}
+			});
+
+			Log.d("SelectDataTask","ParserProject Start");
+			try {
+				fetch.setRemoteurl(url);
+				fetch.setParser(parser);
+				fetch.fetchData(info,info);
+
+			} catch (XmlPullParserException e) {
+				Log.e("SelectDataTask","fetchProject",e);
+			} catch (IOException e) {
+				Log.e("SelectDataTask","fetchProject",e);
+			}
+		}
+
+		protected void fetchUsers(RedmineConnection info){
+			final RedmineUserModel model =
+				new RedmineUserModel(getBaseContext());
+			RemoteUrlUsers url = new RemoteUrlUsers();
+			Fetcher<RedmineConnection> fetch = new Fetcher<RedmineConnection>();
+			ParserUser parser = new ParserUser();
+			parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineUser>() {
+				public void onData(RedmineConnection con,RedmineUser data) {
+					Log.d("ParserUser","OnData Called");
+					try {
+						model.refreshItem(con,data);
+					} catch (SQLException e) {
+						Log.e("ParserUser","onData",e);
+					}
+				}
+			});
+
+			Log.d("SelectDataTask","ParserUser Start");
+			try {
+				fetch.setRemoteurl(url);
+				fetch.setParser(parser);
+				fetch.fetchData(info,info);
+
+			} catch (XmlPullParserException e) {
+				Log.e("SelectDataTask","fetchUsers",e);
+			} catch (IOException e) {
+				Log.e("SelectDataTask","fetchUsers",e);
+			}
+		}
+		protected void fetchTrackers(RedmineConnection info){
+			final RedmineTrackerModel model =
+				new RedmineTrackerModel(getBaseContext());
+			RemoteUrlTrackers url = new RemoteUrlTrackers();
+			Fetcher<RedmineConnection> fetch = new Fetcher<RedmineConnection>();
+			ParserTracker parser = new ParserTracker();
+			parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTracker>() {
+				public void onData(RedmineConnection con,RedmineTracker data) {
+					Log.d("ParserTracker","OnData Called");
+					try {
+						model.refreshItem(con,data);
+					} catch (SQLException e) {
+						Log.e("ParserTracker","onData",e);
+					}
+				}
+			});
+
+			Log.d("SelectDataTask","ParserTracker Start");
+			try {
+				fetch.setRemoteurl(url);
+				fetch.setParser(parser);
+				fetch.fetchData(info,info);
+
+			} catch (XmlPullParserException e) {
+				Log.e("SelectDataTask","fetchTrackers",e);
+			} catch (IOException e) {
+				Log.e("SelectDataTask","fetchTrackers",e);
+			}
+		}
+		protected void fetchStatus(RedmineConnection info){
+			final RedmineStatusModel model =
+				new RedmineStatusModel(getBaseContext());
+			RemoteUrlStatus url = new RemoteUrlStatus();
+			Fetcher<RedmineConnection> fetch = new Fetcher<RedmineConnection>();
+			ParserStatus parser = new ParserStatus();
+			parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineStatus>() {
+				public void onData(RedmineConnection con,RedmineStatus data) {
+					Log.d("ParserStatus","OnData Called");
+					try {
+						model.refreshItem(con,data);
+					} catch (SQLException e) {
+						Log.e("ParserStatus","onData",e);
+					}
+				}
+			});
+
+			Log.d("SelectDataTask","ParserStatus Start");
+			try {
+				fetch.setRemoteurl(url);
+				fetch.setParser(parser);
+				fetch.fetchData(info,info);
+
+			} catch (XmlPullParserException e) {
+				Log.e("SelectDataTask","fetchStatus",e);
+			} catch (IOException e) {
+				Log.e("SelectDataTask","fetchStatus",e);
 			}
 		}
 	}

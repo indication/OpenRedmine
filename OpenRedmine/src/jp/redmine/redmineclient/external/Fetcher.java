@@ -8,22 +8,19 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Xml;
 
-public class Fetcher {
+public class Fetcher<T> {
 	private RemoteUrl remoteurl;
 	private XmlPullParser xmlPullParser;
-	private BaseParser<?> parser;
+	private BaseParser<T,?> parser;
 
-	public boolean fetchData(RedmineConnection connectinfo) throws Throwable{
+	public boolean fetchData(RedmineConnection connectinfo,T data)
+	throws XmlPullParserException, IOException {
 		Connection con = new Connection(connectinfo);
 		xmlPullParser =  Xml.newPullParser();
 		con.setupRemoteUrl(remoteurl);
 		xmlPullParser.setInput(con.requestGet(), "UTF-8");
-		return true;
-	}
-
-	public boolean Parse() throws XmlPullParserException, IOException{
 		parser.setXml(xmlPullParser);
-		parser.parse();
+		parser.parse(data);
 		return true;
 	}
 
@@ -60,13 +57,13 @@ public class Fetcher {
 	/**
 	 * @param parser セットする parser
 	 */
-	public void setParser(BaseParser<?> parser) {
+	public void setParser(BaseParser<T,?> parser) {
 		this.parser = parser;
 	}
 	/**
 	 * @return parser
 	 */
-	public BaseParser<?> getParser() {
+	public BaseParser<T,?> getParser() {
 		return parser;
 	}
 }

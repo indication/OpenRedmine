@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="fill_parent" >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:validate="http://schemas.android.com/apk/res/jp.redmine.redmineclient"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <TextView
@@ -11,14 +17,18 @@
         android:text="@string/menu_setting_label_name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
+    <com.andreabaccega.widget.FormEditText
+        style="@android:style/Widget.EditText"
         android:id="@+id/editName"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/menu_setting_edit_name"
-        android:singleLine="true" />
+        android:singleLine="true"
+        validate:testType="nocheck" >
+        <requestFocus />
+    </com.andreabaccega.widget.FormEditText>
 
     <TextView
         android:id="@+id/textView1"
@@ -28,17 +38,16 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
-    <EditText
+    <com.andreabaccega.widget.FormEditText
+        style="@android:style/Widget.EditText"
         android:id="@+id/editURL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/menu_setting_edit_accessurl"
         android:inputType="textUri"
-        android:singleLine="true" >
-
-        <requestFocus />
-    </EditText>
+        android:singleLine="true"
+        validate:testType="webUrl" />
 
     <TextView
         android:id="@+id/textView2"
@@ -47,15 +56,19 @@
         android:text="@string/menu_setting_label_accesstoken"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
+    <com.andreabaccega.widget.FormEditText
+        style="@android:style/Widget.EditText"
         android:id="@+id/editToken"
         android:inputType="textVisiblePassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/menu_setting_edit_accesstoken"
-        android:singleLine="true" />
-
+        android:singleLine="true"
+        validate:testType="alphaNumeric"  />
+
+
+
     <CheckBox
         android:id="@+id/checkHttpAuth"
         android:layout_width="wrap_content"
@@ -137,3 +150,4 @@
         android:text="@string/menu_setting_button_save" />
 
 </LinearLayout>
+</ScrollView>

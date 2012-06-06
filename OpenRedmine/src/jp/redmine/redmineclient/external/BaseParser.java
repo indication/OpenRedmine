@@ -8,18 +8,18 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Log;
-abstract public class BaseParser<TYPE> {
+abstract public class BaseParser<CON,TYPE> {
 	protected XmlPullParser xml;
-	public volatile List<DataCreationHandler<TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<TYPE>>();
+	public volatile List<DataCreationHandler<CON,TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<CON,TYPE>>();
 	public void setXml(XmlPullParser xml){
 		if (xml == null){
-			Log.e("ProjectParser", "xml is null");
+			Log.e("ParserProject", "xml is null");
 			return;
 		}
 		this.xml = xml;
 	}
 
-	abstract public void parse() throws XmlPullParserException, IOException;
+	abstract public void parse(CON con) throws XmlPullParserException, IOException;
 
 	protected String getNextText() throws XmlPullParserException, IOException{
 		String work = "";
@@ -29,18 +29,18 @@ abstract public class BaseParser<TYPE> {
 		if(work == null)	work = "";
 		return work;
 	}
-	public void registerDataCreation(DataCreationHandler<TYPE> ev){
+	public void registerDataCreation(DataCreationHandler<CON,TYPE> ev){
 		this.handlerDataCreation.add(ev);
 	}
-	public void unregisterDataCreation(DataCreationHandler<TYPE> ev){
+	public void unregisterDataCreation(DataCreationHandler<CON,TYPE> ev){
 		this.handlerDataCreation.remove(ev);
 	}
 
-	protected void notifyDataCreation(TYPE data){
+	protected void notifyDataCreation(CON con,TYPE data){
 		//inherit from http://www.ibm.com/developerworks/jp/java/library/j-jtp07265/
-		for(DataCreationHandler<TYPE> ev:this.handlerDataCreation){
+		for(DataCreationHandler<CON,TYPE> ev:this.handlerDataCreation){
 			try {
-				ev.onData(data);
+				ev.onData(con,data);
 			} catch (RuntimeException e) {
 				Log.e("notifyDataCreation","Catch exception",e);
 				this.handlerDataCreation.remove(ev);

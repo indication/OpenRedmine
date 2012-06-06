@@ -5,18 +5,19 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineProject {
+public class RedmineIssue {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
+	public final static String ISSUE_ID = "project_id";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
-    private Long id;
+    private Integer id;
     @DatabaseField(uniqueIndexName="project_target")
     private Integer connection_id;
-    @DatabaseField(uniqueIndexName="project_target")
-    private Integer project_id;
+    @DatabaseField(uniqueIndexName="project_target",foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
+    private RedmineProject project;
     @DatabaseField
     private String name;
     @DatabaseField
@@ -29,10 +30,6 @@ public class RedmineProject {
     private Date created;
     @DatabaseField
     private Date modified;
-    @DatabaseField
-    private Integer sort_order;
-    @DatabaseField
-    private Integer favorite;
 
 
     @Override
@@ -40,87 +37,66 @@ public class RedmineProject {
     	return name;
     }
 
-    public void setForeginData(RedmineProject item){
-    	project_id = item.ProjectId();
-		name = item.Name();
-		identifier = item.Identifier();
-		description = item.Description();
-		homepage = item.Homepage();
-    }
 
     /**
 	 * @param id セットする id
 	 */
-	public void Id(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	/**
 	 * @return id
 	 */
-	public Long Id() {
+	public Integer getId() {
 		return id;
 	}
 	////////////////////////////////////////////////////////
-    /**
-     * IDを設定
-     * @param id ID
-     */
-	public void ProjectId(Integer id) {
-		this.project_id = id;
-	}
-	/**
-	 * IDを取得
-	 * @return ID
-	 */
-	public Integer ProjectId() {
-		return project_id;
-	}
 	/**
 	 * @param name セットする 名称
 	 */
-	public void Name(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	/**
 	 * @return name 名称
 	 */
-	public String Name() {
+	public String getName() {
 		return name;
 	}
 	/**
 	 * @param identifier セットする Identifier
 	 */
-	public void Identifier(String identifier) {
+	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
 	/**
 	 * @return identifier
 	 */
-	public String Identifier() {
+	public String getIdentifier() {
 		return identifier;
 	}
 	/**
 	 * @param description セットする description
 	 */
-	public void Description(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 	/**
 	 * @return description
 	 */
-	public String Description() {
+	public String getDescription() {
 		return description;
 	}
 	/**
 	 * @param homepage セットする homepage
 	 */
-	public void Homepage(String homepage) {
+	public void setHomepage(String homepage) {
 		this.homepage = homepage;
 	}
 	/**
 	 * @return homepage
 	 */
-	public String Homepage() {
+	public String getHomepage() {
 		return homepage;
 	}
 	/**
@@ -132,59 +108,44 @@ public class RedmineProject {
 	/**
 	 * @param created セットする created
 	 */
-	public void Created(Date created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 	/**
 	 * @return created
 	 */
-	public Date Created() {
+	public Date getCreated() {
 		return created;
 	}
 	/**
 	 * @param modified セットする modified
 	 */
-	public void Modified(Date modified) {
+	public void setModified(Date modified) {
 		this.modified = modified;
 	}
 	/**
 	 * @return modified
 	 */
-	public Date Modified() {
+	public Date getModified() {
 		return modified;
 	}
 
 
 	/**
-	 * @param sort_order セットする sort_order
+	 * @param project セットする project
 	 */
-	public void setSortOrder(Integer sort_order) {
-		this.sort_order = sort_order;
+	public void setProject(RedmineProject project) {
+		this.project = project;
 	}
 
 
 	/**
-	 * @return sort_order
+	 * @return project
 	 */
-	public Integer getSortOrder() {
-		return sort_order;
+	public RedmineProject getProject() {
+		return project;
 	}
 
-
-	/**
-	 * @param favorite セットする favorite
-	 */
-	public void setFavorite(Integer favorite) {
-		this.favorite = favorite;
-	}
-
-
-	/**
-	 * @return favorite
-	 */
-	public Integer getFavorite() {
-		return favorite;
-	}
 
 	/**
 	 * @param connection_id セットする connection_id
@@ -192,6 +153,7 @@ public class RedmineProject {
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
+
 
 	/**
 	 * @return connection_id

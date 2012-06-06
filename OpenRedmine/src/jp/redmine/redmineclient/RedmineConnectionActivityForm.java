@@ -1,5 +1,7 @@
 package jp.redmine.redmineclient;
 
+import com.andreabaccega.widget.FormEditText;
+
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
 import android.view.View;
@@ -11,9 +13,9 @@ import android.widget.LinearLayout;
 
 public class RedmineConnectionActivityForm {
 	private Activity activity;
-	public EditText editName;
-	public EditText editUrl;
-	public EditText editToken;
+	public FormEditText editName;
+	public FormEditText editUrl;
+	public FormEditText editToken;
 	public EditText editAuthID;
 	public EditText editAuthPasswd;
 	public Button buttonSave;
@@ -25,13 +27,14 @@ public class RedmineConnectionActivityForm {
 	public RedmineConnectionActivityForm(Activity activity){
 		this.activity = activity;
 		this.setup();
+		this.setupDefaults();
 	}
 
 
 	public void setup(){
-		editName = (EditText)activity.findViewById(R.id.editName);
-		editUrl = (EditText)activity.findViewById(R.id.editURL);
-		editToken = (EditText)activity.findViewById(R.id.editToken);
+		editName = (FormEditText)activity.findViewById(R.id.editName);
+		editUrl = (FormEditText)activity.findViewById(R.id.editURL);
+		editToken = (FormEditText)activity.findViewById(R.id.editToken);
 		editAuthID = (EditText)activity.findViewById(R.id.editAuthID);
 		editAuthPasswd = (EditText)activity.findViewById(R.id.editAuthPasswd);
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
@@ -72,26 +75,41 @@ public class RedmineConnectionActivityForm {
 		}
 	}
 
+	public boolean Validate(){
+		FormEditText[] list = new FormEditText[]{
+				editToken
+				,editUrl
+				,editName
+		};
+		boolean result = true;
+		for(FormEditText item :list){
+			if(!item.testValidity()){
+				result = false;
+			}
+		}
+		return result;
+	}
+
 	public void setValue(RedmineConnection rd){
 
-		editName.setText(rd.Name());
-		editUrl.setText(rd.Url());
-		editToken.setText(rd.Token());
-		checkHttpAuth.setChecked(rd.Auth());
-		editAuthID.setText(rd.AuthId());
-		editAuthPasswd.setText(rd.AuthPasswd());
+		editName.setText(rd.getName());
+		editUrl.setText(rd.getUrl());
+		editToken.setText(rd.getToken());
+		checkHttpAuth.setChecked(rd.isAuth());
+		editAuthID.setText(rd.getAuthId());
+		editAuthPasswd.setText(rd.getAuthPasswd());
 		checkUnsafeConnection.setChecked(rd.isPermitUnsafe());
 		editCertKey.setText(rd.getCertKey());
 		setupDefaults();
 	}
 	public void getValue(RedmineConnection rd){
 
-		rd.Name(editName.getText().toString());
-		rd.Url(editUrl.getText().toString());
-		rd.Token(editToken.getText().toString());
-		rd.Auth(checkHttpAuth.isChecked());
-		rd.AuthId(editAuthID.getText().toString());
-		rd.AuthPasswd(editAuthPasswd.getText().toString());
+		rd.setName(editName.getText().toString());
+		rd.setUrl(editUrl.getText().toString());
+		rd.setToken(editToken.getText().toString());
+		rd.setAuth(checkHttpAuth.isChecked());
+		rd.setAuthId(editAuthID.getText().toString());
+		rd.setAuthPasswd(editAuthPasswd.getText().toString());
 		rd.setPermitUnsafe(checkUnsafeConnection.isChecked());
 		rd.setCertKey(editCertKey.getText().toString());
 	}

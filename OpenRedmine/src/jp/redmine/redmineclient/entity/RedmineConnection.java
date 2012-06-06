@@ -36,98 +36,98 @@ public class RedmineConnection {
      * IDを設定
      * @param id ID
      */
-	public void Id(Integer id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	/**
 	 * IDを取得
 	 * @return ID
 	 */
-	public Integer Id() {
+	public Integer getId() {
 		return id;
 	}
 	/**
 	 * @param name セットする 名称
 	 */
-	public void Name(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	/**
 	 * @return name 名称
 	 */
-	public String Name() {
+	public String getName() {
 		return name;
 	}
 	/**
 	 * @param url セットする url
 	 */
-	public void Url(String url) {
+	public void setUrl(String url) {
 		this.url = url;
 	}
 	/**
 	 * @return url
 	 */
-	public String Url() {
+	public String getUrl() {
 		return url;
 	}
 	/**
 	 * @param nowarn セットする nowarn
 	 */
-	public void Nowarn(boolean nowarn) {
+	public void setNowarn(boolean nowarn) {
 		this.nowarn = nowarn;
 	}
 	/**
 	 * @return nowarn
 	 */
-	public boolean Nowarn() {
+	public boolean getNowarn() {
 		return nowarn;
 	}
 	/**
 	 * @param token セットする token
 	 */
-	public void Token(String token) {
+	public void setToken(String token) {
 		this.token = token;
 	}
 	/**
 	 * @return token
 	 */
-	public String Token() {
+	public String getToken() {
 		return token;
 	}
 	/**
 	 * @param auth セットする auth
 	 */
-	public void Auth(boolean auth) {
+	public void setAuth(boolean auth) {
 		this.auth = auth;
 	}
 	/**
 	 * @return auth
 	 */
-	public boolean Auth() {
+	public boolean isAuth() {
 		return auth;
 	}
 	/**
 	 * @param authid セットする authid
 	 */
-	public void AuthId(String authid) {
+	public void setAuthId(String authid) {
 		this.authid = authid;
 	}
 	/**
 	 * @return authid
 	 */
-	public String AuthId() {
+	public String getAuthId() {
 		return authid;
 	}
 	/**
 	 * @param authpass セットする authpass
 	 */
-	public void AuthPasswd(String authpass) {
+	public void setAuthPasswd(String authpass) {
 		this.authpass = authpass;
 	}
 	/**
 	 * @return authpass
 	 */
-	public String AuthPasswd() {
+	public String getAuthPasswd() {
 		return authpass;
 	}
 

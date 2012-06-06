@@ -56,7 +56,7 @@ public class RedmineConnectionListActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				onItemSelect(item.Id());
+				onItemSelect(item.getId());
 			}
 		});
 
@@ -66,10 +66,10 @@ public class RedmineConnectionListActivity extends Activity {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
 				Bundle bundle = new Bundle();
-				bundle.putInt(DIALOG_PARAM_ID, item.Id());
-				bundle.putString(DIALOG_PARAM_NAME, item.Name());
+				bundle.putInt(DIALOG_PARAM_ID, item.getId());
+				bundle.putString(DIALOG_PARAM_NAME, item.getName());
 				showDialog(DIALOG_ITEM_ACTION, bundle);
-				return false;
+				return true;
 			}
 		});
 	}

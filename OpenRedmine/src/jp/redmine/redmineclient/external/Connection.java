@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -39,17 +40,17 @@ public class Connection {
 	public void setupRemoteUrl(RemoteUrl remote){
 		remote.setupRequest(requests.xml);
 		remote.setupVersion(versions.v130);
-		Builder builder = remote.getUrl(connection.Url());
+		Builder builder = remote.getUrl(connection.getUrl());
 		remoteurl = builder.build();
 	}
 
 
 	protected DefaultHttpClient getHttpClient(){
 		DefaultHttpClient client = ConnectionHelper.createHttpClient(getClientParam(remoteurl));
-		if(connection.Auth()){
+		if(connection.isAuth()){
 			AuthenticationParam param = new AuthenticationParam();
-			param.setId(connection.AuthId());
-			param.setPass(connection.AuthPasswd());
+			param.setId(connection.getAuthId());
+			param.setPass(connection.getAuthPasswd());
 			param.setAddress(remoteurl.getHost());
 			if(remoteurl.getPort() <= 0){
 				param.setPort("https".equals(remoteurl.getScheme()) ? 443: 80);
@@ -79,10 +80,10 @@ public class Connection {
 	}
 
 	private void setApiKey(AbstractHttpMessage msg){
-		if("".equals(connection.Token())){
+		if("".equals(connection.getToken())){
 			return;
 		}
-		msg.setHeader("X-Redmine-API-Key", connection.Token());
+		msg.setHeader("X-Redmine-API-Key", connection.getToken());
 	}
 
 	protected HttpGet getHttpGet() throws URISyntaxException{
@@ -98,13 +99,17 @@ public class Connection {
 		return put;
 	}
 
+	protected HttpDelete getHttpDelete() throws URISyntaxException{
+		HttpDelete put = new HttpDelete(new URI(remoteurl.toString()));
+		setApiKey(put);
+		return put;
+	}
 
 
 	public InputStream requestGet(){
 		final CircularByteBuffer cbb = new CircularByteBuffer(CircularByteBuffer.INFINITE_SIZE);
 		Thread t = new Thread(new Runnable() {
 			public void run() {
-				// TODO 自動生成されたメソッド・スタブ
 				DefaultHttpClient client = getHttpClient();
 				HttpGet get;
 				HttpResponse response;
@@ -130,7 +135,6 @@ public class Connection {
 					try {
 						cbb.getOutputStream().close();
 					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
 						Log.e("requestGet","BackgroundProcess",e);
 					}
 				}

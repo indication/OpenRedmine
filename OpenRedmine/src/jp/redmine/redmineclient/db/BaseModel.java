@@ -1,14 +1,14 @@
 package jp.redmine.redmineclient.db;
 
-import android.content.Context;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 
-public class BaseModel <H extends OrmLiteSqliteOpenHelper>{
+import android.content.Context;
+
+public class BaseModel  <H extends OrmLiteSqliteOpenHelper>{
 	private volatile H helper;
 
 	@SuppressWarnings("unchecked")
 	public BaseModel(Context context) {
-		//helper = (H) OpenHelperManager.getHelper(context);
 		helper = (H) new DatabaseHelper(context);
 	}
 

@@ -16,10 +16,7 @@ public class ParserUser extends BaseParser<RedmineConnection,RedmineUser> {
 
 	@Override
 	public void parse(RedmineConnection con) throws XmlPullParserException, IOException {
-		if (xml == null){
-			Log.e("ParserUser", "xml is null");
-			return;
-		}
+		super.parse(con);
 		int eventType = xml.getEventType();
 		RedmineUser item = null;
 		Log.d("ParserUser","start parse");
@@ -66,9 +63,9 @@ public class ParserUser extends BaseParser<RedmineConnection,RedmineUser> {
 		} else if("lastname".equalsIgnoreCase(xml.getName())){
 			item.setLastname(getNextText());
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
-			item.setCreated(TypeConverter.ParseDate(getNextText()));
+			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("last_login_on".equalsIgnoreCase(xml.getName())){
-			item.setModified(TypeConverter.ParseDate(getNextText()));
+			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
 
 	}

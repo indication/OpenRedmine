@@ -10,6 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
 abstract public class BaseParser<CON,TYPE> {
 	protected XmlPullParser xml;
+	protected int dataCount = 0;
 	public volatile List<DataCreationHandler<CON,TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<CON,TYPE>>();
 	public void setXml(XmlPullParser xml){
 		if (xml == null){
@@ -19,7 +20,17 @@ abstract public class BaseParser<CON,TYPE> {
 		this.xml = xml;
 	}
 
-	abstract public void parse(CON con) throws XmlPullParserException, IOException;
+	public void parse(CON con) throws XmlPullParserException, IOException{
+		dataCount = 0;
+		if (xml == null){
+			Log.e("BaseParser", "xml is null");
+			return;
+		}
+	}
+
+	public int getCount(){
+		return dataCount;
+	}
 
 	protected String getNextText() throws XmlPullParserException, IOException{
 		String work = "";
@@ -29,6 +40,7 @@ abstract public class BaseParser<CON,TYPE> {
 		if(work == null)	work = "";
 		return work;
 	}
+
 	public void registerDataCreation(DataCreationHandler<CON,TYPE> ev){
 		this.handlerDataCreation.add(ev);
 	}
@@ -37,6 +49,7 @@ abstract public class BaseParser<CON,TYPE> {
 	}
 
 	protected void notifyDataCreation(CON con,TYPE data){
+		dataCount++;
 		//inherit from http://www.ibm.com/developerworks/jp/java/library/j-jtp07265/
 		for(DataCreationHandler<CON,TYPE> ev:this.handlerDataCreation){
 			try {

@@ -15,10 +15,7 @@ public class ParserStatus extends BaseParser<RedmineConnection,RedmineStatus> {
 
 	@Override
 	public void parse(RedmineConnection con) throws XmlPullParserException, IOException {
-		if (xml == null){
-			Log.e("ParserStatus", "xml is null");
-			return;
-		}
+		super.parse(con);
 		int eventType = xml.getEventType();
 		RedmineStatus item = null;
 		Log.d("ParserStatus","start parse");

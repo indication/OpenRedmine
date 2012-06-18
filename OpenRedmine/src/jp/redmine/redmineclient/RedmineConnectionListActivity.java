@@ -1,9 +1,11 @@
 package jp.redmine.redmineclient;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.redmine.redmineclient.db.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
@@ -15,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -216,6 +219,16 @@ public class RedmineConnectionListActivity extends Activity {
 			case R.id.menu_access_addnew:
 			{
 				onItemNew();
+				return true;
+			}
+			case R.id.menu_access_removecache:
+			{
+				String path = DatabaseCacheHelper.getDatabasePath(getApplicationContext());
+				File file = new File(path);
+				file.delete();
+				Log.d("Cache Deleted",path);
+				this.finish();
+				//@todo show dialog
 				return true;
 			}
 		}

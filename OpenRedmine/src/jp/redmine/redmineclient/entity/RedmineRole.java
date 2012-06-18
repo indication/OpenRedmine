@@ -5,30 +5,20 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineProjectCategory {
+public class RedmineRole {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
-	public final static String PROJECT_ID = "project_id";
+	public final static String ROLE_ID = "role_id";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
     private Long id;
-    @DatabaseField(uniqueIndexName="projectcategory_target")
+    @DatabaseField(uniqueIndexName="role_target")
     private Integer connection_id;
-    @DatabaseField(uniqueIndexName="projectcategory_target"
-    	,foreign = true,foreignColumnName="project_id"
-    	,columnName= "project_id"
-    	,foreignAutoRefresh = true)
-    private RedmineProject project;
-    @DatabaseField(uniqueIndexName="projectcategory_target")
-    private int category_id;
+    @DatabaseField(uniqueIndexName="role_target")
+    private int role_id;
     @DatabaseField
     private String name;
-    @DatabaseField(foreign = true,foreignColumnName="user_id"
-        	,columnName= "assignto_id"
-        	,foreignAutoRefresh = true)
-    private RedmineUser assignto;
-    //unused
     @DatabaseField
     private Date created;
     @DatabaseField
@@ -99,50 +89,18 @@ public class RedmineProjectCategory {
 
 
 	/**
-	 * @param project セットする project
+	 * @param role_id セットする role_id
 	 */
-	public void setProject(RedmineProject project) {
-		this.project = project;
+	public void setRoleId(int role_id) {
+		this.role_id = role_id;
 	}
 
 
 	/**
-	 * @return project
+	 * @return role_id
 	 */
-	public RedmineProject getProject() {
-		return project;
-	}
-
-
-	/**
-	 * @param assignto セットする assignto
-	 */
-	public void setAssignTo(RedmineUser assignto) {
-		this.assignto = assignto;
-	}
-
-
-	/**
-	 * @return assignto
-	 */
-	public RedmineUser getAssignTo() {
-		return assignto;
-	}
-
-
-	/**
-	 * @param category_id セットする category_id
-	 */
-	public void setCategoryId(int category_id) {
-		this.category_id = category_id;
-	}
-
-
-	/**
-	 * @return category_id
-	 */
-	public int getCategoryId() {
-		return category_id;
+	public int getRoleId() {
+		return role_id;
 	}
 
 

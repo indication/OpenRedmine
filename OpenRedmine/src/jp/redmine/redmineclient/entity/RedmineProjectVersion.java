@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineProjectCategory {
+public class RedmineProjectVersion {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
@@ -13,21 +13,21 @@ public class RedmineProjectCategory {
 
     @DatabaseField(generatedId = true)
     private Long id;
-    @DatabaseField(uniqueIndexName="projectcategory_target")
+    @DatabaseField(uniqueIndexName="projectversion_target")
     private Integer connection_id;
-    @DatabaseField(uniqueIndexName="projectcategory_target"
+    @DatabaseField(uniqueIndexName="projectversion_target"
     	,foreign = true,foreignColumnName="project_id"
     	,columnName= "project_id"
     	,foreignAutoRefresh = true)
     private RedmineProject project;
-    @DatabaseField(uniqueIndexName="projectcategory_target")
-    private int category_id;
+    @DatabaseField(uniqueIndexName="projectversion_target")
+    private int version_id;
     @DatabaseField
     private String name;
-    @DatabaseField(foreign = true,foreignColumnName="user_id"
-        	,columnName= "assignto_id"
-        	,foreignAutoRefresh = true)
-    private RedmineUser assignto;
+    @DatabaseField
+    private String status;
+    @DatabaseField
+    private Date due_date;
     //unused
     @DatabaseField
     private Date created;
@@ -115,38 +115,6 @@ public class RedmineProjectCategory {
 
 
 	/**
-	 * @param assignto セットする assignto
-	 */
-	public void setAssignTo(RedmineUser assignto) {
-		this.assignto = assignto;
-	}
-
-
-	/**
-	 * @return assignto
-	 */
-	public RedmineUser getAssignTo() {
-		return assignto;
-	}
-
-
-	/**
-	 * @param category_id セットする category_id
-	 */
-	public void setCategoryId(int category_id) {
-		this.category_id = category_id;
-	}
-
-
-	/**
-	 * @return category_id
-	 */
-	public int getCategoryId() {
-		return category_id;
-	}
-
-
-	/**
 	 * @param connection_id セットする connection_id
 	 */
 	public void setConnectionId(Integer connection_id) {
@@ -159,6 +127,54 @@ public class RedmineProjectCategory {
 	 */
 	public Integer getConnectionId() {
 		return connection_id;
+	}
+
+
+	/**
+	 * @param due_date セットする due_date
+	 */
+	public void setDateDue(Date due_date) {
+		this.due_date = due_date;
+	}
+
+
+	/**
+	 * @return due_date
+	 */
+	public Date getDateDue() {
+		return due_date;
+	}
+
+
+	/**
+	 * @param status セットする status
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
+	/**
+	 * @return status
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+
+	/**
+	 * @param version_id セットする version_id
+	 */
+	public void setVersionId(int version_id) {
+		this.version_id = version_id;
+	}
+
+
+	/**
+	 * @return version_id
+	 */
+	public int getVersionId() {
+		return version_id;
 	}
 
 }

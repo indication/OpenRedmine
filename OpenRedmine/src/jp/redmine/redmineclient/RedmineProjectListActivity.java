@@ -69,10 +69,11 @@ public class RedmineProjectListActivity extends Activity  {
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-				//ListView listView = (ListView) parent;
-				//RedmineProject item = (RedmineProject) listView.getItemAtPosition(position);
-				//onItemSelect(item.Id());
+				ListView listView = (ListView) parent;
+				RedmineProject item = (RedmineProject) listView.getItemAtPosition(position);
+				onItemSelect(item);
 			}
+
 		});
 
 		/*
@@ -111,6 +112,13 @@ public class RedmineProjectListActivity extends Activity  {
 		listAdapter.notifyDataSetChanged();
 	}
 
+	protected void onItemSelect(RedmineProject item) {
+
+		Intent intent = new Intent( getApplicationContext(), RedmineIssueListActivity.class );
+		intent.putExtra(RedmineIssueListActivity.INTENT_INT_CONNECTION_ID, item.getConnectionId());
+		intent.putExtra(RedmineIssueListActivity.INTENT_INT_PROJECT_ID, item.getProjectId());
+		startActivity( intent );
+	}
 	protected void onRefresh(){
 		Intent intent = getIntent();
 		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
@@ -161,7 +169,7 @@ public class RedmineProjectListActivity extends Activity  {
 				dialog.dismiss();
 			}
 		}
-
+		//@todo clean up
 		protected void fetchProject(RedmineConnection info){
 			final RedmineProjectModel model =
 				new RedmineProjectModel(getBaseContext());

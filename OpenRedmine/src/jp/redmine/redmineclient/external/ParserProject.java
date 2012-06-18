@@ -16,10 +16,7 @@ public class ParserProject extends BaseParser<RedmineConnection,RedmineProject> 
 
 	@Override
 	public void parse(RedmineConnection con) throws XmlPullParserException, IOException {
-		if (xml == null){
-			Log.e("ParserProject", "xml is null");
-			return;
-		}
+		super.parse(con);
 		int eventType = xml.getEventType();
 		RedmineProject item = null;
 		Log.d("ParserProject","start parse");
@@ -58,19 +55,19 @@ public class ParserProject extends BaseParser<RedmineConnection,RedmineProject> 
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.ProjectId(Integer.parseInt(work));
+			item.setProjectId(Integer.parseInt(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
-			item.Name(getNextText());
+			item.setName(getNextText());
 		} else if("identifier".equalsIgnoreCase(xml.getName())){
-			item.Identifier(getNextText());
+			item.setIdentifier(getNextText());
 		} else if("description".equalsIgnoreCase(xml.getName())){
-			item.Description(getNextText());
+			item.setDescription(getNextText());
 		} else if("homepage".equalsIgnoreCase(xml.getName())){
-			item.Homepage(getNextText());
+			item.setHomepage(getNextText());
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
-			item.Created(TypeConverter.ParseDate(getNextText()));
+			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("updated_on".equalsIgnoreCase(xml.getName())){
-			item.Modified(TypeConverter.ParseDate(getNextText()));
+			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
 		//@todo tracker, issue_categories
 

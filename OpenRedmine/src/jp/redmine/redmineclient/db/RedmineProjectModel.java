@@ -77,14 +77,14 @@ public class RedmineProjectModel extends BaseCacheModel<DatabaseCacheHelper> {
 
 	public void refreshItem(RedmineConnection info,RedmineProject data) throws SQLException{
 
-		RedmineProject project = this.fetchById(info.getId(), data.ProjectId());
-		if(project.Id() == null){
-			data.RedmineConnection(info);
+		RedmineProject project = this.fetchById(info.getId(), data.getProjectId());
+		if(project.getId() == null){
+			data.setRedmineConnection(info);
 			this.insert(data);
 		} else {
-			if(project.Modified().after(data.Modified())){
-				data.Id(project.Id());
-				data.RedmineConnection(info);
+			if(project.getModified().after(data.getModified())){
+				data.setId(project.getId());
+				data.setRedmineConnection(info);
 				this.update(data);
 			}
 		}

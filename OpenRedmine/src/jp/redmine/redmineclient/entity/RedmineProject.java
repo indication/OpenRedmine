@@ -41,23 +41,23 @@ public class RedmineProject {
     }
 
     public void setForeginData(RedmineProject item){
-    	project_id = item.ProjectId();
-		name = item.Name();
-		identifier = item.Identifier();
-		description = item.Description();
-		homepage = item.Homepage();
+    	project_id = item.getProjectId();
+		name = item.getName();
+		identifier = item.getIdentifier();
+		description = item.getDescription();
+		homepage = item.getHomepage();
     }
 
     /**
 	 * @param id セットする id
 	 */
-	public void Id(Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
 	 * @return id
 	 */
-	public Long Id() {
+	public Long getId() {
 		return id;
 	}
 	////////////////////////////////////////////////////////
@@ -65,92 +65,92 @@ public class RedmineProject {
      * IDを設定
      * @param id ID
      */
-	public void ProjectId(Integer id) {
+	public void setProjectId(Integer id) {
 		this.project_id = id;
 	}
 	/**
 	 * IDを取得
 	 * @return ID
 	 */
-	public Integer ProjectId() {
+	public Integer getProjectId() {
 		return project_id;
 	}
 	/**
 	 * @param name セットする 名称
 	 */
-	public void Name(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 	/**
 	 * @return name 名称
 	 */
-	public String Name() {
+	public String getName() {
 		return name;
 	}
 	/**
 	 * @param identifier セットする Identifier
 	 */
-	public void Identifier(String identifier) {
+	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
 	/**
 	 * @return identifier
 	 */
-	public String Identifier() {
+	public String getIdentifier() {
 		return identifier;
 	}
 	/**
 	 * @param description セットする description
 	 */
-	public void Description(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 	/**
 	 * @return description
 	 */
-	public String Description() {
+	public String getDescription() {
 		return description;
 	}
 	/**
 	 * @param homepage セットする homepage
 	 */
-	public void Homepage(String homepage) {
+	public void setHomepage(String homepage) {
 		this.homepage = homepage;
 	}
 	/**
 	 * @return homepage
 	 */
-	public String Homepage() {
+	public String getHomepage() {
 		return homepage;
 	}
 	/**
 	 * @param connection セットする connection
 	 */
-	public void RedmineConnection(RedmineConnection connection) {
+	public void setRedmineConnection(RedmineConnection connection) {
 		this.connection_id = connection.getId();
 	}
 	/**
 	 * @param created セットする created
 	 */
-	public void Created(Date created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 	/**
 	 * @return created
 	 */
-	public Date Created() {
+	public Date getCreated() {
 		return created;
 	}
 	/**
 	 * @param modified セットする modified
 	 */
-	public void Modified(Date modified) {
+	public void setModified(Date modified) {
 		this.modified = modified;
 	}
 	/**
 	 * @return modified
 	 */
-	public Date Modified() {
+	public Date getModified() {
 		return modified;
 	}
 

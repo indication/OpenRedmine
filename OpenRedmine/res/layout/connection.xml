@@ -65,7 +65,8 @@
         android:ems="10"
         android:hint="@string/menu_setting_edit_accesstoken"
         android:singleLine="true"
-        validate:testType="alphaNumeric"  />
+        validate:testType="alphaNumeric"
+        validate:emptyAllowed="true"  />
 
 
 

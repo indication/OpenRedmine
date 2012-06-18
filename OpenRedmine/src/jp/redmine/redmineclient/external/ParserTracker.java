@@ -15,10 +15,7 @@ public class ParserTracker extends BaseParser<RedmineConnection,RedmineTracker> 
 
 	@Override
 	public void parse(RedmineConnection con) throws XmlPullParserException, IOException {
-		if (xml == null){
-			Log.e("ParserTracker", "xml is null");
-			return;
-		}
+		super.parse(con);
 		int eventType = xml.getEventType();
 		RedmineTracker item = null;
 		Log.d("ParserTracker","start parse");

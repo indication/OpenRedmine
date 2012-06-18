@@ -12,8 +12,16 @@ public class TypeConverter {
 	//E   M   d  H :m :s  Z     y
 	//public static final String FORMAT_DATETIME = "E M d H:m:s Z y";
 	public static final String FORMAT_DATETIME = "yyyy-MM-dd'T'HH:mm:ssZ";
-	public static Date ParseDate(String datetime){
-		SimpleDateFormat format = new SimpleDateFormat(FORMAT_DATETIME);
+	public static final String FORMAT_DATE = "yyyy-MM-dd";
+	public static Date parseDate(String datetime){
+		return parseDateTimeFormat(datetime,FORMAT_DATE);
+	}
+	public static Date parseDateTime(String datetime){
+		return parseDateTimeFormat(datetime,FORMAT_DATETIME);
+	}
+	public static Date parseDateTimeFormat(String datetime,String formatstr){
+		SimpleDateFormat format = new SimpleDateFormat(formatstr);
+		if("".equals(datetime)) return null;
 		Date item = new Date();
 		try {
 			item = format.parse(datetime);

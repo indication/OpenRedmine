@@ -41,5 +41,6 @@
     <string name="menu_refresh">Refresh list</string>
     <string name="menu_setting_permit_unsafe">Permit unsafe SSL connection</string>
     <string name="menu_setting_label_certkey">Certification key (Optional)</string>
+    <string name="remove_cache_all">Remove all cache</string>
 
 </resources>

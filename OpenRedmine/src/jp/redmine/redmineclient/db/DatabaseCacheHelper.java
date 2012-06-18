@@ -3,8 +3,12 @@ package jp.redmine.redmineclient.db;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
+import jp.redmine.redmineclient.entity.RedmineProjectMember;
+import jp.redmine.redmineclient.entity.RedmineProjectVersion;
+import jp.redmine.redmineclient.entity.RedmineRole;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
@@ -22,19 +26,26 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static int DB_VERSION=1;
 
     public DatabaseCacheHelper(Context context) {
-    	super(context, context.getExternalCacheDir().getPath() + "/" +DB_NAME, null, DB_VERSION);
+    	super(context, getDatabasePath(context), null, DB_VERSION);
     }
 
+    public static String getDatabasePath(Context context){
+    	return context.getExternalCacheDir().getPath() + "/" +DB_NAME;
+    }
 	@Override
 	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
 		try {
 			//自動生成
 			TableUtils.createTable(arg1, RedmineProject.class);
-			TableUtils.createTable(arg1, RedmineIssue.class);
 			TableUtils.createTable(arg1, RedmineUser.class);
 			TableUtils.createTable(arg1, RedmineProjectCategory.class);
+			//TableUtils.createTable(arg1, RedmineProjectMember.class);
+			TableUtils.createTable(arg1, RedmineProjectVersion.class);
+			TableUtils.createTable(arg1, RedminePriority.class);
+			TableUtils.createTable(arg1, RedmineRole.class);
 			TableUtils.createTable(arg1, RedmineStatus.class);
 			TableUtils.createTable(arg1, RedmineTracker.class);
+			TableUtils.createTable(arg1, RedmineIssue.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);

@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.external;
+package jp.redmine.redmineclient.url;
 
 import java.util.Date;
 import java.util.HashMap;

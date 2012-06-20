@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.external;
+package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
 
@@ -8,59 +8,55 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineStatus;
+import jp.redmine.redmineclient.entity.RedmineTracker;
 
-public class ParserStatus extends BaseParser<RedmineConnection,RedmineStatus> {
+public class ParserTracker extends BaseParser<RedmineConnection,RedmineTracker> {
 	//private final String TAG = this.toString();
 
 	@Override
 	public void parse(RedmineConnection con) throws XmlPullParserException, IOException {
 		super.parse(con);
 		int eventType = xml.getEventType();
-		RedmineStatus item = null;
-		Log.d("ParserStatus","start parse");
+		RedmineTracker item = null;
+		Log.d("ParserTracker","start parse");
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			eventType = xml.next();
 			switch (eventType){
 			case XmlPullParser.START_DOCUMENT:
-				Log.d("ParserStatus","START_DOCUMENT");
+				Log.d("ParserTracker","START_DOCUMENT");
 				break;
 			case XmlPullParser.START_TAG:
-				Log.d("ParserStatus","START_TAG ".concat(xml.getName()));
-				if("issue_category".equalsIgnoreCase(xml.getName())){
-					item = new RedmineStatus();
+				Log.d("ParserTracker","START_TAG ".concat(xml.getName()));
+				if("tracker".equalsIgnoreCase(xml.getName())){
+					item = new RedmineTracker();
 				} else if(item != null){
 					parseInternal(item);
 				}
 				break;
 			case XmlPullParser.END_TAG:
-				Log.d("ParserStatus","END_TAG ".concat(xml.getName()));
-				if("issue_category".equalsIgnoreCase(xml.getName())){
+				Log.d("ParserTracker","END_TAG ".concat(xml.getName()));
+				if("tracker".equalsIgnoreCase(xml.getName())){
 					notifyDataCreation(con,item);
 					item = null;
 				}
 				break;
 			case XmlPullParser.TEXT:
-				Log.d("ParserStatus","TEXT ".concat(xml.getText()));
+				Log.d("ParserTracker","TEXT ".concat(xml.getText()));
 				break;
 			}
 		}
 
 	}
 
-	private void parseInternal(RedmineStatus item) throws XmlPullParserException, IOException{
+	private void parseInternal(RedmineTracker item) throws XmlPullParserException, IOException{
 		if(xml.getDepth() <= 2)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.setStatusId(Integer.parseInt(work));
+			item.setTrackerId(Integer.parseInt(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.setName(getNextText());
-		} else if("is_close".equalsIgnoreCase(xml.getName())){
-			item.setIs_close("true".equalsIgnoreCase(getNextText()));
-		} else if("is_default".equalsIgnoreCase(xml.getName())){
-			item.setIs_default("true".equalsIgnoreCase(getNextText()));
 		/*
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.Created(TypeConverter.ParseDate(getNextText()));

@@ -2,6 +2,8 @@ package jp.redmine.redmineclient.external;
 
 import java.io.IOException;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.parser.BaseParser;
+import jp.redmine.redmineclient.url.RemoteUrl;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

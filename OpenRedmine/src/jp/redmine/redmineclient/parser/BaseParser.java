@@ -1,8 +1,10 @@
-package jp.redmine.redmineclient.external;
+package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.redmine.redmineclient.external.DataCreationHandler;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

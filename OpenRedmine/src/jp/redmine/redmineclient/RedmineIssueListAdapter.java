@@ -3,6 +3,7 @@ package jp.redmine.redmineclient;
 import java.util.ArrayList;
 
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
 
 import android.content.Context;
 import android.view.LayoutInflater;

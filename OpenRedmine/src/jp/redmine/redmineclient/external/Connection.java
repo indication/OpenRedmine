@@ -22,11 +22,12 @@ import android.net.Uri.Builder;
 import android.util.Log;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.external.RemoteUrl.requests;
-import jp.redmine.redmineclient.external.RemoteUrl.versions;
 import jp.redmine.redmineclient.external.lib.AuthenticationParam;
 import jp.redmine.redmineclient.external.lib.ClientParam;
 import jp.redmine.redmineclient.external.lib.ConnectionHelper;
+import jp.redmine.redmineclient.url.RemoteUrl;
+import jp.redmine.redmineclient.url.RemoteUrl.requests;
+import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public class Connection {
 	private RedmineConnection connection;

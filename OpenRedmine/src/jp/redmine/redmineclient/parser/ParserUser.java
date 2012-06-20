@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.external;
+package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
 

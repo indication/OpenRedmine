@@ -34,6 +34,10 @@ public class RedmineIssue {
     private RedmineUser assigned;
     @DatabaseField(foreign = true,foreignColumnName="category_id", columnName= "category_id", foreignAutoRefresh = true)
     private RedmineProjectCategory category;
+    @DatabaseField(foreign = true,foreignColumnName="version_id", columnName= "version_id", foreignAutoRefresh = true)
+    private RedmineProjectVersion version;
+    @DatabaseField
+    private int parent_id;
     @DatabaseField
     private String subject;
     @DatabaseField
@@ -379,5 +383,38 @@ public class RedmineIssue {
 		// TODO 自動生成されたメソッド・スタブ
 		setConnectionId(info.getId());
 	}
+
+
+	/**
+	 * @param version セットする version
+	 */
+	public void setVersion(RedmineProjectVersion version) {
+		this.version = version;
+	}
+
+
+	/**
+	 * @return version
+	 */
+	public RedmineProjectVersion getVersion() {
+		return version;
+	}
+
+
+	/**
+	 * @param parent_id セットする parent_id
+	 */
+	public void setParentId(int parent_id) {
+		this.parent_id = parent_id;
+	}
+
+
+	/**
+	 * @return parent_id
+	 */
+	public int getParentId() {
+		return parent_id;
+	}
+
 
 }

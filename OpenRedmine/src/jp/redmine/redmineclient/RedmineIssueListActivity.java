@@ -42,11 +42,11 @@ public class RedmineIssueListActivity extends Activity  {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.connectionlist);
+		setContentView(R.layout.issuelist);
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
-		listAdapter = new ArrayAdapter<RedmineIssue>(
-				this,android.R.layout.simple_list_item_1
+		listAdapter = new RedmineIssueListAdapter(
+				this,R.layout.issueitem
 				,new ArrayList<RedmineIssue>());
 
 		list.setAdapter(listAdapter);

@@ -11,8 +11,10 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
+import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
+import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class ParserIssue extends BaseParser<RedmineProject,RedmineIssue> {
@@ -113,12 +115,39 @@ public class ParserIssue extends BaseParser<RedmineProject,RedmineIssue> {
 			}
 			item.setCategory(tk);
 
+		} else if("assigned_to".equalsIgnoreCase(xml.getName())){
+			RedmineUser tk = new RedmineUser();
+			tk.setFirstname(xml.getAttributeValue("", "name"));
+			String id = xml.getAttributeValue("", "id");
+			if(!"".equals(id)){
+				tk.setUserId(Integer.parseInt(id));
+			}
+			item.setAssigned(tk);
+
+		} else if("author".equalsIgnoreCase(xml.getName())){
+			RedmineUser tk = new RedmineUser();
+			tk.setFirstname(xml.getAttributeValue("", "name"));
+			String id = xml.getAttributeValue("", "id");
+			if(!"".equals(id)){
+				tk.setUserId(Integer.parseInt(id));
+			}
+			item.setAuthor(tk);
+
+		} else if("fixed_version".equalsIgnoreCase(xml.getName())){
+			RedmineProjectVersion tk = new RedmineProjectVersion();
+			tk.setName(xml.getAttributeValue("", "name"));
+			String id = xml.getAttributeValue("", "id");
+			if(!"".equals(id)){
+				tk.setVersionId(Integer.parseInt(id));
+			}
+			item.setVersion(tk);
+
 		} else if("start_date".equalsIgnoreCase(xml.getName())){
 			item.setDateStart(TypeConverter.parseDate(getNextText()));
 		} else if("due_date".equalsIgnoreCase(xml.getName())){
 			item.setDateDue(TypeConverter.parseDate(getNextText()));
 
-		} else if("done_rate".equalsIgnoreCase(xml.getName())){
+		} else if("done_ratio".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			short data = "".equals(work) ? 0 : Short.parseShort(work);
 			item.setDoneRate(data);

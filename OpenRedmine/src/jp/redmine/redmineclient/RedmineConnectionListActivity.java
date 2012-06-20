@@ -68,10 +68,7 @@ public class RedmineConnectionListActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				Bundle bundle = new Bundle();
-				bundle.putInt(DIALOG_PARAM_ID, item.getId());
-				bundle.putString(DIALOG_PARAM_NAME, item.getName());
-				showDialog(DIALOG_ITEM_ACTION, bundle);
+				showDialogItemSelected(item.getId(),item.getName());
 				return true;
 			}
 		});
@@ -111,63 +108,60 @@ public class RedmineConnectionListActivity extends Activity {
 		onReload();
 	}
 
-	@Override
-	protected Dialog onCreateDialog(int id,final Bundle arg) {
-		Dialog dialog = null;
+	protected void notifyBibrate(){
 		Notification notif = new Notification();
 		notif.vibrate = new long[]{50,100};
 		notifManager.notify(R.string.app_name, notif);
+	}
 
+	protected void showDialogDeleteItem(final int id,String name){
+		notifyBibrate();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(String.format(
 				this.getString(R.string.menu_setting_list_menu_title)
-				, arg.getString(DIALOG_PARAM_NAME)));
-		switch(id) {
-		case DIALOG_ITEM_ACTION:
-
-			final CharSequence[] items = {
-				 this.getString(R.string.menu_setting_list_menu_edit)
-				,this.getString(R.string.menu_setting_list_menu_delete)
-				};
-			builder.setItems(items, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int item) {
-					switch(item){
-					case 1:
-						dialog.cancel();
-						showDialog(DIALOG_CONFIRM_DELETE, arg);
-						break;
-					case 0:
-						dialog.cancel();
-						onItemEdit(arg.getInt(DIALOG_PARAM_ID));
-						break;
-					default:
-					}
+				, name));
+		builder.setMessage(getString(R.string.menu_confirm_delete_msg))
+			.setCancelable(false)
+			.setPositiveButton(getString(R.string.menu_config_delete_yes)
+					, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int index) {
+					onItemDelete(id);
+				}
+			})
+			.setNegativeButton(getString(R.string.menu_config_delete_no)
+					, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int index) {
 				}
 			});
-			dialog = builder.create();
+		Dialog dialog = builder.create();
+		dialog.show();
+	}
 
-			break;
-		case DIALOG_CONFIRM_DELETE:
-			builder.setMessage(getString(R.string.menu_confirm_delete_msg))
-				.setCancelable(false)
-				.setPositiveButton(getString(R.string.menu_config_delete_yes)
-						, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						onItemDelete(arg.getInt(DIALOG_PARAM_ID));
-					}
-				})
-				.setNegativeButton(getString(R.string.menu_config_delete_no)
-						, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-			dialog = builder.create();
-			break;
-		default:
-			break;
-		}
-		return dialog;
+	protected void showDialogItemSelected(final int id,final String name){
+		notifyBibrate();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(String.format(
+				this.getString(R.string.menu_setting_list_menu_title)
+				, name));
+		final CharSequence[] items = {
+			 this.getString(R.string.menu_setting_list_menu_edit)
+			,this.getString(R.string.menu_setting_list_menu_delete)
+			};
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				switch(item){
+				case 1:
+					showDialogDeleteItem(id,name);
+					break;
+				case 0:
+					onItemEdit(id);
+					break;
+				default:
+				}
+			}
+		});
+		Dialog dialog = builder.create();
+		dialog.show();
 	}
 
 

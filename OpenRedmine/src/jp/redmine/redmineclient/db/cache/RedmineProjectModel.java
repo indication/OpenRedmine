@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.db;
+package jp.redmine.redmineclient.db.cache;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

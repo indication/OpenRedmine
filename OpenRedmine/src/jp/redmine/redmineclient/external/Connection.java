@@ -30,6 +30,7 @@ import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public class Connection {
+	//@todo: separate db entity from here.
 	private RedmineConnection connection;
 	private Uri remoteurl;
 	protected int status;

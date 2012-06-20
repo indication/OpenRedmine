@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.redmine.redmineclient.db.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.RedmineConnectionModel;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
 import android.app.AlertDialog;

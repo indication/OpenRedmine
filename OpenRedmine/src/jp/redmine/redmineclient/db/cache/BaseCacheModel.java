@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.db;
+package jp.redmine.redmineclient.db.cache;
 
 import android.content.Context;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;

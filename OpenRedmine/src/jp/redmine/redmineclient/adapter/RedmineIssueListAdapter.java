@@ -1,7 +1,8 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.adapter;
 
 import java.util.ArrayList;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
 

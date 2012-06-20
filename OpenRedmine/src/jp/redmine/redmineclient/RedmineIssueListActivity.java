@@ -7,9 +7,10 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.db.RedmineConnectionModel;
-import jp.redmine.redmineclient.db.RedmineIssueModel;
-import jp.redmine.redmineclient.db.RedmineProjectModel;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;

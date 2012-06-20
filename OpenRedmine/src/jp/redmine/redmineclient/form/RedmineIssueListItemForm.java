@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.R.id;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import android.view.View;
 import android.widget.ProgressBar;

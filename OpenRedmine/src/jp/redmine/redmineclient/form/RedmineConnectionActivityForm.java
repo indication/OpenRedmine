@@ -3,7 +3,6 @@ package jp.redmine.redmineclient.form;
 import com.andreabaccega.widget.FormEditText;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.R.id;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
 import android.view.View;

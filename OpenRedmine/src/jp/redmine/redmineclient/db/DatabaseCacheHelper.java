@@ -6,7 +6,6 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
-import jp.redmine.redmineclient.entity.RedmineProjectMember;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineRole;
 import jp.redmine.redmineclient.entity.RedmineStatus;

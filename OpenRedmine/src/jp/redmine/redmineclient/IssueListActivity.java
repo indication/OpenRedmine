@@ -1,30 +1,19 @@
 package jp.redmine.redmineclient;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
-import jp.redmine.redmineclient.db.RedmineConnectionModel;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
-import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.external.DataCreationHandler;
-import jp.redmine.redmineclient.external.Fetcher;
-import jp.redmine.redmineclient.parser.ParserIssue;
-import jp.redmine.redmineclient.url.RemoteUrlIssue;
+import jp.redmine.redmineclient.model.IssueModel;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,17 +22,31 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class RedmineIssueListActivity extends Activity  {
+public class IssueListActivity extends Activity  {
 	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
 	public static final String INTENT_INT_PROJECT_ID = "PROJECTID";
 
+	private IssueModel modelIssue;
 	private ArrayAdapter<RedmineIssue> listAdapter;
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if(modelIssue != null){
+			modelIssue.finalize();
+			modelIssue = null;
+		}
+	}
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.issuelist);
+
+		Intent intent = getIntent();
+		int connectionid = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
+		int projectid = intent.getIntExtra(INTENT_INT_PROJECT_ID, -1);
+		modelIssue = new IssueModel(getApplicationContext(), connectionid,projectid);
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
 		listAdapter = new RedmineIssueListAdapter(
@@ -84,18 +87,7 @@ public class RedmineIssueListActivity extends Activity  {
 	}
 
 	protected void onReload(){
-		Intent intent = getIntent();
-		int connectionid = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		int projectid = intent.getIntExtra(INTENT_INT_PROJECT_ID, -1);
-		final RedmineIssueModel model = new RedmineIssueModel(getBaseContext());
-		List<RedmineIssue> issues = new ArrayList<RedmineIssue>();
-		try {
-			issues = model.fetchAllById(connectionid, projectid);
-		} catch (SQLException e) {
-			Log.e("SelectDataTask","doInBackground",e);
-		} catch (Throwable e) {
-			Log.e("SelectDataTask","doInBackground",e);
-		}
+		List<RedmineIssue> issues = modelIssue.fetchAllData(0,0);
 		listAdapter.notifyDataSetInvalidated();
 		listAdapter.clear();
 		for (RedmineIssue i : issues){
@@ -105,13 +97,10 @@ public class RedmineIssueListActivity extends Activity  {
 	}
 
 	protected void onRefresh(){
-		Intent intent = getIntent();
-		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		int projectid = intent.getIntExtra(INTENT_INT_PROJECT_ID, -1);
-		(new SelectDataTask(this,0,0)).execute(id,projectid);
+		(new SelectDataTask(this,0,0)).execute(0);
 	}
 
-	private class SelectDataTask extends AsyncTask<Integer, Integer, int[]> {
+	private class SelectDataTask extends AsyncTask<Integer, Integer, Integer> {
 		private ProgressDialog dialog;
 		private Context parentContext;
 		private final int MAXLOAD = 50;
@@ -128,80 +117,32 @@ public class RedmineIssueListActivity extends Activity  {
 			dialog = new ProgressDialog(parentContext);
 			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
 			dialog.show();
+			dialog.setOnCancelListener(new OnCancelListener() {
+				public void onCancel(DialogInterface dialog) {
+					limitloaded = -1;
+				}
+			});
 		}
 
 		@Override
-		protected int[] doInBackground(Integer ... params) {
-			final RedmineConnectionModel connection =
-				new RedmineConnectionModel(getBaseContext());
-			final RedmineProjectModel project =
-				new RedmineProjectModel(getBaseContext());
-			final int id = params[0];
-			final int projectid = params[1];
-			int count = 0;
-
-			RedmineConnection info = null;
-			RedmineProject proj = null;
-			Log.d("SelectDataTask","ParserProject Start");
-			try {
-				info = connection.fetchById(id);
-				proj = project.fetchById(id, projectid);
-			} catch (SQLException e) {
-				Log.e("SelectDataTask","ParserProject",e);
-			}
-
-			if(info != null) {
-				count = fetchIssue(info,proj);
-			}
-			return new int[]{id,projectid,count};
+		protected Integer doInBackground(Integer ... params) {
+			int count = modelIssue.fetchRemoteData(lastloaded,MAXLOAD);
+			return count;
 		}
 		// can use UI thread here
 		@Override
-		protected void onPostExecute(int[] params) {
-			if(params == null || params[2] == 0){
-
-			} else if (params[2] == MAXLOAD){
-				(new SelectDataTask(parentContext,lastloaded + MAXLOAD,limitloaded))
-				.execute(params[0],params[1]);
+		protected void onPostExecute(Integer params) {
+			if(lastloaded == 0){
+				onReload();
 			}
-			onReload();
+			if (limitloaded != 0 && (lastloaded + MAXLOAD) > limitloaded){
+			} else if (params == MAXLOAD){
+				(new SelectDataTask(parentContext,lastloaded + MAXLOAD,limitloaded))
+				.execute(0);
+			}
 			if (dialog.isShowing()) {
 				dialog.dismiss();
 			}
-		}
-		//@todo clean up
-		protected int fetchIssue(RedmineConnection info,RedmineProject project){
-			final RedmineIssueModel model =
-				new RedmineIssueModel(getBaseContext());
-			RemoteUrlIssue url = new RemoteUrlIssue();
-			Fetcher<RedmineProject> fetch = new Fetcher<RedmineProject>();
-			ParserIssue parser = new ParserIssue();
-			parser.registerDataCreation(new DataCreationHandler<RedmineProject,RedmineIssue>() {
-				public void onData(RedmineProject proj,RedmineIssue data) {
-					Log.d("ParserIssue","OnData Called");
-					try {
-						model.refreshItem(proj,data);
-					} catch (SQLException e) {
-						Log.e("ParserIssue","onData",e);
-					}
-				}
-			});
-
-			url.filterProject(project.getProjectId().toString());
-			url.filterOffset(lastloaded);
-			url.filterLimit(MAXLOAD);
-			Log.d("SelectDataTask","ParserProject Start");
-			try {
-				fetch.setRemoteurl(url);
-				fetch.setParser(parser);
-				fetch.fetchData(info,project);
-
-			} catch (XmlPullParserException e) {
-				Log.e("SelectDataTask","fetchIssue",e);
-			} catch (IOException e) {
-				Log.e("SelectDataTask","fetchIssue",e);
-			}
-			return parser.getCount();
 		}
 
 	}

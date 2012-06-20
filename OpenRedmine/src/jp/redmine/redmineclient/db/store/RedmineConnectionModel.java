@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.db;
+package jp.redmine.redmineclient.db.store;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -6,15 +6,13 @@ import java.util.List;
 import com.j256.ormlite.dao.Dao;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import android.content.Context;
 
 
-public class RedmineConnectionModel extends BaseModel<DatabaseHelper> {
+public class RedmineConnectionModel {
 	protected Dao<RedmineConnection, Integer> dao;
-	public RedmineConnectionModel(Context context) {
-		super(context);
+	public RedmineConnectionModel(DatabaseHelper helper) {
 		try {
-			dao = getHelper().getDao(RedmineConnection.class);
+			dao = helper.getDao(RedmineConnection.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -23,8 +21,8 @@ public class RedmineConnectionModel extends BaseModel<DatabaseHelper> {
 	public List<RedmineConnection> fetchAll() throws SQLException{
 		return dao.queryForAll();
 	}
-	
-	
+
+
 
 	public RedmineConnection fetchById(int id) throws SQLException{
 		RedmineConnection item;
@@ -45,6 +43,10 @@ public class RedmineConnectionModel extends BaseModel<DatabaseHelper> {
 	public int delete(int id) throws SQLException{
 		int count = dao.deleteById(id);
 		return count;
+	}
+
+	public int create(RedmineConnection item) throws SQLException {
+		return dao.create(item);
 	}
 
 }

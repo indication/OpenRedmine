@@ -26,22 +26,6 @@ public class Fetcher<T> {
 		return true;
 	}
 
-
-	public String fetchError() throws XmlPullParserException, IOException {
-		int state;
-		StringBuilder sb = new StringBuilder();
-
-		while((state = xmlPullParser.next())== XmlPullParser.END_DOCUMENT)
-		{
-			if(state==XmlPullParser.START_TAG
-					&& xmlPullParser.getName().toLowerCase() == "error"){
-				sb.append(xmlPullParser.getText());
-				sb.append("\n");
-			}
-		}
-		return sb.toString();
-	}
-
 	/**
 	 * @param remoteurl セットする remoteurl
 	 */

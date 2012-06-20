@@ -113,10 +113,9 @@ public class Connection {
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				DefaultHttpClient client = getHttpClient();
-				HttpGet get;
 				HttpResponse response;
 				try {
-					get = getHttpGet();
+					HttpGet get = getHttpGet();
 					response = client.execute(get);
 					status = response.getStatusLine().getStatusCode();
 					Log.i("requestGet", "Url: " + get.getURI().toASCIIString());

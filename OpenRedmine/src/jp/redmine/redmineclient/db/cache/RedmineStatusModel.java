@@ -8,16 +8,14 @@ import com.j256.ormlite.stmt.PreparedQuery;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineStatus;
-import android.content.Context;
 import android.util.Log;
 
 
-public class RedmineStatusModel extends BaseCacheModel<DatabaseCacheHelper> {
+public class RedmineStatusModel {
 	protected Dao<RedmineStatus, Integer> dao;
-	public RedmineStatusModel(Context context) {
-		super(context);
+	public RedmineStatusModel(DatabaseCacheHelper helper) {
 		try {
-			dao = getHelper().getDao(RedmineStatus.class);
+			dao = helper.getDao(RedmineStatus.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

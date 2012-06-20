@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.db;
+package jp.redmine.redmineclient.db.store;
 
 import java.sql.SQLException;
 

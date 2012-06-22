@@ -366,7 +366,7 @@ public class RedmineIssue {
 	/**
 	 * @param is_private セットする is_private
 	 */
-	public void setIsPrivate(boolean is_private) {
+	public void setPrivate(boolean is_private) {
 		this.is_private = is_private;
 	}
 
@@ -374,7 +374,7 @@ public class RedmineIssue {
 	/**
 	 * @return is_private
 	 */
-	public boolean isIsPrivate() {
+	public boolean isPrivate() {
 		return is_private;
 	}
 

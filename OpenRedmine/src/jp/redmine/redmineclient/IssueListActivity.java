@@ -64,9 +64,13 @@ public class IssueListActivity extends Activity  {
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-				//ListView listView = (ListView) parent;
-				//RedmineProject item = (RedmineProject) listView.getItemAtPosition(position);
-				//onItemSelect(item.Id());
+				ListView listView = (ListView) parent;
+				RedmineIssue item = (RedmineIssue) listView.getItemAtPosition(position);
+
+				Intent intent = new Intent( getApplicationContext(), IssueViewActivity.class );
+				intent.putExtra(IssueViewActivity.INTENT_INT_CONNECTION_ID, item.getConnectionId());
+				intent.putExtra(IssueViewActivity.INTENT_INT_ISSUE_ID, item.getIssueId());
+				startActivity( intent );
 			}
 		});
 

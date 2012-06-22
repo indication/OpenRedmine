@@ -67,7 +67,7 @@ public class ParserIssue extends BaseParser<RedmineProject,RedmineIssue> {
 		} else if("description".equalsIgnoreCase(xml.getName())){
 			item.setDescription(getNextText());
 		} else if("is_private".equalsIgnoreCase(xml.getName())){
-			item.setIsPrivate("true".equalsIgnoreCase(getNextText()));
+			item.setPrivate("true".equalsIgnoreCase(getNextText()));
 
 
 		} else if("project".equalsIgnoreCase(xml.getName())){

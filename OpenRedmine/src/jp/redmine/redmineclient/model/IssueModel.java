@@ -24,8 +24,8 @@ import android.util.Log;
 public class IssueModel extends Connector {
 
 	private int connection_id;
-	private int project_id;
-	public IssueModel(Context context, int connectionid, int projectid) {
+	private Integer project_id;
+	public IssueModel(Context context, int connectionid, Integer projectid) {
 		super(context);
 		connection_id = connectionid;
 		project_id = projectid;
@@ -43,6 +43,18 @@ public class IssueModel extends Connector {
 			Log.e("SelectDataTask","doInBackground",e);
 		}
 		return issues;
+	}
+	public RedmineIssue fetchItem(int issue_id){
+		final RedmineIssueModel model =
+			new RedmineIssueModel(helperCache);
+		RedmineIssue issue = new RedmineIssue();
+		Log.d("SelectDataTask","ParserIssue Start");
+		try {
+			issue = model.fetchById(connection_id, issue_id);
+		} catch (SQLException e) {
+			Log.e("SelectDataTask","ParserIssue",e);
+		}
+		return issue;
 	}
 
 	public int fetchRemoteData(int offset,int limit){

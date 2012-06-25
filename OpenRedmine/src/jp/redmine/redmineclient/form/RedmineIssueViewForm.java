@@ -112,6 +112,7 @@ public class RedmineIssueViewForm {
 		textDescription.setText(rd.getDescription());
 		textDateFrom.setText(convertDate(rd.getDateStart()));
 		textDateTo.setText(convertDate(rd.getDateDue()));
+		setTracker(rd.getTracker());
 		setIssueId(rd.getIssueId());
 		setUserName(textAuthor,rd.getAuthor());
 		setUserName(textAssignedTo,rd.getAssigned());

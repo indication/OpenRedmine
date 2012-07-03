@@ -74,15 +74,20 @@ public class RedmineStatusModel {
 	}
 
 	public void refreshItem(RedmineConnection info,RedmineStatus data) throws SQLException{
+		refreshItem(info.getId(),data);
+	}
+	public void refreshItem(int connection_id,RedmineStatus data) throws SQLException{
+		if(data == null)
+			return;
 
-		RedmineStatus project = this.fetchById(info.getId(), data.getStatusId());
+		RedmineStatus project = this.fetchById(connection_id, data.getStatusId());
 		if(project.getId() == null){
-			data.setRedmineConnection(info);
+			data.setConnectionId(connection_id);
 			this.insert(data);
 		} else {
 			if(project.getModified().after(data.getModified())){
 				data.setId(project.getId());
-				data.setRedmineConnection(info);
+				data.setConnectionId(connection_id);
 				this.update(data);
 			}
 		}

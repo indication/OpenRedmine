@@ -72,15 +72,26 @@ public class RedmineUserModel {
 	}
 
 	public void refreshItem(RedmineConnection info,RedmineUser data) throws SQLException{
-
-		RedmineUser project = this.fetchById(info.getId(), data.getUserId());
+		refreshItem(info.getId(),data);
+	}
+	public void refreshItem(int connection_id,RedmineUser data) throws SQLException{
+		if(data == null)
+			return;
+		RedmineUser project = this.fetchById(connection_id, data.getUserId());
 		if(project.getId() == null){
-			data.setRedmineConnection(info);
+			data.setConnectionId(connection_id);
 			this.insert(data);
 		} else {
+
+			if(project.getModified() == null){
+				project.setModified(new java.util.Date());
+			}
+			if(data.getModified() == null){
+				data.setModified(new java.util.Date());
+			}
 			if(project.getModified().after(data.getModified())){
 				data.setId(project.getId());
-				data.setRedmineConnection(info);
+				data.setConnectionId(connection_id);
 				this.update(data);
 			}
 		}

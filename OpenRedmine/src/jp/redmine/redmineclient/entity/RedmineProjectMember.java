@@ -16,7 +16,7 @@ public class RedmineProjectMember {
     @DatabaseField(uniqueIndexName="projectmember_target")
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="projectmember_target"
-    	,foreign = true,foreignColumnName="project_id"
+    	,foreign = true,foreignColumnName="id"
     	,columnName= "project_id"
     	,foreignAutoRefresh = true)
     private RedmineProject project;

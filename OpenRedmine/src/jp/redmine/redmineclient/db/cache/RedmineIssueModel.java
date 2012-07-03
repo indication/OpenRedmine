@@ -14,6 +14,7 @@ import android.util.Log;
 
 public class RedmineIssueModel {
 	protected Dao<RedmineIssue, Integer> dao;
+
 	public RedmineIssueModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineIssue.class);
@@ -119,4 +120,5 @@ public class RedmineIssueModel {
 			}
 		}
 	}
+	//protected void refreshItem(RedmineIssue project, RedmineIssue data){
 }

@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 
 
@@ -71,18 +72,34 @@ public class RedmineTrackerModel {
 		return count;
 	}
 
-	public void refreshItem(RedmineConnection info,RedmineTracker data) throws SQLException{
-
-		RedmineTracker project = this.fetchById(info.getId(), data.getTrackerId());
+	public void refreshItem(RedmineIssue data) throws SQLException{
+		RedmineTracker item = refreshItem(data.getConnectionId(),data.getTracker());
+		data.setTracker(item);
+	}
+	public RedmineTracker refreshItem(RedmineConnection info,RedmineTracker data) throws SQLException{
+		return refreshItem(info.getId(),data);
+	}
+	public RedmineTracker refreshItem(int connection_id,RedmineTracker data) throws SQLException{
+		if(data == null)
+			return null;
+		RedmineTracker project = this.fetchById(connection_id, data.getTrackerId());
 		if(project.getId() == null){
-			data.setRedmineConnection(info);
+			data.setConnectionId(connection_id);
 			this.insert(data);
 		} else {
-			if(project.getModified().after(data.getModified())){
+			if(project.getModified() == null){
+				project.setModified(new java.util.Date());
+			}
+			if(data.getModified() == null){
+				data.setModified(new java.util.Date());
+			}
+			if (project.getModified().after(data.getModified())){
 				data.setId(project.getId());
-				data.setRedmineConnection(info);
+				data.setConnectionId(connection_id);
 				this.update(data);
 			}
 		}
+		return project;
 	}
+
 }

@@ -16,7 +16,7 @@ public class RedmineProjectCategory {
     @DatabaseField(uniqueIndexName="projectcategory_target")
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="projectcategory_target"
-    	,foreign = true,foreignColumnName="project_id"
+    	,foreign = true,foreignColumnName="id"
     	,columnName= "project_id"
     	,foreignAutoRefresh = true)
     private RedmineProject project;
@@ -24,7 +24,7 @@ public class RedmineProjectCategory {
     private int category_id;
     @DatabaseField
     private String name;
-    @DatabaseField(foreign = true,foreignColumnName="user_id"
+    @DatabaseField(foreign = true,foreignColumnName="id"
         	,columnName= "assignto_id"
         	,foreignAutoRefresh = true)
     private RedmineUser assignto;

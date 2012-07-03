@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class RedmineProjectVersion {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
-	public final static String PROJECT_ID = "project_id";
+	public final static String VERSION_ID = "VERSION_id";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
@@ -16,7 +16,7 @@ public class RedmineProjectVersion {
     @DatabaseField(uniqueIndexName="projectversion_target")
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="projectversion_target"
-    	,foreign = true,foreignColumnName="project_id"
+    	,foreign = true,foreignColumnName="id"
     	,columnName= "project_id"
     	,foreignAutoRefresh = true)
     private RedmineProject project;

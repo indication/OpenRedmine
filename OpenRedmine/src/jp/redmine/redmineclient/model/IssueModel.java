@@ -7,6 +7,9 @@ import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
+import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
+import jp.redmine.redmineclient.db.cache.RedmineUserModel;
+import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -59,19 +62,25 @@ public class IssueModel extends Connector {
 
 	public int fetchRemoteData(int offset,int limit){
 
-		final RedmineConnectionModel connection =
+		final RedmineConnectionModel mConnection =
 			new RedmineConnectionModel(helperStore);
-		final RedmineProjectModel project =
+		final RedmineProjectModel mProject =
 			new RedmineProjectModel(helperCache);
-		final RedmineIssueModel model =
+		final RedmineIssueModel mIssue =
 			new RedmineIssueModel(helperCache);
+		final RedmineVersionModel mVersion =
+			new RedmineVersionModel(helperCache);
+		final RedmineUserModel mUser =
+			new RedmineUserModel(helperCache);
+		final RedmineTrackerModel mTracker =
+			new RedmineTrackerModel(helperCache);
 
 		RedmineConnection info = null;
 		RedmineProject proj = null;
 		Log.d("SelectDataTask","ParserProject Start");
 		try {
-			info = connection.fetchById(connection_id);
-			proj = project.fetchById(connection_id, project_id);
+			info = mConnection.fetchById(connection_id);
+			proj = mProject.fetchById(connection_id, project_id);
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserProject",e);
 		}
@@ -82,7 +91,14 @@ public class IssueModel extends Connector {
 			public void onData(RedmineProject proj,RedmineIssue data) {
 				Log.d("ParserIssue","OnData Called");
 				try {
-					model.refreshItem(proj,data);
+					data.setConnectionId(proj.getConnectionId());
+					data.setProject(proj);
+					RedmineIssue.setupConnectionId(data);
+					mTracker.refreshItem(proj.getConnectionId(), data.getTracker());
+					mVersion.refreshItem(proj.getConnectionId(), data.getVersion());
+					mUser.refreshItem(proj.getConnectionId(), data.getAssigned());
+					mUser.refreshItem(proj.getConnectionId(), data.getAuthor());
+					mIssue.refreshItem(proj,data);
 				} catch (SQLException e) {
 					Log.e("ParserIssue","onData",e);
 				}

@@ -18,23 +18,23 @@ public class RedmineIssue {
     private Integer id;
     @DatabaseField(uniqueIndexName="issue_target")
     private Integer connection_id;
-    @DatabaseField(foreign = true,foreignColumnName="project_id", columnName= "project_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
     private RedmineProject project;
     @DatabaseField(uniqueIndexName="issue_target")
     private Integer issue_id;
-    @DatabaseField(foreign = true,foreignColumnName="tracker_id", columnName= "tracker_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "tracker_id", foreignAutoRefresh = true)
     private RedmineTracker tracker;
-    @DatabaseField(foreign = true,foreignColumnName="status_id", columnName= "status_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "status_id", foreignAutoRefresh = true)
     private RedmineStatus status;
-    @DatabaseField(foreign = true,foreignColumnName="priority_id", columnName= "priority_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "priority_id", foreignAutoRefresh = true)
     private RedminePriority priority;
-    @DatabaseField(foreign = true,foreignColumnName="user_id", columnName= "author_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "author_id", foreignAutoRefresh = true)
     private RedmineUser author;
-    @DatabaseField(foreign = true,foreignColumnName="user_id", columnName= "assign_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "assign_id", foreignAutoRefresh = true)
     private RedmineUser assigned;
-    @DatabaseField(foreign = true,foreignColumnName="category_id", columnName= "category_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "category_id", foreignAutoRefresh = true)
     private RedmineProjectCategory category;
-    @DatabaseField(foreign = true,foreignColumnName="version_id", columnName= "version_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "version_id", foreignAutoRefresh = true)
     private RedmineProjectVersion version;
     @DatabaseField
     private int parent_id;
@@ -59,6 +59,26 @@ public class RedmineIssue {
     @DatabaseField
     private Date modified;
 
+    static public void setupConnectionId(RedmineIssue item){
+    	if(item.getConnectionId() == null)
+    		return;
+    	if(item.getTracker() != null)
+    		item.getTracker().setConnectionId(item.getConnectionId());
+    	if(item.getAuthor() != null)
+    		item.getAuthor().setConnectionId(item.getConnectionId());
+    	if(item.getCategory() != null)
+    		item.getCategory().setConnectionId(item.getConnectionId());
+    	if(item.getAssigned() != null)
+    		item.getAssigned().setConnectionId(item.getConnectionId());
+    	if(item.getStatus() != null)
+    		item.getStatus().setConnectionId(item.getConnectionId());
+    	if(item.getProject() != null)
+    		item.getProject().setConnectionId(item.getConnectionId());
+    	if(item.getVersion() != null)
+    		item.getVersion().setConnectionId(item.getConnectionId());
+    	if(item.getPriority() != null)
+    		item.getPriority().setConnectionId(item.getConnectionId());
+    }
 
     @Override
     public String toString(){

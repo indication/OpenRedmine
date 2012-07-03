@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,10 +29,17 @@ public class IssueListActivity extends Activity  {
 
 	private IssueModel modelIssue;
 	private ArrayAdapter<RedmineIssue> listAdapter;
+	private SelectDataTask task;
+	private View mFooter;
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		// cleanup task
+		if(task != null && task.getStatus() == Status.RUNNING){
+			task.cancel(true);
+		}
+		// cleanup models
 		if(modelIssue != null){
 			modelIssue.finalize();
 			modelIssue = null;
@@ -52,6 +60,7 @@ public class IssueListActivity extends Activity  {
 		listAdapter = new RedmineIssueListAdapter(
 				this,R.layout.issueitem
 				,new ArrayList<RedmineIssue>());
+		list.addFooterView(getFooter());
 
 		list.setAdapter(listAdapter);
 
@@ -65,29 +74,26 @@ public class IssueListActivity extends Activity  {
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 				ListView listView = (ListView) parent;
-				RedmineIssue item = (RedmineIssue) listView.getItemAtPosition(position);
-
+				Object listitem = listView.getItemAtPosition(position);
+				if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
+				{
+					return;
+				}
+				RedmineIssue item = (RedmineIssue) listitem;
 				Intent intent = new Intent( getApplicationContext(), IssueViewActivity.class );
 				intent.putExtra(IssueViewActivity.INTENT_INT_CONNECTION_ID, item.getConnectionId());
 				intent.putExtra(IssueViewActivity.INTENT_INT_ISSUE_ID, item.getIssueId());
 				startActivity( intent );
 			}
 		});
+	}
 
-		/*
-		//リスト項目が長押しされた時の処理
-		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				ListView listView = (ListView) parent;
-				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				Bundle bundle = new Bundle();
-				bundle.putInt(DIALOG_PARAM_ID, item.Id());
-				bundle.putString(DIALOG_PARAM_NAME, item.Name());
-				showDialog(DIALOG_ITEM_ACTION, bundle);
-				return false;
-			}
-		});
-		*/
+	private View getFooter() {
+		if (mFooter == null) {
+			mFooter = getLayoutInflater()
+				.inflate(R.layout.listview_footer,null);
+		}
+		return mFooter;
 	}
 
 	protected void onReload(){
@@ -101,7 +107,11 @@ public class IssueListActivity extends Activity  {
 	}
 
 	protected void onRefresh(){
-		(new SelectDataTask(this,0,0)).execute(0);
+		if(task != null && task.getStatus() == Status.RUNNING){
+			return;
+		}
+		task = new SelectDataTask(this,0,0);
+		task.execute(0);
 	}
 
 	private class SelectDataTask extends AsyncTask<Integer, Integer, Integer> {
@@ -139,13 +149,13 @@ public class IssueListActivity extends Activity  {
 			if(lastloaded == 0){
 				onReload();
 			}
-			if (limitloaded != 0 && (lastloaded + MAXLOAD) > limitloaded){
-			} else if (params == MAXLOAD){
-				(new SelectDataTask(parentContext,lastloaded + MAXLOAD,limitloaded))
-				.execute(0);
-			}
 			if (dialog.isShowing()) {
 				dialog.dismiss();
+			}
+			if (limitloaded != 0 && (lastloaded + MAXLOAD) > limitloaded){
+			} else if (params == MAXLOAD){
+				task = new SelectDataTask(parentContext,lastloaded + MAXLOAD,limitloaded);
+				task.execute(0);
 			}
 		}
 

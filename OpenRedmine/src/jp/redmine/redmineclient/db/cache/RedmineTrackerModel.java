@@ -86,6 +86,8 @@ public class RedmineTrackerModel {
 		if(project.getId() == null){
 			data.setConnectionId(connection_id);
 			this.insert(data);
+
+			project = fetchById(connection_id, data.getTrackerId());
 		} else {
 			if(project.getModified() == null){
 				project.setModified(new java.util.Date());

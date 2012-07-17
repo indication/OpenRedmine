@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
 
@@ -70,17 +71,25 @@ public class RedmineUserModel {
 		int count = dao.deleteById(id);
 		return count;
 	}
-
-	public void refreshItem(RedmineConnection info,RedmineUser data) throws SQLException{
-		refreshItem(info.getId(),data);
+	public void refreshItem(RedmineIssue data) throws SQLException{
+		RedmineUser item;
+		item = refreshItem(data.getConnectionId(),data.getAssigned());
+		data.setAssigned(item);
+		item = refreshItem(data.getConnectionId(),data.getAuthor());
+		data.setAuthor(item);
 	}
-	public void refreshItem(int connection_id,RedmineUser data) throws SQLException{
+
+	public RedmineUser refreshItem(RedmineConnection info,RedmineUser data) throws SQLException{
+		return refreshItem(info.getId(),data);
+	}
+	public RedmineUser refreshItem(int connection_id,RedmineUser data) throws SQLException{
 		if(data == null)
-			return;
+			return null;
 		RedmineUser project = this.fetchById(connection_id, data.getUserId());
 		if(project.getId() == null){
 			data.setConnectionId(connection_id);
 			this.insert(data);
+			project = fetchById(connection_id, data.getUserId());
 		} else {
 
 			if(project.getModified() == null){
@@ -95,5 +104,6 @@ public class RedmineUserModel {
 				this.update(data);
 			}
 		}
+		return project;
 	}
 }

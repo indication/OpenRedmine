@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.entity;
 
 import java.util.Date;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -97,6 +98,24 @@ public class RedmineUser {
 		return user_id;
 	}
 
+	public void setName(String format, String name){
+		if(name == null || name.length() < 1)
+			return;
+		String[] strs = name.split(" +", 2);
+		String first = strs[0];
+		String last = "";
+		if(strs.length < 1){
+			last = strs[1];
+		}
+		format = format.toLowerCase();
+		if(format.indexOf("%$1s")< format.indexOf("%$2s")){
+			setFirstname(first);
+			setLastname(last);
+		} else {
+			setFirstname(last);
+			setLastname(first);
+		}
+	}
 
 	/**
 	 * @param firstname セットする firstname

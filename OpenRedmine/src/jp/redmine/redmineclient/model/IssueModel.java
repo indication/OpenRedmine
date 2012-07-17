@@ -7,14 +7,10 @@ import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
-import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
-import jp.redmine.redmineclient.db.cache.RedmineUserModel;
-import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.external.DataCreationHandler;
 import jp.redmine.redmineclient.external.Fetcher;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
@@ -27,19 +23,20 @@ import android.util.Log;
 public class IssueModel extends Connector {
 
 	private int connection_id;
-	private Integer project_id;
-	public IssueModel(Context context, int connectionid, Integer projectid) {
+	private Long project_id;
+
+	public IssueModel(Context context, int connectionid, Long projectid) {
 		super(context);
 		connection_id = connectionid;
 		project_id = projectid;
 	}
 
 
-	public List<RedmineIssue> fetchAllData(int offset,int limit){
+	public List<RedmineIssue> fetchAllData(long offset,long limit){
 		final RedmineIssueModel model = new RedmineIssueModel(helperCache);
 		List<RedmineIssue> issues = new ArrayList<RedmineIssue>();
 		try {
-			issues = model.fetchAllById(connection_id, project_id);
+			issues = model.fetchAllById(connection_id, project_id, offset, limit);
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","doInBackground",e);
 		} catch (Throwable e) {
@@ -66,46 +63,24 @@ public class IssueModel extends Connector {
 			new RedmineConnectionModel(helperStore);
 		final RedmineProjectModel mProject =
 			new RedmineProjectModel(helperCache);
-		final RedmineIssueModel mIssue =
-			new RedmineIssueModel(helperCache);
-		final RedmineVersionModel mVersion =
-			new RedmineVersionModel(helperCache);
-		final RedmineUserModel mUser =
-			new RedmineUserModel(helperCache);
-		final RedmineTrackerModel mTracker =
-			new RedmineTrackerModel(helperCache);
+		final IssueModelDataCreationHandler handler =
+			new IssueModelDataCreationHandler(helperCache);
 
 		RedmineConnection info = null;
 		RedmineProject proj = null;
 		Log.d("SelectDataTask","ParserProject Start");
 		try {
 			info = mConnection.fetchById(connection_id);
-			proj = mProject.fetchById(connection_id, project_id);
+			proj = mProject.fetchById(project_id);
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserProject",e);
 		}
 		RemoteUrlIssue url = new RemoteUrlIssue();
 		Fetcher<RedmineProject> fetch = new Fetcher<RedmineProject>();
 		ParserIssue parser = new ParserIssue();
-		parser.registerDataCreation(new DataCreationHandler<RedmineProject,RedmineIssue>() {
-			public void onData(RedmineProject proj,RedmineIssue data) {
-				Log.d("ParserIssue","OnData Called");
-				try {
-					data.setConnectionId(proj.getConnectionId());
-					data.setProject(proj);
-					RedmineIssue.setupConnectionId(data);
-					mTracker.refreshItem(proj.getConnectionId(), data.getTracker());
-					mVersion.refreshItem(proj.getConnectionId(), data.getVersion());
-					mUser.refreshItem(proj.getConnectionId(), data.getAssigned());
-					mUser.refreshItem(proj.getConnectionId(), data.getAuthor());
-					mIssue.refreshItem(proj,data);
-				} catch (SQLException e) {
-					Log.e("ParserIssue","onData",e);
-				}
-			}
-		});
+		parser.registerDataCreation(handler);
 
-		url.filterProject(String.valueOf(project_id));
+		url.filterProject(String.valueOf(proj.getProjectId()));
 		url.filterOffset(offset);
 		url.filterLimit(limit);
 		Log.d("SelectDataTask","ParserProject Start");
@@ -121,5 +96,4 @@ public class IssueModel extends Connector {
 		}
 		return parser.getCount();
 	}
-
 }

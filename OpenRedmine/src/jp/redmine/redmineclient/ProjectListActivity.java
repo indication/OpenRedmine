@@ -95,7 +95,7 @@ public class ProjectListActivity extends Activity  {
 
 		Intent intent = new Intent( getApplicationContext(), IssueListActivity.class );
 		intent.putExtra(IssueListActivity.INTENT_INT_CONNECTION_ID, item.getConnectionId());
-		intent.putExtra(IssueListActivity.INTENT_INT_PROJECT_ID, item.getProjectId());
+		intent.putExtra(IssueListActivity.INTENT_INT_PROJECT_ID, item.getId());
 		startActivity( intent );
 	}
 	protected void onRefresh(){

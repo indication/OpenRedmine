@@ -12,7 +12,7 @@ import android.util.Log;
 
 
 public class RedmineProjectModel {
-	protected Dao<RedmineProject, Integer> dao;
+	protected Dao<RedmineProject, Long> dao;
 	public RedmineProjectModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineProject.class);
@@ -47,7 +47,7 @@ public class RedmineProjectModel {
 		return item;
 	}
 
-	public RedmineProject fetchById(int id) throws SQLException{
+	public RedmineProject fetchById(long id) throws SQLException{
 		RedmineProject item;
 		item = dao.queryForId(id);
 		if(item == null)
@@ -68,7 +68,7 @@ public class RedmineProjectModel {
 		int count = dao.delete(item);
 		return count;
 	}
-	public int delete(int id) throws SQLException{
+	public int delete(long id) throws SQLException{
 		int count = dao.deleteById(id);
 		return count;
 	}

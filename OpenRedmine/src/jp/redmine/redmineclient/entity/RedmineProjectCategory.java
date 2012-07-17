@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class RedmineProjectCategory {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
-	public final static String PROJECT_ID = "project_id";
+	public final static String CATEGORY_ID = "project_id";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)

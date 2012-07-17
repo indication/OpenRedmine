@@ -15,15 +15,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class IssueListActivity extends Activity  {
+public class IssueListActivity extends Activity
+	implements OnScrollListener
+	{
 	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
 	public static final String INTENT_INT_PROJECT_ID = "PROJECTID";
 
@@ -31,6 +36,7 @@ public class IssueListActivity extends Activity  {
 	private ArrayAdapter<RedmineIssue> listAdapter;
 	private SelectDataTask task;
 	private View mFooter;
+	private ListView listView;
 
 	@Override
 	protected void onDestroy() {
@@ -53,16 +59,17 @@ public class IssueListActivity extends Activity  {
 
 		Intent intent = getIntent();
 		int connectionid = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		int projectid = intent.getIntExtra(INTENT_INT_PROJECT_ID, -1);
+		long projectid = intent.getLongExtra(INTENT_INT_PROJECT_ID, -1);
 		modelIssue = new IssueModel(getApplicationContext(), connectionid,projectid);
 
-		ListView list = (ListView)findViewById(R.id.listConnectionList);
+		listView = (ListView)findViewById(R.id.listConnectionList);
 		listAdapter = new RedmineIssueListAdapter(
 				this,R.layout.issueitem
 				,new ArrayList<RedmineIssue>());
-		list.addFooterView(getFooter());
+		listView.addFooterView(getFooter());
+		listView.setAdapter(listAdapter);
 
-		list.setAdapter(listAdapter);
+		listView.setOnScrollListener(this);
 
 		onReload();
 
@@ -70,8 +77,9 @@ public class IssueListActivity extends Activity  {
 			onRefresh();
 		}
 
+
 		//リスト項目がクリックされた時の処理
-		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 				ListView listView = (ListView) parent;
 				Object listitem = listView.getItemAtPosition(position);
@@ -95,17 +103,45 @@ public class IssueListActivity extends Activity  {
 		}
 		return mFooter;
 	}
-
+	/*
+	private void visibleFooter() {
+		Log.d("footer","visible");
+		ListView list = (ListView)findViewById(R.id.listConnectionList);
+		list.addFooterView(getFooter());
+	}
+	*/
+	private void invisibleFooter() {
+		Log.d("footer","invisible");
+		if (mFooter == null)
+			return;
+		if (listView.getFooterViewsCount() < 1)
+			return;
+		listView.removeFooterView(getFooter());
+	}
 	protected void onReload(){
-		List<RedmineIssue> issues = modelIssue.fetchAllData(0,0);
 		listAdapter.notifyDataSetInvalidated();
 		listAdapter.clear();
-		for (RedmineIssue i : issues){
-			listAdapter.add(i);
-		}
+		additionalReading();
 		listAdapter.notifyDataSetChanged();
 	}
 
+	private long curentpos = 0;
+	private final long READ_ITEMS = 10;
+	private void additionalReading() {
+
+		List<RedmineIssue> issues = modelIssue.fetchAllData(curentpos,READ_ITEMS);
+		for (RedmineIssue i : issues){
+			listAdapter.add(i);
+		}
+		if(issues.size() < READ_ITEMS){
+			invisibleFooter();
+			Log.d("additionalReading","invisible");
+		}
+		Log.d("additionalReading","pos: " + Long.valueOf(curentpos));
+		Log.d("additionalReading","size: " + Long.valueOf(issues.size()));
+		curentpos += issues.size();
+
+	}
 	protected void onRefresh(){
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
@@ -158,9 +194,7 @@ public class IssueListActivity extends Activity  {
 				task.execute(0);
 			}
 		}
-
 	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -183,5 +217,18 @@ public class IssueListActivity extends Activity  {
 			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	public void onScroll(AbsListView view, int firstVisibleItem,
+		int visibleItemCount, int totalItemCount) {
+		if (totalItemCount == firstVisibleItem + visibleItemCount) {
+			if (listView.getFooterViewsCount() < 1)
+				return;
+			listAdapter.notifyDataSetInvalidated();
+			additionalReading();
+			listAdapter.notifyDataSetChanged();
+		}
+	}
+	public void onScrollStateChanged(AbsListView arg0, int arg1) {
+
 	}
 }

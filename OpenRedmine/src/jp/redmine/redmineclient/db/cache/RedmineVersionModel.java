@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
@@ -72,25 +73,36 @@ public class RedmineVersionModel {
 		return count;
 	}
 
-	public void refreshItem(RedmineConnection info,RedmineProjectVersion data) throws SQLException{
-		refreshItem(info.getId(),data);
+	public void refreshItem(RedmineIssue data) throws SQLException{
+		RedmineProjectVersion item = refreshItem(data.getConnectionId(),data.getVersion());
+		data.setVersion(item);
 	}
 
+	public RedmineProjectVersion refreshItem(RedmineConnection info,RedmineProjectVersion data) throws SQLException{
+		return refreshItem(info.getId(),data);
+	}
 
-	public void refreshItem(int id,RedmineProjectVersion data) throws SQLException{
+	public RedmineProjectVersion refreshItem(int id,RedmineProjectVersion data) throws SQLException{
 		if(data == null)
-			return;
+			return null;
 		RedmineProjectVersion version = this.fetchById(id, data.getVersionId());
 		if(version.getId() == null){
 			data.setConnectionId(id);
 			this.insert(data);
-
+			version = fetchById(id, data.getVersionId());
 		} else {
+			if(version.getModified() == null){
+				version.setModified(new java.util.Date());
+			}
+			if(data.getModified() == null){
+				data.setModified(new java.util.Date());
+			}
 			if(version.getModified().after(data.getModified())){
 				data.setId(version.getId());
 				data.setConnectionId(id);
 				this.update(data);
 			}
 		}
+		return version;
 	}
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -36,14 +38,22 @@ public class RedmineIssueModel {
 		return item;
 	}
 
-	public List<RedmineIssue> fetchAllById(int connection, int projectId) throws SQLException{
-		PreparedQuery<RedmineIssue> query = dao.queryBuilder().where()
+	public List<RedmineIssue> fetchAllById(int connection, long projectId, Long startRow, Long maxRows) throws SQLException{
+		QueryBuilder<RedmineIssue, Integer> builder = dao.queryBuilder();
+		Where<RedmineIssue, Integer> where = builder.where()
 		.eq(RedmineIssue.CONNECTION, connection)
 		.and()
 		.eq(RedmineIssue.PROJECT_ID, projectId)
-		.prepare();
-		Log.d("RedmineIssue",query.getStatement());
-		List<RedmineIssue> item = dao.query(query);
+		;//.prepare();
+		builder.setWhere(where);
+		if(maxRows != null){
+			builder.limit(maxRows);
+		}
+		if(startRow != null && startRow != 0){
+			builder.offset(startRow);
+		}
+		Log.d("RedmineIssue",builder.prepareStatementString());
+		List<RedmineIssue> item = dao.query(builder.prepare());
 		if(item == null)
 			item = new ArrayList<RedmineIssue>();
 		Log.d("RedmineIssue","count:" + item.size());
@@ -120,5 +130,4 @@ public class RedmineIssueModel {
 			}
 		}
 	}
-	//protected void refreshItem(RedmineIssue project, RedmineIssue data){
 }

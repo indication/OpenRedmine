@@ -8,64 +8,65 @@ import com.j256.ormlite.stmt.PreparedQuery;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import android.util.Log;
 
 
-public class RedmineStatusModel {
-	protected Dao<RedmineStatus, Integer> dao;
-	public RedmineStatusModel(DatabaseCacheHelper helper) {
+public class RedminePriorityModel {
+	protected Dao<RedminePriority, Integer> dao;
+	public RedminePriorityModel(DatabaseCacheHelper helper) {
 		try {
-			dao = helper.getDao(RedmineStatus.class);
+			dao = helper.getDao(RedminePriority.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public List<RedmineStatus> fetchAll() throws SQLException{
+	public List<RedminePriority> fetchAll() throws SQLException{
 		return dao.queryForAll();
 	}
 
-	public List<RedmineStatus> fetchAll(int connection) throws SQLException{
-		List<RedmineStatus> item;
+	public List<RedminePriority> fetchAll(int connection) throws SQLException{
+		List<RedminePriority> item;
 		item = dao.queryForEq(RedmineStatus.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineStatus>();
+			item = new ArrayList<RedminePriority>();
 		}
 		return item;
 	}
 
-	public RedmineStatus fetchById(int connection, int statusId) throws SQLException{
-		PreparedQuery<RedmineStatus> query = dao.queryBuilder().where()
-		.eq(RedmineStatus.CONNECTION, connection)
+	public RedminePriority fetchById(int connection, int statusId) throws SQLException{
+		PreparedQuery<RedminePriority> query = dao.queryBuilder().where()
+		.eq(RedminePriority.CONNECTION, connection)
 		.and()
-		.eq(RedmineStatus.STATUS_ID, statusId)
+		.eq(RedminePriority.PRIORITY_ID, statusId)
 		.prepare();
 		Log.d("RedmineProject",query.getStatement());
-		RedmineStatus item = dao.queryForFirst(query);
+		RedminePriority item = dao.queryForFirst(query);
 		if(item == null)
-			item = new RedmineStatus();
+			item = new RedminePriority();
 		return item;
 	}
 
-	public RedmineStatus fetchById(int id) throws SQLException{
-		RedmineStatus item;
+	public RedminePriority fetchById(int id) throws SQLException{
+		RedminePriority item;
 		item = dao.queryForId(id);
 		if(item == null)
-			item = new RedmineStatus();
+			item = new RedminePriority();
 		return item;
 	}
 
-	public int insert(RedmineStatus item) throws SQLException{
+	public int insert(RedminePriority item) throws SQLException{
 		int count = dao.create(item);
 		return count;
 	}
 
-	public int update(RedmineStatus item) throws SQLException{
+	public int update(RedminePriority item) throws SQLException{
 		int count = dao.update(item);
 		return count;
 	}
-	public int delete(RedmineStatus item) throws SQLException{
+	public int delete(RedminePriority item) throws SQLException{
 		int count = dao.delete(item);
 		return count;
 	}
@@ -75,22 +76,22 @@ public class RedmineStatusModel {
 	}
 
 	public void refreshItem(RedmineIssue data) throws SQLException{
-		RedmineStatus item = refreshItem(data.getConnectionId(),data.getStatus());
-		data.setStatus(item);
+		RedminePriority item = refreshItem(data.getConnectionId(),data.getPriority());
+		data.setPriority(item);
 	}
-	public RedmineStatus refreshItem(RedmineConnection info,RedmineStatus data) throws SQLException{
+	public RedminePriority refreshItem(RedmineConnection info,RedminePriority data) throws SQLException{
 		return refreshItem(info.getId(),data);
 	}
-	public RedmineStatus refreshItem(int connection_id,RedmineStatus data) throws SQLException{
+	public RedminePriority refreshItem(int connection_id,RedminePriority data) throws SQLException{
 		if(data == null)
 			return null;
 
-		RedmineStatus project = this.fetchById(connection_id, data.getStatusId());
+		RedminePriority project = this.fetchById(connection_id, data.getPriorityId());
 		if(project.getId() == null){
 			data.setConnectionId(connection_id);
 			this.insert(data);
-			project = fetchById(connection_id, data.getStatusId());
 		} else {
+
 			if(project.getModified() == null){
 				project.setModified(new java.util.Date());
 			}
@@ -103,7 +104,6 @@ public class RedmineStatusModel {
 				this.update(data);
 			}
 		}
-
-		return project;
+		return data;
 	}
 }

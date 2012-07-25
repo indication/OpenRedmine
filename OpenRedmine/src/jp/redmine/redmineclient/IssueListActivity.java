@@ -103,13 +103,6 @@ public class IssueListActivity extends Activity
 		}
 		return mFooter;
 	}
-	/*
-	private void visibleFooter() {
-		Log.d("footer","visible");
-		ListView list = (ListView)findViewById(R.id.listConnectionList);
-		list.addFooterView(getFooter());
-	}
-	*/
 	private void invisibleFooter() {
 		Log.d("footer","invisible");
 		if (mFooter == null)
@@ -120,6 +113,7 @@ public class IssueListActivity extends Activity
 	}
 	protected void onReload(){
 		listAdapter.notifyDataSetInvalidated();
+		curentpos = 0;
 		listAdapter.clear();
 		additionalReading();
 		listAdapter.notifyDataSetChanged();

@@ -13,7 +13,7 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.external.Fetcher;
 import jp.redmine.redmineclient.parser.ParserIssue;
-import jp.redmine.redmineclient.url.RemoteUrlIssue;
+import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -75,7 +75,7 @@ public class IssueModel extends Connector {
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserProject",e);
 		}
-		RemoteUrlIssue url = new RemoteUrlIssue();
+		RemoteUrlIssues url = new RemoteUrlIssues();
 		Fetcher<RedmineProject> fetch = new Fetcher<RedmineProject>();
 		ParserIssue parser = new ParserIssue();
 		parser.registerDataCreation(handler);

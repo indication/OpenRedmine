@@ -117,7 +117,7 @@ public class ParserIssue extends BaseParser<RedmineProject,RedmineIssue> {
 
 		} else if("assigned_to".equalsIgnoreCase(xml.getName())){
 			RedmineUser tk = new RedmineUser();
-			tk.setFirstname(xml.getAttributeValue("", "name"));
+			tk.setName(xml.getAttributeValue("", "name"));
 			String id = xml.getAttributeValue("", "id");
 			if(!"".equals(id)){
 				tk.setUserId(Integer.parseInt(id));
@@ -126,7 +126,7 @@ public class ParserIssue extends BaseParser<RedmineProject,RedmineIssue> {
 
 		} else if("author".equalsIgnoreCase(xml.getName())){
 			RedmineUser tk = new RedmineUser();
-			tk.setFirstname(xml.getAttributeValue("", "name"));
+			tk.setName(xml.getAttributeValue("", "name"));
 			String id = xml.getAttributeValue("", "id");
 			if(!"".equals(id)){
 				tk.setUserId(Integer.parseInt(id));

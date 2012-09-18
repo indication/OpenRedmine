@@ -19,9 +19,7 @@ public class RedmineUser {
     @DatabaseField(uniqueIndexName="user_target")
     private Integer user_id;
     @DatabaseField
-    private String firstname;
-    @DatabaseField
-    private String lastname;
+    private String name;
     @DatabaseField
     private String loginname;
     @DatabaseField
@@ -30,6 +28,8 @@ public class RedmineUser {
     private Date created;
     @DatabaseField
     private Date modified;
+    private String firstname;
+    private String lastname;
 
 
     @Override
@@ -98,54 +98,20 @@ public class RedmineUser {
 		return user_id;
 	}
 
-	public void setName(String format, String name){
-		if(name == null || name.length() < 1)
-			return;
-		String[] strs = name.split(" +", 2);
-		String first = strs[0];
-		String last = "";
-		if(strs.length < 1){
-			last = strs[1];
-		}
-		format = format.toLowerCase();
-		if(format.indexOf("%$1s")< format.indexOf("%$2s")){
-			setFirstname(first);
-			setLastname(last);
-		} else {
-			setFirstname(last);
-			setLastname(first);
-		}
-	}
 
 	/**
-	 * @param firstname セットする firstname
+	 * @param name セットする name
 	 */
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
 	/**
-	 * @return firstname
+	 * @return name
 	 */
-	public String getFirstname() {
-		return firstname;
-	}
-
-
-	/**
-	 * @param lastname セットする lastname
-	 */
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-
-	/**
-	 * @return lastname
-	 */
-	public String getLastname() {
-		return lastname;
+	public String getName() {
+		return name;
 	}
 
 
@@ -195,5 +161,26 @@ public class RedmineUser {
 	public String getLoginName() {
 		return loginname;
 	}
+
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+
+	public String getLastname() {
+		return lastname;
+	}
+
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
 
 }

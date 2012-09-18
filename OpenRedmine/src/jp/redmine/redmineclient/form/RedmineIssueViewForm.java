@@ -68,7 +68,7 @@ public class RedmineIssueViewForm {
 	protected String convertUserName(RedmineUser us){
 		if(us == null)
 			return "";
-		return view.getString(R.string.format_name, us.getFirstname(), us.getLastname(), us.getLoginName());
+		return view.getString(R.string.format_name, us.getName(), us.getLoginName());
 	}
 
 	protected String convertDate(Date date){

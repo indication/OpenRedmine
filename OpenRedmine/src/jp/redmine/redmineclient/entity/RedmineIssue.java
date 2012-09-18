@@ -58,35 +58,38 @@ public class RedmineIssue {
     private Date created;
     @DatabaseField
     private Date modified;
+    @DatabaseField
+    private Date data_modified;
+    @DatabaseField
+    private Date additional_modified;
 
-    static public void setupConnectionId(RedmineIssue item){
-    	if(item.getConnectionId() == null)
-    		return;
-    	if(item.getTracker() != null)
-    		item.getTracker().setConnectionId(item.getConnectionId());
-    	if(item.getAuthor() != null)
-    		item.getAuthor().setConnectionId(item.getConnectionId());
-    	if(item.getCategory() != null)
-    		item.getCategory().setConnectionId(item.getConnectionId());
-    	if(item.getAssigned() != null)
-    		item.getAssigned().setConnectionId(item.getConnectionId());
-    	if(item.getStatus() != null)
-    		item.getStatus().setConnectionId(item.getConnectionId());
-    	if(item.getProject() != null)
-    		item.getProject().setConnectionId(item.getConnectionId());
-    	if(item.getVersion() != null)
-    		item.getVersion().setConnectionId(item.getConnectionId());
-    	if(item.getPriority() != null)
-    		item.getPriority().setConnectionId(item.getConnectionId());
-    }
+	private RedmineJournal journals[];
 
-    @Override
-    public String toString(){
-    	return subject;
-    }
+	static public void setupConnectionId(RedmineIssue item){
+		if(item.getConnectionId() == null)
+			return;
+		if(item.getTracker() != null)
+			item.getTracker().setConnectionId(item.getConnectionId());
+		if(item.getAuthor() != null)
+			item.getAuthor().setConnectionId(item.getConnectionId());
+		if(item.getCategory() != null)
+			item.getCategory().setConnectionId(item.getConnectionId());
+		if(item.getAssigned() != null)
+			item.getAssigned().setConnectionId(item.getConnectionId());
+		if(item.getStatus() != null)
+			item.getStatus().setConnectionId(item.getConnectionId());
+		if(item.getProject() != null)
+			item.getProject().setConnectionId(item.getConnectionId());
+		if(item.getVersion() != null)
+			item.getVersion().setConnectionId(item.getConnectionId());
+		if(item.getPriority() != null)
+			item.getPriority().setConnectionId(item.getConnectionId());
+		if(item.getJournals() != null)
+			for (RedmineJournal data : item.getJournals())
+				data.setConnectionId(item.getConnectionId());
+	}
 
-
-    /**
+	/**
 	 * @param id セットする id
 	 */
 	public void setId(Integer id) {
@@ -434,6 +437,20 @@ public class RedmineIssue {
 	 */
 	public int getParentId() {
 		return parent_id;
+	}
+
+	/**
+	 * @return journals
+	 */
+	public RedmineJournal[] getJournals() {
+		return journals;
+	}
+
+	/**
+	 * @param journals セットする journals
+	 */
+	public void setJournals(RedmineJournal journals[]) {
+		this.journals = journals;
 	}
 
 

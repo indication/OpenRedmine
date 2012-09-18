@@ -20,13 +20,13 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginLeft="3dip"
 		    android:background="#cc0000"
-		    android:text="Private" />
+		    android:text="@string/ticket_private" />
 
 		<TextView
 		android:id="@+id/textTracker"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Tracker"
+		android:text="@string/ticket_tracker"
 		android:textAppearance="?android:attr/textAppearanceMedium" />
 
 		<TextView

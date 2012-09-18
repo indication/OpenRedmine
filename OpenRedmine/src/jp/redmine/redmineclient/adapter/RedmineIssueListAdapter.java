@@ -15,7 +15,12 @@ import android.widget.ArrayAdapter;
 public class RedmineIssueListAdapter extends ArrayAdapter<RedmineIssue> {
 	private ArrayList<RedmineIssue> items;
 	private LayoutInflater inflater;
-
+	/**
+	 * Setup the class
+	 * @param context Application context
+	 * @param textViewResourceId Resource ID
+	 * @param items list of issues
+	 */
 	public RedmineIssueListAdapter(Context context, int textViewResourceId,
 	ArrayList<RedmineIssue> items) {
 		super(context, textViewResourceId, items);
@@ -32,14 +37,24 @@ public class RedmineIssueListAdapter extends ArrayAdapter<RedmineIssue> {
 		}
 		// 表示すべきデータの取得
 		RedmineIssue item = (RedmineIssue)items.get(position);
-		if (item != null) {
-			RedmineIssueListItemForm form = (RedmineIssueListItemForm)view.getTag();
-			if(form == null){
-				form = new RedmineIssueListItemForm(view);
-				view.setTag(form);
-			}
-			form.setValue(item);
-		}
+		renderIssue(view,item);
 		return view;
+	}
+	/**
+	 * Render issue to the view
+	 * @param view
+	 * @param item issue item
+	 */
+	protected void renderIssue(View view, RedmineIssue item){
+		if (item == null)
+			return;
+		// uses cache
+		RedmineIssueListItemForm form = (RedmineIssueListItemForm)view.getTag();
+		if(form == null){
+			form = new RedmineIssueListItemForm(view);
+			view.setTag(form);
+		}
+		form.setValue(item);
+
 	}
 }

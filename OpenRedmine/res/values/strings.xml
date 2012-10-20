@@ -19,10 +19,10 @@
 	<string name="menu_setting_edit_accessurl">http://redmine.org/redmine</string>
 	<string name="menu_setting_label_accesstoken">Access Token</string>
 	<string name="menu_setting_edit_accesstoken">0e7c82.... 40charactors</string>
-	<string name="menu_setting_label_authid">ID (Optional)</string>
-	<string name="menu_setting_edit_authid">Basic Authcation ID</string>
-	<string name="menu_setting_label_authpasswd">Password (Optional)</string>
-	<string name="menu_setting_edit_authpasswd">Basic Authcation Password</string>
+	<string name="menu_setting_label_authid">ID</string>
+	<string name="menu_setting_edit_authid">Basic Authcation ID (Optional)</string>
+	<string name="menu_setting_label_authpasswd">Password</string>
+	<string name="menu_setting_edit_authpasswd">Basic Authcation Password (Optional)</string>
 	<string name="menu_setting_edit_name">Name</string>
 	<string name="menu_setting_label_name">Label Name</string>
 	<string name="menu_setting_button_save">Save</string>

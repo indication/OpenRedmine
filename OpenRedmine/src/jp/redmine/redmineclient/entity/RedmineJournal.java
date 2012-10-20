@@ -19,6 +19,8 @@ public class RedmineJournal {
 	@DatabaseField(uniqueIndexName="journal_target")
 	private int journnal_id;
 	@DatabaseField
+	private int note_id;
+	@DatabaseField
 	private String content;
 	@DatabaseField
 	private Date created;
@@ -109,6 +111,30 @@ public class RedmineJournal {
 	 */
 	public Integer getConnectionId() {
 		return connection_id;
+	}
+	/**
+	 * @return issue_id
+	 */
+	public int getIssueId() {
+		return issue_id;
+	}
+	/**
+	 * @param issue_id セットする issue_id
+	 */
+	public void setIssueId(int issue_id) {
+		this.issue_id = issue_id;
+	}
+	/**
+	 * @return note_id
+	 */
+	public int getNoteId() {
+		return note_id;
+	}
+	/**
+	 * @param note_id セットする note_id
+	 */
+	public void setNoteId(int note_id) {
+		this.note_id = note_id;
 	}
 
 }

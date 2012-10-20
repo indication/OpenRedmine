@@ -84,9 +84,18 @@ public class RedmineIssue {
 			item.getVersion().setConnectionId(item.getConnectionId());
 		if(item.getPriority() != null)
 			item.getPriority().setConnectionId(item.getConnectionId());
-		if(item.getJournals() != null)
-			for (RedmineJournal data : item.getJournals())
-				data.setConnectionId(item.getConnectionId());
+	}
+	static public void setupJournals(RedmineIssue item){
+		int notenum = 0;
+		if(item.getJournals() == null)
+			return;
+		for (RedmineJournal data : item.getJournals()){
+			notenum++;
+			data.setConnectionId(item.getConnectionId());
+			data.setIssueId(item.getId());
+			data.setNoteId(notenum);
+		}
+
 	}
 
 	/**
@@ -403,7 +412,6 @@ public class RedmineIssue {
 
 
 	public void setRedmineConnection(RedmineConnection info) {
-		// TODO 自動生成されたメソッド・スタブ
 		setConnectionId(info.getId());
 	}
 

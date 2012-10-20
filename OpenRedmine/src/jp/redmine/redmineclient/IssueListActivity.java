@@ -40,7 +40,6 @@ public class IssueListActivity extends Activity
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
 		// cleanup task
 		if(task != null && task.getStatus() == Status.RUNNING){
 			task.cancel(true);
@@ -50,6 +49,7 @@ public class IssueListActivity extends Activity
 			modelIssue.finalize();
 			modelIssue = null;
 		}
+		super.onDestroy();
 	}
 	/** Called when the activity is first created. */
 	@Override

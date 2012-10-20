@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.AsyncTask.Status;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,14 +25,20 @@ public class ProjectListActivity extends Activity  {
 
 	private ArrayAdapter<RedmineProject> listAdapter;
 	private ProjectModel modelProject;
+	private SelectDataTask task;
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
+		// cleanup task
+		if(task != null && task.getStatus() == Status.RUNNING){
+			task.cancel(true);
+		}
+		// cleanup models
 		if(modelProject != null){
 			modelProject.finalize();
 			modelProject = null;
 		}
+		super.onDestroy();
 	}
 	/** Called when the activity is first created. */
 	@Override
@@ -99,9 +106,13 @@ public class ProjectListActivity extends Activity  {
 		startActivity( intent );
 	}
 	protected void onRefresh(){
+		if(task != null && task.getStatus() == Status.RUNNING){
+			return;
+		}
 		Intent intent = getIntent();
 		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		(new SelectDataTask(this)).execute(id);
+		task = new SelectDataTask(this);
+		task.execute(id);
 	}
 
 	private class SelectDataTask extends AsyncTask<Integer, Integer, Integer> {

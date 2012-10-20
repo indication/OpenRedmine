@@ -61,5 +61,6 @@
 Next step, setup connection to your Redmine.
 After the setting, list up the connection.]]></string>
 	<string name="menu_button_next">Next</string>
+	<string name="menu_show_submenu">Show custom input</string>
 
 </resources>

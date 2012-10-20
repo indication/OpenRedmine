@@ -11,14 +11,14 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" android:allowBackup="true" android:allowClearUserData="true" android:description="@string/app_description" android:restoreNeedsApplication="true">
-        <activity
-            android:name=".ConnectionListActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ConnectionListActivity" >
+            <intent-filter></intent-filter>
         </activity>
         <activity android:name=".ConnectionActivity">
             <intent-filter></intent-filter>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="error_only_numeric_digits_allowed">Only numeric digits are allowed.</string>
+	<string name="error_this_field_cannot_contain_special_character">特別な文字を含むことはできません。</string>
+	<string name="error_only_standard_letters_are_allowed">一般的なアルファベットのみ入力可能です。</string>
+	<string name="error_field_must_not_be_empty">入力必須です。</string>
+	<string name="error_email_address_not_valid">有効な電子メールアドレスではありません。</string>
+	<string name="error_creditcard_number_not_valid">有効なクレジットカード番号ではありません。</string>
+	<string name="error_phone_not_valid">有効な電話番号ではありません。</string>
+	<string name="error_domain_not_valid">有効なドメイン名ではありません。</string>
+	<string name="error_ip_not_valid">有効なIPアドレスではありません。</string>
+	<string name="error_url_not_valid">有効なURLではありません。</string>
+
+
+	<string name="app_name">OpenRedmine</string>
+	<string name="menu_settings">設定</string>
+	<string name="menu_access_to">接続</string>
+	<string name="menu_setting_label_accessurl">アクセスするURL</string>
+	<string name="menu_setting_edit_accessurl">http://redmine.org/redmine</string>
+	<string name="menu_setting_label_accesstoken">アクセストークン</string>
+	<string name="menu_setting_edit_accesstoken">0e7c82.... 40文字</string>
+	<string name="menu_setting_label_authid">ID (オプション)</string>
+	<string name="menu_setting_edit_authid">Basic認証 ID</string>
+	<string name="menu_setting_label_authpasswd">パスワード (オプション)</string>
+	<string name="menu_setting_edit_authpasswd">Basic認証パスワード</string>
+	<string name="menu_setting_edit_name">名称</string>
+	<string name="menu_setting_label_name">ラベル名</string>
+	<string name="menu_setting_button_save">保存</string>
+	<string name="add_new_item">追加</string>
+	<string name="menu_setting_check_auth">HTTP 認証</string>
+	<string name="menu_setting_list_menu_title">%1$s :</string>
+	<string name="menu_setting_list_menu_edit">編集</string>
+	<string name="menu_setting_list_menu_delete">削除</string>
+	<string name="menu_settings_loading"><![CDATA[データを受信中....]]></string>
+	<string name="menu_confirm_delete_msg">この接続を削除してもよいですか？</string>
+	<string name="menu_config_delete_yes">はい</string>
+	<string name="menu_config_delete_no">いいえ</string>
+	<string name="app_description">説明</string>
+	<string name="preference_category_network">ネットワーク</string>
+	<string name="preference_network_allow_untrusted_cert">信頼できない証明書を許可する</string>
+	<string name="menu_refresh">更新</string>
+	<string name="menu_setting_permit_unsafe">信頼できないSSL接続を許可する</string>
+	<string name="menu_setting_label_certkey">証明書キー (オプション)</string>
+	<string name="remove_cache_all">すべてのキャッシュを削除</string>
+	<string name="format_name">%1$s</string>
+	<string name="format_date" formatted="false">%tF</string>
+	<string name="ticket_title">タイトル</string>
+	<string name="ticket_private">プライベート</string>
+	<string name="ticket_tracker">トラッカー</string>
+	<string name="ticket_created_by">by %1$s</string>
+	<string name="ticket_status">状態</string>
+	<string name="ticket_priority">優先度</string>
+	<string name="ticket_progress">進捗</string>
+	<string name="ticket_category">カテゴリ</string>
+	<string name="ticket_version">バージョン</string>
+	<string name="ticket_assigned_to">担当</string>
+	<string name="ticket_date">日付</string>
+	<string name="ticket_date_arrow">▶</string>
+	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
+
+次に、リンクするRedmineを設定してください。
+設定が完了したら、一覧に接続先が表示されるようになります。 ]]></string>
+
+</resources>

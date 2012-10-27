@@ -48,5 +48,6 @@
 
 次に、リンクするRedmineを設定してください。
 設定が完了したら、一覧に接続先が表示されるようになります。 ]]></string>
+	<string name="menu_setting_goto_redmine">取得</string>
 
 </resources>

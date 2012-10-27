@@ -49,6 +49,7 @@
 Next step, setup connection to your Redmine.
 After the setting, list up the connection.]]></string>
 	<string name="menu_button_next">Next</string>
-	<string name="menu_show_submenu">Show custom input</string>
+	<string name="menu_setting_goto_redmine">Get token</string>
+	<string name="menu_powered_by_icon">icons by</string>
 
 </resources>

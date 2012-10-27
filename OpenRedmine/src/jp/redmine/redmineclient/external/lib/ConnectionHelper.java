@@ -13,7 +13,7 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.transdroid.util.FakeSocketFactory;
+import org.transdroid.daemon.util.FakeSocketFactory;
 
 public class ConnectionHelper {
 

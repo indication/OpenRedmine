@@ -14,6 +14,7 @@ import android.widget.Toast;
 public class ConnectionActivity extends Activity {
 	private int idEditing = -1;
 	public static final String INTENT_INT_ID = "CONNECTION_ID";
+	private static final int ACTIVITY_SUB = 1001;
 	private RedmineConnectionActivityForm form;
 
 	private ConnectionModel modelConnection;
@@ -47,9 +48,22 @@ public class ConnectionActivity extends Activity {
 				completeSave();
 			}
 		});
+		form.buttonAccess.setOnClickListener(new Button.OnClickListener() {
+			public void onClick(View view) {
+				String url = form.getUrl();
+				if("".equals(url))
+					return;
+				Intent load = new Intent( getApplicationContext(), ConnectionNaviActivity.class );
+				load.putExtra(ConnectionNaviActivity.INTENT_STR_URL, url);
+				load.putExtra(ConnectionNaviActivity.INTENT_STR_ID, form.getAuthID());
+				load.putExtra(ConnectionNaviActivity.INTENT_STR_PASS, form.getAuthPassword());
+				startActivityForResult(load, ACTIVITY_SUB);
+			}
+		});
 
 		loadData();
 	}
+
 
     /**
      * Setup data from database.
@@ -79,6 +93,23 @@ public class ConnectionActivity extends Activity {
 		Toast.makeText(getApplicationContext(),
 				"Has been saved.", Toast.LENGTH_SHORT).show();
 		this.finish();
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(requestCode){
+		case ACTIVITY_SUB:
+			if(resultCode !=RESULT_OK )
+				break;
+			form.setAuthentication(
+					  data.getStringExtra(ConnectionNaviActivity.INTENT_STR_ID)
+					, data.getStringExtra(ConnectionNaviActivity.INTENT_STR_PASS));
+			form.setUnsafeConnection( data.getBooleanExtra(ConnectionNaviActivity.INTENT_BOOL_UNSAFESSL, false));
+			form.setToken(data.getStringExtra(ConnectionNaviActivity.INTENT_STR_TOKEN));
+			break;
+		default:
+			break;
+		}
 	}
 }
 

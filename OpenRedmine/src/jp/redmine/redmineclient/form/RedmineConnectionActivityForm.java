@@ -25,6 +25,7 @@ public class RedmineConnectionActivityForm {
 	public LinearLayout formPermitUnsafe;
 	public CheckBox checkUnsafeConnection;
 	public EditText editCertKey;
+	public Button buttonAccess;
 	public RedmineConnectionActivityForm(Activity activity){
 		this.activity = activity;
 		this.setup();
@@ -39,6 +40,7 @@ public class RedmineConnectionActivityForm {
 		editAuthID = (EditText)activity.findViewById(R.id.editAuthID);
 		editAuthPasswd = (EditText)activity.findViewById(R.id.editAuthPasswd);
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
+		buttonAccess = (Button)activity.findViewById(R.id.buttonAccess);
 		formHttpAuth = (LinearLayout)activity.findViewById(R.id.formHttpAuth);
 		checkHttpAuth = (CheckBox)activity.findViewById(R.id.checkHttpAuth);
 		formPermitUnsafe = (LinearLayout)activity.findViewById(R.id.formPermitUnsafe);
@@ -78,17 +80,53 @@ public class RedmineConnectionActivityForm {
 
 	public boolean Validate(){
 		FormEditText[] list = new FormEditText[]{
-				editToken
+				editName
 				,editUrl
-				,editName
+				,editToken
 		};
+		return ValidateForms(list);
+	}
+	protected boolean ValidateForms(FormEditText[] list){
 		boolean result = true;
 		for(FormEditText item :list){
 			if(!item.testValidity()){
+				if(result)
+					item.requestFocus();
 				result = false;
 			}
 		}
 		return result;
+	}
+
+	public String getUrl(){
+		if(ValidateForms(new FormEditText[]{editUrl})){
+			return editUrl.getText().toString();
+		} else {
+			return "";
+		}
+	}
+	public String getAuthID(){
+		return checkHttpAuth.isChecked() ? editAuthID.getText().toString() : "";
+	}
+	public String getAuthPassword(){
+		return checkHttpAuth.isChecked() ? editAuthPasswd.getText().toString() : "";
+	}
+	public void setUnsafeConnection(boolean flag){
+		checkUnsafeConnection.setChecked(flag);
+		performSetEnabled(formPermitUnsafe,flag);
+	}
+	public void setAuthentication(boolean flag){
+		checkHttpAuth.setChecked(flag);
+		performSetEnabled(formHttpAuth,flag);
+	}
+	public void setAuthentication(String id, String passwd){
+		boolean flag = !("".equals(id) && "".equals(passwd));
+		setAuthentication(flag);
+		editAuthID.setText(id);
+		editAuthPasswd.setText(passwd);
+	}
+	public void setToken(String token){
+		editToken.setText(token);
 	}
 
 	public void setValue(RedmineConnection rd){

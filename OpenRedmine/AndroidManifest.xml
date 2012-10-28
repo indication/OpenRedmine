@@ -28,6 +28,9 @@
         <activity android:name=".ConnectionActivity">
             <intent-filter></intent-filter>
         </activity>
+        <activity android:name=".ConnectionNaviActivity">
+            <intent-filter></intent-filter>
+        </activity>
         <activity android:name=".ProjectListActivity">
             <intent-filter></intent-filter>
         </activity>

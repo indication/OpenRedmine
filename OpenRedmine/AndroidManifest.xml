@@ -22,21 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConnectionListActivity" >
-            <intent-filter></intent-filter>
-        </activity>
-        <activity android:name=".ConnectionActivity">
-            <intent-filter></intent-filter>
-        </activity>
-        <activity android:name=".ConnectionNaviActivity">
-            <intent-filter></intent-filter>
-        </activity>
-        <activity android:name=".ProjectListActivity">
-            <intent-filter></intent-filter>
-        </activity>
-        <activity android:name=".IssueListActivity">
-            <intent-filter></intent-filter>
-        </activity>
+        <activity android:name=".ConnectionListActivity" ></activity>
+        <activity android:name=".ConnectionActivity"></activity>
+        <activity android:name=".ConnectionNaviActivity"></activity>
+        <activity android:name=".ProjectListActivity"></activity>
+        <activity android:name=".IssueListActivity"></activity>
         <activity android:name="IssueViewActivity"></activity>
     </application>
 

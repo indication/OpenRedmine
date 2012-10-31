@@ -32,6 +32,6 @@
 	        android:id="@+id/buttonSave"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="OK" />
+	        android:text="@string/button_ok" />
 	</LinearLayout>
 </LinearLayout>

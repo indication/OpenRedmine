@@ -12,7 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class RedmineConnectionActivityForm {
+public class RedmineConnectionActivityForm extends FormHelper {
 	private Activity activity;
 	public FormEditText editName;
 	public FormEditText editUrl;
@@ -79,27 +79,15 @@ public class RedmineConnectionActivityForm {
 	}
 
 	public boolean Validate(){
-		FormEditText[] list = new FormEditText[]{
+		return ValidateForms(
 				editName
 				,editUrl
 				,editToken
-		};
-		return ValidateForms(list);
-	}
-	protected boolean ValidateForms(FormEditText[] list){
-		boolean result = true;
-		for(FormEditText item :list){
-			if(!item.testValidity()){
-				if(result)
-					item.requestFocus();
-				result = false;
-			}
-		}
-		return result;
+				);
 	}
 
 	public String getUrl(){
-		if(ValidateForms(new FormEditText[]{editUrl})){
+		if(ValidateForm(editUrl)){
 			return editUrl.getText().toString();
 		} else {
 			return "";

@@ -46,6 +46,9 @@ Using Libraries
  http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeSocketFactory.java	r1de55ccfce7b
  http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeTrustManager.java	rfa98b5bb5624
 
+- MyWebViewClient (unknown) - needs to access redmine by webview
+ https://github.com/potaka001/WebViewBasicAuthTest/blob/master/src/com/webviewbasicauthtest/MyWebViewClient.java
+
 Using Icons
 ==========
 - redmine (by-sa/2.5)

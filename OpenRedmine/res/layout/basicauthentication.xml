@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_setting_label_authid" />
+
+        <EditText
+            android:id="@+id/editAuthID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/menu_setting_edit_authid"
+            android:imeOptions="actionNext" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_setting_label_authpasswd" />
+
+        <EditText
+            android:id="@+id/editAuthPasswd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/menu_setting_edit_authpasswd"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword" >
+
+            <requestFocus />
+        </EditText>
+
+    </TableRow>
+</TableLayout>

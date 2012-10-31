@@ -7,15 +7,15 @@
 	<string name="menu_setting_edit_accessurl">http://redmine.org/redmine</string>
 	<string name="menu_setting_label_accesstoken">アクセストークン</string>
 	<string name="menu_setting_edit_accesstoken">0e7c82.... 40文字</string>
-	<string name="menu_setting_label_authid">ID (オプション)</string>
+	<string name="menu_setting_label_authid">ID</string>
 	<string name="menu_setting_edit_authid">Basic認証 ID</string>
-	<string name="menu_setting_label_authpasswd">パスワード (オプション)</string>
+	<string name="menu_setting_label_authpasswd">パスワード</string>
 	<string name="menu_setting_edit_authpasswd">Basic認証パスワード</string>
 	<string name="menu_setting_edit_name">名称</string>
 	<string name="menu_setting_label_name">ラベル名</string>
 	<string name="menu_setting_button_save">保存</string>
 	<string name="add_new_item">追加</string>
-	<string name="menu_setting_check_auth">HTTP 認証</string>
+	<string name="menu_setting_check_auth">HTTP ベーシック認証</string>
 	<string name="menu_setting_list_menu_title">%1$s :</string>
 	<string name="menu_setting_list_menu_edit">編集</string>
 	<string name="menu_setting_list_menu_delete">削除</string>
@@ -49,5 +49,7 @@
 次に、リンクするRedmineを設定してください。
 設定が完了したら、一覧に接続先が表示されるようになります。 ]]></string>
 	<string name="menu_setting_goto_redmine">取得</string>
+	<string name="button_ok">OK</string>
+	<string name="button_cancel">キャンセル</string>
 
 </resources>

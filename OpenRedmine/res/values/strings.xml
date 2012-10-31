@@ -7,15 +7,15 @@
 	<string name="menu_setting_edit_accessurl">http://redmine.org/redmine</string>
 	<string name="menu_setting_label_accesstoken">Access Token</string>
 	<string name="menu_setting_edit_accesstoken">0e7c82.... 40charactors</string>
-	<string name="menu_setting_label_authid">ID (Optional)</string>
+	<string name="menu_setting_label_authid">ID</string>
 	<string name="menu_setting_edit_authid">Basic Authcation ID</string>
-	<string name="menu_setting_label_authpasswd">Password (Optional)</string>
+	<string name="menu_setting_label_authpasswd">Password</string>
 	<string name="menu_setting_edit_authpasswd">Basic Authcation Password</string>
 	<string name="menu_setting_edit_name">Name</string>
 	<string name="menu_setting_label_name">Label Name</string>
 	<string name="menu_setting_button_save">Save</string>
 	<string name="add_new_item">Add</string>
-	<string name="menu_setting_check_auth">HTTP Authentication</string>
+	<string name="menu_setting_check_auth">HTTP Basic Authentication</string>
 	<string name="menu_setting_list_menu_title">%1$s :</string>
 	<string name="menu_setting_list_menu_edit">Edit</string>
 	<string name="menu_setting_list_menu_delete">Delete</string>
@@ -51,5 +51,7 @@ After the setting, list up the connection.]]></string>
 	<string name="menu_button_next">Next</string>
 	<string name="menu_setting_goto_redmine">Get token</string>
 	<string name="menu_powered_by_icon">icons by</string>
+	<string name="button_ok">OK</string>
+	<string name="button_cancel">Cancel</string>
 
 </resources>

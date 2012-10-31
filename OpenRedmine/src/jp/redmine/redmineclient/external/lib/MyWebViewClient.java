@@ -1,19 +1,20 @@
 package jp.redmine.redmineclient.external.lib;
 
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.form.HttpAuthDialogForm;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.http.SslError;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MyWebViewClient extends WebViewClient {
@@ -90,44 +91,37 @@ public class MyWebViewClient extends WebViewClient {
 			handler.proceed(userName, userPass);
 		}
 		else {
-			showHttpAuthDialog(handler, host, realm, null, null, null);
+			showHttpAuthDialog(handler, host, realm, null);
 		}
 	}
 
-	private void showHttpAuthDialog( final HttpAuthHandler handler, final String host, final String realm, final String title, final String name, final String password ) {
-		LinearLayout llayout = new LinearLayout((Activity)mContext);
-		final TextView textview1 = new TextView((Activity)mContext);
-		final EditText edittext1 = new EditText((Activity)mContext);
-		final TextView textview2 = new TextView((Activity)mContext);
-		final EditText edittext2 = new EditText((Activity)mContext);
-		llayout.setOrientation(LinearLayout.VERTICAL);
-		textview1.setText("username:");
-		textview2.setText("password:");
-		edittext1.setText(UserID);
-		edittext2.setText(Password);
-		llayout.addView(textview1);
-		llayout.addView(edittext1);
-		llayout.addView(textview2);
-		llayout.addView(edittext2);
+	private void showHttpAuthDialog( final HttpAuthHandler handler, final String host, final String realm, final String title ) {
+		LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
+		View view = inflater.inflate(R.layout.basicauthentication, null);
 
+		final HttpAuthDialogForm form = new HttpAuthDialogForm(view);
+		form.setUserID(UserID);
+		form.setPassword(Password);
 		final Builder mHttpAuthDialog = new AlertDialog.Builder((Activity)mContext);
-		mHttpAuthDialog.setTitle("Basic Authentication")
-			.setView(llayout)
-			.setCancelable(false)
-			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-					EditText etUserName = edittext1;
-					String userName = etUserName.getText().toString();
-					EditText etUserPass = edittext2;
-					String userPass = etUserPass.getText().toString();
 
-					mWebView.setHttpAuthUsernamePassword(host, realm, name, password);
+		mHttpAuthDialog.setTitle(view.getContext().getString(R.string.menu_setting_check_auth))
+			.setView(view)
+			.setCancelable(false)
+			.setPositiveButton(view.getContext().getString(R.string.button_ok)
+				, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+
+					String userName = form.getUserID();
+					String userPass = form.getPassword();
+
+					mWebView.setHttpAuthUsernamePassword(host, realm, userName, userPass);
 
 					afterSetHttpAuth(userName,userPass);
 					handler.proceed(userName, userPass);
 				}
 			})
-			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			.setNegativeButton(view.getContext().getString(R.string.button_cancel)
+				, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					handler.cancel();
 				}

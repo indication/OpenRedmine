@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RedmineIssueViewForm {
+public class RedmineIssueViewForm extends FormHelper {
 	private Activity view;
 	public TextView textTracker;
 	public TextView textCategory;
@@ -54,11 +54,6 @@ public class RedmineIssueViewForm {
 		textVersion = (TextView)view.findViewById(R.id.textVersion);
 		textDescription = (TextView)view.findViewById(R.id.textDescription);
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
-	}
-
-	public void setupEvents(){
-
-
 	}
 
 	public void setIssueId(int id){

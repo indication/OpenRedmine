@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RedmineIssueListItemForm {
+public class RedmineIssueListItemForm extends FormHelper {
 	private View view;
 	public TextView textSubject;
 	public TextView textStatus;
@@ -32,11 +32,6 @@ public class RedmineIssueListItemForm {
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 	}
 
-	public void setupEvents(){
-
-
-	}
-
 
 	public void setValue(RedmineIssue rd){
 		textSubject.setText(rd.getSubject());
@@ -47,21 +42,6 @@ public class RedmineIssueListItemForm {
 		textBottomtext.setText(rd.getAuthor() == null ? "" : rd.getAuthor().getName());
 		textStatus.setText(rd.getStatus() == null ? "" : rd.getStatus().getName());
 
-	}
-
-	protected String cutoffString(String str,int cutoff){
-		int limit = 0;
-		String[] strs = str.split("[\r\n]+",cutoff+1);
-		StringBuilder result = new StringBuilder();
-		for(String item : strs){
-			result.append(item);
-			result.append("\r\n");
-			limit++;
-			if(limit >= cutoff){
-				break;
-			}
-		}
-		return result.toString();
 	}
 
 	protected String generateBottomText(RedmineUser author,RedmineUser assinged, Date created, Date modified){

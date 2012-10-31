@@ -17,7 +17,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
 
-public class RedmineNavigationForm {
+public class RedmineNavigationForm extends FormHelper {
 	private Activity activity;
 	public WebView  webView ;
 	protected LocalWebViewClient webClient;
@@ -50,8 +50,9 @@ public class RedmineNavigationForm {
 	}
 
 	public boolean Validate(){
-		return editToken.testValidity();
+		return ValidateForm(editToken);
 	}
+
 
 	public String getAuthID(){
 		return AuthID;

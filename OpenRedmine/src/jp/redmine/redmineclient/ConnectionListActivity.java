@@ -26,6 +26,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class ConnectionListActivity extends Activity {
+	public ConnectionListActivity(){
+		super();
+	}
 	static final int DIALOG_ITEM_ACTION = 0;
 	static final int DIALOG_CONFIRM_DELETE = 1;
 	static final String DIALOG_PARAM_ID = "ID";

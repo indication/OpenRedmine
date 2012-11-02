@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class IssueViewActivity extends Activity  {
+	public IssueViewActivity(){
+		super();
+	}
 	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
 	public static final String INTENT_INT_ISSUE_ID = "ISSUEID";
 

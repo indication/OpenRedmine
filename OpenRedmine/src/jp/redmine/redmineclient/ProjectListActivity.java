@@ -21,6 +21,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class ProjectListActivity extends Activity  {
+	public ProjectListActivity(){
+		super();
+	}
 	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
 
 	private ArrayAdapter<RedmineProject> listAdapter;

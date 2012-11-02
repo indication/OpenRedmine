@@ -29,6 +29,9 @@ import android.widget.ListView;
 public class IssueListActivity extends Activity
 	implements OnScrollListener
 	{
+	public IssueListActivity(){
+		super();
+	}
 	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
 	public static final String INTENT_INT_PROJECT_ID = "PROJECTID";
 

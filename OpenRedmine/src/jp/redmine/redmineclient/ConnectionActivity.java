@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class ConnectionActivity extends Activity {
+	public ConnectionActivity(){
+		super();
+	}
 	private int idEditing = -1;
 	public static final String INTENT_INT_ID = "CONNECTION_ID";
 	private static final int ACTIVITY_SUB = 1001;

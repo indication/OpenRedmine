@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 public class ConnectionNaviActivity extends Activity {
+	public ConnectionNaviActivity(){
+		super();
+	}
 	public static final String INTENT_STR_URL = "URL";
 	public static final String INTENT_STR_ID = "ID";
 	public static final String INTENT_STR_PASS = "PASS";

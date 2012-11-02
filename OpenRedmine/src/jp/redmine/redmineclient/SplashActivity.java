@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.view.Window;
 
 public class SplashActivity extends Activity{
+	public SplashActivity(){
+		super();
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

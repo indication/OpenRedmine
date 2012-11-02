@@ -60,7 +60,7 @@ abstract public class FormHelper {
 	protected boolean ValidateForms(FormEditText[] list,boolean isForcus){
 		boolean result = true;
 		for(FormEditText item :list){
-			if(ValidateForm(item,result && isForcus)){
+			if(!ValidateForm(item,result && isForcus)){
 				result = false;
 			}
 		}

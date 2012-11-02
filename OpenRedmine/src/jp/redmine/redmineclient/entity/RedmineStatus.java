@@ -135,7 +135,7 @@ public class RedmineStatus {
 	/**
 	 * @return status_id
 	 */
-	public int getStatusId() {
+	public Integer getStatusId() {
 		return status_id;
 	}
 

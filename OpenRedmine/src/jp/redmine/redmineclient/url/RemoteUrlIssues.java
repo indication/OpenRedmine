@@ -17,8 +17,19 @@ public class RemoteUrlIssues extends RemoteUrl {
 		params.put("offset", Integer.toString(offset));
 	}
 
+	public void filterQuery(String query){
+		params.put("query_id", query);
+	}
+
 	public void filterStatus(String status){
 		params.put("status_id", status);
+	}
+
+	public void filterAssigned(String assigned_to_id){
+		params.put("assigned_to_id", assigned_to_id);
+	}
+	public void filterTracker(String tracker){
+		params.put("tracker_id", tracker);
 	}
 
 	public void filterProject(String status){

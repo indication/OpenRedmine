@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.intent.ConnectionIntent;
+import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ProjectModel;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
@@ -24,7 +25,6 @@ public class ProjectListActivity extends Activity  {
 	public ProjectListActivity(){
 		super();
 	}
-	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
 
 	private ArrayAdapter<RedmineProject> listAdapter;
 	private ProjectModel modelProject;
@@ -49,8 +49,8 @@ public class ProjectListActivity extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connectionlist);
 
-		Intent intent = getIntent();
-		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
+		ConnectionIntent intent = new ConnectionIntent(getIntent());
+		int id = intent.getConnectionId();
 		modelProject = new ProjectModel(getApplicationContext(), id);
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
@@ -103,17 +103,17 @@ public class ProjectListActivity extends Activity  {
 
 	protected void onItemSelect(RedmineProject item) {
 
-		Intent intent = new Intent( getApplicationContext(), IssueListActivity.class );
-		intent.putExtra(IssueListActivity.INTENT_INT_CONNECTION_ID, item.getConnectionId());
-		intent.putExtra(IssueListActivity.INTENT_INT_PROJECT_ID, item.getId());
-		startActivity( intent );
+		ProjectIntent intent = new ProjectIntent( getApplicationContext(), IssueListActivity.class );
+		intent.setConnectionId(item.getConnectionId());
+		intent.setProjectId(item.getId());
+		startActivity( intent.getIntent() );
 	}
 	protected void onRefresh(){
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		Intent intent = getIntent();
-		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
+		ConnectionIntent intent = new ConnectionIntent(getIntent());
+		int id = intent.getConnectionId();
 		task = new SelectDataTask(this);
 		task.execute(id);
 	}

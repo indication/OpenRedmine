@@ -6,6 +6,7 @@ import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -88,9 +89,9 @@ public class ConnectionListActivity extends Activity {
 	}
 
 	protected void onItemSelect(int id){
-		Intent intent = new Intent( getApplicationContext(), ProjectListActivity.class );
-		intent.putExtra(ProjectListActivity.INTENT_INT_CONNECTION_ID, id);
-		startActivity( intent );
+		ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ProjectListActivity.class );
+		intent.setConnectionId(id);
+		startActivity( intent.getIntent() );
 	}
 	@Override
 	protected void onResume() {

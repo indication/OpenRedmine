@@ -5,13 +5,13 @@ import java.util.List;
 
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.IssueModel;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -32,8 +32,6 @@ public class IssueListActivity extends Activity
 	public IssueListActivity(){
 		super();
 	}
-	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
-	public static final String INTENT_INT_PROJECT_ID = "PROJECTID";
 
 	private IssueModel modelIssue;
 	private ArrayAdapter<RedmineIssue> listAdapter;
@@ -60,9 +58,9 @@ public class IssueListActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.issuelist);
 
-		Intent intent = getIntent();
-		int connectionid = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		long projectid = intent.getLongExtra(INTENT_INT_PROJECT_ID, -1);
+		ProjectIntent intent = new ProjectIntent(getIntent());
+		int connectionid = intent.getConnectionId();
+		long projectid = intent.getProjectId();
 		modelIssue = new IssueModel(getApplicationContext(), connectionid,projectid);
 
 		listView = (ListView)findViewById(R.id.listConnectionList);
@@ -91,10 +89,10 @@ public class IssueListActivity extends Activity
 					return;
 				}
 				RedmineIssue item = (RedmineIssue) listitem;
-				Intent intent = new Intent( getApplicationContext(), IssueViewActivity.class );
-				intent.putExtra(IssueViewActivity.INTENT_INT_CONNECTION_ID, item.getConnectionId());
-				intent.putExtra(IssueViewActivity.INTENT_INT_ISSUE_ID, item.getIssueId());
-				startActivity( intent );
+				ProjectIntent intent = new ProjectIntent(getApplicationContext(), IssueViewActivity.class );
+				intent.setConnectionId(item.getConnectionId());
+				intent.setProjectId(item.getIssueId());
+				startActivity( intent.getIntent() );
 			}
 		});
 	}

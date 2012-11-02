@@ -143,7 +143,6 @@ public class Connection {
 		});
 		t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			public void uncaughtException(Thread thread, Throwable ex) {
-				// TODO 自動生成されたメソッド・スタブ
 				Log.e("requestGet","BackgroundProcessError",ex);
 
 			}

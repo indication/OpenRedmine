@@ -1,5 +1,7 @@
 package jp.redmine.redmineclient.container;
 
+import java.io.Serializable;
+
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -9,7 +11,8 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
-public class IssueContainer {
+public class IssueContainer implements Serializable {
+	private static final long serialVersionUID = 580944798932035277L;
 	public RedmineUser authors;
 	public RedmineUser creators;
 	public RedmineUser assigned;

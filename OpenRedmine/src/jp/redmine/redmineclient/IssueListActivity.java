@@ -5,6 +5,7 @@ import java.util.List;
 
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.IssueModel;
 import android.app.Activity;
@@ -89,9 +90,9 @@ public class IssueListActivity extends Activity
 					return;
 				}
 				RedmineIssue item = (RedmineIssue) listitem;
-				ProjectIntent intent = new ProjectIntent(getApplicationContext(), IssueViewActivity.class );
+				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueViewActivity.class );
 				intent.setConnectionId(item.getConnectionId());
-				intent.setProjectId(item.getIssueId());
+				intent.setIssueId(item.getIssueId());
 				startActivity( intent.getIntent() );
 			}
 		});

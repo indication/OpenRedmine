@@ -28,6 +28,9 @@ public class RemoteUrlIssues extends RemoteUrl {
 	public void filterAssigned(String assigned_to_id){
 		params.put("assigned_to_id", assigned_to_id);
 	}
+	public void filterAuthor(String author_id){
+		params.put("author_id", author_id);
+	}
 	public void filterTracker(String tracker){
 		params.put("tracker_id", tracker);
 	}

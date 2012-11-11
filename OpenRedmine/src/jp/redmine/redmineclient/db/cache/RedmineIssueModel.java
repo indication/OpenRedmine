@@ -46,6 +46,9 @@ public class RedmineIssueModel {
 		.eq(RedmineIssue.PROJECT_ID, projectId)
 		;//.prepare();
 		builder.setWhere(where);
+		return fetchAllBy(builder,startRow,maxRows);
+	}
+	public  List<RedmineIssue> fetchAllBy(QueryBuilder<RedmineIssue, Integer> builder, Long startRow, Long maxRows) throws SQLException{
 		if(maxRows != null){
 			builder.limit(maxRows);
 		}

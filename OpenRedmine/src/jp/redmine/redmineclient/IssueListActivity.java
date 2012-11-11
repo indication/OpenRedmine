@@ -9,14 +9,9 @@ import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.IssueModel;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,7 +29,6 @@ public class IssueListActivity extends Activity
 		super();
 	}
 
-	private IssueModel modelIssue;
 	private ArrayAdapter<RedmineIssue> listAdapter;
 	private SelectDataTask task;
 	private View mFooter;
@@ -42,43 +36,33 @@ public class IssueListActivity extends Activity
 
 	@Override
 	protected void onDestroy() {
-		// cleanup task
-		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(true);
-		}
-		// cleanup models
-		if(modelIssue != null){
-			modelIssue.finalize();
-			modelIssue = null;
-		}
+		cancelTask();
 		super.onDestroy();
 	}
+	protected void cancelTask(){
+		// cleanup task
+		if(task != null && task.getStatus() == Status.RUNNING){
+			task.cancel(false);
+		}
+
+	}
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.issuelist);
 
-		ProjectIntent intent = new ProjectIntent(getIntent());
-		int connectionid = intent.getConnectionId();
-		long projectid = intent.getProjectId();
-		modelIssue = new IssueModel(getApplicationContext(), connectionid,projectid);
 
 		listView = (ListView)findViewById(R.id.listConnectionList);
 		listAdapter = new RedmineIssueListAdapter(
 				this,R.layout.issueitem
 				,new ArrayList<RedmineIssue>());
 		listView.addFooterView(getFooter());
+		getFooter().setVisibility(View.INVISIBLE);
 		listView.setAdapter(listAdapter);
 
 		listView.setOnScrollListener(this);
-
-		onReload();
-
-		if(listAdapter.getCount() == 0){
-			onRefresh();
-		}
-
 
 		//リスト項目がクリックされた時の処理
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,89 +89,50 @@ public class IssueListActivity extends Activity
 		}
 		return mFooter;
 	}
-	private void invisibleFooter() {
-		Log.d("footer","invisible");
-		if (mFooter == null)
-			return;
-		if (listView.getFooterViewsCount() < 1)
-			return;
-		listView.removeFooterView(getFooter());
-	}
-	protected void onReload(){
-		listAdapter.notifyDataSetInvalidated();
-		curentpos = 0;
-		listAdapter.clear();
-		additionalReading();
-		listAdapter.notifyDataSetChanged();
-	}
 
-	private long curentpos = 0;
-	private final long READ_ITEMS = 10;
-	private void additionalReading() {
-
-		List<RedmineIssue> issues = modelIssue.fetchAllData(curentpos,READ_ITEMS);
-		for (RedmineIssue i : issues){
-			listAdapter.add(i);
-		}
-		if(issues.size() < READ_ITEMS){
-			invisibleFooter();
-			Log.d("additionalReading","invisible");
-		}
-		Log.d("additionalReading","pos: " + Long.valueOf(curentpos));
-		Log.d("additionalReading","size: " + Long.valueOf(issues.size()));
-		curentpos += issues.size();
-
-	}
 	protected void onRefresh(){
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		task = new SelectDataTask(this,0,0);
-		task.execute(0);
+		listAdapter.notifyDataSetInvalidated();
+		listAdapter.clear();
+		listAdapter.notifyDataSetChanged();
+		task = new SelectDataTask();
+		task.execute(0,20);
 	}
 
-	private class SelectDataTask extends AsyncTask<Integer, Integer, Integer> {
-		private ProgressDialog dialog;
-		private Context parentContext;
-		private final int MAXLOAD = 50;
-		private int lastloaded = 0;
-		private int limitloaded = 0;
-		public SelectDataTask(final Context tex,int loaded,int limit){
-			lastloaded = loaded;
-			limitloaded = limit;
-			parentContext = tex;
+	private class SelectDataTask extends AsyncTask<Integer, Integer, List<RedmineIssue>> {
+		private IssueModel modelIssue;
+		public SelectDataTask(){
+			ProjectIntent intent = new ProjectIntent(getIntent());
+			int connectionid = intent.getConnectionId();
+			long projectid = intent.getProjectId();
+			modelIssue = new IssueModel(getApplicationContext(), connectionid,projectid);
 		}
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
-			dialog = new ProgressDialog(parentContext);
-			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
-			dialog.show();
-			dialog.setOnCancelListener(new OnCancelListener() {
-				public void onCancel(DialogInterface dialog) {
-					limitloaded = -1;
-				}
-			});
+			getFooter().setVisibility(View.VISIBLE);
+
 		}
 
 		@Override
-		protected Integer doInBackground(Integer ... params) {
-			int count = modelIssue.fetchRemoteData(lastloaded,MAXLOAD);
-			return count;
+		protected List<RedmineIssue> doInBackground(Integer ... params) {
+			return modelIssue.fetchData(params[0],params[1]);
 		}
 		// can use UI thread here
 		@Override
-		protected void onPostExecute(Integer params) {
-			if(lastloaded == 0){
-				onReload();
+		protected void onPostExecute(List<RedmineIssue> issues) {
+			listAdapter.notifyDataSetInvalidated();
+			for (RedmineIssue i : issues){
+				listAdapter.add(i);
 			}
-			if (dialog.isShowing()) {
-				dialog.dismiss();
-			}
-			if (limitloaded != 0 && (lastloaded + MAXLOAD) > limitloaded){
-			} else if (params == MAXLOAD){
-				task = new SelectDataTask(parentContext,lastloaded + MAXLOAD,limitloaded);
-				task.execute(0);
+			listAdapter.notifyDataSetChanged();
+			getFooter().setVisibility(View.INVISIBLE);
+			// cleanup models
+			if(modelIssue != null){
+				modelIssue.finalize();
+				modelIssue = null;
 			}
 		}
 	}
@@ -217,11 +162,10 @@ public class IssueListActivity extends Activity
 	public void onScroll(AbsListView view, int firstVisibleItem,
 		int visibleItemCount, int totalItemCount) {
 		if (totalItemCount == firstVisibleItem + visibleItemCount) {
-			if (listView.getFooterViewsCount() < 1)
+			if(task != null && task.getStatus() == Status.RUNNING)
 				return;
-			listAdapter.notifyDataSetInvalidated();
-			additionalReading();
-			listAdapter.notifyDataSetChanged();
+			task = new SelectDataTask();
+			task.execute(totalItemCount,10);
 		}
 	}
 	public void onScrollStateChanged(AbsListView arg0, int arg1) {

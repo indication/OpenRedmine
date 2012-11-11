@@ -2,6 +2,8 @@ package jp.redmine.redmineclient.db.cache;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -9,6 +11,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import android.util.Log;
@@ -48,6 +51,35 @@ public class RedmineIssueModel {
 		builder.setWhere(where);
 		return fetchAllBy(builder,startRow,maxRows);
 	}
+	public List<RedmineIssue> fetchAllByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
+		Hashtable<String, Object> dic = new Hashtable<String, Object>();
+		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
+		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
+		if(filter.getTracker()	 != null) dic.put(RedmineFilter.TRACKER,		filter.getTracker()		);
+		if(filter.getAssigned()	 != null) dic.put(RedmineFilter.ASSIGNED,		filter.getAssigned()	);
+		if(filter.getAuthor()	 != null) dic.put(RedmineFilter.AUTHOR,			filter.getAuthor()		);
+		if(filter.getCategory()	 != null) dic.put(RedmineFilter.CATEGORY,		filter.getCategory()	);
+		if(filter.getStatus()	 != null) dic.put(RedmineFilter.STATUS,			filter.getStatus()		);
+		if(filter.getVersion()	 != null) dic.put(RedmineFilter.VERSION,		filter.getVersion()		);
+
+		QueryBuilder<RedmineIssue, Integer> builder = dao.queryBuilder();
+		Where<RedmineIssue, Integer> where = builder.where();
+		boolean isFirst = true;
+		for(Enumeration<String> e = dic.keys() ; e.hasMoreElements() ;){
+			String key = e.nextElement();
+			if(dic.get(key) == null)
+				continue;
+			if(isFirst){
+				isFirst = false;
+			} else {
+				where.and();
+			}
+			where.eq(key, dic.get(key));
+		}
+		builder.setWhere(where);
+		return fetchAllBy(builder,startRow,maxRows);
+	}
+
 	public  List<RedmineIssue> fetchAllBy(QueryBuilder<RedmineIssue, Integer> builder, Long startRow, Long maxRows) throws SQLException{
 		if(maxRows != null){
 			builder.limit(maxRows);

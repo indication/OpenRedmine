@@ -56,22 +56,27 @@ public class IssueModel extends Connector {
 		}
 		return issue;
 	}
+	protected RedmineConnection getConnection() throws SQLException{
+		RedmineConnectionModel mConnection =
+			new RedmineConnectionModel(helperStore);
+		return mConnection.fetchById(connection_id);
+	}
+
+	protected RedmineProject getProject() throws SQLException{
+		RedmineProjectModel mProject =
+			new RedmineProjectModel(helperCache);
+		return mProject.fetchById(project_id);
+	}
 
 	public int fetchRemoteData(int offset,int limit){
-
-		final RedmineConnectionModel mConnection =
-			new RedmineConnectionModel(helperStore);
-		final RedmineProjectModel mProject =
-			new RedmineProjectModel(helperCache);
 		final IssueModelDataCreationHandler handler =
 			new IssueModelDataCreationHandler(helperCache);
 
 		RedmineConnection info = null;
 		RedmineProject proj = null;
-		Log.d("SelectDataTask","ParserProject Start");
 		try {
-			info = mConnection.fetchById(connection_id);
-			proj = mProject.fetchById(project_id);
+			info = getConnection();
+			proj = getProject();
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserProject",e);
 		}

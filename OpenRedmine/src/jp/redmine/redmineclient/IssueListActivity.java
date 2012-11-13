@@ -1,7 +1,11 @@
 package jp.redmine.redmineclient;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -9,9 +13,11 @@ import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.IssueModel;
 import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -102,38 +108,48 @@ public class IssueListActivity extends Activity
 	}
 
 	private class SelectDataTask extends AsyncTask<Integer, Integer, List<RedmineIssue>> {
-		private IssueModel modelIssue;
+		private Context context;
+		private int connectionid;
+		private long projectid;
 		public SelectDataTask(){
+			context = getApplicationContext();
 			ProjectIntent intent = new ProjectIntent(getIntent());
-			int connectionid = intent.getConnectionId();
-			long projectid = intent.getProjectId();
-			modelIssue = new IssueModel(getApplicationContext(), connectionid,projectid);
+			connectionid = intent.getConnectionId();
+			projectid = intent.getProjectId();
 		}
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
 			getFooter().setVisibility(View.VISIBLE);
-
 		}
 
 		@Override
 		protected List<RedmineIssue> doInBackground(Integer ... params) {
-			return modelIssue.fetchData(params[0],params[1]);
+			IssueModel modelIssue = new IssueModel(context, connectionid,projectid);
+			List<RedmineIssue> ret = null;
+			try {
+				ret = modelIssue.fetchData(params[0],params[1]);
+			} catch (SQLException e) {
+				Log.e("SelectDataTask","fetchIssue",e);
+			} catch (XmlPullParserException e) {
+				Log.e("SelectDataTask","fetchIssue",e);
+			} catch (IOException e) {
+				Log.e("SelectDataTask","fetchIssue",e);
+			}
+			modelIssue.finalize();
+			return ret;
 		}
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(List<RedmineIssue> issues) {
-			listAdapter.notifyDataSetInvalidated();
-			for (RedmineIssue i : issues){
-				listAdapter.add(i);
+			if(issues != null){
+				listAdapter.notifyDataSetInvalidated();
+				for (RedmineIssue i : issues){
+					listAdapter.add(i);
+				}
+				listAdapter.notifyDataSetChanged();
 			}
-			listAdapter.notifyDataSetChanged();
 			getFooter().setVisibility(View.INVISIBLE);
-			// cleanup models
-			if(modelIssue != null){
-				modelIssue.finalize();
-				modelIssue = null;
-			}
 		}
 	}
 	@Override

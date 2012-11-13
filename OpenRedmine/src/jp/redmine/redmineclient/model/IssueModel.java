@@ -71,21 +71,14 @@ public class IssueModel extends Connector {
 		return mProject.fetchById(project_id);
 	}
 
-	public List<RedmineIssue> fetchData(long offset,long limit){
+	public List<RedmineIssue> fetchData(long offset,long limit) throws SQLException, XmlPullParserException, IOException{
 		final RedmineFilterModel mFilter =
 			new RedmineFilterModel(helperCache);
 		final RedmineIssueModel mIssue =
 				new RedmineIssueModel(helperCache);
-		RedmineConnection info = null;
-		RedmineProject proj = null;
-		RedmineFilter filter = null;
-		try {
-			info = getConnection();
-			proj = getProject();
-			filter = mFilter.fetchByCurrnt(info.getId(), proj);
-		} catch (SQLException e) {
-			Log.e("SelectDataTask","ParserProject",e);
-		}
+		RedmineConnection info = getConnection();
+		RedmineProject proj = getProject();
+		RedmineFilter filter = mFilter.fetchByCurrnt(info.getId(), proj);
 		if(filter == null)
 			filter = mFilter.generateDefault(info.getId(), proj);
 
@@ -110,29 +103,16 @@ public class IssueModel extends Connector {
 			Fetcher<RedmineProject> fetch = new Fetcher<RedmineProject>();
 			ParserIssue parser = new ParserIssue();
 			parser.registerDataCreation(handler);
-			try {
-				fetch.setRemoteurl(url);
-				fetch.setParser(parser);
-				fetch.fetchData(info,proj);
-			} catch (XmlPullParserException e) {
-				Log.e("SelectDataTask","fetchIssue",e);
-			} catch (IOException e) {
-				Log.e("SelectDataTask","fetchIssue",e);
-			}
+			fetch.setRemoteurl(url);
+			fetch.setParser(parser);
+			fetch.fetchData(info,proj);
+
 			filter.setFetched(parser.getCount()+filter.getFetched());
 			filter.setLast(new Date());
 
-			try {
-				mFilter.updateCurrent(filter);
-			} catch (SQLException e) {
-				Log.e("SelectDataTask","ParserProject",e);
-			}
+			mFilter.updateCurrent(filter);
 		}
-		try {
-			issues = mIssue.fetchAllByFilter(filter,offset,limit);
-		} catch (SQLException e) {
-			Log.e("SelectDataTask","fetchIssue",e);
-		}
+		issues = mIssue.fetchAllByFilter(filter,offset,limit);
 		if(issues == null)
 			issues = new ArrayList<RedmineIssue>();
 		return issues;

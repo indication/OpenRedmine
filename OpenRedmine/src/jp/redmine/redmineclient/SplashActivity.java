@@ -1,7 +1,5 @@
 package jp.redmine.redmineclient;
 
-import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.model.ConnectionModel;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,22 +18,13 @@ public class SplashActivity extends Activity{
 		Handler hdl = new Handler();
 		hdl.postDelayed(new Runnable() {
 
-			private boolean hasList(){
-				ConnectionModel modelConnection = new ConnectionModel(getApplicationContext());
-				int count = 0;
-				for(@SuppressWarnings("unused") RedmineConnection con : modelConnection.fetchAllData()){
-					count++;
-				}
-				return count>0;
-			}
-
 			public void run() {
 				//@todo: first time.
-				Intent i = new Intent(getApplication(), hasList() ? ConnectionListActivity.class : ConnectionActivity.class);
+				Intent i = new Intent(getApplication(), ConnectionListActivity.class);
 				startActivity(i);
 				SplashActivity.this.finish();
 			}
-		}, 500);
+		}, 200);
 
 	}
 }

@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.db.cache;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.util.Log;
@@ -84,7 +85,8 @@ public class RedmineFilterModel {
 
 		//if(filter.getPriority() != null)
 		//	url.filter(filter.getPriority().getPriorityId().toString());
-
+		//@todo
+		url.addSort("id", false);
 
 	}
 

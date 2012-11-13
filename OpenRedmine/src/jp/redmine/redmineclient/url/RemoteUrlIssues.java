@@ -44,6 +44,23 @@ public class RemoteUrlIssues extends RemoteUrl {
 	public void filterModified(Date from,Date to){
 		filterDate("modified_on",from,to);
 	}
+	public void addSort(String column,boolean isAscending){
+		String sort = "";
+		if(params.containsKey("sort")){
+			sort = params.get("sort");
+			sort += ",";
+			params.remove("sort");
+		}
+		sort += column;
+		if(!isAscending)
+			sort += ":desc";
+		params.put("sort",sort);
+	}
+	public void clearSort(){
+		if(params.containsKey("sort")){
+			params.remove("sort");
+		}
+	}
 
 	public void filterDate(String key,Date from,Date to){
 		StringBuilder sb = new StringBuilder();

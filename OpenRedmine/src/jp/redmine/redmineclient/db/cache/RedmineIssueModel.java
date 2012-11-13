@@ -47,7 +47,7 @@ public class RedmineIssueModel {
 		.eq(RedmineIssue.CONNECTION, connection)
 		.and()
 		.eq(RedmineIssue.PROJECT_ID, projectId)
-		;//.prepare();
+		;
 		builder.setWhere(where);
 		return fetchAllBy(builder,startRow,maxRows);
 	}
@@ -77,6 +77,8 @@ public class RedmineIssueModel {
 			where.eq(key, dic.get(key));
 		}
 		builder.setWhere(where);
+		builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		//@todo
 		return fetchAllBy(builder,startRow,maxRows);
 	}
 

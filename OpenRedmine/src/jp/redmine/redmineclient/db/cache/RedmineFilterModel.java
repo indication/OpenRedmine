@@ -61,6 +61,7 @@ public class RedmineFilterModel {
 		item.setProject(project);
 		item.setCurrent(true);
 		item.setDefault(true);
+		item.setFirst(new Date());
 		return item;
 	}
 	public void updateCurrent(RedmineFilter filter) throws SQLException{

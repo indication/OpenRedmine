@@ -34,7 +34,7 @@ public class ProjectListActivity extends Activity  {
 	protected void onDestroy() {
 		// cleanup task
 		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(true);
+			task.cancel(false);
 		}
 		// cleanup models
 		if(modelProject != null){
@@ -60,11 +60,6 @@ public class ProjectListActivity extends Activity  {
 
 		list.setAdapter(listAdapter);
 
-		onReload();
-
-		if(listAdapter.getCount() == 0){
-			onRefresh();
-		}
 
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,6 +85,15 @@ public class ProjectListActivity extends Activity  {
 			}
 		});
 		*/
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		onReload();
+		if(listAdapter.getCount() == 0){
+			onRefresh();
+		}
 	}
 
 	protected void onReload(){

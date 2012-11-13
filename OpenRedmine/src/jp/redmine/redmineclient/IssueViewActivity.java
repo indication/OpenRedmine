@@ -30,12 +30,16 @@ public class IssueViewActivity extends Activity  {
 
 		form = new RedmineIssueViewForm(this);
 
+
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
 		IssueIntent intent = new IssueIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 		int issueid = intent.getIssueId();
 		modelIssue = new IssueModel(getApplicationContext(), connectionid,null);
-
 		form.setValue(modelIssue.fetchItem(issueid));
-
 	}
 }

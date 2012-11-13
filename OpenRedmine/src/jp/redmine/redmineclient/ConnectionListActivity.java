@@ -66,8 +66,6 @@ public class ConnectionListActivity extends Activity {
 
 		list.setAdapter(listAdapter);
 
-		onReload();
-
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
@@ -86,6 +84,13 @@ public class ConnectionListActivity extends Activity {
 				return true;
 			}
 		});
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		onReload();
 	}
 
 	protected void onItemSelect(int id){
@@ -107,9 +112,9 @@ public class ConnectionListActivity extends Activity {
 		onItemEdit(-1);
 	}
 	protected void onItemEdit(int itemid){
-		Intent intent = new Intent( getApplicationContext(), ConnectionActivity.class );
-		intent.putExtra(ConnectionActivity.INTENT_INT_ID, itemid);
-		startActivity( intent );
+		ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ConnectionActivity.class );
+		intent.setConnectionId(itemid);
+		startActivity( intent.getIntent() );
 	}
 
 	protected void onItemDelete(int itemid){

@@ -11,7 +11,6 @@ import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import android.app.Activity;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -82,7 +81,7 @@ public class RedmineIssueViewForm extends FormHelper {
 		textVersion.setText(vr == null ? "" : vr.getName());
 	}
 	public void setPrivate(boolean isPrivate){
-		textPrivate.setVisibility(isPrivate ? View.VISIBLE : View.INVISIBLE);
+		performSetVisible(textPrivate, isPrivate);
 	}
 	public void setStatus(RedmineStatus status){
 		textStatus.setText(status == null ? "" : status.getName());

@@ -19,7 +19,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.model.IssueModelDataCreationHandler;
+import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssues;
 

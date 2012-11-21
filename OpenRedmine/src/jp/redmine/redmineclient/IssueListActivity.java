@@ -1,20 +1,20 @@
 package jp.redmine.redmineclient;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xmlpull.v1.XmlPullParserException;
+
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
-import jp.redmine.redmineclient.model.IssueModel;
-import android.app.Activity;
-import android.content.Context;
-import android.os.AsyncTask;
+import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.task.SelectIssueTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class IssueListActivity extends Activity
+public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	implements OnScrollListener
 	{
 	public IssueListActivity(){
@@ -48,9 +48,8 @@ public class IssueListActivity extends Activity
 	protected void cancelTask(){
 		// cleanup task
 		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(false);
+			task.cancel(true);
 		}
-
 	}
 
 	/** Called when the activity is first created. */
@@ -107,15 +106,22 @@ public class IssueListActivity extends Activity
 		task.execute(0,20);
 	}
 
-	private class SelectDataTask extends AsyncTask<Integer, Integer, List<RedmineIssue>> {
-		private Context context;
-		private int connectionid;
-		private long projectid;
-		public SelectDataTask(){
-			context = getApplicationContext();
+	private class SelectDataTask extends SelectIssueTask {
+		public SelectDataTask() {
+			super();
 			ProjectIntent intent = new ProjectIntent(getIntent());
-			connectionid = intent.getConnectionId();
-			projectid = intent.getProjectId();
+			int connectionid = intent.getConnectionId();
+			long projectid = intent.getProjectId();
+			helper = getHelper();
+			try {
+				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+				connection = mConnection.getItem(connectionid);
+				mConnection.finalize();
+				RedmineProjectModel mProject = new RedmineProjectModel(helper);
+				project = mProject.fetchById(projectid);
+			} catch (SQLException e) {
+				Log.e("IssueListActivity","SelectDataTask",e);
+			}
 		}
 		// can use UI thread here
 		@Override
@@ -123,32 +129,10 @@ public class IssueListActivity extends Activity
 			getFooter().setVisibility(View.VISIBLE);
 		}
 
-		@Override
-		protected List<RedmineIssue> doInBackground(Integer ... params) {
-			IssueModel modelIssue = new IssueModel(context, connectionid,projectid);
-			List<RedmineIssue> ret = null;
-			try {
-				ret = modelIssue.fetchData(params[0],params[1]);
-			} catch (SQLException e) {
-				Log.e("SelectDataTask","fetchIssue",e);
-			} catch (XmlPullParserException e) {
-				Log.e("SelectDataTask","fetchIssue",e);
-			} catch (IOException e) {
-				Log.e("SelectDataTask","fetchIssue",e);
-			}
-			modelIssue.finalize();
-			return ret;
-		}
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(List<RedmineIssue> issues) {
-			if(issues != null){
-				listAdapter.notifyDataSetInvalidated();
-				for (RedmineIssue i : issues){
-					listAdapter.add(i);
-				}
-				listAdapter.notifyDataSetChanged();
-			}
+			helperAddItems(listAdapter, issues);
 			getFooter().setVisibility(View.INVISIBLE);
 		}
 	}

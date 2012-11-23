@@ -17,7 +17,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.external.DataCreationHandler;
+import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserProject;
 import jp.redmine.redmineclient.parser.ParserStatus;
 import jp.redmine.redmineclient.parser.ParserTracker;

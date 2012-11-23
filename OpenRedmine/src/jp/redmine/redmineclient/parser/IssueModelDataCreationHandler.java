@@ -12,7 +12,6 @@ import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.external.DataCreationHandler;
 
 public class IssueModelDataCreationHandler implements DataCreationHandler<RedmineProject,RedmineIssue> {
 

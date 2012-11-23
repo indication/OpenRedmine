@@ -39,9 +39,6 @@ Using Libraries
  https://github.com/vekexasia/android-form-edittext
  To build this project, needs to checkout android-form-edittext parent dir.
 
-- Circular Buffer (GPL) - needs to parse async.
- http://ostermiller.org/utils/CircularByteBuffer.html
-
 - Transdroid (GPL) - needs to access untrusted ca.
  http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeSocketFactory.java	r1de55ccfce7b
  http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeTrustManager.java	rfa98b5bb5624

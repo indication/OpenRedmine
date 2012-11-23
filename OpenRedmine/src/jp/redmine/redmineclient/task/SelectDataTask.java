@@ -30,7 +30,6 @@ import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List<T>> {
-	abstract protected void onContent(RedmineConnection connection,InputStream stream) throws IOException, XmlPullParserException;
 	/**
 	 * Notify error request on UI thread
 	 * @param statuscode http response code
@@ -117,13 +116,13 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 		String value = header.getValue();
 		return (!TextUtils.isEmpty(value) && value.contains("gzip"));
 	}
-	protected void fetchData(RedmineConnection connection,RemoteUrl url){
+	protected void fetchData(RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler<RedmineConnection> handler){
 		url.setupRequest(requests.xml);
 		url.setupVersion(versions.v130);
-		fetchData(connection, url.getUrl(connection.getUrl()));
+		fetchData(connection, url.getUrl(connection.getUrl()),handler);
 	}
 
-	protected void fetchData(RedmineConnection connection,Builder builder){
+	protected void fetchData(RedmineConnection connection,Builder builder,SelectDataTaskDataHandler<RedmineConnection> handler){
 		Uri remoteurl = builder.build();
 		DefaultHttpClient client = ConnectionHelper.createHttpClient(getClientParam(remoteurl));
 		if(connection.isAuth()){
@@ -152,7 +151,7 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 					Log.i("requestGet", "Gzip: Enabled");
 					stream =  new GZIPInputStream(stream);
 				}
-				onContent(connection,stream);
+				handler.onContent(connection,stream);
 			} else {
 				publishErrorRequest(status);
 			}

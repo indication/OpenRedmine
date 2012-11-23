@@ -28,7 +28,6 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 	protected DatabaseCacheHelper helper;
 	protected RedmineProject project;
 	protected RedmineConnection connection;
-	ParserIssue parser = new ParserIssue();
 	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,RedmineProject proj){
 		this.helper = helper;
 		this.project = proj;
@@ -37,17 +36,6 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 
 
 	public SelectIssueTask() {
-	}
-
-
-	@Override
-	protected void onContent(RedmineConnection connection, InputStream stream) throws IOException, XmlPullParserException {
-		IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
-		parser.registerDataCreation(handler);
-		XmlPullParser xmlPullParser = Xml.newPullParser();
-		xmlPullParser.setInput(stream, "UTF-8");
-		parser.setXml(xmlPullParser);
-		parser.parse(project);
 	}
 
 	@Override
@@ -73,11 +61,22 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 				isRemote = true;
 
 			if(isRemote){
+				final ParserIssue parser = new ParserIssue();
 				RemoteUrlIssues url = new RemoteUrlIssues();
 				RedmineFilterModel.setupUrl(url, filter);
 				url.filterOffset((int)offset);
 				url.filterLimit((int)limit);
-				fetchData(connection, url);
+				fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+					@Override
+					public void onContent(RedmineConnection item, InputStream stream) throws XmlPullParserException, IOException {
+						IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
+						parser.registerDataCreation(handler);
+						XmlPullParser xmlPullParser = Xml.newPullParser();
+						xmlPullParser.setInput(stream, "UTF-8");
+						parser.setXml(xmlPullParser);
+						parser.parse(project);
+					}
+				});
 
 				filter.setFetched(parser.getCount()+filter.getFetched());
 				filter.setLast(new Date());

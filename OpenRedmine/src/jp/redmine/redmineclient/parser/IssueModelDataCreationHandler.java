@@ -2,7 +2,6 @@ package jp.redmine.redmineclient.parser;
 
 import java.sql.SQLException;
 
-import android.util.Log;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -33,21 +32,16 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mCategory = new RedmineCategoryModel(helperCache);
 		mPriority = new RedminePriorityModel(helperCache);
 	}
-	public void onData(RedmineProject proj,RedmineIssue data) {
-		Log.d("ParserIssue","OnData Called");
-		try {
-			data.setConnectionId(proj.getConnectionId());
-			data.setProject(proj);
-			RedmineIssue.setupConnectionId(data);
-			mTracker.refreshItem(data);
-			mVersion.refreshItem(data);
-			mUser.refreshItem(data);
-			mStatus.refreshItem(data);
-			mPriority.refreshItem(data);
-			mCategory.refreshItem(data);
-			mIssue.refreshItem(proj,data);
-		} catch (SQLException e) {
-			Log.e("ParserIssue","onData",e);
-		}
+	public void onData(RedmineProject proj,RedmineIssue data) throws SQLException {
+		data.setConnectionId(proj.getConnectionId());
+		data.setProject(proj);
+		RedmineIssue.setupConnectionId(data);
+		mTracker.refreshItem(data);
+		mVersion.refreshItem(data);
+		mUser.refreshItem(data);
+		mStatus.refreshItem(data);
+		mPriority.refreshItem(data);
+		mCategory.refreshItem(data);
+		mIssue.refreshItem(proj,data);
 	}
 }

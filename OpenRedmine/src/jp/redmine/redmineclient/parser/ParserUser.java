@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -15,7 +16,7 @@ public class ParserUser extends BaseParser<RedmineConnection,RedmineUser> {
 	//private final String TAG = this.toString();
 
 	@Override
-	public void parse(RedmineConnection con) throws XmlPullParserException, IOException {
+	public void parse(RedmineConnection con) throws XmlPullParserException, IOException, SQLException {
 		super.parse(con);
 		int eventType = xml.getEventType();
 		RedmineUser item = null;

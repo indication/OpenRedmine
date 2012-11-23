@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ abstract public class BaseParser<CON,TYPE> {
 		this.xml = xml;
 	}
 
-	public void parse(CON con) throws XmlPullParserException, IOException{
+	public void parse(CON con) throws XmlPullParserException, IOException, SQLException{
 		dataCount = 0;
 		if (xml == null){
 			Log.e("BaseParser", "xml is null");
@@ -50,7 +51,7 @@ abstract public class BaseParser<CON,TYPE> {
 		this.handlerDataCreation.remove(ev);
 	}
 
-	protected void notifyDataCreation(CON con,TYPE data){
+	protected void notifyDataCreation(CON con,TYPE data) throws SQLException{
 		dataCount++;
 		//inherit from http://www.ibm.com/developerworks/jp/java/library/j-jtp07265/
 		for(DataCreationHandler<CON,TYPE> ev:this.handlerDataCreation){

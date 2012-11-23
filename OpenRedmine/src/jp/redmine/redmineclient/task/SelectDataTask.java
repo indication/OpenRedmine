@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -13,6 +14,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.net.Uri;
@@ -20,11 +22,13 @@ import android.net.Uri.Builder;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Xml;
 import android.widget.ArrayAdapter;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.external.lib.AuthenticationParam;
 import jp.redmine.redmineclient.external.lib.ClientParam;
 import jp.redmine.redmineclient.external.lib.ConnectionHelper;
+import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
@@ -91,6 +95,12 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 			listAdapter.add(i);
 		}
 		listAdapter.notifyDataSetChanged();
+	}
+
+	protected void helperSetupParserStream(InputStream stream,BaseParser<?,?> parser) throws XmlPullParserException{
+		XmlPullParser xmlPullParser = Xml.newPullParser();
+		xmlPullParser.setInput(stream, "UTF-8");
+		parser.setXml(xmlPullParser);
 	}
 
 	private ClientParam getClientParam(Uri remoteurl){
@@ -162,6 +172,8 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 		} catch (IOException e) {
 			publishError(e);
 		} catch (XmlPullParserException e) {
+			publishError(e);
+		} catch (SQLException e) {
 			publishError(e);
 		} finally {
 			client.getConnectionManager().shutdown();

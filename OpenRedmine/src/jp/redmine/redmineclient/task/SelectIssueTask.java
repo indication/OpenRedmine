@@ -68,7 +68,8 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 				url.filterLimit((int)limit);
 				fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
 					@Override
-					public void onContent(RedmineConnection item, InputStream stream) throws XmlPullParserException, IOException {
+					public void onContent(RedmineConnection item, InputStream stream)
+							throws XmlPullParserException, IOException, SQLException {
 						IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
 						parser.registerDataCreation(handler);
 						XmlPullParser xmlPullParser = Xml.newPullParser();

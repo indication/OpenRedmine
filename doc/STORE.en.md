@@ -22,6 +22,20 @@ Features:
 Now testing:
 * All of features
 
+Working:
+* Renew method of getting issues from remote
+* Filter issues from remote or local
+
+Known issues:
+* Crashes switching on loading issues
+* App cannot close when the last activity is finished
+
+Release planing:
+* Filter v2 (Dec 2012)
+* Journals v3
+
 Thanks:
 * Great icons from Glyphish: http://glyphish.com
 
+Note:
+* This app is open source, you can contribute.

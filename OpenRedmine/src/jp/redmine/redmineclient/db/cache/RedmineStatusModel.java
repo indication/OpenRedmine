@@ -18,7 +18,7 @@ public class RedmineStatusModel {
 		try {
 			dao = helper.getDao(RedmineStatus.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e("RedmineStatusModel","getDao",e);
 		}
 	}
 
@@ -41,7 +41,7 @@ public class RedmineStatusModel {
 		.and()
 		.eq(RedmineStatus.STATUS_ID, statusId)
 		.prepare();
-		Log.d("RedmineProject",query.getStatement());
+		Log.d("RedmineStatusModel",query.getStatement());
 		RedmineStatus item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineStatus();

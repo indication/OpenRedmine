@@ -3,6 +3,9 @@ package jp.redmine.redmineclient.db.cache;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.util.Log;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -17,7 +20,7 @@ public class RedmineUserModel {
 		try {
 			dao = helper.getDao(RedmineUser.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e("RedmineUserModel","getDao",e);
 		}
 	}
 

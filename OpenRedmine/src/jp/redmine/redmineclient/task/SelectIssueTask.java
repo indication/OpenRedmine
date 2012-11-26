@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
-import android.util.Xml;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
@@ -72,9 +69,7 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 							throws XmlPullParserException, IOException, SQLException {
 						IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
 						parser.registerDataCreation(handler);
-						XmlPullParser xmlPullParser = Xml.newPullParser();
-						xmlPullParser.setInput(stream, "UTF-8");
-						parser.setXml(xmlPullParser);
+						helperSetupParserStream(stream, parser);
 						parser.parse(project);
 					}
 				});

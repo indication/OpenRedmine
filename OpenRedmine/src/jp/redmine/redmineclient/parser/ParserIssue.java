@@ -1,12 +1,8 @@
 package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
-import android.util.Log;
 
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
@@ -18,45 +14,21 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
-public class ParserIssue extends BaseParser<RedmineProject,RedmineIssue> {
-	//private final String TAG = this.toString();
+public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue> {
 
 	@Override
-	public void parse(RedmineProject con) throws XmlPullParserException, IOException, SQLException {
-		super.parse(con);
-		int eventType = xml.getEventType();
-		RedmineIssue item = null;
-		Log.d("ParserIssue","start parse");
-		while (eventType != XmlPullParser.END_DOCUMENT) {
-			eventType = xml.next();
-			switch (eventType){
-			case XmlPullParser.START_DOCUMENT:
-				Log.d("ParserIssue","START_DOCUMENT");
-				break;
-			case XmlPullParser.START_TAG:
-				Log.d("ParserIssue","START_TAG ".concat(xml.getName()));
-				if("issue".equalsIgnoreCase(xml.getName())){
-					item = new RedmineIssue();
-				} else if(item != null){
-					parseInternal(item);
-				}
-				break;
-			case XmlPullParser.END_TAG:
-				Log.d("ParserIssue","END_TAG ".concat(xml.getName()));
-				if("issue".equalsIgnoreCase(xml.getName())){
-					notifyDataCreation(con,item);
-					item = null;
-				}
-				break;
-			case XmlPullParser.TEXT:
-				Log.d("ParserIssue","TEXT ".concat(xml.getText()));
-				break;
-			}
-		}
-
+	protected String getProveTagName() {
+		return "issue";
 	}
 
-	private void parseInternal(RedmineIssue item) throws XmlPullParserException, IOException{
+	@Override
+	protected RedmineIssue getNewProveTagItem() {
+		return new RedmineIssue();
+	}
+
+	@Override
+	protected void parseInternal(RedmineProject con, RedmineIssue item)
+			throws XmlPullParserException, IOException{
 		if(xml.getDepth() <= 2)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){
@@ -166,4 +138,5 @@ public class ParserIssue extends BaseParser<RedmineProject,RedmineIssue> {
 		}
 
 	}
+
 }

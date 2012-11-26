@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -14,6 +13,31 @@ abstract public class BaseParser<CON,TYPE> {
 	protected XmlPullParser xml;
 	protected int dataCount = 0;
 	public volatile List<DataCreationHandler<CON,TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<CON,TYPE>>();
+	protected void onParseStart(CON con)
+			throws XmlPullParserException, IOException, SQLException {
+		Log.d("BaseParser","START");
+	}
+	protected void onParseEnd(CON con)
+			throws XmlPullParserException, IOException, SQLException{
+		Log.d("BaseParser","END");
+	}
+	protected void onDocumentStart(CON con)
+			throws XmlPullParserException, IOException, SQLException {
+		Log.d("BaseParser","START_DOCUMENT");
+	}
+	protected void onDocumentEnd(CON con)
+			throws XmlPullParserException, IOException, SQLException{
+		Log.d("BaseParser","END_DOCUMENT");
+	}
+	protected abstract void onTagStart(CON con)
+			throws XmlPullParserException, IOException, SQLException;
+	protected abstract void onTagEnd(CON con)
+			throws XmlPullParserException, IOException, SQLException;
+	protected void onText(CON con)
+			throws XmlPullParserException, IOException, SQLException{
+		Log.d("BaseParser","TEXT ".concat(xml.getText()));
+	}
+
 	public void setXml(XmlPullParser xml){
 		if (xml == null){
 			Log.e("ParserProject", "xml is null");
@@ -27,6 +51,31 @@ abstract public class BaseParser<CON,TYPE> {
 		if (xml == null){
 			Log.e("BaseParser", "xml is null");
 			return;
+		}
+		int eventType = xml.getEventType();
+		onParseStart(con);
+		Log.d("BaseParser","start parse");
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+			eventType = xml.next();
+			switch (eventType){
+			case XmlPullParser.START_DOCUMENT:
+				onDocumentStart(con);
+				break;
+			case XmlPullParser.END_DOCUMENT:
+				onDocumentEnd(con);
+				break;
+			case XmlPullParser.START_TAG:
+				Log.d("BaseParser","START_TAG ".concat(xml.getName()));
+				onTagStart(con);
+				break;
+			case XmlPullParser.END_TAG:
+				Log.d("BaseParser","END_TAG ".concat(xml.getName()));
+				onTagEnd(con);
+				break;
+			case XmlPullParser.TEXT:
+				onText(con);
+				break;
+			}
 		}
 	}
 

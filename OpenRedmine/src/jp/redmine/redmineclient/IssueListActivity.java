@@ -143,7 +143,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		super.onCreateOptionsMenu( menu );
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.projects, menu );
+		inflater.inflate( R.menu.issues, menu );
 		return true;
 	}
 
@@ -152,9 +152,18 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	{
 		switch ( item.getItemId() )
 		{
-			case R.id.menu_projects_refresh:
+			case R.id.menu_refresh:
 			{
 				this.onRefresh();
+				return true;
+			}
+			case R.id.menu_issues_filter:
+			{
+				ProjectIntent intent = new ProjectIntent( getIntent() );
+				ProjectIntent send = new ProjectIntent( getApplicationContext(), FilterViewActivity.class );
+				send.setConnectionId(intent.getConnectionId());
+				send.setProjectId(intent.getProjectId());
+				startActivity( send.getIntent() );
 				return true;
 			}
 		}

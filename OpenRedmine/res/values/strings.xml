@@ -53,5 +53,6 @@ After the setting, list up the connection.]]></string>
 	<string name="menu_powered_by_icon">icons by</string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">Cancel</string>
+	<string name="menu_filter">Filter</string>
 
 </resources>

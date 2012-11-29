@@ -6,6 +6,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineStatus;
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class ParserStatus extends BaseParserInternal<RedmineConnection,RedmineStatus> {
 
@@ -30,16 +31,15 @@ public class ParserStatus extends BaseParserInternal<RedmineConnection,RedmineSt
 			item.setStatusId(Integer.parseInt(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.setName(getNextText());
-		} else if("is_close".equalsIgnoreCase(xml.getName())){
+		} else if("is_closed".equalsIgnoreCase(xml.getName())){
 			item.setIs_close("true".equalsIgnoreCase(getNextText()));
 		} else if("is_default".equalsIgnoreCase(xml.getName())){
 			item.setIs_default("true".equalsIgnoreCase(getNextText()));
-		/*
+
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
-			item.Created(TypeConverter.ParseDate(getNextText()));
+			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("updated_on".equalsIgnoreCase(xml.getName())){
-			item.Modified(TypeConverter.ParseDate(getNextText()));
-		*/
+			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
 
 	}

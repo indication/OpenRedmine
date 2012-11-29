@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -35,6 +36,7 @@ public class ConnectionListActivity extends Activity {
 	static final String DIALOG_PARAM_ID = "ID";
 	static final String DIALOG_PARAM_NAME = "NAME";
 	private NotificationManager notifManager;
+	private View mFooter;
 	private ArrayAdapter<RedmineConnection> listAdapter;
 
 	private ConnectionModel modelConnection;
@@ -64,6 +66,7 @@ public class ConnectionListActivity extends Activity {
 				this,android.R.layout.simple_list_item_1
 				,new ArrayList<RedmineConnection>());
 
+		list.addFooterView(getAddView());
 		list.setAdapter(listAdapter);
 
 		//リスト項目がクリックされた時の処理
@@ -84,6 +87,22 @@ public class ConnectionListActivity extends Activity {
 				return true;
 			}
 		});
+	}
+
+	protected View getAddView(){
+		if (mFooter == null) {
+			mFooter = getLayoutInflater()
+				.inflate(R.layout.listview_add,null);
+			mFooter.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onItemNew();
+				}
+			});
+
+		}
+		return mFooter;
+
 	}
 
 	@Override

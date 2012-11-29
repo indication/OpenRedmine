@@ -12,8 +12,10 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
+import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
@@ -22,10 +24,12 @@ import jp.redmine.redmineclient.parser.ParserProject;
 import jp.redmine.redmineclient.parser.ParserStatus;
 import jp.redmine.redmineclient.parser.ParserTracker;
 import jp.redmine.redmineclient.parser.ParserUser;
+import jp.redmine.redmineclient.parser.ParserVersion;
 import jp.redmine.redmineclient.url.RemoteUrlProjects;
 import jp.redmine.redmineclient.url.RemoteUrlStatus;
 import jp.redmine.redmineclient.url.RemoteUrlTrackers;
 import jp.redmine.redmineclient.url.RemoteUrlUsers;
+import jp.redmine.redmineclient.url.RemoteUrlVersion;
 
 public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 
@@ -64,6 +68,11 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 						model.refreshItem(con,data);
 					}
 				});
+				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
+					public void onData(RedmineConnection con,RedmineProject data) throws SQLException {
+						fetchVersions(data);
+					}
+				});
 				helperSetupParserStream(stream,parser);
 				parser.parse(item);
 			}
@@ -99,6 +108,26 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 				ParserTracker parser = new ParserTracker();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTracker>() {
 					public void onData(RedmineConnection con,RedmineTracker data) throws SQLException {
+						model.refreshItem(con,data);
+					}
+				});
+				helperSetupParserStream(stream,parser);
+				parser.parse(item);
+			}
+		});
+	}
+	protected void fetchVersions(RedmineProject project){
+		final RedmineVersionModel model = new RedmineVersionModel(helper);
+		RemoteUrlVersion url = new RemoteUrlVersion();
+		url.setProject(project);
+
+		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+			@Override
+			public void onContent(RedmineConnection item, InputStream stream)
+					throws XmlPullParserException, IOException, SQLException {
+				ParserVersion parser = new ParserVersion();
+				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProjectVersion>() {
+					public void onData(RedmineConnection con,RedmineProjectVersion data) throws SQLException {
 						model.refreshItem(con,data);
 					}
 				});

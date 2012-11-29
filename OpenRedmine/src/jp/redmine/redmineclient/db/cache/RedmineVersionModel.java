@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -15,7 +16,7 @@ import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
 
-public class RedmineVersionModel {
+public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> {
 	protected Dao<RedmineProjectVersion, Integer> dao;
 	public RedmineVersionModel(DatabaseCacheHelper helper) {
 		try {
@@ -53,6 +54,39 @@ public class RedmineVersionModel {
 	public RedmineProjectVersion fetchById(int id) throws SQLException{
 		RedmineProjectVersion item;
 		item = dao.queryForId(id);
+		if(item == null)
+			item = new RedmineProjectVersion();
+		return item;
+	}
+
+
+	@Override
+	public long countByProject(int connection_id, long project_id) throws SQLException {
+		QueryBuilder<RedmineProjectVersion, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedmineProjectVersion.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineProjectVersion.PROJECT_ID, project_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	@Override
+	public RedmineProjectVersion fetchItemByProject(int connection_id,
+			long project_id, long offset, long limit) throws SQLException {
+		QueryBuilder<RedmineProjectVersion, ?> builder = dao.queryBuilder();
+		builder
+			.limit(limit)
+			.offset(offset)
+			.orderBy(RedmineProjectVersion.DUE_DATE, true)
+			.where()
+				.eq(RedmineProjectVersion.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineProjectVersion.PROJECT_ID, project_id)
+				;
+		RedmineProjectVersion item = builder.queryForFirst();
 		if(item == null)
 			item = new RedmineProjectVersion();
 		return item;

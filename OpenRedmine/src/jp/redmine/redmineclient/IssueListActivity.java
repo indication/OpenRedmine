@@ -39,6 +39,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	private SelectDataTask task;
 	private View mFooter;
 	private ListView listView;
+	private long lastPos = 0;
 
 	@Override
 	protected void onDestroy() {
@@ -164,8 +165,11 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		if (totalItemCount == firstVisibleItem + visibleItemCount) {
 			if(task != null && task.getStatus() == Status.RUNNING)
 				return;
+			if(lastPos == totalItemCount)
+				return;
 			task = new SelectDataTask();
 			task.execute(totalItemCount,10);
+			lastPos = totalItemCount;
 		}
 	}
 	public void onScrollStateChanged(AbsListView arg0, int arg1) {

@@ -8,6 +8,7 @@ Features
 ==========
 * Allow to connect UNSAFE SSL sites powered by transdroid
 * View issues offline
+* Get API key from web site
 
 
 Version
@@ -32,6 +33,13 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+Used references
+==========
+- DefaultHttpClient and Deflate settings inherit from "DenkiYagi"
+  http://terurou.hateblo.jp/entry/20110702/1309541200
+
+- Expanded list ideas from "My life with Android :-)"
+  http://mylifewithandroid.blogspot.jp/2010/12/expandable-list-and-checkboxes.html
 
 Using Libraries
 ==========

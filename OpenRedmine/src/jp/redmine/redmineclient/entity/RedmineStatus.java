@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineStatus {
+public class RedmineStatus implements IMasterRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String STATUS_ID = "status_id";
@@ -153,6 +153,20 @@ public class RedmineStatus {
 	 */
 	public Integer getConnectionId() {
 		return connection_id;
+	}
+
+
+	@Override
+	public void setRemoteId(Long id) {
+		if(id == null)
+			return;
+		setStatusId(id.intValue());
+	}
+
+
+	@Override
+	public Long getRemoteId() {
+		return (getStatusId() == null) ? null : (long)getStatusId();
 	}
 
 }

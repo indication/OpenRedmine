@@ -11,7 +11,7 @@ public class ParserStatus extends BaseParserInternal<RedmineConnection,RedmineSt
 
 	@Override
 	protected String getProveTagName() {
-		return "status";
+		return "issue_status";
 	}
 
 	@Override

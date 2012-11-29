@@ -103,23 +103,6 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 		parser.setXml(xmlPullParser);
 	}
 
-	private ClientParam getClientParam(Uri remoteurl){
-		ClientParam clientparam = new ClientParam();
-		if(remoteurl.getPort() <= 0){
-			clientparam.setHttpPort(80);
-			clientparam.setHttpsPort(443);
-		} else if("https".equals(remoteurl.getScheme())){
-			clientparam.setHttpPort(80);
-			clientparam.setHttpsPort(remoteurl.getPort());
-		} else {
-			clientparam.setHttpPort(remoteurl.getPort());
-			clientparam.setHttpsPort(443);
-		}
-		clientparam.setSLLTrustAll(true);
-		clientparam.setTimeout(30000);
-		return clientparam;
-	}
-
 	private boolean isGZipHttpResponse(HttpResponse response) {
 		Header header = response.getEntity().getContentEncoding();
 		if (header == null) return false;
@@ -132,10 +115,13 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 		fetchData(connection, url.getUrl(connection.getUrl()),handler);
 	}
 
-	protected void fetchData(RedmineConnection connection,Builder builder,SelectDataTaskDataHandler<RedmineConnection> handler){
-		Uri remoteurl = builder.build();
-		DefaultHttpClient client = ConnectionHelper.createHttpClient(getClientParam(remoteurl));
+	private static DefaultHttpClient getHttpClient(RedmineConnection connection){
+		ClientParam clientparam = new ClientParam();
+		clientparam.setSLLTrustAll(connection.isPermitUnsafe());
+		clientparam.setTimeout(30000);
+		DefaultHttpClient client = ConnectionHelper.createHttpClient(clientparam);
 		if(connection.isAuth()){
+			Uri remoteurl = Uri.parse(connection.getUrl());
 			AuthenticationParam param = new AuthenticationParam();
 			param.setId(connection.getAuthId());
 			param.setPass(connection.getAuthPasswd());
@@ -147,6 +133,12 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 			}
 			ConnectionHelper.setupHttpClientAuthentication(client, param);
 		}
+		return client;
+	}
+
+	protected void fetchData(RedmineConnection connection,Builder builder,SelectDataTaskDataHandler<RedmineConnection> handler){
+		Uri remoteurl = builder.build();
+		DefaultHttpClient client = getHttpClient(connection);
 		try {
 			HttpGet get = new HttpGet(new URI(remoteurl.toString()));
 			get.setHeader("X-Redmine-API-Key", connection.getToken());

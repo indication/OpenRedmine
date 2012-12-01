@@ -3,6 +3,8 @@ package jp.redmine.redmineclient.form;
 import com.andreabaccega.widget.FormEditText;
 
 import android.text.Html;
+import android.view.View;
+import android.view.ViewGroup;
 
 abstract public class FormHelper {
 	public static CharSequence convertWikiString(String str){
@@ -33,7 +35,43 @@ abstract public class FormHelper {
 		}
 		return result.toString();
 	}
+	protected void performSetVisible(ViewGroup form,final boolean flag){
+		performEachView(form,new EventPerformEachView() {
+			@Override
+			void callback(View item) {
+				performSetVisible(item,flag);
+			}
+		});
+	}
+	protected void performSetVisible(View item,final boolean flag){
+		item.setVisibility(flag ? View.VISIBLE : View.GONE);
+	}
 
+	protected void performSetEnabled(ViewGroup form,final boolean flag){
+		performEachView(form,new EventPerformEachView() {
+			@Override
+			void callback(View item) {
+				performSetEnabled(item,flag);
+			}
+		});
+	}
+	protected void performSetEnabled(View item,final boolean flag){
+		item.setEnabled(flag);
+	}
+	protected void performEachView(ViewGroup form,EventPerformEachView event){
+		for(int idx = 0; idx < form.getChildCount(); idx++){
+			View item = form.getChildAt(idx);
+			if(item instanceof ViewGroup){
+				performEachView((ViewGroup)item,event);
+			} else {
+				event.callback(item);
+			}
+		}
+	}
+
+	abstract class EventPerformEachView{
+		abstract void callback(View item);
+	}
 
 	public boolean Validate(){
 		return true;

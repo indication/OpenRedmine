@@ -5,10 +5,12 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineProjectVersion {
+public class RedmineProjectVersion implements IMasterRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String VERSION_ID = "version_id";
+	public final static String DUE_DATE = "due_date";
+	public final static String PROJECT_ID = "project_id";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
@@ -174,6 +176,20 @@ public class RedmineProjectVersion {
 	 */
 	public int getVersionId() {
 		return version_id;
+	}
+
+
+	@Override
+	public void setRemoteId(Long id) {
+		if(id == null)
+			return;
+		setVersionId(id.intValue());
+	}
+
+
+	@Override
+	public Long getRemoteId() {
+		return (long)getVersionId();
 	}
 
 }

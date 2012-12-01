@@ -2,6 +2,9 @@ package jp.redmine.redmineclient;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
+import jp.redmine.redmineclient.intent.ConnectionIntent;
+import jp.redmine.redmineclient.intent.ConnectionNaviIntent;
+import jp.redmine.redmineclient.intent.ConnectionNaviResultIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 
 import android.app.Activity;
@@ -16,7 +19,6 @@ public class ConnectionActivity extends Activity {
 		super();
 	}
 	private int idEditing = -1;
-	public static final String INTENT_INT_ID = "CONNECTION_ID";
 	private static final int ACTIVITY_SUB = 1001;
 	private RedmineConnectionActivityForm form;
 
@@ -42,10 +44,6 @@ public class ConnectionActivity extends Activity {
 		form = new RedmineConnectionActivityForm(this);
 		form.setupEvents();
 
-
-		Intent intent = getIntent();
-		idEditing = intent.getIntExtra(INTENT_INT_ID,-1);
-
 		form.buttonSave.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View view) {
 				completeSave();
@@ -56,14 +54,21 @@ public class ConnectionActivity extends Activity {
 				String url = form.getUrl();
 				if("".equals(url))
 					return;
-				Intent load = new Intent( getApplicationContext(), ConnectionNaviActivity.class );
-				load.putExtra(ConnectionNaviActivity.INTENT_STR_URL, url);
-				load.putExtra(ConnectionNaviActivity.INTENT_STR_ID, form.getAuthID());
-				load.putExtra(ConnectionNaviActivity.INTENT_STR_PASS, form.getAuthPassword());
-				startActivityForResult(load, ACTIVITY_SUB);
+				ConnectionNaviIntent load = new ConnectionNaviIntent( getApplicationContext(), ConnectionNaviActivity.class );
+				load.setUrl(url);
+				load.setAuthID(form.getAuthID());
+				load.setAuthPassword(form.getAuthPassword());
+				startActivityForResult(load.getIntent(), ACTIVITY_SUB);
 			}
 		});
 
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		ConnectionIntent intent = new ConnectionIntent(getIntent());
+		idEditing = intent.getConnectionId();
 		loadData();
 	}
 
@@ -104,11 +109,10 @@ public class ConnectionActivity extends Activity {
 		case ACTIVITY_SUB:
 			if(resultCode !=RESULT_OK )
 				break;
-			form.setAuthentication(
-					  data.getStringExtra(ConnectionNaviActivity.INTENT_STR_ID)
-					, data.getStringExtra(ConnectionNaviActivity.INTENT_STR_PASS));
-			form.setUnsafeConnection( data.getBooleanExtra(ConnectionNaviActivity.INTENT_BOOL_UNSAFESSL, false));
-			form.setToken(data.getStringExtra(ConnectionNaviActivity.INTENT_STR_TOKEN));
+			ConnectionNaviResultIntent intent = new ConnectionNaviResultIntent(data);
+			form.setAuthentication(intent.getAuthID(), intent.getAuthPassword());
+			form.setUnsafeConnection(intent.isUnsafeSSL());
+			form.setToken(intent.getToken());
 			break;
 		default:
 			break;

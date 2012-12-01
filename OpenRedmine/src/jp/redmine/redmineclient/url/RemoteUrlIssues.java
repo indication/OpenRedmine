@@ -17,8 +17,22 @@ public class RemoteUrlIssues extends RemoteUrl {
 		params.put("offset", Integer.toString(offset));
 	}
 
+	public void filterQuery(String query){
+		params.put("query_id", query);
+	}
+
 	public void filterStatus(String status){
 		params.put("status_id", status);
+	}
+
+	public void filterAssigned(String assigned_to_id){
+		params.put("assigned_to_id", assigned_to_id);
+	}
+	public void filterAuthor(String author_id){
+		params.put("author_id", author_id);
+	}
+	public void filterTracker(String tracker){
+		params.put("tracker_id", tracker);
 	}
 
 	public void filterProject(String status){
@@ -29,6 +43,23 @@ public class RemoteUrlIssues extends RemoteUrl {
 	}
 	public void filterModified(Date from,Date to){
 		filterDate("modified_on",from,to);
+	}
+	public void addSort(String column,boolean isAscending){
+		String sort = "";
+		if(params.containsKey("sort")){
+			sort = params.get("sort");
+			sort += ",";
+			params.remove("sort");
+		}
+		sort += column;
+		if(!isAscending)
+			sort += ":desc";
+		params.put("sort",sort);
+	}
+	public void clearSort(){
+		if(params.containsKey("sort")){
+			params.remove("sort");
+		}
 	}
 
 	public void filterDate(String key,Date from,Date to){

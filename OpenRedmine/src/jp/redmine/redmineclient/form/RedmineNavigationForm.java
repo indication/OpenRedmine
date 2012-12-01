@@ -10,12 +10,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.Uri.Builder;
-import android.os.Handler;
-import android.os.Message;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class RedmineNavigationForm extends FormHelper {
 	private Activity activity;
@@ -23,16 +22,9 @@ public class RedmineNavigationForm extends FormHelper {
 	protected LocalWebViewClient webClient;
 	public FormEditText editToken;
 	public Button buttonSave;
-	public Handler handler;
+	protected LinearLayout header;
 	protected String AuthID = "";
 	protected String AuthPassword = "";
-
-	interface MessageTypes {
-		public int status = 1;
-		public int apikey = 2;
-		public int authid = 3;
-		public int authpassword = 4;
-	}
 
 	public RedmineNavigationForm(Activity activity){
 		this.activity = activity;
@@ -47,18 +39,29 @@ public class RedmineNavigationForm extends FormHelper {
 		editToken = (FormEditText)activity.findViewById(R.id.editToken);
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
 		webClient = new LocalWebViewClient(activity, webView);
+		header = (LinearLayout)activity.findViewById(R.id.layoutHeader);
 	}
+
 
 	public boolean Validate(){
 		return ValidateForm(editToken);
 	}
 
+	protected void setHeaderVisible(boolean isVisible){
+		performSetVisible(header, isVisible);
+	}
 
 	public String getAuthID(){
 		return AuthID;
 	}
+	protected void setAuthID(String id){
+		AuthID = id;
+	}
 	public String getAuthPassword(){
 		return AuthPassword;
+	}
+	protected void setAuthPassword(String pass){
+		AuthPassword = pass;
 	}
 	public boolean isUnsafeSLL(){
 		return webClient != null ? webClient.isSSLError : false;
@@ -66,36 +69,14 @@ public class RedmineNavigationForm extends FormHelper {
 	public String getApiKey(){
 		return editToken.getText().toString();
 	}
-
+	protected void performAction(String token){
+		editToken.setText(token);
+		buttonSave.performClick();
+	}
 
 	@SuppressLint({ "HandlerLeak", "SetJavaScriptEnabled" })
 	public void setupEvents(){
-		handler = new Handler(){
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				switch (msg.what){
-				case MessageTypes.status:
-					cleanup();
-					activity.finish();
-					break;
-				case MessageTypes.apikey:
-					editToken.setText((String)msg.obj);
-					buttonSave.performClick();
-					break;
-				case MessageTypes.authid:
-					AuthID = (String)msg.obj;
-					break;
-				case MessageTypes.authpassword:
-					AuthPassword = (String)msg.obj;
-					break;
-
-				}
-			}
-		};
 		CustomWebChromeClient client = new CustomWebChromeClient();
-		client.setHandler(handler);
-		webClient.setHandler(handler);
 		webView.setWebViewClient(webClient);
 		webView.setWebChromeClient(client);
 		webView.getSettings().setJavaScriptEnabled(true);
@@ -107,10 +88,17 @@ public class RedmineNavigationForm extends FormHelper {
 	}
 
 	public void cleanup(){
-
-		webView.destroy();
-		handler = null;
+		if(webView != null){
+			webView.destroy();
+			webView = null;
+		}
 	}
+
+	protected void stopActivity(){
+		cleanup();
+		activity.finish();
+	}
+
 
 	public void loadUrl(String url){
 		webClient.UserID = AuthID;
@@ -128,25 +116,18 @@ public class RedmineNavigationForm extends FormHelper {
 
 	private class LocalWebViewClient extends MyWebViewClient{
 		public String LimitUrl = "";
-		protected Handler handler;
 
 		public LocalWebViewClient(Context context, WebView webview) {
 			super(context, webview);
-		}
-
-		public void setHandler(Handler hand){
-			handler = hand;
 		}
 
 		@Override
 		public void onPageStarted( WebView view, String url, Bitmap favicon ) {
 			if(!url.startsWith(LimitUrl)){
 				view.stopLoading();
-				Message msg = new Message();
-				msg.what = MessageTypes.status;
-				msg.obj = url;
-				handler.sendMessage(msg);
+				stopActivity();
 			}
+			setHeaderVisible(true);
 		}
 		@Override
 		public void onPageFinished(WebView view, String url) {
@@ -160,51 +141,31 @@ public class RedmineNavigationForm extends FormHelper {
 			} else if(!url.endsWith("login")){
 				view.loadUrl(LimitUrl + "/my/account");
 			}
+			setHeaderVisible(false);
 		}
 
 		@Override
 		protected void afterSetHttpAuth(String id, String password) {
-
-			if(handler != null ){
-				Message msg = new Message();
-				msg.what = MessageTypes.authid;
-				msg.obj = id;
-				handler.sendMessage(msg);
-				msg = new Message();
-				msg.what = MessageTypes.authpassword;
-				msg.obj = password;
-				handler.sendMessage(msg);
-			}
+			setAuthID(id);
+			setAuthPassword(password);
 		}
 	}
 
 	// JavaScript：alertをAndroid側でハンドリングするための仕組みである
 	// WebChromeClient#onJsAlert()メソッドをオーバーライドして
 	private class CustomWebChromeClient extends WebChromeClient {
-
-		protected Handler handler;
-		public void setHandler(Handler hand){
-			handler = hand;
-		}
 		@Override
 		public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-
 			if (message == null) {
 				return false;
 			}
-
-			if(handler != null ){
-				Message msg = new Message();
-				msg.what = MessageTypes.apikey;
-				msg.obj = message;
-				handler.sendMessage(msg);
-			}
-
+			performAction(message);
 			result.confirm();
 			// アラートダイアログをこのメソッド内で処理したか
 			// falseを返すとAndroid APIによるデフォルトのアラートダイアログが表示されるため、今回はtrueを返す
 			return true;
 		}
+
 	}
 }
 

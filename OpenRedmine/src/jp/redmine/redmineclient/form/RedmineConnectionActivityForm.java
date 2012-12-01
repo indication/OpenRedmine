@@ -5,7 +5,6 @@ import com.andreabaccega.widget.FormEditText;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -67,16 +66,6 @@ public class RedmineConnectionActivityForm extends FormHelper {
 		performSetEnabled(formPermitUnsafe,checkUnsafeConnection.isChecked());
 	}
 
-	protected void performSetEnabled(LinearLayout form,boolean flag){
-		for(int idx = 0; idx < form.getChildCount(); idx++){
-			View item = form.getChildAt(idx);
-			item.setEnabled(flag);
-			//item.setFocusable(flag);
-			if( !flag && item.isFocused() ){
-				//@todo have to lost forcus on here!!!
-			}
-		}
-	}
 
 	public boolean Validate(){
 		return ValidateForms(

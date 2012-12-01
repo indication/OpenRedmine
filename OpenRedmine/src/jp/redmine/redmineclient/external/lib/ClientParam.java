@@ -3,8 +3,6 @@ package jp.redmine.redmineclient.external.lib;
 public class ClientParam{
 	private boolean sllTrustAll;
 	private String certKey;
-	private int httpport = 80;
-	private int httpsport = 443;
 	private int timeout = 10000;
 
 	/**
@@ -30,30 +28,6 @@ public class ClientParam{
 	 */
 	public String getCertKey() {
 		return certKey;
-	}
-	/**
-	 * @param httpport セットする httpport
-	 */
-	public void setHttpPort(int httpport) {
-		this.httpport = httpport;
-	}
-	/**
-	 * @return httpport
-	 */
-	public int getHttpPort() {
-		return httpport;
-	}
-	/**
-	 * @param httpsport セットする httpsport
-	 */
-	public void setHttpsPort(int httpsport) {
-		this.httpsport = httpsport;
-	}
-	/**
-	 * @return httpsport
-	 */
-	public int getHttpsPort() {
-		return httpsport;
 	}
 	/**
 	 * @param timeout セットする timeout

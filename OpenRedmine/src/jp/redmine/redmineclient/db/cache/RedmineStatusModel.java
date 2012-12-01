@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -12,13 +13,13 @@ import jp.redmine.redmineclient.entity.RedmineStatus;
 import android.util.Log;
 
 
-public class RedmineStatusModel {
+public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 	protected Dao<RedmineStatus, Integer> dao;
 	public RedmineStatusModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineStatus.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e("RedmineStatusModel","getDao",e);
 		}
 	}
 
@@ -41,7 +42,7 @@ public class RedmineStatusModel {
 		.and()
 		.eq(RedmineStatus.STATUS_ID, statusId)
 		.prepare();
-		Log.d("RedmineProject",query.getStatement());
+		Log.d("RedmineStatusModel",query.getStatement());
 		RedmineStatus item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineStatus();
@@ -51,6 +52,39 @@ public class RedmineStatusModel {
 	public RedmineStatus fetchById(int id) throws SQLException{
 		RedmineStatus item;
 		item = dao.queryForId(id);
+		if(item == null)
+			item = new RedmineStatus();
+		return item;
+	}
+
+
+	@Override
+	public long countByProject(int connection_id, long project_id) throws SQLException {
+		QueryBuilder<RedmineStatus, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedmineStatus.CONNECTION, connection_id)
+				//.and()
+				//.eq(RedmineStatus.PROJECT_ID, project_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	@Override
+	public RedmineStatus fetchItemByProject(int connection_id,
+			long project_id, long offset, long limit) throws SQLException {
+		QueryBuilder<RedmineStatus, ?> builder = dao.queryBuilder();
+		builder
+			.limit(limit)
+			.offset(offset)
+			.orderBy(RedmineStatus.NAME, true)
+			.where()
+				.eq(RedmineStatus.CONNECTION, connection_id)
+				//.and()
+				//.eq(RedmineStatus.PROJECT_ID, project_id)
+				;
+		RedmineStatus item = builder.queryForFirst();
 		if(item == null)
 			item = new RedmineStatus();
 		return item;

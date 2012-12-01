@@ -1,17 +1,15 @@
 package jp.redmine.redmineclient;
 
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
+import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.IssueModel;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 public class IssueViewActivity extends Activity  {
 	public IssueViewActivity(){
 		super();
 	}
-	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
-	public static final String INTENT_INT_ISSUE_ID = "ISSUEID";
 
 	private IssueModel modelIssue;
 	private RedmineIssueViewForm form;
@@ -32,12 +30,16 @@ public class IssueViewActivity extends Activity  {
 
 		form = new RedmineIssueViewForm(this);
 
-		Intent intent = getIntent();
-		int connectionid = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		int issueid = intent.getIntExtra(INTENT_INT_ISSUE_ID, -1);
+
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		IssueIntent intent = new IssueIntent(getIntent());
+		int connectionid = intent.getConnectionId();
+		int issueid = intent.getIssueId();
 		modelIssue = new IssueModel(getApplicationContext(), connectionid,null);
-
 		form.setValue(modelIssue.fetchItem(issueid));
-
 	}
 }

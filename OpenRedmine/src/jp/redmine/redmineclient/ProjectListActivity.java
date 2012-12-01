@@ -1,17 +1,24 @@
 package jp.redmine.redmineclient;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.model.ProjectModel;
-import android.app.Activity;
+import jp.redmine.redmineclient.intent.ConnectionIntent;
+import jp.redmine.redmineclient.intent.ProjectIntent;
+import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.task.SelectProjectTask;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,28 +27,25 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ProjectListActivity extends Activity  {
+public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
 	public ProjectListActivity(){
 		super();
 	}
-	public static final String INTENT_INT_CONNECTION_ID = "CONNECTIONID";
 
 	private ArrayAdapter<RedmineProject> listAdapter;
-	private ProjectModel modelProject;
+	private RedmineProjectModel modelProject;
 	private SelectDataTask task;
 
 	@Override
 	protected void onDestroy() {
+		cancelTask();
+		super.onDestroy();
+	}
+	protected void cancelTask(){
 		// cleanup task
 		if(task != null && task.getStatus() == Status.RUNNING){
 			task.cancel(true);
 		}
-		// cleanup models
-		if(modelProject != null){
-			modelProject.finalize();
-			modelProject = null;
-		}
-		super.onDestroy();
 	}
 	/** Called when the activity is first created. */
 	@Override
@@ -49,9 +53,7 @@ public class ProjectListActivity extends Activity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connectionlist);
 
-		Intent intent = getIntent();
-		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
-		modelProject = new ProjectModel(getApplicationContext(), id);
+		modelProject = new RedmineProjectModel(getHelper());
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
 		listAdapter = new ArrayAdapter<RedmineProject>(
@@ -60,11 +62,6 @@ public class ProjectListActivity extends Activity  {
 
 		list.setAdapter(listAdapter);
 
-		onReload();
-
-		if(listAdapter.getCount() == 0){
-			onRefresh();
-		}
 
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,37 +89,56 @@ public class ProjectListActivity extends Activity  {
 		*/
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		onReload();
+		if(listAdapter.getCount() == 0){
+			onRefresh();
+		}
+	}
+
 	protected void onReload(){
 		listAdapter.notifyDataSetInvalidated();
 		listAdapter.clear();
-		for (RedmineProject i : modelProject.fetchAllData()){
-			listAdapter.add(i);
+		ConnectionIntent intent = new ConnectionIntent(getIntent());
+		int id = intent.getConnectionId();
+		try {
+			for (RedmineProject i : modelProject.fetchAll(id)){
+				listAdapter.add(i);
+			}
+		} catch (SQLException e) {
+			Log.e("ProjectListActivity","onReload",e);
 		}
 		listAdapter.notifyDataSetChanged();
 	}
 
 	protected void onItemSelect(RedmineProject item) {
 
-		Intent intent = new Intent( getApplicationContext(), IssueListActivity.class );
-		intent.putExtra(IssueListActivity.INTENT_INT_CONNECTION_ID, item.getConnectionId());
-		intent.putExtra(IssueListActivity.INTENT_INT_PROJECT_ID, item.getId());
-		startActivity( intent );
+		ProjectIntent intent = new ProjectIntent( getApplicationContext(), IssueListActivity.class );
+		intent.setConnectionId(item.getConnectionId());
+		intent.setProjectId(item.getId());
+		startActivity( intent.getIntent() );
 	}
 	protected void onRefresh(){
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		Intent intent = getIntent();
-		int id = intent.getIntExtra(INTENT_INT_CONNECTION_ID, -1);
 		task = new SelectDataTask(this);
-		task.execute(id);
+		task.execute();
 	}
 
-	private class SelectDataTask extends AsyncTask<Integer, Integer, Integer> {
+	private class SelectDataTask extends SelectProjectTask {
 		private ProgressDialog dialog;
 		private Context parentContext;
 		public SelectDataTask(final Context tex){
 			parentContext = tex;
+			helper = getHelper();
+			ConnectionIntent intent = new ConnectionIntent(getIntent());
+			int id = intent.getConnectionId();
+			ConnectionModel mConnection = new ConnectionModel(tex);
+			connection = mConnection.getItem(id);
+			mConnection.finalize();
 		}
 		// can use UI thread here
 		@Override
@@ -132,14 +148,9 @@ public class ProjectListActivity extends Activity  {
 			dialog.show();
 		}
 
-		@Override
-		protected Integer doInBackground(Integer ... params) {
-			modelProject.fetchRemoteData();
-			return 0;
-		}
 		// can use UI thread here
 		@Override
-		protected void onPostExecute(Integer b) {
+		protected void onPostExecute(List<RedmineProject> b) {
 			onReload();
 			if (dialog.isShowing()) {
 				dialog.dismiss();

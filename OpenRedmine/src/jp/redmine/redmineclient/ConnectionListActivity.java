@@ -6,6 +6,7 @@ import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -34,6 +36,7 @@ public class ConnectionListActivity extends Activity {
 	static final String DIALOG_PARAM_ID = "ID";
 	static final String DIALOG_PARAM_NAME = "NAME";
 	private NotificationManager notifManager;
+	private View mFooter;
 	private ArrayAdapter<RedmineConnection> listAdapter;
 
 	private ConnectionModel modelConnection;
@@ -63,9 +66,8 @@ public class ConnectionListActivity extends Activity {
 				this,android.R.layout.simple_list_item_1
 				,new ArrayList<RedmineConnection>());
 
+		list.addFooterView(getAddView());
 		list.setAdapter(listAdapter);
-
-		onReload();
 
 		//リスト項目がクリックされた時の処理
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -87,10 +89,33 @@ public class ConnectionListActivity extends Activity {
 		});
 	}
 
+	protected View getAddView(){
+		if (mFooter == null) {
+			mFooter = getLayoutInflater()
+				.inflate(R.layout.listview_add,null);
+			mFooter.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onItemNew();
+				}
+			});
+
+		}
+		return mFooter;
+
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		onReload();
+	}
+
 	protected void onItemSelect(int id){
-		Intent intent = new Intent( getApplicationContext(), ProjectListActivity.class );
-		intent.putExtra(ProjectListActivity.INTENT_INT_CONNECTION_ID, id);
-		startActivity( intent );
+		ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ProjectListActivity.class );
+		intent.setConnectionId(id);
+		startActivity( intent.getIntent() );
 	}
 	@Override
 	protected void onResume() {
@@ -106,9 +131,9 @@ public class ConnectionListActivity extends Activity {
 		onItemEdit(-1);
 	}
 	protected void onItemEdit(int itemid){
-		Intent intent = new Intent( getApplicationContext(), ConnectionActivity.class );
-		intent.putExtra(ConnectionActivity.INTENT_INT_ID, itemid);
-		startActivity( intent );
+		ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ConnectionActivity.class );
+		intent.setConnectionId(itemid);
+		startActivity( intent.getIntent() );
 	}
 
 	protected void onItemDelete(int itemid){
@@ -189,6 +214,10 @@ public class ConnectionListActivity extends Activity {
 				listAdapter.add(i);
 			}
 			listAdapter.notifyDataSetChanged();
+			if(b.size() < 1){
+				Intent i = new Intent(getApplication(), ConnectionActivity.class);
+				startActivity(i);
+			}
 
 		}
 

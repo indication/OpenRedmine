@@ -26,21 +26,24 @@ public class ConnectionHelper {
 			new UsernamePasswordCredentials(auth.getId(), auth.getPass()));
 	}
 
-	public static DefaultHttpClient createHttpClient(ClientParam settings) {
-
+	public static SchemeRegistry getSchemeRegistry(boolean isTrustAll, String certkey) {
 		SchemeRegistry registry = new SchemeRegistry();
-		registry.register(new Scheme("http", new PlainSocketFactory(), settings.getHttpPort()));
+		registry.register(new Scheme("http", new PlainSocketFactory(), 80));
 		SocketFactory https_socket =
-			  settings.isSLLTrustAll() 				? new FakeSocketFactory()
-			: settings.getCertKey() != null			? new FakeSocketFactory(settings.getCertKey())
+				isTrustAll 				? new FakeSocketFactory()
+			: certkey != null			? new FakeSocketFactory(certkey)
 			: SSLSocketFactory.getSocketFactory();
-		registry.register(new Scheme("https", https_socket, settings.getHttpsPort()));
+		registry.register(new Scheme("https", https_socket, 443));
+		return registry;
 
+	}
+	public static DefaultHttpClient createHttpClient(ClientParam settings) {
 		HttpParams httpparams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpparams, settings.getTimeout());
 		HttpConnectionParams.setSoTimeout(httpparams, settings.getTimeout());
 		DefaultHttpClient httpclient = new DefaultHttpClient(
-				new ThreadSafeClientConnManager(httpparams, registry)
+				new ThreadSafeClientConnManager(httpparams
+						, getSchemeRegistry(settings.isSLLTrustAll(),settings.getCertKey()))
 				, httpparams);
 
 		return httpclient;

@@ -2,53 +2,26 @@ package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
 
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
-import android.util.Log;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 
-public class ParserTracker extends BaseParser<RedmineConnection,RedmineTracker> {
-	//private final String TAG = this.toString();
+public class ParserTracker extends BaseParserInternal<RedmineConnection,RedmineTracker> {
 
 	@Override
-	public void parse(RedmineConnection con) throws XmlPullParserException, IOException {
-		super.parse(con);
-		int eventType = xml.getEventType();
-		RedmineTracker item = null;
-		Log.d("ParserTracker","start parse");
-		while (eventType != XmlPullParser.END_DOCUMENT) {
-			eventType = xml.next();
-			switch (eventType){
-			case XmlPullParser.START_DOCUMENT:
-				Log.d("ParserTracker","START_DOCUMENT");
-				break;
-			case XmlPullParser.START_TAG:
-				Log.d("ParserTracker","START_TAG ".concat(xml.getName()));
-				if("tracker".equalsIgnoreCase(xml.getName())){
-					item = new RedmineTracker();
-				} else if(item != null){
-					parseInternal(item);
-				}
-				break;
-			case XmlPullParser.END_TAG:
-				Log.d("ParserTracker","END_TAG ".concat(xml.getName()));
-				if("tracker".equalsIgnoreCase(xml.getName())){
-					notifyDataCreation(con,item);
-					item = null;
-				}
-				break;
-			case XmlPullParser.TEXT:
-				Log.d("ParserTracker","TEXT ".concat(xml.getText()));
-				break;
-			}
-		}
-
+	protected String getProveTagName() {
+		return "tracker";
 	}
 
-	private void parseInternal(RedmineTracker item) throws XmlPullParserException, IOException{
+	@Override
+	protected RedmineTracker getNewProveTagItem() {
+		return new RedmineTracker();
+	}
+
+	@Override
+	protected void parseInternal(RedmineConnection con, RedmineTracker item)
+			throws XmlPullParserException, IOException{
 		if(xml.getDepth() <= 2)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){

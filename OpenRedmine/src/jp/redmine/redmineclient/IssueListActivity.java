@@ -134,7 +134,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		@Override
 		protected void onPostExecute(List<RedmineIssue> issues) {
 			helperAddItems(listAdapter, issues);
-			getFooter().setVisibility(View.INVISIBLE);
+			getFooter().setVisibility(View.GONE);
 		}
 	}
 	@Override

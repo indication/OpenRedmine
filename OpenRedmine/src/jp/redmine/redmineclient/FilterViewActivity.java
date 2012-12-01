@@ -9,7 +9,6 @@ import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.FilterListAdapterModel;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.RadioButton;

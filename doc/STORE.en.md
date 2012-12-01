@@ -16,6 +16,7 @@ CAUTION:
 
 Features:
 * Allow to connect UNSAFE SSL sites powered by transdroid
+* Connection via gzip(compresstion)
 * View issues offline
 * Get API key from web site
 
@@ -27,7 +28,6 @@ Working:
 * Filter issues from remote or local
 
 Known issues:
-* Crashes switching on loading issues
 * App cannot close when the last activity is finished
 
 Release planing:

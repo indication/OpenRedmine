@@ -104,7 +104,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		listAdapter.clear();
 		listAdapter.notifyDataSetChanged();
 		task = new SelectDataTask();
-		task.execute(0,20);
+		task.execute(0,10,1);
 	}
 
 	private class SelectDataTask extends SelectIssueTask {
@@ -168,7 +168,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			if(lastPos == totalItemCount)
 				return;
 			task = new SelectDataTask();
-			task.execute(totalItemCount,10);
+			task.execute(totalItemCount,20);
 			lastPos = totalItemCount;
 		}
 	}

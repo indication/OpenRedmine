@@ -39,6 +39,7 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 	protected List<RedmineIssue> doInBackground(Integer... params) {
 		long offset = params[0];
 		long limit = params[1];
+		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
 		List<RedmineIssue> issues = null;
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
 		RedmineIssueModel mIssue = new RedmineIssueModel(helper);
@@ -54,7 +55,8 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 			if(filter.getFirst() == null || cal.after(filter.getFirst()))
 				filter.setFetched(0);
 				*/
-			if((offset+limit) > filter.getFetched())
+			long fetched = (isRest) ? 0 : filter.getFetched();
+			if((offset+limit) > fetched)
 				isRemote = true;
 
 			if(isRemote){
@@ -74,7 +76,7 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 					}
 				});
 
-				filter.setFetched(parser.getCount()+filter.getFetched());
+				filter.setFetched(parser.getCount()+fetched);
 				filter.setLast(new Date());
 				mFilter.updateCurrent(filter);
 			}

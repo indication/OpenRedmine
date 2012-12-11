@@ -3,7 +3,6 @@ package jp.redmine.redmineclient;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
 import jp.redmine.redmineclient.intent.ConnectionIntent;
-import jp.redmine.redmineclient.intent.ConnectionNaviIntent;
 import jp.redmine.redmineclient.intent.ConnectionNaviResultIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 
@@ -54,10 +53,12 @@ public class ConnectionActivity extends Activity {
 				String url = form.getUrl();
 				if("".equals(url))
 					return;
-				ConnectionNaviIntent load = new ConnectionNaviIntent( getApplicationContext(), ConnectionNaviActivity.class );
+				ConnectionNaviResultIntent load = new ConnectionNaviResultIntent( getApplicationContext(), ConnectionNaviActivity.class );
 				load.setUrl(url);
 				load.setAuthID(form.getAuthID());
 				load.setAuthPassword(form.getAuthPassword());
+				load.setToken(form.getToken());
+				load.setUnsafeSSL(form.isUnsafeConnection());
 				startActivityForResult(load.getIntent(), ACTIVITY_SUB);
 			}
 		});

@@ -60,6 +60,8 @@ public class ConnectionNaviActivity extends Activity {
 
 		ConnectionNaviResultIntent intent = new ConnectionNaviResultIntent(getIntent());
 		form.setDefaultAuthentication(intent.getAuthID(),intent.getAuthPassword());
+		form.setUnsafeSSL(intent.isUnsafeSSL());
+		form.setApiKey(intent.getToken());
 		form.loadUrl(intent.getUrl());
 	}
 

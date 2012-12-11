@@ -92,6 +92,9 @@ public class RedmineConnectionActivityForm extends FormHelper {
 		checkUnsafeConnection.setChecked(flag);
 		performSetEnabled(formPermitUnsafe,flag);
 	}
+	public boolean isUnsafeConnection(){
+		return checkUnsafeConnection.isChecked();
+	}
 	public void setAuthentication(boolean flag){
 		checkHttpAuth.setChecked(flag);
 		performSetEnabled(formHttpAuth,flag);
@@ -104,6 +107,9 @@ public class RedmineConnectionActivityForm extends FormHelper {
 	}
 	public void setToken(String token){
 		editToken.setText(token);
+	}
+	public String getToken(){
+		return editToken.getText().toString();
 	}
 
 	public void setValue(RedmineConnection rd){

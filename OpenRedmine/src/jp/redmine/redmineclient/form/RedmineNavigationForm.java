@@ -66,15 +66,22 @@ public class RedmineNavigationForm extends FormHelper {
 	public boolean isUnsafeSLL(){
 		return webClient != null ? webClient.isSSLError : false;
 	}
+	public void setUnsafeSSL(boolean isUnsafe){
+		if(webClient!=null)
+			webClient.isSSLError = isUnsafe;
+	}
 	public String getApiKey(){
 		return editToken.getText().toString();
+	}
+	public void setApiKey(String token){
+		editToken.setText(token);
 	}
 	protected void performAction(String token){
 		editToken.setText(token);
 		buttonSave.performClick();
 	}
 
-	@SuppressLint({ "HandlerLeak", "SetJavaScriptEnabled" })
+	@SuppressLint({ "SetJavaScriptEnabled" })
 	public void setupEvents(){
 		CustomWebChromeClient client = new CustomWebChromeClient();
 		webView.setWebViewClient(webClient);

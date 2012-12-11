@@ -85,6 +85,12 @@ public class RedmineIssue {
 		if(item.getPriority() != null)
 			item.getPriority().setConnectionId(item.getConnectionId());
 	}
+
+	static public void setupProjectId(RedmineIssue item){
+		if(item.getVersion() != null)
+			item.getVersion().setProject(item.getProject());
+
+	}
 	static public void setupJournals(RedmineIssue item){
 		int notenum = 0;
 		if(item.getJournals() == null)

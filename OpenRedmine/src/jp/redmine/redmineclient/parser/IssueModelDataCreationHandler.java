@@ -35,6 +35,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		data.setConnectionId(proj.getConnectionId());
 		data.setProject(proj);
 		RedmineIssue.setupConnectionId(data);
+		RedmineIssue.setupProjectId(data);
 		mTracker.refreshItem(data);
 		mVersion.refreshItem(data);
 		mUser.refreshItem(data);

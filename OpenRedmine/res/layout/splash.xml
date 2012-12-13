@@ -2,54 +2,49 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:layout_gravity="fill_vertical"
-    >
-<ScrollView
+    android:orientation="vertical" >
+
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1" >
-
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
-
-    <ImageView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-		android:scaleType="centerInside"
-		android:src="@drawable/ic_launcher"
-		android:contentDescription="@string/app_name"
-	/>
-	<TextView
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:text="@string/app_name"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-	/>
-
-
-</LinearLayout>
-
-</ScrollView>
-
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginBottom="10dp"
-	    android:gravity="center" >
-		<TextView
-		    android:layout_width="wrap_content"
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:text="@string/menu_powered_by_icon"
-		    android:textAppearance="?android:attr/textAppearanceSmall" />
-		<ImageView
-		    android:layout_width="wrap_content"
-		    android:layout_height="match_parent"
-		    android:layout_marginLeft="5dp"
-		    android:src="@drawable/badge" />
-	</LinearLayout>
+		    android:layout_gravity="fill_vertical"
+		    android:orientation="vertical" >
+			<TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:drawableTop="@drawable/ic_launcher"
+			    android:gravity="center"
+			    android:text="@string/app_name"
+			    android:textAppearance="?android:attr/textAppearanceLarge" >
+			</TextView>
+
+			<TextView
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="20dp"
+			    android:layout_marginRight="20dp"
+			    android:layout_marginTop="100dp"
+			    android:text="@string/message_first_time" >
+
+			</TextView>
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="20dp"
+        android:drawableRight="@drawable/badge"
+        android:gravity="right"
+        android:text="@string/menu_powered_by_icon"
+        android:textAppearance="?android:attr/textAppearanceSmall" >
+
+    </TextView>
+
 </LinearLayout>

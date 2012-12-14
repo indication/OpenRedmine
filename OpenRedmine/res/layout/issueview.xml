@@ -53,7 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dip"
             android:orientation="horizontal" >
-
+
+
             <TextView
                 android:id="@+id/textSubject"
                 android:layout_width="wrap_content"
@@ -143,7 +144,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ticket_progress" />
-
+
+
             <TextView
                 android:id="@+id/textProgress"
                 android:layout_width="wrap_content"
@@ -172,7 +174,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ticket_date" />
-
+
+
             <TextView
                 android:id="@+id/textDateFrom"
                 android:layout_width="wrap_content"
@@ -186,7 +189,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ticket_date_arrow" />
-
+
+
             <TextView
                 android:id="@+id/textDateTo"
                 android:layout_width="wrap_content"

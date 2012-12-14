@@ -22,7 +22,10 @@
 			    android:text="@string/app_name"
 			    android:textAppearance="?android:attr/textAppearanceLarge" >
 			</TextView>
-
+
+
+
+
 			<TextView
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
@@ -34,7 +37,12 @@
 			</TextView>
         </LinearLayout>
     </ScrollView>
-
+
+
+
+
+
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

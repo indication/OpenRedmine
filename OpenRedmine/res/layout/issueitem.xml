@@ -64,7 +64,8 @@
                 android:gravity="center_vertical"
                 android:text="description"
                 tools:ignore="HardcodedText" />
-
+
+
             <TextView
                 android:id="@+id/bottomtext"
                 android:layout_width="fill_parent"

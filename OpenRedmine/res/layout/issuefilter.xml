@@ -12,6 +12,35 @@
 	    android:orientation="horizontal" >
 
 	    <CheckBox
+	        android:id="@+id/viewStatus"
+	        style="@style/NewCheckBox"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="@string/ticket_status" />
+
+	    <CheckBox
+	        android:id="@+id/checkBoxStatus"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" />
+	</LinearLayout>
+
+    <ListView
+        android:id="@+id/listViewStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:visibility="gone" >
+
+    </ListView>
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+
+	    <CheckBox
 	        android:id="@+id/viewVersion"
 	        style="@style/NewCheckBox"
 	        android:layout_width="0dp"

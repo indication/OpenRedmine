@@ -5,18 +5,18 @@
 	<item
 		android:state_checked="true"
 		android:state_pressed="true"
-		android:drawable="@android:drawable/expander_ic_maximized" />
+		android:drawable="@drawable/expander_ic_maximized" />
 	<!-- (2) -->
 	<item
 		android:state_checked="true"
-		android:drawable="@android:drawable/expander_ic_maximized" />
+		android:drawable="@drawable/expander_ic_maximized" />
 	<!-- (3) -->
 	<item
 		android:state_checked="false"
 		android:state_pressed="true"
-		android:drawable="@android:drawable/expander_ic_minimized" />
+		android:drawable="@drawable/expander_ic_minimized" />
 	<!-- (4) -->
 	<item
 		android:state_checked="false"
-		android:drawable="@android:drawable/expander_ic_minimized" />
+		android:drawable="@drawable/expander_ic_minimized" />
 </selector>

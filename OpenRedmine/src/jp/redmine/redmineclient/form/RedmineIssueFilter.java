@@ -61,11 +61,11 @@ public class RedmineIssueFilter {
 
 	public void setup(Activity activity, DatabaseCacheHelper helper, int connection, long project){
 		Expander expStatus = generate(activity, R.id.checkBoxStatus,R.id.viewStatus,R.id.listViewStatus);
-		addList(expStatus,connection,project, new RedmineStatusModel(helper));
+		addList(expStatus,activity,connection,project, new RedmineStatusModel(helper));
 		Expander expVersion = generate(activity, R.id.checkBoxVersion,R.id.viewVersion,R.id.listViewVersion);
-		addList(expVersion,connection,project, new RedmineVersionModel(helper));
+		addList(expVersion,activity,connection,project, new RedmineVersionModel(helper));
 		//Expander expCategory = generate(activity, R.id.checkBoxCategory,R.id.viewCategory,R.id.listViewCategory);
-		//addList(expVersion,connection,project, new RedmineCategoryModel(helper));
+		//addList(expVersion,activity,connection,project, new RedmineCategoryModel(helper));
 
 	}
 	public void setupEvents(){
@@ -74,8 +74,9 @@ public class RedmineIssueFilter {
 		}
 	}
 
-	public void addList(Expander ex, int connection, long project, IMasterModel<? extends IMasterRecord> master ){
+	public void addList(Expander ex,Activity activity, int connection, long project, IMasterModel<? extends IMasterRecord> master ){
 		RedmineFilterListAdapter adapter = new RedmineFilterListAdapter(master,connection,project);
+		adapter.setupDummyItem(activity.getApplicationContext());
 		addList(ex, adapter);
 	}
 	public void addList(Expander ex, ListAdapter adapter ){

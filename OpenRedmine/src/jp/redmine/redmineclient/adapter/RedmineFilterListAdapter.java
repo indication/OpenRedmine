@@ -18,27 +18,85 @@ public class RedmineFilterListAdapter extends BaseAdapter {
 	private IMasterModel<? extends IMasterRecord> model;
 	protected int connection_id;
 	protected long project_id;
+	protected boolean addNone = false;
+	private DummySelection dummyitem;
+
+	class DummySelection implements IMasterRecord {
+		private String name;
+		private Long id;
+		@Override
+		public void setRemoteId(Long id) {
+		}
+		@Override
+		public Long getRemoteId() {
+			return null;
+		}
+
+		@Override
+		public void setName(String name) {
+			this.name = name;
+		}
+		@Override
+		public String getName() {
+			return name;
+		}
+
+		@Override
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		@Override
+		public Long getId() {
+			return id;
+		}
+	}
+
+	protected DummySelection getDummyItem(){
+		if(dummyitem == null)
+			setupDummyItem(null);
+		return dummyitem;
+	}
+	public void setupDummyItem(Context view){
+		DummySelection record = new DummySelection();
+		if(view == null)
+			record.setName("none");
+		else
+			record.setName(view.getString(R.string.filter_none));
+		record.setId(-1L);
+		dummyitem = record;
+	}
 
 	public RedmineFilterListAdapter(IMasterModel<? extends IMasterRecord> m, int connection, long project){
 		model = m;
 		connection_id = connection;
 		project_id = project;
+		addNone = true;
 	}
 
 	@Override
 	public int getCount() {
+		int count = addNone ? 1 : 0;
 		try {
-			return (int) model.countByProject(connection_id, project_id);
+			count += (int) model.countByProject(connection_id, project_id);
 		} catch (SQLException e) {
 			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"getCount" , e);
-			return 0;
 		}
+		return count;
 	}
 
 	@Override
 	public Object getItem(int position) {
+		int realpos = position - (addNone ? 1 : 0);
+		switch(position){
+		case 0:
+			if(addNone){
+				return getDummyItem();
+			}
+		default:
+		}
 		try {
-			return model.fetchItemByProject(connection_id, project_id, position, 1);
+			return model.fetchItemByProject(connection_id, project_id, realpos, 1);
 		} catch (SQLException e) {
 			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"getItem" , e);
 			return null;
@@ -47,7 +105,12 @@ public class RedmineFilterListAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		IMasterRecord rec = (IMasterRecord) getItem(position);
+		if(rec == null){
+			return -1;
+		} else {
+			return rec.getId();
+		}
 	}
 
 	@Override

@@ -54,5 +54,6 @@
 	<string name="menu_powered_by_icon">icons by</string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">キャンセル</string>
+	<string name="filter_none">選択なし</string>
 
 </resources>

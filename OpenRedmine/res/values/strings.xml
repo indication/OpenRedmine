@@ -55,5 +55,6 @@ After the setting, list up the connection.]]></string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">Cancel</string>
 	<string name="menu_filter">Filter</string>
+	<string name="filter_none">None</string>
 
 </resources>

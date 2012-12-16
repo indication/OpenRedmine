@@ -13,6 +13,7 @@
 
 	    <CheckBox
 	        android:id="@+id/viewVersion"
+	        style="@style/NewCheckBox"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
@@ -38,12 +39,15 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal" >
+
 	    <CheckBox
 	        android:id="@+id/viewCategory"
+	        style="@style/NewCheckBox"
 	        android:layout_width="0dp"
-	    	android:layout_weight="1"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
 	        android:text="@string/ticket_category" />
+
 	    <CheckBox
 	        android:id="@+id/checkBoxCategory"
 	        android:layout_width="wrap_content"

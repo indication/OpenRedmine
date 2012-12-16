@@ -2,108 +2,81 @@ package jp.redmine.redmineclient.adapter;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.entity.IMasterRecord;
-import jp.redmine.redmineclient.model.FilterListAdapterModel;
+import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class RedmineFilterListAdapter extends BaseExpandableListAdapter {
+public class RedmineFilterListAdapter extends BaseAdapter {
 
-	private FilterListAdapterModel adapter;
-	public RedmineFilterListAdapter(FilterListAdapterModel adapt){
-		adapter = adapt;
+	private IMasterModel<? extends IMasterRecord> model;
+	protected int connection_id;
+	protected long project_id;
 
+	public RedmineFilterListAdapter(IMasterModel<? extends IMasterRecord> m, int connection, long project){
+		model = m;
+		connection_id = connection;
+		project_id = project;
 	}
 
 	@Override
-	public Object getChild(int groupPosition, int childPosition) {
+	public int getCount() {
 		try {
-			return adapter.getChild(groupPosition, childPosition);
+			return (int) model.countByProject(connection_id, project_id);
 		} catch (SQLException e) {
-			Log.e("RedmineFilterListAdapter","getChild",e);
+			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"getCount" , e);
+			return 0;
 		}
-		return null;
 	}
 
 	@Override
-	public long getChildId(int groupPosition, int childPosition) {
-		return (getGroupId(groupPosition) | childPosition) ;
+	public Object getItem(int position) {
+		try {
+			return model.fetchItemByProject(connection_id, project_id, position, 1);
+		} catch (SQLException e) {
+			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"getItem" , e);
+			return null;
+		}
 	}
 
 	@Override
-	public View getChildView(int groupPosition, int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
-		RadioButton radio = (RadioButton)convertView;
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
 		if( convertView == null ){
-			radio = new RadioButton(parent.getContext());
-			convertView = radio;
+			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = infalInflater.inflate(android.R.layout.simple_list_item_1, null);
 		}
-		IMasterRecord rec = (IMasterRecord)getChild(groupPosition, childPosition);
-		if(rec!=null)
-			radio.setText(rec.getName());
+		setupData(position, convertView);
 		return convertView;
 	}
 
-	@Override
-	public int getChildrenCount(int groupPosition) {
-		try {
-			return adapter.getChildCount(groupPosition);
-		} catch (SQLException e) {
-			Log.e("RedmineFilterListAdapter","getChildrenCount",e);
+	protected void setupData(int position,View convertView){
+		if( convertView == null )
+			return;
+		TextView text = (TextView)convertView.findViewById(android.R.id.text1);
+		IMasterRecord rec = null;
+		if(convertView.getTag() == null || !(convertView.getTag() instanceof IMasterRecord)){
+			rec = (IMasterRecord)getItem(position);
+			convertView.setTag(rec);
+		} else {
+			rec = (IMasterRecord)convertView.getTag();
 		}
-		return 0;
-	}
-
-	@Override
-	public Object getGroup(int groupPosition) {
-		return adapter.getGroup(groupPosition);
-	}
-
-	@Override
-	public int getGroupCount() {
-		return adapter.getGroupCount();
-	}
-
-	@Override
-	public long getGroupId(int groupPosition) {
-		return groupPosition << 16;
-	}
-
-	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
-		/*
-		CheckBox check = (CheckBox)convertView;
-		if( convertView == null ){
-			check = new CheckBox(parent.getContext());
-			convertView = check;
+		if(rec == null){
+			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"setupData");
+			return;
 		}
-		*/
-		TextView check = (TextView)convertView;
-		if( convertView == null ){
-			check = new TextView(parent.getContext());
-			convertView = check;
-		}
-
-		String rec = (String)getGroup(groupPosition);
-		if(rec!=null)
-			check.setText(rec);
-		return convertView;
+		text.setText(rec.getName());
 	}
 
-	@Override
-	public boolean hasStableIds() {
-		return true;
-	}
-
-	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return true;
-	}
 
 }

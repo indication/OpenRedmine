@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.adapter;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import android.content.Context;
@@ -54,7 +55,7 @@ public class RedmineFilterListAdapter extends BaseAdapter {
 		if( convertView == null ){
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(android.R.layout.simple_list_item_1, null);
+			convertView = infalInflater.inflate(android.R.layout.simple_list_item_single_choice, null);
 		}
 		setupData(position, convertView);
 		return convertView;

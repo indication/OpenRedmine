@@ -1,239 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+	<HorizontalScrollView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+		<LinearLayout
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal" >
+		     <TextView
+		         android:id="@+id/textIsueId"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:layout_marginLeft="3dip"
+		         android:text="#0000"
+		         android:textAppearance="?android:attr/textAppearanceLarge"
+		         tools:ignore="HardcodedText" />
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="3dip" >
+		     <TextView
+		         android:id="@+id/textSubject"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:layout_marginLeft="5dp"
+		         android:text="Issue title here....allow multi-line..."
+		         android:textAppearance="?android:attr/textAppearanceLarge"
+		         tools:ignore="HardcodedText" />
+		</LinearLayout>
+	</HorizontalScrollView>
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        android:padding="3dip" >
 
-            <TextView
-                android:id="@+id/textPrivate"
-                style="@android:style/Widget.CompoundButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:background="#cc0000"
-                android:text="@string/ticket_private" />
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/textTracker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_tracker"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+	            <TextView
+	                android:id="@+id/textPrivate"
+	                style="@android:style/Widget.CompoundButton"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:background="#cc0000"
+	                android:text="@string/ticket_private" />
 
-            <TextView
-                android:id="@+id/textIsueId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="#0000"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/textAuthor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="@string/ticket_created_by" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dip"
-            android:orientation="horizontal" >
-
-
-            <TextView
-                android:id="@+id/textSubject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dip"
-                android:text="Issue title here....allow multi-line..."
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                tools:ignore="HardcodedText" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dip"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_status" />
-
-            <TextView
-                android:id="@+id/textStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="@string/ticket_progress"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                android:id="@+id/textPriority"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="@string/ticket_priority"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dip"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_assigned_to" />
-
-            <TextView
-                android:id="@+id/textAssignedTo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="@string/ticket_assigned_to"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dip"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_category" />
-
-            <TextView
-                android:id="@+id/textCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="@string/ticket_category"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_progress" />
+	            <TextView
+	                android:id="@+id/textTracker"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_tracker"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
-            <TextView
-                android:id="@+id/textProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="30%"
-                tools:ignore="HardcodedText" />
-
-            <ProgressBar
-                android:id="@+id/progressissue"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:max="100"
-                android:progress="30" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_date" />
+	            <TextView
+	                android:id="@+id/textAuthor"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="@string/ticket_created_by" />
+	        </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/textDateFrom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="2012-06-20"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_date_arrow" />
 
 
-            <TextView
-                android:id="@+id/textDateTo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="2012-06-30"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                tools:ignore="HardcodedText" />
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="3dip"
+	            android:orientation="horizontal" >
 
-        </LinearLayout>
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_status" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
-            android:orientation="horizontal" >
+	            <TextView
+	                android:id="@+id/textStatus"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="@string/ticket_progress"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ticket_version" />
+	            <TextView
+	                android:id="@+id/textPriority"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="@string/ticket_priority"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	        </LinearLayout>
 
-            <TextView
-                android:id="@+id/textVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dip"
-                android:text="@string/ticket_version"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="3dip"
+	            android:orientation="horizontal" >
 
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp" />
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_assigned_to" />
 
-        <TextView
-            android:id="@+id/textDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+	            <TextView
+	                android:id="@+id/textAssignedTo"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="@string/ticket_assigned_to"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	        </LinearLayout>
+
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="3dip"
+	            android:orientation="horizontal" >
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_category" />
+
+	            <TextView
+	                android:id="@+id/textCategory"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="@string/ticket_category"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	        </LinearLayout>
+
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dip"
+	            android:orientation="horizontal" >
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_progress" />
 
 
-    </LinearLayout>
+	            <TextView
+	                android:id="@+id/textProgress"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="30%"
+	                tools:ignore="HardcodedText" />
 
-</ScrollView>
+	            <ProgressBar
+	                android:id="@+id/progressissue"
+	                style="?android:attr/progressBarStyleHorizontal"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:max="100"
+	                android:progress="30" />
+	        </LinearLayout>
+
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dip"
+	            android:orientation="horizontal" >
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_date" />
+
+
+	            <TextView
+	                android:id="@+id/textDateFrom"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="2012-06-20"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                tools:ignore="HardcodedText" />
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_date_arrow" />
+
+
+	            <TextView
+	                android:id="@+id/textDateTo"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="2012-06-30"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                tools:ignore="HardcodedText" />
+
+	        </LinearLayout>
+
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="5dip"
+	            android:orientation="horizontal" >
+
+	            <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/ticket_version" />
+
+	            <TextView
+	                android:id="@+id/textVersion"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="3dip"
+	                android:text="@string/ticket_version"
+	                android:textAppearance="?android:attr/textAppearanceMedium" />
+	        </LinearLayout>
+
+	        <ProgressBar
+	            android:id="@+id/progressBar1"
+	            style="?android:attr/progressBarStyleHorizontal"
+	            android:layout_width="fill_parent"
+	            android:layout_height="1dp" />
+
+	        <TextView
+	            android:id="@+id/textDescription"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Description here. This area may long content."
+	            tools:ignore="HardcodedText" />
+	    </LinearLayout>
+
+	</ScrollView>
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- referenced http://wikiwiki.jp/android/?%A5%DC%A5%BF%A5%F3%A4%CE%B2%E8%C1%FC%CA%D1%B9%B9(CheckBox%2CRadioButton) -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+	<!-- (1) -->
+	<item
+		android:state_checked="true"
+		android:state_pressed="true"
+		android:drawable="@android:drawable/expander_ic_maximized" />
+	<!-- (2) -->
+	<item
+		android:state_checked="true"
+		android:drawable="@android:drawable/expander_ic_maximized" />
+	<!-- (3) -->
+	<item
+		android:state_checked="false"
+		android:state_pressed="true"
+		android:drawable="@android:drawable/expander_ic_minimized" />
+	<!-- (4) -->
+	<item
+		android:state_checked="false"
+		android:drawable="@android:drawable/expander_ic_minimized" />
+</selector>

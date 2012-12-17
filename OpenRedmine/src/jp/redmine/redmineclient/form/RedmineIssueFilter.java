@@ -9,6 +9,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
+import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 
@@ -29,6 +30,8 @@ public class RedmineIssueFilter {
 		RedmineIssueFilterExpander expCategory = generate(activity, R.id.checkBoxCategory,R.id.viewCategory,R.id.listViewCategory);
 		addList(expCategory,activity,connection,project, new RedmineCategoryModel(helper));
 
+		RedmineIssueFilterExpander expTracker = generate(activity, R.id.checkBoxTracker,R.id.viewTracker,R.id.listViewTracker);
+		addList(expTracker,activity,connection,project, new RedmineTrackerModel(helper));
 	}
 	public void setupEvents(){
 		for(RedmineIssueFilterExpander ex : lists){

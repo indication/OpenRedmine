@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -13,7 +14,7 @@ import jp.redmine.redmineclient.entity.RedmineStatus;
 import android.util.Log;
 
 
-public class RedminePriorityModel {
+public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 	protected Dao<RedminePriority, Integer> dao;
 	public RedminePriorityModel(DatabaseCacheHelper helper) {
 		try {
@@ -105,5 +106,36 @@ public class RedminePriorityModel {
 			}
 		}
 		return data;
+	}
+	@Override
+	public long countByProject(int connection_id, long project_id) throws SQLException {
+		QueryBuilder<RedminePriority, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedminePriority.CONNECTION, connection_id)
+				//.and()
+				//.eq(RedmineStatus.PROJECT_ID, project_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	@Override
+	public RedminePriority fetchItemByProject(int connection_id,
+			long project_id, long offset, long limit) throws SQLException {
+		QueryBuilder<RedminePriority, ?> builder = dao.queryBuilder();
+		builder
+			.limit(limit)
+			.offset(offset)
+			.orderBy(RedminePriority.NAME, true)
+			.where()
+				.eq(RedminePriority.CONNECTION, connection_id)
+				//.and()
+				//.eq(RedmineStatus.PROJECT_ID, project_id)
+				;
+		RedminePriority item = builder.queryForFirst();
+		if(item == null)
+			item = new RedminePriority();
+		return item;
 	}
 }

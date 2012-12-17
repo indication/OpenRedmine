@@ -7,6 +7,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineFilterListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
+import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.IMasterRecord;
@@ -21,10 +22,12 @@ public class RedmineIssueFilter {
 	public void setup(Activity activity, DatabaseCacheHelper helper, int connection, long project){
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.checkBoxStatus,R.id.viewStatus,R.id.listViewStatus);
 		addList(expStatus,activity,connection,project, new RedmineStatusModel(helper));
+
 		RedmineIssueFilterExpander expVersion = generate(activity, R.id.checkBoxVersion,R.id.viewVersion,R.id.listViewVersion);
 		addList(expVersion,activity,connection,project, new RedmineVersionModel(helper));
-		//Expander expCategory = generate(activity, R.id.checkBoxCategory,R.id.viewCategory,R.id.listViewCategory);
-		//addList(expVersion,activity,connection,project, new RedmineCategoryModel(helper));
+
+		RedmineIssueFilterExpander expCategory = generate(activity, R.id.checkBoxCategory,R.id.viewCategory,R.id.listViewCategory);
+		addList(expCategory,activity,connection,project, new RedmineCategoryModel(helper));
 
 	}
 	public void setupEvents(){

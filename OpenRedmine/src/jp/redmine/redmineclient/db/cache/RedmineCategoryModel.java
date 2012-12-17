@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 
 
-public class RedmineCategoryModel {
+public class RedmineCategoryModel implements IMasterModel<RedmineProjectCategory> {
 	protected Dao<RedmineProjectCategory, Integer> dao;
 	public RedmineCategoryModel(DatabaseCacheHelper helper) {
 		try {
@@ -102,5 +103,36 @@ public class RedmineCategoryModel {
 			}
 		}
 		return data;
+	}
+	@Override
+	public long countByProject(int connection_id, long project_id) throws SQLException {
+		QueryBuilder<RedmineProjectCategory, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedmineProjectCategory.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineProjectCategory.PROJECT_ID, project_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	@Override
+	public RedmineProjectCategory fetchItemByProject(int connection_id,
+			long project_id, long offset, long limit) throws SQLException {
+		QueryBuilder<RedmineProjectCategory, ?> builder = dao.queryBuilder();
+		builder
+			.limit(limit)
+			.offset(offset)
+			.orderBy(RedmineProjectCategory.NAME, true)
+			.where()
+				.eq(RedmineProjectCategory.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineProjectCategory.PROJECT_ID, project_id)
+				;
+		RedmineProjectCategory item = builder.queryForFirst();
+		if(item == null)
+			item = new RedmineProjectCategory();
+		return item;
 	}
 }

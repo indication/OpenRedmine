@@ -5,11 +5,12 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineProjectCategory {
+public class RedmineProjectCategory implements IMasterRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
-	public final static String CATEGORY_ID = "project_id";
+	public final static String CATEGORY_ID = "category_id";
 	public final static String NAME = "name";
+	public final static String PROJECT_ID = "project_id";
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -159,6 +160,18 @@ public class RedmineProjectCategory {
 	 */
 	public Integer getConnectionId() {
 		return connection_id;
+	}
+
+
+	@Override
+	public void setRemoteId(Long id) {
+		setCategoryId((id==null)? null : id.intValue());
+	}
+
+
+	@Override
+	public Long getRemoteId() {
+		return (long)getCategoryId();
 	}
 
 }

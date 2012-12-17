@@ -8,13 +8,14 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 
 
-public class RedmineTrackerModel {
+public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 	protected Dao<RedmineTracker, Integer> dao;
 	public RedmineTrackerModel(DatabaseCacheHelper helper) {
 		try {
@@ -105,6 +106,38 @@ public class RedmineTrackerModel {
 			}
 		}
 		return project;
+	}
+
+	@Override
+	public long countByProject(int connection_id, long project_id) throws SQLException {
+		QueryBuilder<RedmineTracker, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedmineTracker.CONNECTION, connection_id)
+				//.and()
+				//.eq(RedmineStatus.PROJECT_ID, project_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	@Override
+	public RedmineTracker fetchItemByProject(int connection_id,
+			long project_id, long offset, long limit) throws SQLException {
+		QueryBuilder<RedmineTracker, ?> builder = dao.queryBuilder();
+		builder
+			.limit(limit)
+			.offset(offset)
+			.orderBy(RedmineTracker.NAME, true)
+			.where()
+				.eq(RedmineTracker.CONNECTION, connection_id)
+				//.and()
+				//.eq(RedmineStatus.PROJECT_ID, project_id)
+				;
+		RedmineTracker item = builder.queryForFirst();
+		if(item == null)
+			item = new RedmineTracker();
+		return item;
 	}
 
 }

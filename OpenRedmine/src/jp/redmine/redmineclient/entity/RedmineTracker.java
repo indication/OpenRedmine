@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineTracker {
+public class RedmineTracker implements IMasterRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String STATUS_ID = "tracker_id";
@@ -117,6 +117,18 @@ public class RedmineTracker {
 	 */
 	public Integer getConnectionId() {
 		return connection_id;
+	}
+
+
+	@Override
+	public void setRemoteId(Long id) {
+		setTrackerId((id==null)?null:id.intValue());
+	}
+
+
+	@Override
+	public Long getRemoteId() {
+		return (long)getTrackerId();
 	}
 
 }

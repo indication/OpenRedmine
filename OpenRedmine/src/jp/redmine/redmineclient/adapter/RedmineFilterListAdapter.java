@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
+import jp.redmine.redmineclient.entity.DummySelection;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import android.content.Context;
 import android.util.Log;
@@ -21,36 +22,6 @@ public class RedmineFilterListAdapter extends BaseAdapter {
 	protected boolean addNone = false;
 	private DummySelection dummyitem;
 
-	class DummySelection implements IMasterRecord {
-		private String name;
-		private Long id;
-		@Override
-		public void setRemoteId(Long id) {
-		}
-		@Override
-		public Long getRemoteId() {
-			return null;
-		}
-
-		@Override
-		public void setName(String name) {
-			this.name = name;
-		}
-		@Override
-		public String getName() {
-			return name;
-		}
-
-		@Override
-		public void setId(Long id) {
-			this.id = id;
-		}
-
-		@Override
-		public Long getId() {
-			return id;
-		}
-	}
 
 	protected DummySelection getDummyItem(){
 		if(dummyitem == null)

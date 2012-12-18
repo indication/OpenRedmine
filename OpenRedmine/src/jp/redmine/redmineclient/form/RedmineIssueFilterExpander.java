@@ -49,9 +49,15 @@ public class RedmineIssueFilterExpander {
 			list.setAdapter(adapter);
 		}
 	}
+	public IMasterRecord getSelectedItem(){
+		int pos = list.getCheckedItemPosition();
+		if(pos < 0 || adapter == null)
+			return null;
+		return (IMasterRecord) adapter.getItem(pos);
+	}
 	public void selectItem(IMasterRecord rec){
 		list.clearChoices();
-		if(rec == null){
+		if(rec == null || adapter == null){
 			list.setItemChecked(0, true);
 			return;
 		}
@@ -67,5 +73,6 @@ public class RedmineIssueFilterExpander {
 			list.setItemChecked(position, true);
 		}
 	}
+
 
 }

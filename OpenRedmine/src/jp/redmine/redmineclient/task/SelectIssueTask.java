@@ -44,7 +44,7 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
 		RedmineIssueModel mIssue = new RedmineIssueModel(helper);
 		try {
-			RedmineFilter filter = mFilter.fetchByCurrnt(connection.getId(), project);
+			RedmineFilter filter = mFilter.fetchByCurrnt(connection.getId(), project.getProjectId());
 			if(filter == null)
 				filter = mFilter.generateDefault(connection.getId(), project);
 

@@ -39,7 +39,7 @@ public class RedmineFilterModel {
 		return item;
 	}
 
-	public RedmineFilter fetchByCurrnt(int connection,RedmineProject project) throws SQLException{
+	public RedmineFilter fetchByCurrnt(int connection,long project) throws SQLException{
 		RedmineFilter item;
 		QueryBuilder<RedmineFilter, Integer> builder = dao.queryBuilder();
 		Where<RedmineFilter, Integer> where = builder.where()
@@ -59,16 +59,16 @@ public class RedmineFilterModel {
 		RedmineFilter item = new RedmineFilter();
 		item.setConnectionId(connection);
 		item.setProject(project);
-		item.setCurrent(true);
 		item.setDefault(true);
 		item.setFirst(new Date());
 		return item;
 	}
 	public void updateCurrent(RedmineFilter filter) throws SQLException{
-		RedmineFilter current = fetchByCurrnt(filter.getConnectionId(),filter.getProject());
+		RedmineFilter current = fetchByCurrnt(filter.getConnectionId(),filter.getProjectId());
 		if(current != null && current.getId() != filter.getId()){
 			current.setCurrent(false);
 			dao.update(current);
+			filter.setCurrent(true);
 		}
 		dao.createOrUpdate(filter);
 	}

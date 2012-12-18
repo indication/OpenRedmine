@@ -162,6 +162,14 @@ public class RedmineFilter {
 		return project;
 	}
 
+	/**
+	 * @return project
+	 */
+	public Long getProjectId() {
+		if(project == null)
+			return null;
+		return project.getId();
+	}
 
 	/**
 	 * @param connection_id セットする connection_id

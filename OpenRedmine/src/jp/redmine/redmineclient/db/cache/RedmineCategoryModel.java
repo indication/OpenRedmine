@@ -13,7 +13,7 @@ import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 
 
 public class RedmineCategoryModel implements IMasterModel<RedmineProjectCategory> {
-	protected Dao<RedmineProjectCategory, Integer> dao;
+	protected Dao<RedmineProjectCategory, Long> dao;
 	public RedmineCategoryModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineProjectCategory.class);
@@ -47,7 +47,7 @@ public class RedmineCategoryModel implements IMasterModel<RedmineProjectCategory
 		return item;
 	}
 
-	public RedmineProjectCategory fetchById(int id) throws SQLException{
+	public RedmineProjectCategory fetchById(long id) throws SQLException{
 		RedmineProjectCategory item;
 		item = dao.queryForId(id);
 		if(item == null)
@@ -68,7 +68,7 @@ public class RedmineCategoryModel implements IMasterModel<RedmineProjectCategory
 		int count = dao.delete(item);
 		return count;
 	}
-	public int delete(int id) throws SQLException{
+	public int delete(long id) throws SQLException{
 		int count = dao.deleteById(id);
 		return count;
 	}

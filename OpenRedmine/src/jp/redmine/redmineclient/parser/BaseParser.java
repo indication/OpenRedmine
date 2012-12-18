@@ -54,7 +54,6 @@ abstract public class BaseParser<CON,TYPE> {
 		}
 		int eventType = xml.getEventType();
 		onParseStart(con);
-		Log.d("BaseParser","start parse");
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			eventType = xml.next();
 			switch (eventType){
@@ -65,11 +64,11 @@ abstract public class BaseParser<CON,TYPE> {
 				onDocumentEnd(con);
 				break;
 			case XmlPullParser.START_TAG:
-				Log.d("BaseParser","START_TAG ".concat(xml.getName()));
+				//Log.d("BaseParser","START_TAG ".concat(xml.getName()));
 				onTagStart(con);
 				break;
 			case XmlPullParser.END_TAG:
-				Log.d("BaseParser","END_TAG ".concat(xml.getName()));
+				//Log.d("BaseParser","END_TAG ".concat(xml.getName()));
 				onTagEnd(con);
 				break;
 			case XmlPullParser.TEXT:

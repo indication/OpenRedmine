@@ -36,6 +36,7 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		long projectid = intent.getProjectId();
 		form.setup(this,getHelper(),connectionid,projectid);
 		form.setupEvents();
+		form.setFilter(getHelper(), connectionid, projectid);
 		super.onStart();
 	}
 }

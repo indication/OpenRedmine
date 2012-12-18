@@ -24,6 +24,12 @@ public class RemoteUrlIssues extends RemoteUrl {
 	public void filterStatus(String status){
 		params.put("status_id", status);
 	}
+	public void filterPriority(String priority) {
+		params.put("priority_id", priority);
+	}
+	public void filterCategory(String category) {
+		params.put("category_id", category);
+	}
 
 	public void filterAssigned(String assigned_to_id){
 		params.put("assigned_to_id", assigned_to_id);
@@ -33,6 +39,9 @@ public class RemoteUrlIssues extends RemoteUrl {
 	}
 	public void filterTracker(String tracker){
 		params.put("tracker_id", tracker);
+	}
+	public void filterVersion(String version) {
+		params.put("version_id", version);
 	}
 
 	public void filterProject(String status){

@@ -84,8 +84,12 @@ public class RedmineFilterModel {
 		if(filter.getTracker() != null)
 			url.filterTracker(String.valueOf(filter.getTracker().getTrackerId()));
 
-		//if(filter.getPriority() != null)
-		//	url.filter(filter.getPriority().getPriorityId().toString());
+		if(filter.getPriority() != null)
+			url.filterPriority(String.valueOf(filter.getPriority().getPriorityId()));
+		if(filter.getCategory() != null)
+			url.filterCategory(String.valueOf(filter.getCategory().getCategoryId()));
+		if(filter.getVersion() != null)
+			url.filterVersion(String.valueOf(filter.getVersion().getVersionId()));
 		//@todo
 		url.addSort("id", false);
 

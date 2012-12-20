@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.form;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import android.app.Activity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -27,6 +28,31 @@ public class RedmineIssueFilterExpander {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				list.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+			}
+		});
+		checkbox.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CompoundButton buttonView = (CompoundButton) v;
+				if(buttonView.isChecked()){
+					if(buttonView.getTag() != null){
+						int pos = (Integer)buttonView.getTag();
+
+						list.clearChoices();
+						list.setItemChecked(pos, true);
+					}
+				} else {
+					if(list.getCheckedItemPosition() >= 0){
+						int pos = list.getCheckedItemPosition();
+						buttonView.setTag(pos);
+						list.clearChoices();
+						list.setItemChecked(0, true);
+					} else {
+						buttonView.setTag(null);
+					}
+				}
+
+
 			}
 		});
 		list.setOnItemClickListener(new OnItemClickListener() {

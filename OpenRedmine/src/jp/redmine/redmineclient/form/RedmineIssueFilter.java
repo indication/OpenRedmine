@@ -21,13 +21,17 @@ import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 
 import android.app.Activity;
+import android.widget.Button;
 import android.widget.ListAdapter;
 
 public class RedmineIssueFilter {
 	private HashMap<String,RedmineIssueFilterExpander> dic = new HashMap<String,RedmineIssueFilterExpander>();
+	public Button buttonSave;
 
 
 	public void setup(Activity activity, DatabaseCacheHelper helper, int connection, long project){
+		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
+
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.checkBoxStatus,R.id.viewStatus,R.id.listViewStatus);
 		addList(expStatus,activity,connection,project, new RedmineStatusModel(helper));
 
@@ -40,10 +44,12 @@ public class RedmineIssueFilter {
 		RedmineIssueFilterExpander expTracker = generate(activity, R.id.checkBoxTracker,R.id.viewTracker,R.id.listViewTracker);
 		addList(expTracker,activity,connection,project, new RedmineTrackerModel(helper));
 	}
+
 	public void setupEvents(){
 		for(RedmineIssueFilterExpander ex: dic.values()){
 			ex.setupEvent();
 		}
+
 	}
 
 	public void addList(RedmineIssueFilterExpander ex,Activity activity, int connection, long project, IMasterModel<? extends IMasterRecord> master ){
@@ -107,7 +113,7 @@ public class RedmineIssueFilter {
 		try {
 			filter = mFilter.fetchByCurrnt(connection, project);
 		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
+			// TODO 自動生成された catch ブロチE��
 			e.printStackTrace();
 		}
 		setFilter(filter);

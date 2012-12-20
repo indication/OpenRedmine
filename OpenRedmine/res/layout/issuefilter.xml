@@ -1,126 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"
+    	android:orientation="vertical" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
-	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal" >
+            <CheckBox
+                android:id="@+id/viewStatus"
+                style="@style/NewCheckBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ticket_status" />
 
-	    <CheckBox
-	        android:id="@+id/viewStatus"
-	        style="@style/NewCheckBox"
-	        android:layout_width="0dp"
+		    <CheckBox
+		        android:id="@+id/checkBoxStatus"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+		</LinearLayout>
+
+	    <ListView
+	        android:id="@+id/listViewStatus"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/ticket_status" />
+	        android:choiceMode="singleChoice"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="10dp"
+	        android:visibility="gone" >
 
-	    <CheckBox
-	        android:id="@+id/checkBoxStatus"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
+	    </ListView>
+
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal" >
+
+		    <CheckBox
+		        android:id="@+id/viewVersion"
+		        style="@style/NewCheckBox"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/ticket_version" />
+
+		    <CheckBox
+		        android:id="@+id/checkBoxVersion"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+		</LinearLayout>
+
+	    <ListView
+	        android:id="@+id/listViewVersion"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:choiceMode="singleChoice"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="10dp"
+	        android:visibility="gone" >
+
+	    </ListView>
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal" >
+
+		    <CheckBox
+		        android:id="@+id/viewCategory"
+		        style="@style/NewCheckBox"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/ticket_category" />
+
+		    <CheckBox
+		        android:id="@+id/checkBoxCategory"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+		</LinearLayout>
+
+	    <ListView
+	        android:id="@+id/listViewCategory"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:choiceMode="singleChoice"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="10dp"
+	        android:visibility="gone" >
+
+	    </ListView>
+		<LinearLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal" >
+
+		    <CheckBox
+		        android:id="@+id/viewTracker"
+		        style="@style/NewCheckBox"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/ticket_tracker" />
+
+		    <android.widget.Switch
+		        android:id="@+id/switch1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+
+		    <CheckBox
+		        android:id="@+id/checkBoxTracker"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content" />
+		</LinearLayout>
+
+	    <ListView
+	        android:id="@+id/listViewTracker"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:choiceMode="singleChoice"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="10dp"
+	        android:visibility="gone" >
+
+	    </ListView>
 	</LinearLayout>
 
-    <ListView
-        android:id="@+id/listViewStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:visibility="gone" >
-
-    </ListView>
-	<LinearLayout
+	<Button
+	    android:id="@+id/buttonSave"
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal" >
-
-	    <CheckBox
-	        android:id="@+id/viewVersion"
-	        style="@style/NewCheckBox"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/ticket_version" />
-
-	    <CheckBox
-	        android:id="@+id/checkBoxVersion"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
-	</LinearLayout>
-
-    <ListView
-        android:id="@+id/listViewVersion"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:visibility="gone" >
+	    android:text="@string/menu_setting_button_save" />
 
-    </ListView>
-	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal" >
-
-	    <CheckBox
-	        android:id="@+id/viewCategory"
-	        style="@style/NewCheckBox"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/ticket_category" />
-
-	    <CheckBox
-	        android:id="@+id/checkBoxCategory"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
-	</LinearLayout>
-
-    <ListView
-        android:id="@+id/listViewCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:visibility="gone" >
-
-    </ListView>
-	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal" >
-
-	    <CheckBox
-	        android:id="@+id/viewTracker"
-	        style="@style/NewCheckBox"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/ticket_tracker" />
-
-	    <CheckBox
-	        android:id="@+id/checkBoxTracker"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" />
-	</LinearLayout>
-
-    <ListView
-        android:id="@+id/listViewTracker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:visibility="gone" >
-
-    </ListView>
 
 </LinearLayout>

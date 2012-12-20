@@ -39,7 +39,7 @@ public class RedmineFilterModel {
 		return item;
 	}
 
-	public RedmineFilter fetchByCurrnt(int connection,long project) throws SQLException{
+	public RedmineFilter fetchByCurrent(int connection,long project) throws SQLException{
 		RedmineFilter item;
 		QueryBuilder<RedmineFilter, Integer> builder = dao.queryBuilder();
 		Where<RedmineFilter, Integer> where = builder.where()
@@ -64,7 +64,7 @@ public class RedmineFilterModel {
 		return item;
 	}
 	public void updateCurrent(RedmineFilter filter) throws SQLException{
-		RedmineFilter current = fetchByCurrnt(filter.getConnectionId(),filter.getProjectId());
+		RedmineFilter current = fetchByCurrent(filter.getConnectionId(),filter.getProjectId());
 		if(current != null && current.getId() != filter.getId()){
 			current.setCurrent(false);
 			dao.update(current);

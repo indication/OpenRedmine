@@ -111,9 +111,9 @@ public class RedmineIssueFilter {
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
 		RedmineFilter filter = null;
 		try {
-			filter = mFilter.fetchByCurrnt(connection, project);
+			filter = mFilter.fetchByCurrent(connection, project);
 		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロチE��
+			// TODO 自動生成された catch ブロチE��
 			e.printStackTrace();
 		}
 		setFilter(filter);

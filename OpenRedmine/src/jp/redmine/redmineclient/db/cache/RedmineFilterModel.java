@@ -68,8 +68,8 @@ public class RedmineFilterModel {
 		if(current != null && current.getId() != filter.getId()){
 			current.setCurrent(false);
 			dao.update(current);
-			filter.setCurrent(true);
 		}
+		filter.setCurrent(true);
 		dao.createOrUpdate(filter);
 	}
 

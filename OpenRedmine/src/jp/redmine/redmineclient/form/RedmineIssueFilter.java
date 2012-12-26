@@ -23,26 +23,41 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import android.app.Activity;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 
 public class RedmineIssueFilter {
 	private HashMap<String,RedmineIssueFilterExpander> dic = new HashMap<String,RedmineIssueFilterExpander>();
 	public Button buttonSave;
+	public TabHost tabHost;
 
+	protected void addTab(Activity context,int label,int container){
+		TabSpec spec1=tabHost.newTabSpec(context.getString(label));
+		spec1.setIndicator(context.getString(label));
+		spec1.setContent(container);
+		tabHost.addTab(spec1);
+	}
 
 	public void setup(Activity activity, DatabaseCacheHelper helper, int connection, long project){
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
+		tabHost=(TabHost)activity.findViewById(android.R.id.tabhost);
+		tabHost.setup();
 
-		RedmineIssueFilterExpander expStatus = generate(activity, R.id.checkBoxStatus,R.id.viewStatus,R.id.listViewStatus);
+		RedmineIssueFilterExpander expStatus = generate(activity, R.id.listViewStatus);
 		addList(expStatus,activity,connection,project, new RedmineStatusModel(helper));
+		addTab(activity,R.string.ticket_status,R.id.tab1);
 
-		RedmineIssueFilterExpander expVersion = generate(activity, R.id.checkBoxVersion,R.id.viewVersion,R.id.listViewVersion);
+		RedmineIssueFilterExpander expVersion = generate(activity,R.id.listViewVersion);
 		addList(expVersion,activity,connection,project, new RedmineVersionModel(helper));
+		addTab(activity,R.string.ticket_version,R.id.tab2);
 
-		RedmineIssueFilterExpander expCategory = generate(activity, R.id.checkBoxCategory,R.id.viewCategory,R.id.listViewCategory);
+		RedmineIssueFilterExpander expCategory = generate(activity, R.id.listViewCategory);
 		addList(expCategory,activity,connection,project, new RedmineCategoryModel(helper));
+		addTab(activity,R.string.ticket_category,R.id.tab3);
 
-		RedmineIssueFilterExpander expTracker = generate(activity, R.id.checkBoxTracker,R.id.viewTracker,R.id.listViewTracker);
+		RedmineIssueFilterExpander expTracker = generate(activity, R.id.listViewTracker);
 		addList(expTracker,activity,connection,project, new RedmineTrackerModel(helper));
+		addTab(activity,R.string.ticket_tracker,R.id.tab4);
 	}
 
 	public void setupEvents(){
@@ -61,9 +76,9 @@ public class RedmineIssueFilter {
 		ex.adapter = adapter;
 		dic.put(key, ex);
 	}
-	public RedmineIssueFilterExpander generate(Activity activity,int expanderid,int checkid,int listid){
+	public RedmineIssueFilterExpander generate(Activity activity,int listid){
 		RedmineIssueFilterExpander ex = new RedmineIssueFilterExpander();
-		ex.setup(activity, expanderid, checkid, listid);
+		ex.setup(activity, listid);
 		return ex;
 	}
 
@@ -113,7 +128,6 @@ public class RedmineIssueFilter {
 		try {
 			filter = mFilter.fetchByCurrent(connection, project);
 		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロチE��
 			e.printStackTrace();
 		}
 		setFilter(filter);

@@ -4,12 +4,35 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import jp.redmine.redmineclient.entity.RedmineFilter;
+
 import android.net.Uri;
 import android.text.format.DateFormat;
 
 public class RemoteUrlIssues extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
 
+	public static void setupFilter(RemoteUrlIssues url,RedmineFilter filter){
+		if(filter.getAssigned() != null)
+			url.filterAssigned(String.valueOf(filter.getAssigned().getUserId()));
+		if(filter.getAuthor() != null)
+			url.filterAuthor(String.valueOf(filter.getAuthor().getUserId()));
+
+		if(filter.getProject() != null)
+			url.filterProject(String.valueOf(filter.getProject().getProjectId()));
+		if(filter.getTracker() != null)
+			url.filterTracker(String.valueOf(filter.getTracker().getTrackerId()));
+
+		if(filter.getPriority() != null)
+			url.filterPriority(String.valueOf(filter.getPriority().getPriorityId()));
+		if(filter.getCategory() != null)
+			url.filterCategory(String.valueOf(filter.getCategory().getCategoryId()));
+		if(filter.getVersion() != null)
+			url.filterVersion(String.valueOf(filter.getVersion().getVersionId()));
+		//@todo
+		url.addSort("id", false);
+
+	}
 	public void filterLimit(int limit){
 		params.put("limit", Integer.toString(limit));
 	}

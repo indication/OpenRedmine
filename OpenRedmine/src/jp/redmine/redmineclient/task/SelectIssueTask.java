@@ -62,7 +62,7 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 			if(isRemote){
 				final ParserIssue parser = new ParserIssue();
 				RemoteUrlIssues url = new RemoteUrlIssues();
-				RedmineFilterModel.setupUrl(url, filter);
+				RemoteUrlIssues.setupFilter(url, filter);
 				url.filterOffset((int)offset);
 				url.filterLimit((int)limit);
 				fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {

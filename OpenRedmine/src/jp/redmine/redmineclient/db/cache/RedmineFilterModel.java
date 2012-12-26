@@ -13,7 +13,6 @@ import com.j256.ormlite.stmt.Where;
 
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
 
 public class RedmineFilterModel {
@@ -71,28 +70,6 @@ public class RedmineFilterModel {
 		}
 		filter.setCurrent(true);
 		dao.createOrUpdate(filter);
-	}
-
-	public static void setupUrl(RemoteUrlIssues url,RedmineFilter filter){
-		if(filter.getAssigned() != null)
-			url.filterAssigned(String.valueOf(filter.getAssigned().getUserId()));
-		if(filter.getAuthor() != null)
-			url.filterAuthor(String.valueOf(filter.getAuthor().getUserId()));
-
-		if(filter.getProject() != null)
-			url.filterProject(String.valueOf(filter.getProject().getProjectId()));
-		if(filter.getTracker() != null)
-			url.filterTracker(String.valueOf(filter.getTracker().getTrackerId()));
-
-		if(filter.getPriority() != null)
-			url.filterPriority(String.valueOf(filter.getPriority().getPriorityId()));
-		if(filter.getCategory() != null)
-			url.filterCategory(String.valueOf(filter.getCategory().getCategoryId()));
-		if(filter.getVersion() != null)
-			url.filterVersion(String.valueOf(filter.getVersion().getVersionId()));
-		//@todo
-		url.addSort("id", false);
-
 	}
 
 	public RedmineFilter fetchById(int id) throws SQLException{

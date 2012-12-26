@@ -11,6 +11,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
+import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
 
@@ -53,6 +54,20 @@ public class RedmineFilterModel {
 		item = dao.queryForFirst(builder.prepare());
 		return item;
 	}
+	public List<RedmineFilter> fetchAllByConnection(int connection) throws SQLException{
+		List<RedmineFilter> list;
+		QueryBuilder<RedmineFilter, Integer> builder = dao.queryBuilder();
+		Where<RedmineFilter, Integer> where = builder.where()
+				.eq(RedmineFilter.CONNECTION, connection)
+				;
+		builder.setWhere(where);
+		Log.d("RedmineFilter",builder.prepareStatementString());
+		list = dao.query(builder.prepare());
+		if(list==null){
+			list = new ArrayList<RedmineFilter>();
+		}
+		return list;
+	}
 
 	public RedmineFilter generateDefault(int connection,RedmineProject project){
 		RedmineFilter item = new RedmineFilter();
@@ -70,6 +85,59 @@ public class RedmineFilterModel {
 		}
 		filter.setCurrent(true);
 		dao.createOrUpdate(filter);
+	}
+	public void updateSynonym(RedmineFilter filter) throws SQLException{
+		RedmineFilter target = filter;
+		Compare<RedmineProject> compareProject = new Compare<RedmineProject>(){
+			@Override
+			public boolean isSameInner(RedmineProject a, RedmineProject b) {
+				return a.getId() == b.getId();
+			}
+		};
+		Compare<IMasterRecord> compareMaster = new Compare<IMasterRecord>(){
+			@Override
+			public boolean isSameInner(IMasterRecord a, IMasterRecord b) {
+				return a.getId() == b.getId();
+			}
+		};
+		for(RedmineFilter item : fetchAllByConnection(filter.getConnectionId())){
+			if(!compareProject.isSame(filter.getProject(), item.getProject()))
+				continue;
+			if(!compareMaster.isSame(filter.getCategory(), item.getCategory()))
+				continue;
+			if(!compareMaster.isSame(filter.getVersion(), item.getVersion()))
+				continue;
+			if(!compareMaster.isSame(filter.getTracker(), item.getTracker()))
+				continue;
+			if(!compareMaster.isSame(filter.getStatus(), item.getStatus()))
+				continue;
+
+			target = item;
+			break;
+		}
+		updateCurrent(target);
+	}
+
+	abstract class Compare<T>{
+		public abstract boolean isSameInner(T a,T b);
+		public boolean isSideNull(T a,T b){
+			return (a != null && b == null) || (a == null && b != null);
+		}
+		public boolean isBothNotNull(T a,T b){
+			return a != null && b != null;
+		}
+		public boolean isBothNull(T a,T b){
+			return a == null && b == null;
+		}
+		public boolean isSame(T a,T b){
+			if(isSideNull(a,b))
+				return false;
+			if(isBothNull(a,b))
+				return true;
+			if(!isSameInner(a,b))
+				return false;
+			return true;
+		}
 	}
 
 	public RedmineFilter fetchById(int id) throws SQLException{

@@ -216,7 +216,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				ProjectIntent send = new ProjectIntent( getApplicationContext(), FilterViewActivity.class );
 				send.setConnectionId(intent.getConnectionId());
 				send.setProjectId(intent.getProjectId());
-				startActivity( send.getIntent() );
+				startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
 				return true;
 			}
 		}

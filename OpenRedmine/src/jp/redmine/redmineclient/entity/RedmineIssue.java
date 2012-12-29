@@ -1,5 +1,3 @@
-
-
 package jp.redmine.redmineclient.entity;
 
 import java.util.Date;
@@ -465,6 +463,34 @@ public class RedmineIssue {
 	 */
 	public void setJournals(RedmineJournal journals[]) {
 		this.journals = journals;
+	}
+
+	/**
+	 * @param data_modified セットする data_modified
+	 */
+	public void setDataModified(Date data_modified) {
+		this.data_modified = data_modified;
+	}
+
+	/**
+	 * @return data_modified
+	 */
+	public Date getDataModified() {
+		return data_modified;
+	}
+
+	/**
+	 * @param additional_modified セットする additional_modified
+	 */
+	public void setAdditionalModified(Date additional_modified) {
+		this.additional_modified = additional_modified;
+	}
+
+	/**
+	 * @return additional_modified
+	 */
+	public Date getAdditionalModified() {
+		return additional_modified;
 	}
 
 

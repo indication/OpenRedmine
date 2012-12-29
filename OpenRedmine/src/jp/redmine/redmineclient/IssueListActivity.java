@@ -31,7 +31,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
-	implements OnScrollListener
 	{
 	public IssueListActivity(){
 		super();
@@ -71,7 +70,25 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		getFooter().setVisibility(View.INVISIBLE);
 		listView.setAdapter(listAdapter);
 
-		listView.setOnScrollListener(this);
+		listView.setOnScrollListener(new OnScrollListener() {
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+				int visibleItemCount, int totalItemCount) {
+				if (totalItemCount == firstVisibleItem + visibleItemCount) {
+					if(task != null && task.getStatus() == Status.RUNNING)
+						return;
+					if(lastPos == totalItemCount)
+						return;
+					task = new SelectDataTask();
+					task.execute(totalItemCount,20);
+					lastPos = totalItemCount;
+				}
+			}
+			@Override
+			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+
+			}
+		});
 
 		//リスト項目がクリックされた時の処理
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -205,19 +222,6 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	public void onScroll(AbsListView view, int firstVisibleItem,
-		int visibleItemCount, int totalItemCount) {
-		if (totalItemCount == firstVisibleItem + visibleItemCount) {
-			if(task != null && task.getStatus() == Status.RUNNING)
-				return;
-			if(lastPos == totalItemCount)
-				return;
-			task = new SelectDataTask();
-			task.execute(totalItemCount,20);
-			lastPos = totalItemCount;
-		}
-	}
-	public void onScrollStateChanged(AbsListView arg0, int arg1) {
 
 
 	@Override

@@ -15,6 +15,7 @@ import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectIssueTask;
+import android.content.Intent;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		super();
 	}
 
+	private static final int ACTIVITY_FILTER = 2001;
 	private ArrayAdapter<RedmineIssue> listAdapter;
 	private SelectDataTask task;
 	private View mFooter;
@@ -89,6 +91,11 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		});
 	}
 
+	@Override
+	protected void onStart() {
+		this.onRefresh(false);
+		super.onStart();
+	}
 	private View getFooter() {
 		if (mFooter == null) {
 			mFooter = getLayoutInflater()
@@ -97,7 +104,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		return mFooter;
 	}
 
-	protected void onRefresh(){
+	protected void onRefresh(boolean isFlush){
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
@@ -105,7 +112,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		listAdapter.clear();
 		listAdapter.notifyDataSetChanged();
 		task = new SelectDataTask();
-		task.execute(0,10,1);
+		task.execute(0,10,isFlush ? 1 : 0);
 	}
 
 	private class SelectDataTask extends SelectIssueTask {
@@ -183,7 +190,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		{
 			case R.id.menu_refresh:
 			{
-				this.onRefresh();
+				this.onRefresh(true);
 				return true;
 			}
 			case R.id.menu_issues_filter:
@@ -212,5 +219,17 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	}
 	public void onScrollStateChanged(AbsListView arg0, int arg1) {
 
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(requestCode){
+		case ACTIVITY_FILTER:
+			if(resultCode !=RESULT_OK )
+				break;
+			this.onRefresh(false);
+			break;
+		default:
+			break;
+		}
 	}
 }

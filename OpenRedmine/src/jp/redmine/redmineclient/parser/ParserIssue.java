@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -45,74 +46,42 @@ public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue>
 
 		} else if("project".equalsIgnoreCase(xml.getName())){
 			RedmineProject pj = new RedmineProject();
-			pj.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				pj.setProjectId(Integer.parseInt(id));
-			}
+			setMasterRecord(pj);
 			item.setProject(pj);
 
 		} else if("tracker".equalsIgnoreCase(xml.getName())){
 			RedmineTracker tk = new RedmineTracker();
-			tk.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				tk.setTrackerId(Integer.parseInt(id));
-			}
+			setMasterRecord(tk);
 			item.setTracker(tk);
 
 		} else if("status".equalsIgnoreCase(xml.getName())){
 			RedmineStatus tk = new RedmineStatus();
-			tk.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				tk.setStatusId(Integer.parseInt(id));
-			}
+			setMasterRecord(tk);
 			item.setStatus(tk);
 
 		} else if("priority".equalsIgnoreCase(xml.getName())){
 			RedminePriority tk = new RedminePriority();
-			tk.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				tk.setPriorityId(Integer.parseInt(id));
-			}
+			setMasterRecord(tk);
 			item.setPriority(tk);
 
 		} else if("category".equalsIgnoreCase(xml.getName())){
 			RedmineProjectCategory tk = new RedmineProjectCategory();
-			tk.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				tk.setCategoryId(Integer.parseInt(id));
-			}
+			setMasterRecord(tk);
 			item.setCategory(tk);
 
 		} else if("assigned_to".equalsIgnoreCase(xml.getName())){
 			RedmineUser tk = new RedmineUser();
-			tk.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				tk.setUserId(Integer.parseInt(id));
-			}
+			setMasterRecord(tk);
 			item.setAssigned(tk);
 
 		} else if("author".equalsIgnoreCase(xml.getName())){
 			RedmineUser tk = new RedmineUser();
-			tk.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				tk.setUserId(Integer.parseInt(id));
-			}
+			setMasterRecord(tk);
 			item.setAuthor(tk);
 
 		} else if("fixed_version".equalsIgnoreCase(xml.getName())){
 			RedmineProjectVersion tk = new RedmineProjectVersion();
-			tk.setName(xml.getAttributeValue("", "name"));
-			String id = xml.getAttributeValue("", "id");
-			if(!"".equals(id)){
-				tk.setVersionId(Integer.parseInt(id));
-			}
+			setMasterRecord(tk);
 			item.setVersion(tk);
 
 		} else if("start_date".equalsIgnoreCase(xml.getName())){
@@ -137,6 +106,15 @@ public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue>
 			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
 
+	}
+
+	protected void setMasterRecord(IMasterRecord item)
+		throws XmlPullParserException, IOException{
+		item.setName(xml.getAttributeValue("", "name"));
+		String id = xml.getAttributeValue("", "id");
+		if(!"".equals(id)){
+			item.setRemoteId(Long.parseLong(id));
+		}
 	}
 
 }

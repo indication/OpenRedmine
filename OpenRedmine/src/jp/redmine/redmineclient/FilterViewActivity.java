@@ -45,6 +45,13 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		form.setup(this,getHelper(),connectionid,projectid);
 		form.setupEvents();
 		form.setFilter(getHelper(), connectionid, projectid);
+		try {
+			RedmineFilterModel model = new RedmineFilterModel(getHelper());
+			RedmineFilter filter = model.fetchByCurrent(connectionid, projectid);
+			form.setFilter(filter);
+		} catch (SQLException e) {
+			Log.e("FilterViewActivity","onStart",e);
+		}
 		form.buttonSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

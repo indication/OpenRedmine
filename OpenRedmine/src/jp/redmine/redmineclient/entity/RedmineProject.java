@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineProject {
+public class RedmineProject implements IMasterRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
@@ -200,4 +200,14 @@ public class RedmineProject {
 		return connection_id;
 	}
 
+	@Override
+	public void setRemoteId(Long id) {
+		setProjectId((id==null)? null : id.intValue());
+	}
+
+
+	@Override
+	public Long getRemoteId() {
+		return (long)getProjectId();
+	}
 }

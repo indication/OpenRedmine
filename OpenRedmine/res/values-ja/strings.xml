@@ -48,12 +48,13 @@
 
 次に、リンクするRedmineを設定してください。
 設定が完了したら、一覧に接続先が表示されるようになります。 ]]></string>
-	<string name="menu_button_next">Next</string>
+	<string name="menu_button_next">次へ</string>
 	<string name="menu_setting_goto_redmine">取得</string>
 	<string name="menu_setting_message_accesstoken">ノート: アクセストークンを自動的に取得するには \"取得\"ボタンを押してください。</string>
 	<string name="menu_powered_by_icon">icons by</string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">キャンセル</string>
+	<string name="menu_filter">フィルタ</string>
 	<string name="filter_none">選択なし</string>
 
 </resources>

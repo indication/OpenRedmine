@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -214,10 +213,6 @@ public class ConnectionListActivity extends Activity {
 				listAdapter.add(i);
 			}
 			listAdapter.notifyDataSetChanged();
-			if(b.size() < 1){
-				Intent i = new Intent(getApplication(), ConnectionActivity.class);
-				startActivity(i);
-			}
 
 		}
 

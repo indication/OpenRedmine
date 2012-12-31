@@ -4,7 +4,7 @@
 	<string name="menu_settings">設定</string>
 	<string name="menu_access_to">接続</string>
 	<string name="menu_setting_label_accessurl">Redmine URL</string>
-	<string name="menu_setting_edit_accessurl">http://redmine.org/redmine</string>
+	<string name="menu_setting_edit_accessurl">http://www.redmine.org/redmine</string>
 	<string name="menu_setting_label_accesstoken">アクセストークン</string>
 	<string name="menu_setting_edit_accesstoken">0e7c82.... 40文字</string>
 	<string name="menu_setting_label_authid">ID</string>

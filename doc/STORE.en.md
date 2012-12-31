@@ -19,6 +19,7 @@ Features:
 * Connection via gzip(compresstion)
 * View issues offline
 * Get API key from web site
+* Filter (Status/Tracker/Category/Priority,Some of them also buggy)
 
 Now testing:
 * All of features
@@ -29,10 +30,10 @@ Working:
 
 Known issues:
 * App cannot close when the last activity is finished
+* Filter - Shows none when out of first view
 
 Release planing:
-* Filter v2 (Dec 2012)
-* Journals v3
+* Journals (2013/01)
 
 Thanks:
 * Great icons from Glyphish: http://glyphish.com

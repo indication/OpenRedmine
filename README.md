@@ -9,6 +9,7 @@ Features
 * Allow to connect UNSAFE SSL sites powered by transdroid
 * View issues offline
 * Get API key from web site
+* Filter (Status/Tracker/Category/Priority)
 
 
 Version

@@ -5,6 +5,7 @@ Release history
 v1.3
 ===========
 Fix transfer authentications on getting information via web site
+Add feature filter
 
 v1.2
 ===========

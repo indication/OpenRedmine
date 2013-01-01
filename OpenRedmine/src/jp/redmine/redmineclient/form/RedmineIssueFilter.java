@@ -31,9 +31,12 @@ public class RedmineIssueFilter {
 	public Button buttonSave;
 	public TabHost tabHost;
 
-	protected void addTab(Activity context,int label,int container){
+	protected void addTab(Activity context,int label,int container, Integer icon){
 		TabSpec spec1=tabHost.newTabSpec(context.getString(label));
-		spec1.setIndicator(context.getString(label));
+		if(icon == null)
+			spec1.setIndicator(context.getString(label));
+		else
+			spec1.setIndicator(context.getString(label),context.getResources().getDrawable(icon));
 		spec1.setContent(container);
 		tabHost.addTab(spec1);
 	}
@@ -45,19 +48,19 @@ public class RedmineIssueFilter {
 
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.listViewStatus);
 		addList(expStatus,activity,connection,project, new RedmineStatusModel(helper));
-		addTab(activity,R.string.ticket_status,R.id.tab1);
+		addTab(activity,R.string.ticket_status,R.id.tab1,R.drawable.runner);
 
 		RedmineIssueFilterExpander expVersion = generate(activity,R.id.listViewVersion);
 		addList(expVersion,activity,connection,project, new RedmineVersionModel(helper));
-		addTab(activity,R.string.ticket_version,R.id.tab2);
+		addTab(activity,R.string.ticket_version,R.id.tab2,R.drawable.flag);
 
 		RedmineIssueFilterExpander expCategory = generate(activity, R.id.listViewCategory);
 		addList(expCategory,activity,connection,project, new RedmineCategoryModel(helper));
-		addTab(activity,R.string.ticket_category,R.id.tab3);
+		addTab(activity,R.string.ticket_category,R.id.tab3,R.drawable.cabinet);
 
 		RedmineIssueFilterExpander expTracker = generate(activity, R.id.listViewTracker);
 		addList(expTracker,activity,connection,project, new RedmineTrackerModel(helper));
-		addTab(activity,R.string.ticket_tracker,R.id.tab4);
+		addTab(activity,R.string.ticket_tracker,R.id.tab4,R.drawable.stickynote);
 	}
 
 	public void setupEvents(){

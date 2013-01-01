@@ -6,7 +6,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
-import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 

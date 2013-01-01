@@ -8,6 +8,7 @@ import java.util.List;
 import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
@@ -15,16 +16,19 @@ import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
+import jp.redmine.redmineclient.parser.ParserCategory;
 import jp.redmine.redmineclient.parser.ParserProject;
 import jp.redmine.redmineclient.parser.ParserStatus;
 import jp.redmine.redmineclient.parser.ParserTracker;
 import jp.redmine.redmineclient.parser.ParserUser;
 import jp.redmine.redmineclient.parser.ParserVersion;
+import jp.redmine.redmineclient.url.RemoteUrlCategory;
 import jp.redmine.redmineclient.url.RemoteUrlProjects;
 import jp.redmine.redmineclient.url.RemoteUrlStatus;
 import jp.redmine.redmineclient.url.RemoteUrlTrackers;
@@ -71,6 +75,11 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
 					public void onData(RedmineConnection con,RedmineProject data) throws SQLException {
 						fetchVersions(data);
+					}
+				});
+				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
+					public void onData(RedmineConnection con,RedmineProject data) throws SQLException {
+						fetchCategory(data);
 					}
 				});
 				helperSetupParserStream(stream,parser);
@@ -136,6 +145,34 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 			}
 		});
 	}
+	protected void fetchCategory(final RedmineProject project){
+		final RedmineCategoryModel model = new RedmineCategoryModel(helper);
+		final RedmineUserModel modelUser = new RedmineUserModel(helper);
+		RemoteUrlCategory url = new RemoteUrlCategory();
+		url.setProject(project);
+
+		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+			@Override
+			public void onContent(RedmineConnection item, InputStream stream)
+					throws XmlPullParserException, IOException, SQLException {
+				ParserCategory parser = new ParserCategory();
+				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProjectCategory>() {
+					public void onData(RedmineConnection con,RedmineProjectCategory data) throws SQLException {
+						data.setConnectionId(con.getId());
+						RedmineUser currentuser = null;
+						while(currentuser == null){
+							currentuser = modelUser.fetchById(con.getId(), data.getAssignTo().getUserId());
+
+						}
+						data.setProject(project);
+						model.refreshItem(con,data);
+					}
+				});
+				helperSetupParserStream(stream,parser);
+				parser.parse(item);
+			}
+		});
+	}
 	protected void fetchUsers(){
 		final RedmineUserModel model = new RedmineUserModel(helper);
 		RemoteUrlUsers url = new RemoteUrlUsers();
@@ -158,13 +195,13 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 
 	@Override
 	protected void onErrorRequest(int statuscode) {
-		// TODO 自動生成されたメソッド・スタブ
+		// TODO 自動生成されたメソチE��・スタチE
 
 	}
 
 	@Override
 	protected void onProgress(int max, int proc) {
-		// TODO 自動生成されたメソッド・スタブ
+		// TODO 自動生成されたメソチE��・スタチE
 
 	}
 

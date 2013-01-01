@@ -125,7 +125,7 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 			}
 		});
 	}
-	protected void fetchVersions(RedmineProject project){
+	protected void fetchVersions(final RedmineProject project){
 		final RedmineVersionModel model = new RedmineVersionModel(helper);
 		RemoteUrlVersion url = new RemoteUrlVersion();
 		url.setProject(project);
@@ -137,6 +137,8 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 				ParserVersion parser = new ParserVersion();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProjectVersion>() {
 					public void onData(RedmineConnection con,RedmineProjectVersion data) throws SQLException {
+						data.setConnectionId(con.getId());
+						data.setProject(project);
 						model.refreshItem(con,data);
 					}
 				});
@@ -195,14 +197,10 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 
 	@Override
 	protected void onErrorRequest(int statuscode) {
-		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝・ラ繝ｻ繧ｹ繧ｿ繝・
-
 	}
 
 	@Override
 	protected void onProgress(int max, int proc) {
-		// TODO 閾ｪ蜍慕函謌舌＆繧後◆繝｡繧ｽ繝・ラ繝ｻ繧ｹ繧ｿ繝・
-
 	}
 
 }

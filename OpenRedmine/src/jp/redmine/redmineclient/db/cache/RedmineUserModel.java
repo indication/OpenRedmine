@@ -37,11 +37,11 @@ public class RedmineUserModel {
 		return item;
 	}
 
-	public RedmineUser fetchById(int connection, int statusId) throws SQLException{
+	public RedmineUser fetchById(int connection, int userId) throws SQLException{
 		PreparedQuery<RedmineUser> query = dao.queryBuilder().where()
 		.eq(RedmineUser.CONNECTION, connection)
 		.and()
-		.eq(RedmineUser.USER_ID, statusId)
+		.eq(RedmineUser.USER_ID, userId)
 		.prepare();
 		RedmineUser item = dao.queryForFirst(query);
 		if(item == null)

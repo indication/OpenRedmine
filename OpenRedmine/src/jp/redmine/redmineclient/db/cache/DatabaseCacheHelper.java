@@ -31,8 +31,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public static String getDatabasePath(Context context){
-    	//@todo: change store main storage by settings...
-    	return context.getExternalCacheDir().getPath() + "/" +DB_NAME;
+    	return context.getCacheDir().getPath() + "/" +DB_NAME;
     }
 	@Override
 	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {

@@ -27,13 +27,18 @@ public class ParserIssueWithJournals extends BaseParserInternal<RedmineIssue,Red
 			throws XmlPullParserException, IOException{
 
 
-		if(equalsTagName("created_on")){
-			journal.setCreated(TypeConverter.parseDateTime(getNextText()));
+		if("id".equalsIgnoreCase(xml.getName())){
+			String work = getNextText();
+			if("".equals(work))	return;
+			journal.setJournnalId(Integer.parseInt(work));
 		} else if(equalsTagName("user")){
 			RedmineUser user = new RedmineUser();
 			setMasterRecord(user);
-			//TODO must extend the field
-			//journal.setUser(user);
+			journal.setUser(user);
+		} else if(equalsTagName("user")){
+			journal.setNotes(getNextText());
+		} else if(equalsTagName("created_on")){
+			journal.setCreated(TypeConverter.parseDateTime(getNextText()));
 		}
 
 

@@ -18,10 +18,12 @@ public class RedmineJournal {
 	private int issue_id;
 	@DatabaseField(uniqueIndexName="journal_target")
 	private int journnal_id;
+    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
+	private RedmineUser user;
 	@DatabaseField
-	private int note_id;
+	private String notes;
 	@DatabaseField
-	private String content;
+	private String detail;
 	@DatabaseField
 	private Date created;
 	@DatabaseField
@@ -61,16 +63,28 @@ public class RedmineJournal {
 		this.journnal_id = journnal_id;
 	}
 	/**
-	 * @return content
+	 * @return detail
 	 */
-	public String getContent() {
-		return content;
+	public String getDetail() {
+		return detail;
 	}
 	/**
-	 * @param content セットする content
+	 * @param detail セットする detail
 	 */
-	public void setContent(String content) {
-		this.content = content;
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+	/**
+	 * @return notes
+	 */
+	public String getNotes() {
+		return notes;
+	}
+	/**
+	 * @param notes セットする notes
+	 */
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 	/**
 	 * @param created セットする created
@@ -125,16 +139,16 @@ public class RedmineJournal {
 		this.issue_id = issue_id;
 	}
 	/**
-	 * @return note_id
+	 * @return user
 	 */
-	public int getNoteId() {
-		return note_id;
+	public RedmineUser getUser() {
+		return user;
 	}
 	/**
-	 * @param note_id セットする note_id
+	 * @param user セットする user
 	 */
-	public void setNoteId(int note_id) {
-		this.note_id = note_id;
+	public void setUser(RedmineUser user) {
+		this.user = user;
 	}
 
 }

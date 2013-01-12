@@ -92,14 +92,11 @@ public class RedmineIssue {
 
 	}
 	static public void setupJournals(RedmineIssue item){
-		int notenum = 0;
 		if(item.getJournals() == null)
 			return;
 		for (RedmineJournal data : item.getJournals()){
-			notenum++;
 			data.setConnectionId(item.getConnectionId());
 			data.setIssueId(item.getId());
-			data.setNoteId(notenum);
 		}
 
 	}

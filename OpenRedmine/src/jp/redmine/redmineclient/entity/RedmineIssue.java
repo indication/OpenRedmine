@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient.entity;
 
 import java.util.Date;
+import java.util.List;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -61,7 +63,7 @@ public class RedmineIssue {
     @DatabaseField
     private Date additional_modified;
 
-	private RedmineJournal journals[];
+	private List<RedmineJournal> journals;
 
 	static public void setupConnectionId(RedmineIssue item){
 		if(item.getConnectionId() == null)
@@ -454,14 +456,14 @@ public class RedmineIssue {
 	/**
 	 * @return journals
 	 */
-	public RedmineJournal[] getJournals() {
+	public List<RedmineJournal> getJournals() {
 		return journals;
 	}
 
 	/**
 	 * @param journals セットする journals
 	 */
-	public void setJournals(RedmineJournal journals[]) {
+	public void setJournals(List<RedmineJournal> journals) {
 		this.journals = journals;
 	}
 

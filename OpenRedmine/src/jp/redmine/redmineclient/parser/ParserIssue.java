@@ -126,7 +126,7 @@ public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue>
 				Log.e("parserIssue","",e);
 			}
 			parserJournal.unregisterDataCreation(handler);
-			item.setJournals((RedmineJournal[])journals.toArray());
+			item.setJournals(journals);
 
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));

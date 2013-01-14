@@ -89,6 +89,7 @@ abstract public class BaseParser<CON,TYPE> {
 			}
 			eventType = xml.next();
 		}
+		onParseEnd(con);
 	}
 
 	public int getCount(){

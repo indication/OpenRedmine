@@ -8,7 +8,6 @@ OpenRedmine is an android Redmine client. alpha release.
 
 Requirement:
 * Redmine 1.2 later
-* External Storage(ex. SD card)
 
 CAUTION:
 * Cache data(downloaded issues) are stored WITHOUT encryption. To remove cache data immediately , open connection list - show menu - remove all cache 

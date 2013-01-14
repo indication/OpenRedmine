@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+v1.4
+===========
+Reduce permission to write sd card.
+
 v1.3
 ===========
 Fix transfer authentications on getting information via web site

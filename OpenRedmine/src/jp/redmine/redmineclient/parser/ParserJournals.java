@@ -2,17 +2,23 @@ package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
+
+import android.util.Log;
 
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
+import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJournal> {
 
+	private ParserJournalChanges parserDetails = new ParserJournalChanges();
 	@Override
 	protected String getProveTagName() {
 		return "journal";
@@ -39,6 +45,26 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 			journal.setNotes(getNextText());
 		} else if(equalsTagName("created_on")){
 			journal.setCreated(TypeConverter.parseDateTime(getNextText()));
+		} else if(equalsTagName("details")){
+			final List<RedmineJournalChanges> details = new ArrayList<RedmineJournalChanges>();
+			parserDetails.setXml(xml);
+			DataCreationHandler<RedmineJournal, RedmineJournalChanges> handler =
+				new DataCreationHandler<RedmineJournal, RedmineJournalChanges>() {
+				@Override
+				public void onData(RedmineJournal info, RedmineJournalChanges data)
+						throws SQLException {
+					details.add(data);
+				}
+			};
+
+			parserDetails.registerDataCreation(handler);
+			try {
+				parserDetails.parse(journal);
+			} catch (SQLException e) {
+				Log.e("parserIssue","",e);
+			}
+			parserDetails.unregisterDataCreation(handler);
+			journal.setDetails(details);
 		}
 
 

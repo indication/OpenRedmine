@@ -37,7 +37,7 @@ public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue>
 	@Override
 	protected void parseInternal(RedmineProject con, RedmineIssue item)
 			throws XmlPullParserException, IOException{
-		if(xml.getDepth() <= 2)
+		if(xml.getDepth() <= 1)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();

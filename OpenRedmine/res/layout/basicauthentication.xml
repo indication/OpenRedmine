@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/menu_setting_edit_authid"
+            android:singleLine="true"
             android:imeOptions="actionNext"  >
 
             <requestFocus />
@@ -44,6 +45,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/menu_setting_edit_authpasswd"
+            android:singleLine="true"
             android:imeOptions="actionDone"
             android:inputType="textPassword" />
 

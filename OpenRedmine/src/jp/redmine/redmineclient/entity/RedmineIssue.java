@@ -96,9 +96,11 @@ public class RedmineIssue {
 			return;
 		for (RedmineJournal data : item.getJournals()){
 			data.setConnectionId(item.getConnectionId());
-			data.setIssueId(item.getId());
+			data.setIssueId(item.getIssueId());
+			if(data.getUser() != null){
+				data.getUser().setConnectionId(item.getConnectionId());
+			}
 		}
-
 	}
 
 	/**

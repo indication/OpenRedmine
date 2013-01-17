@@ -11,6 +11,7 @@ import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineProject;
 
 public class IssueModelDataCreationHandler implements DataCreationHandler<RedmineProject,RedmineIssue> {
@@ -36,6 +37,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		data.setProject(proj);
 		RedmineIssue.setupConnectionId(data);
 		RedmineIssue.setupProjectId(data);
+		RedmineIssue.setupJournals(data);
 		mTracker.refreshItem(data);
 		mVersion.refreshItem(data);
 		mUser.refreshItem(data);
@@ -43,5 +45,12 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mPriority.refreshItem(data);
 		mCategory.refreshItem(data);
 		mIssue.refreshItem(proj,data);
+	}
+	public void onDataJournal(RedmineProject proj,RedmineIssue data) throws SQLException {
+		if(data.getJournals() == null)
+			return;
+		for (RedmineJournal journal : data.getJournals()){
+			mUser.refreshItem(journal);
+		}
 	}
 }

@@ -11,6 +11,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
 
@@ -80,6 +81,11 @@ public class RedmineUserModel {
 		data.setAssigned(item);
 		item = refreshItem(data.getConnectionId(),data.getAuthor());
 		data.setAuthor(item);
+	}
+	public void refreshItem(RedmineJournal data) throws SQLException{
+		RedmineUser item;
+		item = refreshItem(data.getConnectionId(),data.getUser());
+		data.setUser(item);
 	}
 
 	public RedmineUser refreshItem(RedmineConnection info,RedmineUser data) throws SQLException{

@@ -1,6 +1,14 @@
 package jp.redmine.redmineclient.entity;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.List;
+
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -22,8 +30,8 @@ public class RedmineJournal {
 	private RedmineUser user;
 	@DatabaseField
 	private String notes;
-	@DatabaseField
-	private String detail;
+	@DatabaseField(dataType = DataType.BYTE_ARRAY)
+	private byte[] detail;
 	@DatabaseField
 	private Date created;
 	@DatabaseField
@@ -65,14 +73,26 @@ public class RedmineJournal {
 	/**
 	 * @return detail
 	 */
-	public String getDetail() {
+	public byte[] getDetail() {
 		return detail;
 	}
 	/**
 	 * @param detail セットする detail
 	 */
-	public void setDetail(String detail) {
+	public void setDetail(byte[] detail) {
 		this.detail = detail;
+	}
+	public void setDetails(List<RedmineJournalChanges> details) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(details);
+		this.detail = baos.toByteArray();
+	}
+	@SuppressWarnings("unchecked")
+	public List<RedmineJournalChanges> getDetails() throws IOException, ClassNotFoundException {
+		ByteArrayInputStream baos = new ByteArrayInputStream(this.detail);
+		ObjectInputStream oos = new ObjectInputStream(baos);
+		return (List<RedmineJournalChanges>)oos.readObject();
 	}
 	/**
 	 * @return notes

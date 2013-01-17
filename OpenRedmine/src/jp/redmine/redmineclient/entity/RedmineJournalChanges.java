@@ -12,9 +12,22 @@ public class RedmineJournalChanges
 	 */
 	private static final long serialVersionUID = 2477102604577302259L;
 
+	private String property;
 	private String name;
 	private String before;
 	private String after;
+	/**
+	 * @return property
+	 */
+	public String getProperty() {
+		return property;
+	}
+	/**
+	 * @param property セットする property
+	 */
+	public void setProperty(String property) {
+		this.property = property;
+	}
 	/**
 	 * @param name セットする name
 	 */

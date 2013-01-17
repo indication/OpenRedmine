@@ -23,7 +23,7 @@ import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue> {
 
-	private ParserIssueWithJournals parserJournal = new ParserIssueWithJournals();
+	private ParserJournals parserJournal = new ParserJournals();
 	@Override
 	protected String getProveTagName() {
 		return "issue";

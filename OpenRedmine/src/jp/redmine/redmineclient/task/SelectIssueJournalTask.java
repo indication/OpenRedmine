@@ -22,7 +22,7 @@ import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
-public class SelectIssueJournalTask extends SelectDataTask<List<RedmineIssue>> {
+public class SelectIssueJournalTask extends SelectDataTask<RedmineIssue> {
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineProject project;

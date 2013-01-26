@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -50,50 +51,48 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 
 	@Override
 	protected List<RedmineProject> doInBackground(Integer... params) {
-		fetchProject();
-		fetchStatus();
-		fetchUsers();
-		fetchTracker();
+		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		fetchProject(client);
+		fetchStatus(client);
+		fetchUsers(client);
+		fetchTracker(client);
+		client.close();
 		return null;
 	}
 
-	protected void fetchProject(){
+	protected void fetchProject(SelectDataTaskConnectionHandler client){
 		final RedmineProjectModel model =
 			new RedmineProjectModel(helper);
 		RemoteUrlProjects url = new RemoteUrlProjects();
+		final List<RedmineProject> projects = new ArrayList<RedmineProject>();
 
-		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 			@Override
-			public void onContent(RedmineConnection item, InputStream stream)
+			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
 				ParserProject parser = new ParserProject();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
 					public void onData(RedmineConnection con,RedmineProject data) throws SQLException {
 						model.refreshItem(con,data);
-					}
-				});
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
-					public void onData(RedmineConnection con,RedmineProject data) throws SQLException {
-						fetchVersions(data);
-					}
-				});
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
-					public void onData(RedmineConnection con,RedmineProject data) throws SQLException {
-						fetchCategory(data);
+						projects.add(data);
 					}
 				});
 				helperSetupParserStream(stream,parser);
-				parser.parse(item);
+				parser.parse(connection);
 			}
 		});
+		for(RedmineProject project : projects){
+			fetchVersions(client,project);
+			fetchCategory(client,project);
+		}
 	}
-	protected void fetchStatus(){
+	protected void fetchStatus(SelectDataTaskConnectionHandler client){
 		final RedmineStatusModel model = new RedmineStatusModel(helper);
 		RemoteUrlStatus url = new RemoteUrlStatus();
 
-		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 			@Override
-			public void onContent(RedmineConnection item, InputStream stream)
+			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
 				ParserStatus parser = new ParserStatus();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineStatus>() {
@@ -102,17 +101,17 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 					}
 				});
 				helperSetupParserStream(stream,parser);
-				parser.parse(item);
+				parser.parse(connection);
 			}
 		});
 	}
-	protected void fetchTracker(){
+	protected void fetchTracker(SelectDataTaskConnectionHandler client){
 		final RedmineTrackerModel model = new RedmineTrackerModel(helper);
 		RemoteUrlTrackers url = new RemoteUrlTrackers();
 
-		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 			@Override
-			public void onContent(RedmineConnection item, InputStream stream)
+			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
 				ParserTracker parser = new ParserTracker();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTracker>() {
@@ -121,18 +120,18 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 					}
 				});
 				helperSetupParserStream(stream,parser);
-				parser.parse(item);
+				parser.parse(connection);
 			}
 		});
 	}
-	protected void fetchVersions(final RedmineProject project){
+	protected void fetchVersions(SelectDataTaskConnectionHandler client,final RedmineProject project){
 		final RedmineVersionModel model = new RedmineVersionModel(helper);
 		RemoteUrlVersion url = new RemoteUrlVersion();
 		url.setProject(project);
 
-		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 			@Override
-			public void onContent(RedmineConnection item, InputStream stream)
+			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
 				ParserVersion parser = new ParserVersion();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProjectVersion>() {
@@ -143,19 +142,19 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 					}
 				});
 				helperSetupParserStream(stream,parser);
-				parser.parse(item);
+				parser.parse(connection);
 			}
 		});
 	}
-	protected void fetchCategory(final RedmineProject project){
+	protected void fetchCategory(SelectDataTaskConnectionHandler client,final RedmineProject project){
 		final RedmineCategoryModel model = new RedmineCategoryModel(helper);
 		final RedmineUserModel modelUser = new RedmineUserModel(helper);
 		RemoteUrlCategory url = new RemoteUrlCategory();
 		url.setProject(project);
 
-		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 			@Override
-			public void onContent(RedmineConnection item, InputStream stream)
+			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
 				ParserCategory parser = new ParserCategory();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProjectCategory>() {
@@ -171,17 +170,17 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 					}
 				});
 				helperSetupParserStream(stream,parser);
-				parser.parse(item);
+				parser.parse(connection);
 			}
 		});
 	}
-	protected void fetchUsers(){
+	protected void fetchUsers(SelectDataTaskConnectionHandler client){
 		final RedmineUserModel model = new RedmineUserModel(helper);
 		RemoteUrlUsers url = new RemoteUrlUsers();
 
-		fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 			@Override
-			public void onContent(RedmineConnection item, InputStream stream)
+			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
 				ParserUser parser = new ParserUser();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineUser>() {
@@ -190,7 +189,7 @@ public class SelectProjectTask extends SelectDataTask<RedmineProject> {
 					}
 				});
 				helperSetupParserStream(stream,parser);
-				parser.parse(item);
+				parser.parse(connection);
 			}
 		});
 	}

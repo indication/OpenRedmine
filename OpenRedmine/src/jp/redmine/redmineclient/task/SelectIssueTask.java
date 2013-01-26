@@ -65,9 +65,10 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 				RemoteUrlIssues.setupFilter(url, filter);
 				url.filterOffset((int)offset);
 				url.filterLimit((int)limit);
-				fetchData(connection, url, new SelectDataTaskDataHandler<RedmineConnection>() {
+				SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+				fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 					@Override
-					public void onContent(RedmineConnection item, InputStream stream)
+					public void onContent(InputStream stream)
 							throws XmlPullParserException, IOException, SQLException {
 						IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
 						parser.registerDataCreation(handler);
@@ -75,6 +76,7 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 						parser.parse(project);
 					}
 				});
+				client.close();
 
 				filter.setFetched(parser.getCount()+fetched);
 				filter.setLast(new Date());

@@ -4,16 +4,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
+import jp.redmine.redmineclient.db.store.DatabaseHelper;
+import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
-import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import android.content.Intent;
 import android.os.AsyncTask.Status;
@@ -30,7 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
+public class IssueListActivity extends DbBaseActivity
 	{
 	public IssueListActivity(){
 		super();
@@ -138,11 +135,10 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			ProjectIntent intent = new ProjectIntent(getIntent());
 			int connectionid = intent.getConnectionId();
 			long projectid = intent.getProjectId();
-			helper = getHelper();
+			helper = getHelperCache();
 			try {
-				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
-				connection = mConnection.getItem(connectionid);
-				mConnection.finalize();
+				RedmineConnectionModel model = new RedmineConnectionModel(getHelperMulti(DatabaseHelper.class));
+				connection = model.fetchById(connectionid);
 				RedmineProjectModel mProject = new RedmineProjectModel(helper);
 				project = mProject.fetchById(projectid);
 			} catch (SQLException e) {

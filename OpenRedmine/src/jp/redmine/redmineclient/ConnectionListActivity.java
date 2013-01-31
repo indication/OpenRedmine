@@ -1,14 +1,14 @@
 package jp.redmine.redmineclient;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.intent.ConnectionIntent;
-import jp.redmine.redmineclient.model.ConnectionModel;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
@@ -26,7 +26,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ConnectionListActivity extends Activity {
+public class ConnectionListActivity extends  DbBaseActivity {
 	public ConnectionListActivity(){
 		super();
 	}
@@ -38,16 +38,6 @@ public class ConnectionListActivity extends Activity {
 	private View mFooter;
 	private ArrayAdapter<RedmineConnection> listAdapter;
 
-	private ConnectionModel modelConnection;
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if(modelConnection != null){
-			modelConnection.finalize();
-			modelConnection = null;
-		}
-	}
 
 	/** Called when the activity is first created. */
 	@Override
@@ -56,8 +46,6 @@ public class ConnectionListActivity extends Activity {
 		setContentView(R.layout.connectionlist);
 
 		notifManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-
-		modelConnection = new ConnectionModel(getApplicationContext());
 
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
@@ -136,7 +124,12 @@ public class ConnectionListActivity extends Activity {
 	}
 
 	protected void onItemDelete(int itemid){
-		modelConnection.deleteItem(itemid);
+		RedmineConnectionModel model = new RedmineConnectionModel(getHelper());
+		try {
+			model.delete(itemid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		onReload();
 	}
 
@@ -199,9 +192,22 @@ public class ConnectionListActivity extends Activity {
 
 
 	private class SelectDataTask extends AsyncTask<String, Integer, List<RedmineConnection>> {
+		private RedmineConnectionModel model;
+		@Override
+		protected void onPreExecute() {
+			model = new RedmineConnectionModel(getHelperStore());
+		}
 		@Override
 		protected List<RedmineConnection> doInBackground(String ... params) {
-			return modelConnection.fetchAllData();
+			List<RedmineConnection> projects = new ArrayList<RedmineConnection>();
+			try {
+				projects = model.fetchAll();
+			} catch (SQLException e) {
+				Log.e("SelectDataTask","doInBackground",e);
+			} catch (Throwable e) {
+				Log.e("SelectDataTask","doInBackground",e);
+			}
+			return projects;
 		}
 
 		// can use UI thread here

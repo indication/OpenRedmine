@@ -3,9 +3,6 @@ package jp.redmine.redmineclient;
 
 import java.sql.SQLException;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -16,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
+public class FilterViewActivity extends DbBaseActivity {
 	public FilterViewActivity(){
 		super();
 	}
@@ -42,11 +39,11 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		ProjectIntent intent = new ProjectIntent(getIntent());
 		final int connectionid = intent.getConnectionId();
 		final long projectid = intent.getProjectId();
-		form.setup(this,getHelper(),connectionid,projectid);
+		form.setup(this,getHelperCache(),connectionid,projectid);
 		form.setupEvents();
-		form.setFilter(getHelper(), connectionid, projectid);
+		form.setFilter(getHelperCache(), connectionid, projectid);
 		try {
-			RedmineFilterModel model = new RedmineFilterModel(getHelper());
+			RedmineFilterModel model = new RedmineFilterModel(getHelperCache());
 			RedmineFilter filter = model.fetchByCurrent(connectionid, projectid);
 			form.setFilter(filter);
 		} catch (SQLException e) {
@@ -62,7 +59,7 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				filter.setProject(project);
 				filter.setConnectionId(connectionid);
 
-				RedmineFilterModel model = new RedmineFilterModel(getHelper());
+				RedmineFilterModel model = new RedmineFilterModel(getHelperCache());
 				try {
 					model.updateSynonym(filter);
 				} catch (SQLException e) {

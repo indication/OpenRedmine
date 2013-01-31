@@ -1,19 +1,20 @@
 package jp.redmine.redmineclient;
 
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
 import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.intent.ConnectionNaviResultIntent;
-import jp.redmine.redmineclient.model.ConnectionModel;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class ConnectionActivity extends Activity {
+public class ConnectionActivity extends DbBaseActivity {
 	public ConnectionActivity(){
 		super();
 	}
@@ -21,24 +22,11 @@ public class ConnectionActivity extends Activity {
 	private static final int ACTIVITY_SUB = 1001;
 	private RedmineConnectionActivityForm form;
 
-	private ConnectionModel modelConnection;
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if(modelConnection != null){
-			modelConnection.finalize();
-			modelConnection = null;
-		}
-	}
-
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connection);
-
-		modelConnection = new ConnectionModel(getApplicationContext());
 
 		form = new RedmineConnectionActivityForm(this);
 		form.setupEvents();
@@ -81,7 +69,13 @@ public class ConnectionActivity extends Activity {
 		if (idEditing == -1)
 			return;
 
-		RedmineConnection con = modelConnection.getItem(idEditing);
+		RedmineConnectionModel model = new RedmineConnectionModel(getHelper());
+		RedmineConnection con = new RedmineConnection();
+		try {
+			con = model.fetchById(idEditing);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		if(con.getId() != null)
 		{
 			form.setValue(con);
@@ -95,9 +89,20 @@ public class ConnectionActivity extends Activity {
 	protected void completeSave(){
 		if(!form.Validate())
 			return;
+		RedmineConnectionModel model = new RedmineConnectionModel(getHelper());
 		RedmineConnection con = new RedmineConnection();
 		form.getValue(con);
-		modelConnection.updateItem(idEditing, con);
+		try {
+			if(idEditing == -1){
+				model.create(con);
+			} else {
+				con.setId(idEditing);
+				model.update(con);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 		//@todo tostring
 		Toast.makeText(getApplicationContext(),
 				"Has been saved.", Toast.LENGTH_SHORT).show();

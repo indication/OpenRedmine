@@ -1,27 +1,21 @@
 package jp.redmine.redmineclient;
 
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
-import jp.redmine.redmineclient.model.IssueModel;
-import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
-public class IssueViewActivity extends Activity  {
+public class IssueViewActivity extends DbBaseActivity  {
 	public IssueViewActivity(){
 		super();
 	}
 
-	private IssueModel modelIssue;
 	private RedmineIssueViewForm form;
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if(modelIssue != null){
-			modelIssue.finalize();
-			modelIssue = null;
-		}
-	}
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +23,6 @@ public class IssueViewActivity extends Activity  {
 		setContentView(R.layout.issueview);
 
 		form = new RedmineIssueViewForm(this);
-
 
 	}
 
@@ -39,7 +32,16 @@ public class IssueViewActivity extends Activity  {
 		IssueIntent intent = new IssueIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 		int issueid = intent.getIssueId();
-		modelIssue = new IssueModel(getApplicationContext(), connectionid,null);
-		form.setValue(modelIssue.fetchItem(issueid));
+
+		RedmineIssueModel model = new RedmineIssueModel(getHelperCache());
+		try {
+			RedmineIssue issues;
+			issues = model.fetchById(connectionid, issueid);
+			form.setValue(issues);
+		} catch (SQLException e) {
+			Log.e("SelectDataTask","doInBackground",e);
+		} catch (Throwable e) {
+			Log.e("SelectDataTask","doInBackground",e);
+		}
 	}
 }

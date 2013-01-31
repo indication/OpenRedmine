@@ -4,11 +4,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
+
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
-import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
+import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectProjectTask;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,7 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ProjectListActivity extends DbBaseActivity  {
+public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
 	public ProjectListActivity(){
 		super();
 	}
@@ -49,7 +53,7 @@ public class ProjectListActivity extends DbBaseActivity  {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connectionlist);
 
-		modelProject = new RedmineProjectModel(getHelperCache());
+		modelProject = new RedmineProjectModel(getHelper());
 
 		ListView list = (ListView)findViewById(R.id.listConnectionList);
 		listAdapter = new ArrayAdapter<RedmineProject>(
@@ -129,14 +133,12 @@ public class ProjectListActivity extends DbBaseActivity  {
 		private Context parentContext;
 		public SelectDataTask(final Context tex){
 			parentContext = tex;
+			helper = getHelper();
 			ConnectionIntent intent = new ConnectionIntent(getIntent());
 			int id = intent.getConnectionId();
-			RedmineConnectionModel model = new RedmineConnectionModel(getHelperStore());
-			try {
-				connection = model.fetchById(id);
-			} catch (SQLException e) {
-				Log.e("ProjectListActivity","SelectDataTask",e);
-			}
+			ConnectionModel mConnection = new ConnectionModel(tex);
+			connection = mConnection.getItem(id);
+			mConnection.finalize();
 		}
 		// can use UI thread here
 		@Override

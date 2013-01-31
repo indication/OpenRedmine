@@ -1,27 +1,24 @@
 package jp.redmine.redmineclient;
 
+import java.sql.SQLException;
+
+import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
-import jp.redmine.redmineclient.model.IssueModel;
-import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
-public class IssueViewActivity extends Activity  {
+public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
 	public IssueViewActivity(){
 		super();
 	}
 
-	private IssueModel modelIssue;
 	private RedmineIssueViewForm form;
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if(modelIssue != null){
-			modelIssue.finalize();
-			modelIssue = null;
-		}
-	}
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,15 @@ public class IssueViewActivity extends Activity  {
 		IssueIntent intent = new IssueIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 		int issueid = intent.getIssueId();
-		modelIssue = new IssueModel(getApplicationContext(), connectionid,null);
-		form.setValue(modelIssue.fetchItem(issueid));
+
+		RedmineIssueModel model = new RedmineIssueModel(getHelper());
+		RedmineIssue issue = new RedmineIssue();
+		Log.d("SelectDataTask","ParserIssue Start");
+		try {
+			issue = model.fetchById(connectionid, issueid);
+		} catch (SQLException e) {
+			Log.e("SelectDataTask","ParserIssue",e);
+		}
+		form.setValue(issue);
 	}
 }

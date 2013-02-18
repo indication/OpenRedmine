@@ -26,7 +26,9 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 
 	@Override
 	protected RedmineJournal getNewProveTagItem() {
-		return new RedmineJournal();
+		RedmineJournal journal =  new RedmineJournal();
+		setJournalId(journal,xml.getAttributeValue("", "id"));
+		return journal;
 	}
 	@Override
 	protected void parseInternal(RedmineIssue con, RedmineJournal journal)
@@ -34,9 +36,7 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 
 
 		if("id".equalsIgnoreCase(xml.getName())){
-			String work = getNextText();
-			if("".equals(work))	return;
-			journal.setJournnalId(Integer.parseInt(work));
+			setJournalId(journal,getNextText());
 		} else if(equalsTagName("user")){
 			RedmineUser user = new RedmineUser();
 			setMasterRecord(user);
@@ -70,6 +70,11 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 
 	}
 
+	protected void setJournalId(RedmineJournal journal, String id){
+		if("".equals(id))	return;
+		journal.setJournnalId(Integer.parseInt(id));
+
+	}
 	protected void setMasterRecord(IMasterRecord item)
 		throws XmlPullParserException, IOException{
 		item.setName(xml.getAttributeValue("", "name"));

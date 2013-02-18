@@ -9,6 +9,8 @@ import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
+import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,7 +18,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	public IssueViewActivity(){
 		super();
 	}
-
+	private SelectDataTask task;
 	private RedmineIssueViewForm form;
 
 	/** Called when the activity is first created. */
@@ -46,5 +48,21 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			Log.e("SelectDataTask","ParserIssue",e);
 		}
 		form.setValue(issue);
+
+		task = new SelectDataTask();
+		task.execute(issueid);
+	}
+
+	private class SelectDataTask extends SelectIssueJournalTask{
+		public SelectDataTask() {
+			super();
+			helper = getHelper();
+			IssueIntent intent = new IssueIntent(getIntent());
+			int connectionid = intent.getConnectionId();
+			ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+			connection = mConnection.getItem(connectionid);
+			mConnection.finalize();
+		}
+
 	}
 }

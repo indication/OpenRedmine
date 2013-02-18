@@ -87,7 +87,8 @@ abstract public class BaseParser<CON,TYPE> {
 				onText(con);
 				break;
 			}
-			eventType = xml.next();
+			if(!isHalt)
+				eventType = xml.next();
 		}
 		onParseEnd(con);
 	}

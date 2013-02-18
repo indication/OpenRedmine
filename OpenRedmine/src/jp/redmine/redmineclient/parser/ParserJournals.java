@@ -41,7 +41,7 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 			RedmineUser user = new RedmineUser();
 			setMasterRecord(user);
 			journal.setUser(user);
-		} else if(equalsTagName("user")){
+		} else if(equalsTagName("notes")){
 			journal.setNotes(getNextText());
 		} else if(equalsTagName("created_on")){
 			journal.setCreated(TypeConverter.parseDateTime(getNextText()));

@@ -56,9 +56,8 @@ public class RemoteUrlIssue extends RemoteUrl {
 		if(issue_id == null){
 			url.appendEncodedPath("issues."+getExtention());
 		} else {
-			url.appendEncodedPath("issue/" + String.valueOf(issue_id) + "."+getExtention());
+			url.appendEncodedPath("issues/" + String.valueOf(issue_id) + "."+getExtention());
 		}
-		url.appendEncodedPath(getExtention());
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){
 				url.appendQueryParameter(data.getKey(), data.getValue());

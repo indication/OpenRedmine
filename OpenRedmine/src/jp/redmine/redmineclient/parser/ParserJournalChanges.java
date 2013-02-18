@@ -42,6 +42,8 @@ public class ParserJournalChanges extends BaseParserInternal<RedmineJournal,Redm
 		// stop parse appears end of the tag.
 		if(equalsTagName("details")){
 			haltParse();
+		} else {
+			super.onTagEnd(con);
 		}
 	}
 }

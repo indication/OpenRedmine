@@ -85,6 +85,8 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 		// stop parse appears end of the tag.
 		if(equalsTagName("journals")){
 			haltParse();
+		} else {
+			super.onTagEnd(con);
 		}
 	}
 }

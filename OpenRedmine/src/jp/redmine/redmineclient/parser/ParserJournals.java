@@ -72,7 +72,7 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 
 	protected void setJournalId(RedmineJournal journal, String id){
 		if("".equals(id))	return;
-		journal.setJournnalId(Integer.parseInt(id));
+		journal.setJournalId(Integer.parseInt(id));
 
 	}
 	protected void setMasterRecord(IMasterRecord item)

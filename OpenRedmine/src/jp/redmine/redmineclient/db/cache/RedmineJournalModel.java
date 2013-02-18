@@ -76,7 +76,7 @@ public class RedmineJournalModel {
 		if(data == null)
 			return null;
 
-		RedmineJournal project = this.fetchById(connection_id, data.getJournnalId());
+		RedmineJournal project = this.fetchById(connection_id, data.getJournalId());
 		if(project.getId() == null){
 			data.setConnectionId(connection_id);
 			this.insert(data);

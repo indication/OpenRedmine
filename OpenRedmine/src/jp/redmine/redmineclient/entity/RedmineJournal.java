@@ -59,16 +59,16 @@ public class RedmineJournal {
 		this.setConnectionId(connection.getId());
 	}
 	/**
-	 * @return journnal_id
+	 * @return journal_id
 	 */
-	public int getJournnalId() {
+	public int getJournalId() {
 		return journal_id;
 	}
 	/**
-	 * @param journnal_id セットする journnal_id
+	 * @param journal_id セットする journal_id
 	 */
-	public void setJournnalId(int journnal_id) {
-		this.journal_id = journnal_id;
+	public void setJournalId(int journal_id) {
+		this.journal_id = journal_id;
 	}
 	/**
 	 * @return detail

@@ -19,11 +19,9 @@ import jp.redmine.redmineclient.url.RemoteUrlIssue;
 public class SelectIssueJournalTask extends SelectDataTask<RedmineIssue> {
 
 	protected DatabaseCacheHelper helper;
-	protected RedmineProject project;
 	protected RedmineConnection connection;
 	public SelectIssueJournalTask(DatabaseCacheHelper helper,RedmineConnection con,RedmineProject proj){
 		this.helper = helper;
-		this.project = proj;
 		this.connection = con;
 	}
 
@@ -42,7 +40,7 @@ public class SelectIssueJournalTask extends SelectDataTask<RedmineIssue> {
 				IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
 				parser.registerDataCreation(handler);
 				helperSetupParserStream(stream, parser);
-				parser.parse(project);
+				parser.parse(connection);
 			}
 		};
 		RemoteUrlIssue url = new RemoteUrlIssue();

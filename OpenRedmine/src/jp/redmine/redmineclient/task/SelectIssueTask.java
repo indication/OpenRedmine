@@ -73,7 +73,7 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 						IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
 						parser.registerDataCreation(handler);
 						helperSetupParserStream(stream, parser);
-						parser.parse(project);
+						parser.parse(connection);
 					}
 				});
 				client.close();

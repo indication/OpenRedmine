@@ -7,15 +7,16 @@ import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
 import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
-import jp.redmine.redmineclient.entity.RedmineProject;
 
-public class IssueModelDataCreationHandler implements DataCreationHandler<RedmineProject,RedmineIssue> {
+public class IssueModelDataCreationHandler implements DataCreationHandler<RedmineConnection,RedmineIssue> {
 
 	private RedmineIssueModel mIssue;
 	private RedmineVersionModel mVersion;
@@ -25,6 +26,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 	private RedminePriorityModel mPriority;
 	private RedmineCategoryModel mCategory;
 	private RedmineJournalModel mJournal;
+	private RedmineProjectModel mProject;
 	public IssueModelDataCreationHandler(DatabaseCacheHelper helperCache){
 		mIssue = new RedmineIssueModel(helperCache);
 		mVersion = new RedmineVersionModel(helperCache);
@@ -34,10 +36,11 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mCategory = new RedmineCategoryModel(helperCache);
 		mPriority = new RedminePriorityModel(helperCache);
 		mJournal = new RedmineJournalModel(helperCache);
+		mProject = new RedmineProjectModel(helperCache);
 	}
-	public void onData(RedmineProject proj,RedmineIssue data) throws SQLException {
-		data.setConnectionId(proj.getConnectionId());
-		data.setProject(proj);
+	public void onData(RedmineConnection connection,RedmineIssue data) throws SQLException {
+		data.setConnectionId(connection.getId());
+		mProject.refreshItem(connection, data);
 		RedmineIssue.setupConnectionId(data);
 		RedmineIssue.setupProjectId(data);
 		RedmineIssue.setupJournals(data);
@@ -47,10 +50,10 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mStatus.refreshItem(data);
 		mPriority.refreshItem(data);
 		mCategory.refreshItem(data);
-		mIssue.refreshItem(proj,data);
-		onDataJournal(proj,data);
+		mIssue.refreshItem(connection,data);
+		onDataJournal(data);
 	}
-	public void onDataJournal(RedmineProject proj,RedmineIssue data) throws SQLException {
+	public void onDataJournal(RedmineIssue data) throws SQLException {
 		if(data.getJournals() == null)
 			return;
 		for (RedmineJournal journal : data.getJournals()){

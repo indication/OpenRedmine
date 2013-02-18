@@ -22,10 +22,10 @@ public class RedmineJournal {
 	private Long id;
 	@DatabaseField(uniqueIndexName="journal_target")
 	private Integer connection_id;
-	@DatabaseField(uniqueIndexName="journal_target")
+	@DatabaseField()
 	private int issue_id;
 	@DatabaseField(uniqueIndexName="journal_target")
-	private int journnal_id;
+	private int journal_id;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
 	private RedmineUser user;
 	@DatabaseField
@@ -62,13 +62,13 @@ public class RedmineJournal {
 	 * @return journnal_id
 	 */
 	public int getJournnalId() {
-		return journnal_id;
+		return journal_id;
 	}
 	/**
 	 * @param journnal_id セットする journnal_id
 	 */
 	public void setJournnalId(int journnal_id) {
-		this.journnal_id = journnal_id;
+		this.journal_id = journnal_id;
 	}
 	/**
 	 * @return detail

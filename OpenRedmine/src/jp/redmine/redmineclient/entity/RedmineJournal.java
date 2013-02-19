@@ -17,6 +17,7 @@ public class RedmineJournal {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String JOURNAL_ID = "journal_id";
+	public final static String ISSUE_ID = "issue_id";
 
 	@DatabaseField(generatedId = true)
 	private Long id;

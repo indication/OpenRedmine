@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import android.util.Log;
@@ -49,6 +50,36 @@ public class RedmineJournalModel {
 	public RedmineJournal fetchById(long id) throws SQLException{
 		RedmineJournal item;
 		item = dao.queryForId(id);
+		if(item == null)
+			item = new RedmineJournal();
+		return item;
+	}
+
+	public long countByIssue(int connection_id, long issue_id) throws SQLException {
+		QueryBuilder<RedmineJournal, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedmineJournal.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineJournal.ISSUE_ID, issue_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	public Object fetchItemByIssue(int connection_id, long issue_id,
+			long offset, long limit) throws SQLException {
+		QueryBuilder<RedmineJournal, ?> builder = dao.queryBuilder();
+		builder
+			.limit(limit)
+			.offset(offset)
+			.orderBy(RedmineJournal.JOURNAL_ID, true)
+			.where()
+				.eq(RedmineJournal.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineJournal.ISSUE_ID, issue_id)
+				;
+		RedmineJournal item = builder.queryForFirst();
 		if(item == null)
 			item = new RedmineJournal();
 		return item;

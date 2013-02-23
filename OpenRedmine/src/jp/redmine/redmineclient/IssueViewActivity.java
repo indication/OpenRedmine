@@ -16,6 +16,7 @@ import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import android.os.Bundle;
+import android.os.AsyncTask.Status;
 import android.util.Log;
 
 public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
@@ -27,6 +28,17 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	private RedmineIssueViewDetailForm formDetail;
 	private RedmineJournalListAdapter listAdapter;
 
+	@Override
+	protected void onDestroy() {
+		cancelTask();
+		super.onDestroy();
+	}
+	protected void cancelTask(){
+		// cleanup task
+		if(task != null && task.getStatus() == Status.RUNNING){
+			task.cancel(true);
+		}
+	}
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -18,7 +18,7 @@
 			    android:layout_height="wrap_content"
 			    android:orientation="horizontal" >
 			     <TextView
-			         android:id="@+id/textIsueId"
+			         android:id="@+id/textIssueId"
 			         android:layout_width="wrap_content"
 			         android:layout_height="wrap_content"
 			         android:layout_marginLeft="3dip"
@@ -40,25 +40,8 @@
 	    	android:id="@+id/layoutTitle2"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:orientation="horizontal" >
-		     <TextView
-		         android:id="@+id/textIssueId"
-		         android:layout_width="wrap_content"
-		         android:layout_height="wrap_content"
-		         android:layout_marginLeft="3dip"
-		         android:text="#0000"
-		         android:textAppearance="?android:attr/textAppearanceLarge"
-		         tools:ignore="HardcodedText" />
-
-		     <TextView
-		         android:id="@+id/textSubject"
-		         android:layout_width="wrap_content"
-		         android:layout_height="wrap_content"
-		         android:layout_marginLeft="5dp"
-		         android:text="Issue title here....allow multi-line..."
-		         android:textAppearance="?android:attr/textAppearanceLarge"
-		         tools:ignore="HardcodedText" />
-		</LinearLayout>
+		    android:orientation="horizontal"
+		    android:visibility="gone" />
     </LinearLayout>
 	<ListView
 	    android:id="@+id/list"

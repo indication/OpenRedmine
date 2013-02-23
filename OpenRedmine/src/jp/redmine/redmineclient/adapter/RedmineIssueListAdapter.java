@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.external.lib.LRUCache;
 import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
 
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 	private RedmineIssueModel model;
 	protected int connection_id;
 	protected long project_id;
-	protected LRUCache<Integer,RedmineIssue> cache = new LRUCache<Integer,RedmineIssue>(20);
 	public RedmineIssueListAdapter(RedmineIssueModel m, int connection, long project) {
 		super();
 		model = m;

@@ -1,10 +1,16 @@
 package jp.redmine.redmineclient.form;
 
+import java.util.Date;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.entity.RedmineUser;
+
 import com.andreabaccega.widget.FormEditText;
 
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 abstract public class FormHelper {
 	public static CharSequence convertWikiString(String str){
@@ -102,5 +108,43 @@ abstract public class FormHelper {
 			}
 		}
 		return result;
+	}
+
+
+
+	/**
+	 * Convert username by text format
+	 * @param form view
+	 * @param us User
+	 * @return User name
+	 */
+	protected String convertUserName(View form,RedmineUser us){
+		if(us == null)
+			return "";
+		return form.getContext().getString(R.string.format_name, us.getName(), us.getLoginName());
+	}
+	/**
+	 * Set ct to v
+	 * @param v TextView to set user name
+	 * @param ct User name
+	 */
+	protected void setUserName(TextView v,RedmineUser ct){
+		v.setText(convertUserName(v,ct));
+	}
+
+
+	protected String convertDate(View form,Date date){
+		if(date == null)
+			return "";
+		return form.getContext().getString(R.string.format_date, date);
+	}
+
+	/**
+	 * Set ct to v
+	 * @param v TextView to set user name
+	 * @param ct User name
+	 */
+	protected void setDate(TextView v,Date date){
+		v.setText(convertDate(v,date));
 	}
 }

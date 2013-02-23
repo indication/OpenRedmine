@@ -1,7 +1,5 @@
 package jp.redmine.redmineclient.form;
 
-import java.util.Date;
-
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
@@ -9,7 +7,6 @@ import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
-import jp.redmine.redmineclient.entity.RedmineUser;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -51,17 +48,6 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 	}
 
-	protected String convertUserName(RedmineUser us){
-		if(us == null)
-			return "";
-		return view.getContext().getString(R.string.format_name, us.getName(), us.getLoginName());
-	}
-
-	protected String convertDate(Date date){
-		if(date == null)
-			return "";
-		return view.getContext().getString(R.string.format_date, date);
-	}
 
 	public void setTracker(RedmineTracker tk){
 		textTracker.setText(tk == null ? "" : tk.getName());
@@ -82,10 +68,6 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textPriority.setText(pr == null ? "" : pr.getName());
 	}
 
-	protected void setUserName(TextView v,RedmineUser ct){
-		v.setText(convertUserName(ct));
-	}
-
 	public void setProgress(short progress,short donerate){
 		progressBar.setMax(100);
 		progressBar.setProgress(progress);
@@ -95,8 +77,8 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 
 	public void setValue(RedmineIssue rd){
 		textDescription.setText(rd.getDescription());
-		textDateFrom.setText(convertDate(rd.getDateStart()));
-		textDateTo.setText(convertDate(rd.getDateDue()));
+		setDate(textDateFrom,rd.getDateStart());
+		setDate(textDateTo,rd.getDateDue());
 		setTracker(rd.getTracker());
 		setUserName(textAuthor,rd.getAuthor());
 		setUserName(textAssignedTo,rd.getAssigned());

@@ -1,7 +1,9 @@
 package jp.redmine.redmineclient.task;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -25,9 +27,6 @@ import android.util.Log;
 import android.util.Xml;
 import android.widget.ArrayAdapter;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.external.lib.AuthenticationParam;
-import jp.redmine.redmineclient.external.lib.ClientParam;
-import jp.redmine.redmineclient.external.lib.ConnectionHelper;
 import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
@@ -45,6 +44,7 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 	 * @param proc current count of the items
 	 */
 	abstract protected void onProgress(int max,int proc);
+
 	/**
 	 * Store the last exception (reference by UI thread)
 	 */
@@ -55,6 +55,7 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 		public int error = 2;
 		public int unknown = 3;
 	}
+
 	@Override
 	protected final void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
@@ -109,53 +110,41 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 		String value = header.getValue();
 		return (!TextUtils.isEmpty(value) && value.contains("gzip"));
 	}
-	protected void fetchData(RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler<RedmineConnection> handler){
+	protected void fetchData(SelectDataTaskConnectionHandler connectionhandler, RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler){
 		url.setupRequest(requests.xml);
 		url.setupVersion(versions.v130);
-		fetchData(connection, url.getUrl(connection.getUrl()),handler);
+		fetchData(connectionhandler, url.getUrl(connection.getUrl()),handler);
 	}
 
-	private static DefaultHttpClient getHttpClient(RedmineConnection connection){
-		ClientParam clientparam = new ClientParam();
-		clientparam.setSLLTrustAll(connection.isPermitUnsafe());
-		clientparam.setTimeout(30000);
-		DefaultHttpClient client = ConnectionHelper.createHttpClient(clientparam);
-		if(connection.isAuth()){
-			Uri remoteurl = Uri.parse(connection.getUrl());
-			AuthenticationParam param = new AuthenticationParam();
-			param.setId(connection.getAuthId());
-			param.setPass(connection.getAuthPasswd());
-			param.setAddress(remoteurl.getHost());
-			if(remoteurl.getPort() <= 0){
-				param.setPort("https".equals(remoteurl.getScheme()) ? 443: 80);
-			} else {
-				param.setPort(remoteurl.getPort());
-			}
-			ConnectionHelper.setupHttpClientAuthentication(client, param);
-		}
-		return client;
-	}
 
-	protected void fetchData(RedmineConnection connection,Builder builder,SelectDataTaskDataHandler<RedmineConnection> handler){
+	protected void fetchData(SelectDataTaskConnectionHandler connectionhandler,Builder builder,SelectDataTaskDataHandler handler){
 		Uri remoteurl = builder.build();
-		DefaultHttpClient client = getHttpClient(connection);
+		DefaultHttpClient client = connectionhandler.getHttpClient();
+		boolean isInError = true;
 		try {
 			HttpGet get = new HttpGet(new URI(remoteurl.toString()));
-			get.setHeader("X-Redmine-API-Key", connection.getToken());
+			connectionhandler.setupOnMessage(get);
 			get.setHeader("Accept-Encoding", "gzip, deflate");
+			Log.i("requestGet", "Url: " + get.getURI().toASCIIString());
 			HttpResponse response = client.execute(get);
 			int status = response.getStatusLine().getStatusCode();
-			Log.i("requestGet", "Url: " + get.getURI().toASCIIString());
 			Log.i("requestGet", "Status: " + status);
+			Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
+			InputStream stream = response.getEntity().getContent();
+			if (isGZipHttpResponse(response)) {
+				Log.i("requestGet", "Gzip: Enabled");
+				stream =  new GZIPInputStream(stream);
+			}
 			if (HttpStatus.SC_OK == status) {
-				InputStream stream = response.getEntity().getContent();
-				if (isGZipHttpResponse(response)) {
-					Log.i("requestGet", "Gzip: Enabled");
-					stream =  new GZIPInputStream(stream);
-				}
-				handler.onContent(connection,stream);
+			    isInError = false;
+				handler.onContent(stream);
 			} else {
 				publishErrorRequest(status);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			    String str;
+			    while((str = reader.readLine()) != null){
+			    	Log.d("requestGet", str);
+			    }
 			}
 		} catch (URISyntaxException e) {
 			publishErrorRequest(404);
@@ -167,8 +156,8 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List
 			publishError(e);
 		} catch (SQLException e) {
 			publishError(e);
-		} finally {
-			client.getConnectionManager().shutdown();
 		}
+		if(isInError)
+			connectionhandler.close();
 	}
 }

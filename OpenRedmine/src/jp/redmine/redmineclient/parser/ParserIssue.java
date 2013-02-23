@@ -1,11 +1,18 @@
 package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
+
 import jp.redmine.redmineclient.entity.IMasterRecord;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
@@ -15,8 +22,9 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
-public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue> {
+public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIssue> {
 
+	private ParserJournals parserJournal = new ParserJournals();
 	@Override
 	protected String getProveTagName() {
 		return "issue";
@@ -28,9 +36,9 @@ public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue>
 	}
 
 	@Override
-	protected void parseInternal(RedmineProject con, RedmineIssue item)
+	protected void parseInternal(RedmineConnection con, RedmineIssue item)
 			throws XmlPullParserException, IOException{
-		if(xml.getDepth() <= 2)
+		if(xml.getDepth() <= 1)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
@@ -99,6 +107,27 @@ public class ParserIssue extends BaseParserInternal<RedmineProject,RedmineIssue>
 			String work = getNextText();
 			double data = "".equals(work) ? 0 : Double.parseDouble(work);
 			item.setEstimatedHours(data);
+
+		} else if(equalsTagName("journals")){
+			final List<RedmineJournal> journals = new ArrayList<RedmineJournal>();
+			parserJournal.setXml(xml);
+			DataCreationHandler<RedmineIssue, RedmineJournal> handler =
+				new DataCreationHandler<RedmineIssue, RedmineJournal>() {
+				@Override
+				public void onData(RedmineIssue info, RedmineJournal data)
+						throws SQLException {
+					journals.add(data);
+				}
+			};
+
+			parserJournal.registerDataCreation(handler);
+			try {
+				parserJournal.parse(item);
+			} catch (SQLException e) {
+				Log.e("parserIssue","",e);
+			}
+			parserJournal.unregisterDataCreation(handler);
+			item.setJournals(journals);
 
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));

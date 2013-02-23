@@ -11,7 +11,6 @@ abstract public class FormHelper {
 		return Html.fromHtml(str);
 	}
 
-	abstract public void setup();
 
 	public void setupEvents(){
 

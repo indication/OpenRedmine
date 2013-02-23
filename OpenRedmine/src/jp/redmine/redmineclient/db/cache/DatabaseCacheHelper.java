@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
@@ -24,7 +25,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=2;
+	private static int DB_VERSION=3;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -48,6 +49,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(arg1, RedmineIssue.class);
 			TableUtils.createTable(arg1, RedmineProjectMember.class);
 			TableUtils.createTable(arg1, RedmineFilter.class);
+			TableUtils.createTable(arg1, RedmineJournal.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -61,6 +63,10 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			case 1:
 				TableUtils.createTable(arg1, RedmineProjectMember.class);
 				TableUtils.createTable(arg1, RedmineFilter.class);
+				break;
+			case 2:
+				TableUtils.createTable(arg1, RedmineJournal.class);
+				//TODO issue.id int->long
 				break;
 			}
 

@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import android.net.Uri;
+import android.text.TextUtils;
 
 public class RemoteUrlIssue extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
+	private Integer issue_id;
 
 	public enum IssueOption{
 		None,
@@ -34,6 +36,16 @@ public class RemoteUrlIssue extends RemoteUrl {
 		}
 	}
 
+	public void setIssueId(Integer id){
+		issue_id = id;
+	}
+	public void setIssueId(String id){
+		if(TextUtils.isEmpty(id))
+			setIssueId((Integer)null);
+		if(id.matches("^-?\\d+$")){
+			setIssueId(Integer.parseInt(id));
+		}
+	}
 	@Override
 	public versions getMinVersion(){
 		return versions.v110;
@@ -41,8 +53,11 @@ public class RemoteUrlIssue extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("issues."+getExtention());
-		url.appendEncodedPath(getExtention());
+		if(issue_id == null){
+			url.appendEncodedPath("issues."+getExtention());
+		} else {
+			url.appendEncodedPath("issues/" + String.valueOf(issue_id) + "."+getExtention());
+		}
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){
 				url.appendQueryParameter(data.getKey(), data.getValue());

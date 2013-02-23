@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import android.util.Log;
 
@@ -72,19 +73,24 @@ public class RedmineProjectModel {
 		int count = dao.deleteById(id);
 		return count;
 	}
+	public void refreshItem(RedmineConnection info,RedmineIssue data) throws SQLException{
+		data.setProject(refreshItem(info,data.getProject()));
+	}
 
-	public void refreshItem(RedmineConnection info,RedmineProject data) throws SQLException{
+	public RedmineProject refreshItem(RedmineConnection info,RedmineProject data) throws SQLException{
 
 		RedmineProject project = this.fetchById(info.getId(), data.getProjectId());
 		if(project.getId() == null){
 			data.setRedmineConnection(info);
 			this.insert(data);
 		} else {
-			if(project.getModified().after(data.getModified())){
+			if(data.getModified() != null && project.getModified().after(data.getModified())){
 				data.setId(project.getId());
 				data.setRedmineConnection(info);
 				this.update(data);
+				project = data;
 			}
 		}
+		return project;
 	}
 }

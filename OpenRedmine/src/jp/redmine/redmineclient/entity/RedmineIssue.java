@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient.entity;
 
 import java.util.Date;
+import java.util.List;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -13,7 +15,7 @@ public class RedmineIssue {
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
-    private Integer id;
+    private Long id;
     @DatabaseField(uniqueIndexName="issue_target")
     private Integer connection_id;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
@@ -61,7 +63,7 @@ public class RedmineIssue {
     @DatabaseField
     private Date additional_modified;
 
-	private RedmineJournal journals[];
+	private List<RedmineJournal> journals;
 
 	static public void setupConnectionId(RedmineIssue item){
 		if(item.getConnectionId() == null)
@@ -90,28 +92,27 @@ public class RedmineIssue {
 
 	}
 	static public void setupJournals(RedmineIssue item){
-		int notenum = 0;
 		if(item.getJournals() == null)
 			return;
 		for (RedmineJournal data : item.getJournals()){
-			notenum++;
 			data.setConnectionId(item.getConnectionId());
 			data.setIssueId(item.getId());
-			data.setNoteId(notenum);
+			if(data.getUser() != null){
+				data.getUser().setConnectionId(item.getConnectionId());
+			}
 		}
-
 	}
 
 	/**
 	 * @param id セットする id
 	 */
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
 	 * @return id
 	 */
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	////////////////////////////////////////////////////////
@@ -454,14 +455,14 @@ public class RedmineIssue {
 	/**
 	 * @return journals
 	 */
-	public RedmineJournal[] getJournals() {
+	public List<RedmineJournal> getJournals() {
 		return journals;
 	}
 
 	/**
 	 * @param journals セットする journals
 	 */
-	public void setJournals(RedmineJournal journals[]) {
+	public void setJournals(List<RedmineJournal> journals) {
 		this.journals = journals;
 	}
 

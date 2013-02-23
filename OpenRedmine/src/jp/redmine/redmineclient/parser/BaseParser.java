@@ -12,6 +12,18 @@ import android.util.Log;
 abstract public class BaseParser<CON,TYPE> {
 	protected XmlPullParser xml;
 	protected int dataCount = 0;
+	private boolean isHalt;
+	/**
+	 * Stop the current parse in the <i>on*</i> method.
+	 */
+	protected void haltParse(){
+		setHaltParse(true);
+	}
+
+	protected void setHaltParse(boolean isHalt){
+		this.isHalt = isHalt;
+	}
+
 	public volatile List<DataCreationHandler<CON,TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<CON,TYPE>>();
 	protected void onParseStart(CON con)
 			throws XmlPullParserException, IOException, SQLException {
@@ -52,10 +64,10 @@ abstract public class BaseParser<CON,TYPE> {
 			Log.e("BaseParser", "xml is null");
 			return;
 		}
+		setHaltParse(false);
 		int eventType = xml.getEventType();
 		onParseStart(con);
-		while (eventType != XmlPullParser.END_DOCUMENT) {
-			eventType = xml.next();
+		while (eventType != XmlPullParser.END_DOCUMENT && !isHalt) {
 			switch (eventType){
 			case XmlPullParser.START_DOCUMENT:
 				onDocumentStart(con);
@@ -75,7 +87,10 @@ abstract public class BaseParser<CON,TYPE> {
 				onText(con);
 				break;
 			}
+			if(!isHalt)
+				eventType = xml.next();
 		}
+		onParseEnd(con);
 	}
 
 	public int getCount(){

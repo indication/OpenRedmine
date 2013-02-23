@@ -136,35 +136,28 @@ public class RedmineIssueModel {
 		int count = dao.deleteById(id);
 		return count;
 	}
-
 	public void refreshItem(RedmineConnection info,RedmineIssue data) throws SQLException{
+		refreshItem(info.getId(),data);
+	}
 
-		RedmineIssue project = this.fetchById(info.getId(), data.getIssueId());
-		if(project.getId() == null){
-			data.setRedmineConnection(info);
+	public void refreshItem(int connection_id,RedmineIssue data) throws SQLException{
+
+		RedmineIssue issue = this.fetchById(connection_id, data.getIssueId());
+		if(issue.getId() == null){
+			data.setConnectionId(connection_id);
 			this.insert(data);
+			issue = this.fetchById(connection_id, data.getIssueId());
+			data.setId(issue.getId());
 		} else {
-			if(project.getModified().after(data.getModified())){
-				data.setId(project.getId());
-				data.setRedmineConnection(info);
+			data.setId(issue.getId());
+			data.setConnectionId(connection_id);
+			if(issue.getModified().after(data.getModified())){
 				this.update(data);
 			}
 		}
 	}
 	public void refreshItem(RedmineProject info,RedmineIssue data) throws SQLException{
-
-		RedmineIssue project = this.fetchById(info.getConnectionId(), data.getIssueId());
-		if(project.getId() == null){
-			data.setConnectionId(info.getConnectionId());
-			data.setProject(info);
-			this.insert(data);
-		} else {
-			if(project.getModified().after(data.getModified())){
-				data.setId(project.getId());
-				data.setConnectionId(info.getConnectionId());
-				data.setProject(info);
-				this.update(data);
-			}
-		}
+		data.setProject(info);
+		refreshItem(info.getConnectionId(),data);
 	}
 }

@@ -43,7 +43,6 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mProject.refreshItem(connection, data);
 		RedmineIssue.setupConnectionId(data);
 		RedmineIssue.setupProjectId(data);
-		RedmineIssue.setupJournals(data);
 		mTracker.refreshItem(data);
 		mVersion.refreshItem(data);
 		mUser.refreshItem(data);
@@ -51,6 +50,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mPriority.refreshItem(data);
 		mCategory.refreshItem(data);
 		mIssue.refreshItem(connection,data);
+		RedmineIssue.setupJournals(data);
 		onDataJournal(data);
 	}
 	public void onDataJournal(RedmineIssue data) throws SQLException {

@@ -24,7 +24,7 @@ public class RedmineJournal {
 	@DatabaseField(uniqueIndexName="journal_target")
 	private Integer connection_id;
 	@DatabaseField()
-	private int issue_id;
+	private Long issue_id;
 	@DatabaseField(uniqueIndexName="journal_target")
 	private int journal_id;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
@@ -150,13 +150,13 @@ public class RedmineJournal {
 	/**
 	 * @return issue_id
 	 */
-	public int getIssueId() {
+	public Long getIssueId() {
 		return issue_id;
 	}
 	/**
 	 * @param issue_id セットする issue_id
 	 */
-	public void setIssueId(int issue_id) {
+	public void setIssueId(Long issue_id) {
 		this.issue_id = issue_id;
 	}
 	/**

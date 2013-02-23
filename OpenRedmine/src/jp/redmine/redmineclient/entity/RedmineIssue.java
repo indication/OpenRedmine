@@ -15,7 +15,7 @@ public class RedmineIssue {
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
-    private Integer id;
+    private Long id;
     @DatabaseField(uniqueIndexName="issue_target")
     private Integer connection_id;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
@@ -96,7 +96,7 @@ public class RedmineIssue {
 			return;
 		for (RedmineJournal data : item.getJournals()){
 			data.setConnectionId(item.getConnectionId());
-			data.setIssueId(item.getIssueId());
+			data.setIssueId(item.getId());
 			if(data.getUser() != null){
 				data.getUser().setConnectionId(item.getConnectionId());
 			}
@@ -106,13 +106,13 @@ public class RedmineIssue {
 	/**
 	 * @param id セットする id
 	 */
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	/**
 	 * @return id
 	 */
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	////////////////////////////////////////////////////////

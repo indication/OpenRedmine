@@ -3,7 +3,10 @@ package jp.redmine.redmineclient.adapter;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
 
@@ -12,13 +15,31 @@ import android.view.View;
 
 public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 	private RedmineIssueModel model;
+	private RedmineFilterModel mFilter;
+	private RedmineFilter filter;
 	protected int connection_id;
 	protected long project_id;
-	public RedmineIssueListAdapter(RedmineIssueModel m, int connection, long project) {
+	@Override
+	public void notifyDataSetChanged() {
+		getFilter();
+		super.notifyDataSetChanged();
+	}
+	public RedmineIssueListAdapter(DatabaseCacheHelper helper, int connection, long project) {
 		super();
-		model = m;
+		model = new RedmineIssueModel(helper);
 		connection_id = connection;
 		project_id = project;
+
+		mFilter = new RedmineFilterModel(helper);
+	}
+
+	protected void getFilter(){
+		try {
+			filter = mFilter.fetchByCurrent(connection_id, project_id);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -34,12 +55,16 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 
 	@Override
 	protected int getDbCount() throws SQLException {
-		return (int) model.countByProject(connection_id, project_id);
+		if(filter == null)
+			return 0;
+		return (int) model.countByFilter(filter);
 	}
 
 	@Override
 	protected RedmineIssue getDbItem(int position) throws SQLException {
-		return model.fetchItemByProject(connection_id, project_id,(long) position, 1L);
+		if(filter == null)
+			return new RedmineIssue();
+		return model.fetchItemByFilter(filter,(long) position, 1L);
 	}
 
 	@Override

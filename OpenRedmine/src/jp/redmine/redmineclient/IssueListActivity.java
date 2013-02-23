@@ -8,7 +8,6 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.intent.IssueIntent;
@@ -128,7 +127,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 		ProjectIntent intent = new ProjectIntent( getIntent() );
 		listAdapter = new RedmineIssueListAdapter(
-				new RedmineIssueModel(getHelper()),intent.getConnectionId(),intent.getProjectId());
+				getHelper(),intent.getConnectionId(),intent.getProjectId());
 		listView.setAdapter(listAdapter);
 	}
 	private View getFooter() {

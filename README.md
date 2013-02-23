@@ -55,10 +55,13 @@ Using Libraries
 - MyWebViewClient (unknown) - needs to access redmine by webview
  https://github.com/potaka001/WebViewBasicAuthTest/blob/master/src/com/webviewbasicauthtest/MyWebViewClient.java
 
+- LRUCache (unknown) from "Play History of development" - cache access by listview
+  http://ttimez.blogspot.jp/2011/07/java.html
+
 Using Icons
 ==========
 - redmine (by-sa/2.5)
-- http://www.redmine.org/projects/redmine/wiki/Logo
+ http://www.redmine.org/projects/redmine/wiki/Logo
  Redmine Logo is Copyright (C) 2009 Martin Herr and is licensed under the Creative Commons Attribution-Share Alike 2.5 Generic license.
  See http://creativecommons.org/licenses/by-sa/2.5/ for more details.
 

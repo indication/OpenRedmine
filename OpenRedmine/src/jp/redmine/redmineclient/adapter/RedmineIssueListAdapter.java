@@ -1,60 +1,79 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
-public class RedmineIssueListAdapter extends ArrayAdapter<RedmineIssue> {
-	private ArrayList<RedmineIssue> items;
-	private LayoutInflater inflater;
-	/**
-	 * Setup the class
-	 * @param context Application context
-	 * @param textViewResourceId Resource ID
-	 * @param items list of issues
-	 */
-	public RedmineIssueListAdapter(Context context, int textViewResourceId,
-	ArrayList<RedmineIssue> items) {
-		super(context, textViewResourceId, items);
-		this.items = items;
-		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
+	private RedmineIssueModel model;
+	private RedmineFilterModel mFilter;
+	private RedmineFilter filter;
+	protected int connection_id;
+	protected long project_id;
+	@Override
+	public void notifyDataSetChanged() {
+		getFilter();
+		super.notifyDataSetChanged();
+	}
+	public RedmineIssueListAdapter(DatabaseCacheHelper helper, int connection, long project) {
+		super();
+		model = new RedmineIssueModel(helper);
+		connection_id = connection;
+		project_id = project;
+
+		mFilter = new RedmineFilterModel(helper);
+	}
+
+	protected void getFilter(){
+		try {
+			filter = mFilter.fetchByCurrent(connection_id, project_id);
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// ビューを受け取る
-		View view = convertView;
-		if (convertView == null) {
-			view = inflater.inflate(R.layout.issueitem, null);
-		}
-		// 表示すべきデータの取得
-		RedmineIssue item = (RedmineIssue)items.get(position);
-		renderIssue(view,item);
-		return view;
+	protected View getItemView(LayoutInflater infalInflater) {
+		return infalInflater.inflate(R.layout.issueitem, null);
 	}
-	/**
-	 * Render issue to the view
-	 * @param view
-	 * @param item issue item
-	 */
-	protected void renderIssue(View view, RedmineIssue item){
-		if (item == null)
-			return;
-		// uses cache
-		RedmineIssueListItemForm form = (RedmineIssueListItemForm)view.getTag();
-		if(form == null){
-			form = new RedmineIssueListItemForm(view);
-			view.setTag(form);
-		}
-		form.setValue(item);
 
+	@Override
+	protected void setupView(View view, RedmineIssue data) {
+		RedmineIssueListItemForm form = new RedmineIssueListItemForm(view);
+		form.setValue(data);
 	}
+
+	@Override
+	protected int getDbCount() throws SQLException {
+		if(filter == null)
+			return 0;
+		return (int) model.countByFilter(filter);
+	}
+
+	@Override
+	protected RedmineIssue getDbItem(int position) throws SQLException {
+		if(filter == null)
+			return new RedmineIssue();
+		return model.fetchItemByFilter(filter,(long) position, 1L);
+	}
+
+	@Override
+	protected long getDbItemId(RedmineIssue item) {
+		if(item == null){
+			return -1;
+		} else {
+			return item.getId();
+		}
+	}
+
 }

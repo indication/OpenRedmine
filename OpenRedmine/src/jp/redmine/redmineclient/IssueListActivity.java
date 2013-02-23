@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +25,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -37,7 +35,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	}
 
 	private static final int ACTIVITY_FILTER = 2001;
-	private ArrayAdapter<RedmineIssue> listAdapter;
+	private RedmineIssueListAdapter listAdapter;
 	private SelectDataTask task;
 	private View mFooter;
 	private ListView listView;
@@ -54,6 +52,18 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			task.cancel(true);
 		}
 	}
+	static final private String stateListViewFirstVisiblePosition = "ListViewFirstVisiblePosition";
+	static final private String stateListViewTopPosition = "ListViewTopPosition";
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		// save the listview status
+		if (listView != null && listView.getChildCount() > 0) {
+			outState.putInt(stateListViewFirstVisiblePosition, listView.getFirstVisiblePosition());
+			outState.putInt(stateListViewTopPosition, listView.getChildAt(0).getTop());
+		}
+	}
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -63,12 +73,8 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 
 		listView = (ListView)findViewById(R.id.listConnectionList);
-		listAdapter = new RedmineIssueListAdapter(
-				this,R.layout.issueitem
-				,new ArrayList<RedmineIssue>());
 		listView.addFooterView(getFooter());
 		getFooter().setVisibility(View.INVISIBLE);
-		listView.setAdapter(listAdapter);
 
 		listView.setOnScrollListener(new OnScrollListener() {
 			@Override
@@ -106,12 +112,23 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				startActivity( intent.getIntent() );
 			}
 		});
+
+		if (savedInstanceState != null) {
+			listView.setSelectionFromTop(savedInstanceState.getInt(stateListViewFirstVisiblePosition)
+					,savedInstanceState.getInt(stateListViewTopPosition));
+		}
+
 	}
 
 	@Override
 	protected void onStart() {
 		this.onRefresh(false);
 		super.onStart();
+
+		ProjectIntent intent = new ProjectIntent( getIntent() );
+		listAdapter = new RedmineIssueListAdapter(
+				getHelper(),intent.getConnectionId(),intent.getProjectId());
+		listView.setAdapter(listAdapter);
 	}
 	private View getFooter() {
 		if (mFooter == null) {
@@ -125,9 +142,10 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		listAdapter.notifyDataSetInvalidated();
-		listAdapter.clear();
-		listAdapter.notifyDataSetChanged();
+		if(listAdapter != null){
+			listAdapter.notifyDataSetInvalidated();
+			listAdapter.notifyDataSetChanged();
+		}
 		task = new SelectDataTask();
 		task.execute(0,10,isFlush ? 1 : 0);
 	}
@@ -158,7 +176,8 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(List<RedmineIssue> issues) {
-			helperAddItems(listAdapter, issues);
+			listAdapter.notifyDataSetInvalidated();
+			listAdapter.notifyDataSetChanged();
 			getFooter().setVisibility(View.GONE);
 		}
 

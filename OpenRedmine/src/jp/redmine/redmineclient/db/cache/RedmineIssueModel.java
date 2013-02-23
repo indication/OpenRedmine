@@ -41,7 +41,18 @@ public class RedmineIssueModel {
 		return item;
 	}
 
-	public List<RedmineIssue> fetchAllById(int connection, long projectId, Long startRow, Long maxRows) throws SQLException{
+	public long countByProject(int connection_id, long project_id) throws SQLException {
+		QueryBuilder<RedmineIssue, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedmineIssue.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineIssue.PROJECT_ID, project_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+	public RedmineIssue fetchItemByProject(int connection, long projectId, Long startRow, Long maxRows) throws SQLException{
 		QueryBuilder<RedmineIssue, Integer> builder = dao.queryBuilder();
 		Where<RedmineIssue, Integer> where = builder.where()
 		.eq(RedmineIssue.CONNECTION, connection)
@@ -49,9 +60,22 @@ public class RedmineIssueModel {
 		.eq(RedmineIssue.PROJECT_ID, projectId)
 		;
 		builder.setWhere(where);
-		return fetchAllBy(builder,startRow,maxRows);
+		builder.orderBy(RedmineIssue.ISSUE_ID, true);
+		setupLimit(builder,startRow,maxRows);
+
+		return fetchBy(builder);
 	}
-	public List<RedmineIssue> fetchAllByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
+	public long countByFilter(RedmineFilter filter) throws SQLException {
+		QueryBuilder<RedmineIssue, Integer> builder = getQueryBuilder(filter);
+		builder.setCountOf(true);
+		return dao.countOf(builder.prepare());
+	}
+	public RedmineIssue fetchItemByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
+		QueryBuilder<RedmineIssue, Integer> builder = getQueryBuilder(filter);
+		setupLimit(builder,startRow,maxRows);
+		return fetchBy(builder);
+	}
+	protected QueryBuilder<RedmineIssue, Integer> getQueryBuilder(RedmineFilter filter) throws SQLException{
 		Hashtable<String, Object> dic = new Hashtable<String, Object>();
 		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
 		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
@@ -78,17 +102,32 @@ public class RedmineIssueModel {
 		}
 		builder.setWhere(where);
 		builder.orderBy(RedmineIssue.ISSUE_ID, false);
-		//@todo
-		return fetchAllBy(builder,startRow,maxRows);
+		return builder;
 	}
 
-	public  List<RedmineIssue> fetchAllBy(QueryBuilder<RedmineIssue, Integer> builder, Long startRow, Long maxRows) throws SQLException{
+	public List<RedmineIssue> fetchAllByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
+		QueryBuilder<RedmineIssue, Integer> builder = getQueryBuilder(filter);
+		setupLimit(builder,startRow,maxRows);
+		return fetchAllBy(builder);
+	}
+
+	protected void setupLimit(QueryBuilder<?,?> builder,Long startRow, Long maxRows) throws SQLException{
 		if(maxRows != null){
 			builder.limit(maxRows);
 		}
 		if(startRow != null && startRow != 0){
 			builder.offset(startRow);
 		}
+	}
+	protected RedmineIssue fetchBy(QueryBuilder<RedmineIssue, Integer> builder) throws SQLException{
+		Log.d("RedmineIssue",builder.prepareStatementString());
+		RedmineIssue item = dao.queryForFirst(builder.prepare());
+		if(item == null)
+			item = new RedmineIssue();
+		return item;
+	}
+
+	protected List<RedmineIssue> fetchAllBy(QueryBuilder<RedmineIssue, Integer> builder) throws SQLException{
 		Log.d("RedmineIssue",builder.prepareStatementString());
 		List<RedmineIssue> item = dao.query(builder.prepare());
 		if(item == null)
@@ -96,6 +135,7 @@ public class RedmineIssueModel {
 		Log.d("RedmineIssue","count:" + item.size());
 		return item;
 	}
+
 
 	public RedmineIssue fetchById(int connection, int issueId) throws SQLException{
 		PreparedQuery<RedmineIssue> query = dao.queryBuilder().where()
@@ -160,4 +200,5 @@ public class RedmineIssueModel {
 		data.setProject(info);
 		refreshItem(info.getConnectionId(),data);
 	}
+
 }

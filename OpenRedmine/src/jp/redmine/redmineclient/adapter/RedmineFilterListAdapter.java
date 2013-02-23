@@ -7,14 +7,11 @@ import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.entity.DummySelection;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class RedmineFilterListAdapter extends BaseAdapter {
+public class RedmineFilterListAdapter extends RedmineBaseAdapter<IMasterRecord> {
 
 	private IMasterModel<? extends IMasterRecord> model;
 	protected int connection_id;
@@ -46,18 +43,23 @@ public class RedmineFilterListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public int getCount() {
+	protected View getItemView(LayoutInflater infalInflater) {
+		// TODO 自動生成されたメソッド・スタブ
+		return infalInflater.inflate(android.R.layout.simple_list_item_single_choice, null);
+	}
+	@Override
+	protected void setupView(View view, IMasterRecord data) {
+		TextView text = (TextView)view.findViewById(android.R.id.text1);
+		text.setText(data.getName());
+	}
+	@Override
+	protected int getDbCount() throws SQLException {
 		int count = addNone ? 1 : 0;
-		try {
-			count += (int) model.countByProject(connection_id, project_id);
-		} catch (SQLException e) {
-			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"getCount" , e);
-		}
+		count += (int) model.countByProject(connection_id, project_id);
 		return count;
 	}
-
 	@Override
-	public Object getItem(int position) {
+	protected IMasterRecord getDbItem(int position) throws SQLException {
 		int realpos = position - (addNone ? 1 : 0);
 		switch(position){
 		case 0:
@@ -66,51 +68,15 @@ public class RedmineFilterListAdapter extends BaseAdapter {
 			}
 		default:
 		}
-		try {
-			return model.fetchItemByProject(connection_id, project_id, realpos, 1);
-		} catch (SQLException e) {
-			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"getItem" , e);
-			return null;
-		}
+		return model.fetchItemByProject(connection_id, project_id, realpos, 1);
 	}
-
 	@Override
-	public long getItemId(int position) {
-		IMasterRecord rec = (IMasterRecord) getItem(position);
-		if(rec == null){
+	protected long getDbItemId(IMasterRecord item) {
+		if(item == null){
 			return -1;
 		} else {
-			return rec.getId();
+			return item.getId();
 		}
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if( convertView == null ){
-			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(android.R.layout.simple_list_item_single_choice, null);
-		}
-		setupData(position, convertView);
-		return convertView;
-	}
-
-	protected void setupData(int position,View convertView){
-		if( convertView == null )
-			return;
-		TextView text = (TextView)convertView.findViewById(android.R.id.text1);
-		IMasterRecord rec = null;
-		if(convertView.getTag() == null || !(convertView.getTag() instanceof IMasterRecord)){
-			rec = (IMasterRecord)getItem(position);
-			convertView.setTag(rec);
-		} else {
-			rec = (IMasterRecord)convertView.getTag();
-		}
-		if(rec == null){
-			Log.e("RedmineFilterListItemAdapter::" + model.getClass().getName(),"setupData");
-			return;
-		}
-		text.setText(rec.getName());
 	}
 
 

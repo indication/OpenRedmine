@@ -13,26 +13,27 @@ CAUTION:
 * Cache data(downloaded issues) are stored WITHOUT encryption. To remove cache data immediately , open connection list - show menu - remove all cache 
 * This is alpha release, so it is not safe for anything
 
-Features:
+Connection:
 * Allow to connect UNSAFE SSL sites powered by transdroid
+* Allow to connect via Basic Authentication
+* Get API key from web site semi-automatically
 * Connection via gzip(compresstion)
+
+Features:
 * View issues offline
-* Get API key from web site
 * Filter (Status/Tracker/Category/Priority,Some of them also buggy)
 
 Now testing:
 * All of features
 
 Working:
-* Renew method of getting issues from remote
 * Filter issues from remote or local
 
 Known issues:
 * App cannot close when the last activity is finished
-* Filter - Shows none when out of first view
 
 Release planing:
-* Journals (2013/01)
+* planning
 
 Thanks:
 * Great icons from Glyphish: http://glyphish.com

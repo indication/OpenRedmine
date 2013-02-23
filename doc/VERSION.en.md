@@ -2,6 +2,11 @@ OpenRedmine
 ===========
 Release history
 
+v1.5
+===========
+Support journals
+Changed fetching issues from remote
+
 v1.4
 ===========
 Reduce permission to write sd card.

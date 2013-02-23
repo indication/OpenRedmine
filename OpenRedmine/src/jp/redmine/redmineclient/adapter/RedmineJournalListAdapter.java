@@ -6,14 +6,10 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
-public class RedmineJournalListAdapter extends BaseAdapter {
+public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal> {
 
 	private RedmineJournalModel model;
 	protected int connection_id;
@@ -29,62 +25,33 @@ public class RedmineJournalListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public int getCount() {
-		try {
-			return (int) model.countByIssue(connection_id, issue_id);
-		} catch (SQLException e) {
-			Log.e("RedmineJournalListAdapter::" + model.getClass().getName(),"getCount" , e);
-		}
-		return 0;
+	protected View getItemView(LayoutInflater infalInflater) {
+		return  infalInflater.inflate(R.layout.journalitem, null);
 	}
 
 	@Override
-	public Object getItem(int position) {
-		try {
-			return model.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
-		} catch (SQLException e) {
-			Log.e("RedmineJournalListAdapter::" + model.getClass().getName(),"getItem" , e);
-			return null;
-		}
+	protected void setupView(View view, RedmineJournal data) {
+		RedmineJournalListItemForm form = new RedmineJournalListItemForm(view);
+		form.setValue(data);
 	}
 
 	@Override
-	public long getItemId(int position) {
-		RedmineJournal rec = (RedmineJournal) getItem(position);
-		if(rec == null){
+	protected int getDbCount() throws SQLException {
+		return (int) model.countByIssue(connection_id, issue_id);
+	}
+
+	@Override
+	protected RedmineJournal getDbItem(int position) throws SQLException {
+		return model.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
+	}
+
+	@Override
+	protected long getDbItemId(RedmineJournal item) {
+		if(item == null){
 			return -1;
 		} else {
-			return rec.getId();
+			return item.getId();
 		}
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if( convertView == null ){
-			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.journalitem, null);
-		}
-		setupData(position, convertView);
-		return convertView;
-	}
-
-	protected void setupData(int position,View convertView){
-		if( convertView == null )
-			return;
-		RedmineJournalListItemForm form = new RedmineJournalListItemForm(convertView);
-		RedmineJournal rec = null;
-		if(convertView.getTag() == null || !(convertView.getTag() instanceof RedmineJournal)){
-			rec = (RedmineJournal)getItem(position);
-			convertView.setTag(rec);
-		} else {
-			rec = (RedmineJournal)convertView.getTag();
-		}
-		if(rec == null){
-			Log.e("RedmineJournalListAdapter::" + model.getClass().getName(),"setupData");
-			return;
-		}
-		form.setValue(rec);
 	}
 
 

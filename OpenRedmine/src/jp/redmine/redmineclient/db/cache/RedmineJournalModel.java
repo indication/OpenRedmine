@@ -67,7 +67,7 @@ public class RedmineJournalModel {
 		return dao.countOf(builder.prepare());
 	}
 
-	public Object fetchItemByIssue(int connection_id, long issue_id,
+	public RedmineJournal fetchItemByIssue(int connection_id, long issue_id,
 			long offset, long limit) throws SQLException {
 		QueryBuilder<RedmineJournal, ?> builder = dao.queryBuilder();
 		builder

@@ -8,14 +8,10 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.external.lib.LRUCache;
 import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
-public class RedmineIssueListAdapter extends BaseAdapter implements LRUCache.IFetchObject<Integer> {
+public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 	private RedmineIssueModel model;
 	protected int connection_id;
 	protected long project_id;
@@ -28,62 +24,33 @@ public class RedmineIssueListAdapter extends BaseAdapter implements LRUCache.IFe
 	}
 
 	@Override
-	public int getCount() {
-		try {
-			return (int) model.countByProject(connection_id, project_id);
-		} catch (SQLException e) {
-			Log.e("RedmineIssueListAdapter::" + model.getClass().getName(),"getCount" , e);
-		}
-		return 0;
-	}
-	@Override
-	public Object getItem(Integer position) {
-		return getItem(position);
+	protected View getItemView(LayoutInflater infalInflater) {
+		return infalInflater.inflate(R.layout.issueitem, null);
 	}
 
 	@Override
-	public Object getItem(int position) {
-		try {
-			Log.d("RedmineIssueListAdapter","position:" + position);
-			return model.fetchItemByProject(connection_id, project_id,(long) position, 1L);
-		} catch (SQLException e) {
-			Log.e("RedmineIssueListAdapter::" + model.getClass().getName(),"getItem" , e);
-			return null;
-		}
+	protected void setupView(View view, RedmineIssue data) {
+		RedmineIssueListItemForm form = new RedmineIssueListItemForm(view);
+		form.setValue(data);
 	}
 
 	@Override
-	public long getItemId(int position) {
-		RedmineIssue rec = (RedmineIssue) getItem(position);
-		if(rec == null){
+	protected int getDbCount() throws SQLException {
+		return (int) model.countByProject(connection_id, project_id);
+	}
+
+	@Override
+	protected RedmineIssue getDbItem(int position) throws SQLException {
+		return model.fetchItemByProject(connection_id, project_id,(long) position, 1L);
+	}
+
+	@Override
+	protected long getDbItemId(RedmineIssue item) {
+		if(item == null){
 			return -1;
 		} else {
-			return rec.getId();
+			return item.getId();
 		}
-	}
-
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.issueitem, null);
-		}
-		setupData(position, convertView);
-		return convertView;
-	}
-
-	protected void setupData(int position,View convertView){
-		if( convertView == null )
-			return;
-		RedmineIssueListItemForm form = new RedmineIssueListItemForm(convertView);
-		RedmineIssue rec = cache.getValue(position, this);
-		if(rec == null){
-			Log.e("RedmineIssueListAdapter::" + model.getClass().getName(),"setupData");
-			return;
-		}
-		form.setValue(rec);
 	}
 
 }

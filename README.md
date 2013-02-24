@@ -45,6 +45,9 @@ Used references
 - ListView crashes while adding data background task ideas from "A Notepad blog"
   http://www.mumei-himazin.info/blog/?p=96
 
+- Textile useage from "Diary of tanamon"
+  http://d.hatena.ne.jp/tanamon/20090723/1248322655
+
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs
@@ -60,6 +63,9 @@ Using Libraries
 
 - LRUCache (unknown) from "Play History of development" - cache access by listview
   http://ttimez.blogspot.jp/2011/07/java.html
+
+- textile-j (LGPL) - show the descriptions in rich text
+  http://java.net/projects/textile-j/sources/svn/show/trunk/www/builds/net.java.textilej/latest
 
 Using Icons
 ==========

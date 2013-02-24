@@ -81,7 +81,7 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	}
 
 	public void setValue(RedmineIssue rd){
-		textDescription.setText(rd.getDescription());
+		setTextileText(textDescription,rd.getDescription());
 		setDate(textDateFrom,rd.getDateStart());
 		setDate(textDateTo,rd.getDateDue());
 		setTracker(rd.getTracker());

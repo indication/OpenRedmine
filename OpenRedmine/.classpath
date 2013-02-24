@@ -6,5 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="lib/ormlite-android-4.42.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ormlite-core-4.42.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/net.java.textilej_2.2.864.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

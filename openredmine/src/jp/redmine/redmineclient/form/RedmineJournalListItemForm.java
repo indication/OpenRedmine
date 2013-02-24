@@ -22,7 +22,7 @@ public class RedmineJournalListItemForm extends FormHelper {
 
 
 	public void setValue(RedmineJournal jr){
-		textDescription.setText(jr.getNotes());
+		setTextileText(textDescription,jr.getNotes());
 		setUserName(textUser, jr.getUser());
 		setDateTime(textDate,jr.getCreated());
 	}

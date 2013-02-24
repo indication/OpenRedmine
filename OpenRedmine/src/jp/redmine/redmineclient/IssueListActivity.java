@@ -44,6 +44,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	@Override
 	protected void onDestroy() {
 		cancelTask();
+		listAdapter = null;
 		super.onDestroy();
 	}
 	protected void cancelTask(){
@@ -99,6 +100,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		//リスト項目がクリックされた時の処理
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
+
 				ListView listView = (ListView) parent;
 				Object listitem = listView.getItemAtPosition(position);
 				if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )

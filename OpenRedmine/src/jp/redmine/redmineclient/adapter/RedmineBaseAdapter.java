@@ -19,10 +19,25 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 	protected abstract int getDbCount() throws SQLException;
 	protected abstract T getDbItem(int position) throws SQLException;
 	protected abstract long getDbItemId(T item);
-
+	/**
+	 * Adding item on the background, it causes crash on notifyDataSetChanged.
+	 * To avoid crash, store count before notifyDataSetChanged and return count in the getCount
+	 * inherit from http://www.mumei-himazin.info/blog/?p=96
+	 */
+	private int count = 0;
+	/**
+	 * Bless ListView the data has been changed.
+	 * This method catches SQLException.
+	 */
 	@Override
 	public void notifyDataSetChanged() {
 		cache.clear();
+		try {
+			count = getDbCount();
+		} catch (SQLException e) {
+			Log.e(TAG,"getDbCount" , e);
+			count = 0;
+		}
 		super.notifyDataSetChanged();
 	}
 
@@ -70,17 +85,12 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 
 	/**
 	 * Get count from database
-	 * This method catches SQLException.
+	 * Before Call this, call notifyDataSetChanged is needed.
 	 * @return 0 or item count
 	 */
 	@Override
 	public int getCount() {
-		try {
-			return getDbCount();
-		} catch (SQLException e) {
-			Log.e(TAG,"getDbCount" , e);
-		}
-		return 0;
+		return count;
 	}
 
 	@Override

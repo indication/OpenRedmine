@@ -42,6 +42,9 @@ Used references
 - Expanded list ideas from "My life with Android :-)"
   http://mylifewithandroid.blogspot.jp/2010/12/expandable-list-and-checkboxes.html
 
+- ListView crashes while adding data background task ideas from "A Notepad blog"
+  http://www.mumei-himazin.info/blog/?p=96
+
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs

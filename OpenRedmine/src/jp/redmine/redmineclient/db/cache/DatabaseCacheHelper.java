@@ -65,8 +65,9 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				TableUtils.createTable(arg1, RedmineFilter.class);
 				break;
 			case 2:
+				TableUtils.dropTable(arg1, RedmineIssue.class,true);
 				TableUtils.createTable(arg1, RedmineJournal.class);
-				//TODO issue.id int->long
+				TableUtils.createTable(arg1, RedmineIssue.class);
 				break;
 			}
 

@@ -74,6 +74,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			case 3:
 				addColumn(db,RedmineProjectVersion.class,"sharing TEXT");
 				addColumn(db,RedmineProjectVersion.class,"description TEXT");
+				addColumn(db,RedmineProject.class,"parent INTEGER");
 				TableUtils.createTable(source, RedmineTimeEntry.class);
 				TableUtils.createTable(source, RedmineTimeActivity.class);
 				break;
@@ -89,7 +90,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 
 	protected void addColumn(SQLiteDatabase db, Class<?> name, String column){
 		db.execSQL("ALTER TABLE "
-				+ name.getName()
+				+ name.getSimpleName()
 				+ " ADD COLUMN "
 				+ column
 				+ ";");

@@ -12,6 +12,8 @@ import jp.redmine.redmineclient.entity.RedmineProjectMember;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineRole;
 import jp.redmine.redmineclient.entity.RedmineStatus;
+import jp.redmine.redmineclient.entity.RedmineTimeActivity;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
@@ -50,6 +52,8 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(source, RedmineProjectMember.class);
 			TableUtils.createTable(source, RedmineFilter.class);
 			TableUtils.createTable(source, RedmineJournal.class);
+			TableUtils.createTable(source, RedmineTimeEntry.class);
+			TableUtils.createTable(source, RedmineTimeActivity.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -70,6 +74,8 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			case 3:
 				addColumn(db,RedmineProjectVersion.class,"sharing TEXT");
 				addColumn(db,RedmineProjectVersion.class,"description TEXT");
+				TableUtils.createTable(source, RedmineTimeEntry.class);
+				TableUtils.createTable(source, RedmineTimeActivity.class);
 				break;
 			}
 

@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.entity;
 
 import java.util.Date;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -36,5 +37,13 @@ public class TypeConverter {
 			Log.e("TypeConverter","ParseDate",e);
 		}
 		return item;
+	}
+	public static BigDecimal parseBigDecimal(String str){
+		if(TextUtils.isEmpty(str)) return null;
+		return new BigDecimal(str);
+	}
+	public static Integer parseInteger(String str){
+		if(TextUtils.isEmpty(str)) return null;
+		return Integer.parseInt(str);
 	}
 }

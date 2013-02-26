@@ -29,7 +29,10 @@ public class RedmineProjectVersion implements IMasterRecord {
     private String status;
     @DatabaseField
     private Date due_date;
-    //unused
+    @DatabaseField
+    private String sharing;
+    @DatabaseField
+    private String description;
     @DatabaseField
     private Date created;
     @DatabaseField
@@ -144,6 +147,38 @@ public class RedmineProjectVersion implements IMasterRecord {
 	 */
 	public Date getDateDue() {
 		return due_date;
+	}
+
+
+	/**
+	 * @return sharing
+	 */
+	public String getSharing() {
+		return sharing;
+	}
+
+
+	/**
+	 * @param sharing セットする sharing
+	 */
+	public void setSharing(String sharing) {
+		this.sharing = sharing;
+	}
+
+
+	/**
+	 * @return description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+
+	/**
+	 * @param description セットする description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 

@@ -33,6 +33,8 @@ public class RedmineProject implements IMasterRecord {
     private Integer sort_order;
     @DatabaseField
     private Integer favorite;
+    @DatabaseField
+    private Integer parent;
 
 
     @Override
@@ -184,6 +186,20 @@ public class RedmineProject implements IMasterRecord {
 	 */
 	public Integer getFavorite() {
 		return favorite;
+	}
+
+	/**
+	 * @return parent
+	 */
+	public Integer getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent セットする parent
+	 */
+	public void setParent(Integer parent) {
+		this.parent = parent;
 	}
 
 	/**

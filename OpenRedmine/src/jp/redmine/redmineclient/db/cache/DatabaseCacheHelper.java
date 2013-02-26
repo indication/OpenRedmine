@@ -35,21 +35,21 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
     	return context.getCacheDir().getPath() + "/" +DB_NAME;
     }
 	@Override
-	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
+	public void onCreate(SQLiteDatabase arg0, ConnectionSource source) {
 		try {
 			//自動生成
-			TableUtils.createTable(arg1, RedmineProject.class);
-			TableUtils.createTable(arg1, RedmineUser.class);
-			TableUtils.createTable(arg1, RedmineProjectCategory.class);
-			TableUtils.createTable(arg1, RedmineProjectVersion.class);
-			TableUtils.createTable(arg1, RedminePriority.class);
-			TableUtils.createTable(arg1, RedmineRole.class);
-			TableUtils.createTable(arg1, RedmineStatus.class);
-			TableUtils.createTable(arg1, RedmineTracker.class);
-			TableUtils.createTable(arg1, RedmineIssue.class);
-			TableUtils.createTable(arg1, RedmineProjectMember.class);
-			TableUtils.createTable(arg1, RedmineFilter.class);
-			TableUtils.createTable(arg1, RedmineJournal.class);
+			TableUtils.createTable(source, RedmineProject.class);
+			TableUtils.createTable(source, RedmineUser.class);
+			TableUtils.createTable(source, RedmineProjectCategory.class);
+			TableUtils.createTable(source, RedmineProjectVersion.class);
+			TableUtils.createTable(source, RedminePriority.class);
+			TableUtils.createTable(source, RedmineRole.class);
+			TableUtils.createTable(source, RedmineStatus.class);
+			TableUtils.createTable(source, RedmineTracker.class);
+			TableUtils.createTable(source, RedmineIssue.class);
+			TableUtils.createTable(source, RedmineProjectMember.class);
+			TableUtils.createTable(source, RedmineFilter.class);
+			TableUtils.createTable(source, RedmineJournal.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -57,17 +57,19 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, ConnectionSource arg1, int older,int newer) {
+	public void onUpgrade(SQLiteDatabase db, ConnectionSource source, int older,int newer) {
 		try {
 			switch(older){
 			case 1:
-				TableUtils.createTable(arg1, RedmineProjectMember.class);
-				TableUtils.createTable(arg1, RedmineFilter.class);
-				break;
+				TableUtils.createTable(source, RedmineProjectMember.class);
+				TableUtils.createTable(source, RedmineFilter.class);
 			case 2:
-				TableUtils.dropTable(arg1, RedmineIssue.class,true);
-				TableUtils.createTable(arg1, RedmineJournal.class);
-				TableUtils.createTable(arg1, RedmineIssue.class);
+				TableUtils.dropTable(source, RedmineIssue.class,true);
+				TableUtils.createTable(source, RedmineJournal.class);
+				TableUtils.createTable(source, RedmineIssue.class);
+			case 3:
+				addColumn(db,RedmineProjectVersion.class,"sharing TEXT");
+				addColumn(db,RedmineProjectVersion.class,"description TEXT");
 				break;
 			}
 
@@ -75,6 +77,16 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			Log.e("DatabaseHelper","onCreate",e);
 		}
 
+
+	}
+
+
+	protected void addColumn(SQLiteDatabase db, Class<?> name, String column){
+		db.execSQL("ALTER TABLE "
+				+ name.getName()
+				+ " ADD COLUMN "
+				+ column
+				+ ";");
 
 	}
 

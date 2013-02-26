@@ -37,12 +37,16 @@ public class ParserProject extends BaseParserInternal<RedmineConnection,RedmineP
 			item.setDescription(getNextText());
 		} else if("homepage".equalsIgnoreCase(xml.getName())){
 			item.setHomepage(getNextText());
+		} else if("parent".equalsIgnoreCase(xml.getName())){
+			String work = getNextText();
+			if("".equals(work))	return;
+			item.setParent(Integer.parseInt(work));
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("updated_on".equalsIgnoreCase(xml.getName())){
 			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
-		//@todo tracker, issue_categories
+		//TODO tracker, issue_categories
 
 	}
 }

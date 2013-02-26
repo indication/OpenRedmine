@@ -35,6 +35,10 @@ public class ParserVersion extends BaseParserInternal<RedmineConnection,RedmineP
 			item.setStatus(getNextText());
 		} else if("due_date".equalsIgnoreCase(xml.getName())){
 			item.setDateDue(TypeConverter.parseDate(getNextText()));
+		} else if("sharing".equalsIgnoreCase(xml.getName())){
+			item.setSharing(getNextText());
+		} else if("description".equalsIgnoreCase(xml.getName())){
+			item.setDescription(getNextText());
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("updated_on".equalsIgnoreCase(xml.getName())){

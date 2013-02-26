@@ -33,10 +33,11 @@ Known issues:
 * App cannot close when the last activity is finished
 
 Release planing:
-* planning
+* Show TimeEntry (2013/04)
+* TimeEntry like stop watch (no plan...)
 
 Thanks:
 * Great icons from Glyphish: http://glyphish.com
 
 Note:
-* This app is open source, you can contribute.
+* This app is open source, you can contribute.(eg. translation)

@@ -3,6 +3,8 @@ package jp.redmine.redmineclient.parser;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.entity.IMasterRecord;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> {
@@ -43,5 +45,14 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 	protected boolean equalsTagName(String tag)
 			throws XmlPullParserException, IOException{
 		return tag.equalsIgnoreCase(xml.getName());
+	}
+
+	protected void setMasterRecord(IMasterRecord item)
+		throws XmlPullParserException, IOException{
+		item.setName(xml.getAttributeValue("", "name"));
+		String id = xml.getAttributeValue("", "id");
+		if(!"".equals(id)){
+			item.setRemoteId(Long.parseLong(id));
+		}
 	}
 }

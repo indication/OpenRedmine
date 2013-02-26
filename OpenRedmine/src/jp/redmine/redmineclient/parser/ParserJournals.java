@@ -9,7 +9,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Log;
 
-import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
@@ -74,14 +73,6 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 		if("".equals(id))	return;
 		journal.setJournalId(Integer.parseInt(id));
 
-	}
-	protected void setMasterRecord(IMasterRecord item)
-		throws XmlPullParserException, IOException{
-		item.setName(xml.getAttributeValue("", "name"));
-		String id = xml.getAttributeValue("", "id");
-		if(!"".equals(id)){
-			item.setRemoteId(Long.parseLong(id));
-		}
 	}
 
 	@Override

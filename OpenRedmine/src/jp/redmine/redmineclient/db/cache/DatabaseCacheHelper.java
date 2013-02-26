@@ -27,7 +27,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=3;
+	private static int DB_VERSION=4;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);

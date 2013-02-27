@@ -2,6 +2,12 @@ OpenRedmine
 ===========
 Release history
 
+v1.6
+===========
+Issue list keep scroll point.
+Fix filter shows nothing on the list.
+Upgeade android api level.
+
 v1.5
 ===========
 Support journals

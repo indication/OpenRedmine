@@ -44,6 +44,7 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		final long projectid = intent.getProjectId();
 		form.setup(this,getHelper(),connectionid,projectid);
 		form.setupEvents();
+		form.refresh();
 		form.setFilter(getHelper(), connectionid, projectid);
 		try {
 			RedmineFilterModel model = new RedmineFilterModel(getHelper());

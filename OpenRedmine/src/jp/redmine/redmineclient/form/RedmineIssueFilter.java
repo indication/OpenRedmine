@@ -21,8 +21,8 @@ import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 
 import android.app.Activity;
+import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
@@ -42,6 +42,9 @@ public class RedmineIssueFilter {
 	}
 
 	public void setup(Activity activity, DatabaseCacheHelper helper, int connection, long project){
+		//TODO remove param connection_id, project from constructor
+		if(tabHost != null)
+			return;
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
 		tabHost=(TabHost)activity.findViewById(android.R.id.tabhost);
 		tabHost.setup();
@@ -69,13 +72,18 @@ public class RedmineIssueFilter {
 		}
 
 	}
+	public void refresh(){
+		for(RedmineIssueFilterExpander ex: dic.values()){
+			ex.refresh();
+		}
+	}
 
 	public void addList(RedmineIssueFilterExpander ex,Activity activity, int connection, long project, IMasterModel<? extends IMasterRecord> master ){
 		RedmineFilterListAdapter adapter = new RedmineFilterListAdapter(master,connection,project);
 		adapter.setupDummyItem(activity.getApplicationContext());
 		addList(ex, adapter, master.getClass().getSimpleName());
 	}
-	public void addList(RedmineIssueFilterExpander ex, ListAdapter adapter, String key ){
+	public void addList(RedmineIssueFilterExpander ex, BaseAdapter adapter, String key ){
 		ex.adapter = adapter;
 		dic.put(key, ex);
 	}

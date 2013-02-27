@@ -2,11 +2,11 @@ package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import android.app.Activity;
-import android.widget.ListAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 public class RedmineIssueFilterExpander {
-	public ListAdapter adapter;
+	public BaseAdapter adapter;
 	public ListView list;
 	public void setup(Activity activity,int listid){
 		list = (ListView)activity.findViewById(listid);
@@ -41,6 +41,12 @@ public class RedmineIssueFilterExpander {
 			}
 			list.setItemChecked(position, true);
 		}
+	}
+	public void refresh(){
+		if(adapter == null)
+			return;
+		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
 	}
 
 

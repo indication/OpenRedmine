@@ -40,6 +40,8 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	private View mFooter;
 	private ListView listView;
 	private long lastPos = 0;
+	private int stateFirstPos = 0;
+	private int statePosTop = 0;
 
 	@Override
 	protected void onDestroy() {
@@ -57,14 +59,23 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	static final private String stateListViewTopPosition = "ListViewTopPosition";
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
 		// save the listview status
 		if (listView != null && listView.getChildCount() > 0) {
-			outState.putInt(stateListViewFirstVisiblePosition, listView.getFirstVisiblePosition());
-			outState.putInt(stateListViewTopPosition, listView.getChildAt(0).getTop());
+			stateFirstPos = listView.getFirstVisiblePosition();
+			statePosTop = listView.getChildAt(0).getTop();
+			outState.putInt(stateListViewFirstVisiblePosition, stateFirstPos);
+			outState.putInt(stateListViewTopPosition, statePosTop);
+		}
+		super.onSaveInstanceState(outState);
+	}
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		if (savedInstanceState != null) {
+			stateFirstPos = savedInstanceState.getInt(stateListViewFirstVisiblePosition);
+			statePosTop = savedInstanceState.getInt(stateListViewTopPosition);
 		}
 	}
-
 
 	/** Called when the activity is first created. */
 	@Override
@@ -116,21 +127,21 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		});
 
 		if (savedInstanceState != null) {
-			listView.setSelectionFromTop(savedInstanceState.getInt(stateListViewFirstVisiblePosition)
-					,savedInstanceState.getInt(stateListViewTopPosition));
+			stateFirstPos = savedInstanceState.getInt(stateListViewFirstVisiblePosition);
+			statePosTop = savedInstanceState.getInt(stateListViewTopPosition);
 		}
 
 	}
 
 	@Override
 	protected void onStart() {
-		this.onRefresh(false);
-		super.onStart();
 
 		ProjectIntent intent = new ProjectIntent( getIntent() );
 		listAdapter = new RedmineIssueListAdapter(
 				getHelper(),intent.getConnectionId(),intent.getProjectId());
 		listView.setAdapter(listAdapter);
+		this.onRefresh(false);
+		super.onStart();
 	}
 	private View getFooter() {
 		if (mFooter == null) {
@@ -147,6 +158,9 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		if(listAdapter != null){
 			listAdapter.notifyDataSetInvalidated();
 			listAdapter.notifyDataSetChanged();
+		}
+		if(stateFirstPos != 0 && statePosTop != 0){
+			listView.setSelectionFromTop(stateFirstPos,statePosTop);
 		}
 		task = new SelectDataTask();
 		task.execute(0,10,isFlush ? 1 : 0);

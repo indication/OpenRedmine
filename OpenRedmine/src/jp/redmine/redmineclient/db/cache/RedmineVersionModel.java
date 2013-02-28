@@ -80,7 +80,8 @@ public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> 
 		builder
 			.limit(limit)
 			.offset(offset)
-			.orderBy(RedmineProjectVersion.DUE_DATE, true)
+			.orderBy(RedmineProjectVersion.DUE_DATE, false)
+			.orderBy(RedmineProjectVersion.NAME, true)
 			.where()
 				.eq(RedmineProjectVersion.CONNECTION, connection_id)
 				.and()

@@ -34,6 +34,7 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		setContentView(R.layout.issuefilter);
 
 		form = new RedmineIssueFilter();
+		form.setup(this,getHelper());
 
 	}
 
@@ -42,7 +43,6 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		ProjectIntent intent = new ProjectIntent(getIntent());
 		final int connectionid = intent.getConnectionId();
 		final long projectid = intent.getProjectId();
-		form.setup(this,getHelper(),connectionid,projectid);
 		form.setupEvents();
 		form.refresh();
 		form.setFilter(getHelper(), connectionid, projectid);

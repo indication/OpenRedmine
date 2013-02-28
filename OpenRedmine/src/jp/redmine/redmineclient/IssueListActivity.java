@@ -88,6 +88,9 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		listView.addFooterView(getFooter());
 		getFooter().setVisibility(View.INVISIBLE);
 
+		listAdapter = new RedmineIssueListAdapter(getHelper());
+		listView.setAdapter(listAdapter);
+
 		listView.setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
@@ -135,13 +138,11 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 	@Override
 	protected void onStart() {
+		super.onStart();
 
 		ProjectIntent intent = new ProjectIntent( getIntent() );
-		listAdapter = new RedmineIssueListAdapter(
-				getHelper(),intent.getConnectionId(),intent.getProjectId());
-		listView.setAdapter(listAdapter);
+		listAdapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 		this.onRefresh(false);
-		super.onStart();
 	}
 	private View getFooter() {
 		if (mFooter == null) {

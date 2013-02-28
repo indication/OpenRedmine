@@ -17,29 +17,35 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 	private RedmineIssueModel model;
 	private RedmineFilterModel mFilter;
 	private RedmineFilter filter;
-	protected int connection_id;
-	protected long project_id;
+	protected Integer connection_id;
+	protected Long project_id;
 	@Override
 	public void notifyDataSetChanged() {
-		getFilter();
+		if(!isValidParameter())
+		try {
+			filter = mFilter.fetchByCurrent(connection_id, project_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		super.notifyDataSetChanged();
 	}
-	public RedmineIssueListAdapter(DatabaseCacheHelper helper, int connection, long project) {
+	public RedmineIssueListAdapter(DatabaseCacheHelper helper) {
 		super();
 		model = new RedmineIssueModel(helper);
-		connection_id = connection;
-		project_id = project;
 
 		mFilter = new RedmineFilterModel(helper);
 	}
 
-	protected void getFilter(){
-		try {
-			filter = mFilter.fetchByCurrent(connection_id, project_id);
-		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+	public void setupParameter(int connection, long project){
+		connection_id = connection;
+		project_id = project;
+	}
+
+	public boolean isValidParameter(){
+		if(project_id == null || connection_id == null)
+			return false;
+		else
+			return true;
 	}
 
 	@Override

@@ -41,36 +41,38 @@ public class RedmineIssueFilter {
 		tabHost.addTab(spec1);
 	}
 
-	public void setup(Activity activity, DatabaseCacheHelper helper, int connection, long project){
-		//TODO remove param connection_id, project from constructor
-		if(tabHost != null)
-			return;
+	public void setup(Activity activity, DatabaseCacheHelper helper){
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
 		tabHost=(TabHost)activity.findViewById(android.R.id.tabhost);
 		tabHost.setup();
+		tabHost.clearAllTabs();
 
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.listViewStatus);
-		addList(expStatus,activity,connection,project, new RedmineStatusModel(helper));
+		addList(expStatus,activity, new RedmineStatusModel(helper));
 		addTab(activity,R.string.ticket_status,R.id.tab1,R.drawable.runner);
 
 		RedmineIssueFilterExpander expVersion = generate(activity,R.id.listViewVersion);
-		addList(expVersion,activity,connection,project, new RedmineVersionModel(helper));
+		addList(expVersion,activity, new RedmineVersionModel(helper));
 		addTab(activity,R.string.ticket_version,R.id.tab2,R.drawable.flag);
 
 		RedmineIssueFilterExpander expCategory = generate(activity, R.id.listViewCategory);
-		addList(expCategory,activity,connection,project, new RedmineCategoryModel(helper));
+		addList(expCategory,activity, new RedmineCategoryModel(helper));
 		addTab(activity,R.string.ticket_category,R.id.tab3,R.drawable.cabinet);
 
 		RedmineIssueFilterExpander expTracker = generate(activity, R.id.listViewTracker);
-		addList(expTracker,activity,connection,project, new RedmineTrackerModel(helper));
+		addList(expTracker,activity, new RedmineTrackerModel(helper));
 		addTab(activity,R.string.ticket_tracker,R.id.tab4,R.drawable.stickynote);
+	}
+	public void setupParameter(int connection, long project){
+		for(RedmineIssueFilterExpander ex: dic.values()){
+			((RedmineFilterListAdapter)ex.adapter).setupParameter(connection, project);
+		}
 	}
 
 	public void setupEvents(){
 		for(RedmineIssueFilterExpander ex: dic.values()){
 			ex.setupEvent();
 		}
-
 	}
 	public void refresh(){
 		for(RedmineIssueFilterExpander ex: dic.values()){
@@ -78,8 +80,8 @@ public class RedmineIssueFilter {
 		}
 	}
 
-	public void addList(RedmineIssueFilterExpander ex,Activity activity, int connection, long project, IMasterModel<? extends IMasterRecord> master ){
-		RedmineFilterListAdapter adapter = new RedmineFilterListAdapter(master,connection,project);
+	public void addList(RedmineIssueFilterExpander ex,Activity activity, IMasterModel<? extends IMasterRecord> master ){
+		RedmineFilterListAdapter adapter = new RedmineFilterListAdapter(master);
 		adapter.setupDummyItem(activity.getApplicationContext());
 		addList(ex, adapter, master.getClass().getSimpleName());
 	}
@@ -133,6 +135,7 @@ public class RedmineIssueFilter {
 	}
 
 	public void setFilter(DatabaseCacheHelper helper, int connection, long project){
+		setupParameter(connection, project);
 
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
 		RedmineFilter filter = null;

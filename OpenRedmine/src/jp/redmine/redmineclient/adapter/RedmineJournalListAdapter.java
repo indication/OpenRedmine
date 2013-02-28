@@ -12,16 +12,26 @@ import android.view.View;
 public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal> {
 
 	private RedmineJournalModel model;
-	protected int connection_id;
-	protected long issue_id;
+	protected Integer connection_id;
+	protected Long issue_id;
 
 
 
 	public RedmineJournalListAdapter(RedmineJournalModel m, int connection, long issue){
 		super();
 		model = m;
+	}
+
+	public void setupParameter(int connection, long issue){
 		connection_id = connection;
 		issue_id = issue;
+	}
+
+	public boolean isValidParameter(){
+		if(issue_id == null || connection_id == null)
+			return false;
+		else
+			return true;
 	}
 
 	@Override
@@ -37,11 +47,15 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 
 	@Override
 	protected int getDbCount() throws SQLException {
+		if(!isValidParameter())
+			return 0;
 		return (int) model.countByIssue(connection_id, issue_id);
 	}
 
 	@Override
 	protected RedmineJournal getDbItem(int position) throws SQLException {
+		if(!isValidParameter())
+			return null;
 		return model.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
 	}
 

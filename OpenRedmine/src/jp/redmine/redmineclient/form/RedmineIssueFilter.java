@@ -30,6 +30,7 @@ public class RedmineIssueFilter {
 	private HashMap<String,RedmineIssueFilterExpander> dic = new HashMap<String,RedmineIssueFilterExpander>();
 	public Button buttonSave;
 	public TabHost tabHost;
+	RedmineFilterModel mFilter;
 
 	protected void addTab(Activity context,int label,int container, Integer icon){
 		TabSpec spec1=tabHost.newTabSpec(context.getString(label));
@@ -42,10 +43,12 @@ public class RedmineIssueFilter {
 	}
 
 	public void setup(Activity activity, DatabaseCacheHelper helper){
+		if (tabHost != null)
+			return;
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
 		tabHost=(TabHost)activity.findViewById(android.R.id.tabhost);
 		tabHost.setup();
-		tabHost.clearAllTabs();
+		mFilter = new RedmineFilterModel(helper);
 
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.listViewStatus);
 		addList(expStatus,activity, new RedmineStatusModel(helper));
@@ -134,10 +137,7 @@ public class RedmineIssueFilter {
 		return rec;
 	}
 
-	public void setFilter(DatabaseCacheHelper helper, int connection, long project){
-		setupParameter(connection, project);
-
-		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
+	public void setFilter(int connection, long project){
 		RedmineFilter filter = null;
 		try {
 			filter = mFilter.fetchByCurrent(connection, project);

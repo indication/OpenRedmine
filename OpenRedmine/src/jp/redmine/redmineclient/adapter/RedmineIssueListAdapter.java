@@ -22,6 +22,7 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 	@Override
 	public void notifyDataSetChanged() {
 		if(!isValidParameter())
+			return;
 		try {
 			filter = mFilter.fetchByCurrent(connection_id, project_id);
 		} catch (SQLException e) {

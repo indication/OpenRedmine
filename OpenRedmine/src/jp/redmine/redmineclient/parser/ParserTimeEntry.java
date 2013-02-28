@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -36,8 +35,7 @@ public class ParserTimeEntry extends BaseParserInternal<RedmineConnection,Redmin
 			setMasterRecord(entity);
 			item.setProject(entity);
 		} else if(equalsTagName("issue")){
-			//TODO wrong
-			item.setIssueId(TypeConverter.parseInteger(getNextText()));
+			item.setIssueId(getAttributeInteger("id"));
 		} else if(equalsTagName("user")){
 			RedmineUser entity = new RedmineUser();
 			setMasterRecord(entity);

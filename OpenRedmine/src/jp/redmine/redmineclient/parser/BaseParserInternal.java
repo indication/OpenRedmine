@@ -7,6 +7,8 @@ import jp.redmine.redmineclient.entity.IMasterRecord;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.text.TextUtils;
+
 abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> {
 	private ITEM item = null;
 	private int lastdepth;
@@ -50,9 +52,23 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 	protected void setMasterRecord(IMasterRecord item)
 		throws XmlPullParserException, IOException{
 		item.setName(xml.getAttributeValue("", "name"));
-		String id = xml.getAttributeValue("", "id");
-		if(!"".equals(id)){
-			item.setRemoteId(Long.parseLong(id));
-		}
+		item.setRemoteId(getAttributeLong("id"));
+	}
+
+	protected Integer getAttributeInteger(String attr){
+		return getAttributeInteger("",attr);
+	}
+	protected Integer getAttributeInteger(String schema, String attr){
+		String id = xml.getAttributeValue(schema, attr);
+		return TextUtils.isEmpty(id) ? null : Integer.parseInt(id);
+	}
+
+
+	protected Long getAttributeLong(String attr){
+		return getAttributeLong("",attr);
+	}
+	protected Long getAttributeLong(String schema, String attr){
+		String id = xml.getAttributeValue(schema, attr);
+		return TextUtils.isEmpty(id) ? null : Long.parseLong(id);
 	}
 }

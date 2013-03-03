@@ -1,30 +1,25 @@
 package jp.redmine.redmineclient;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
-
+import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectProjectTask;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
@@ -32,10 +27,19 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		super();
 	}
 
-	private ArrayAdapter<RedmineProject> listAdapter;
-	private RedmineProjectModel modelProject;
 	private SelectDataTask task;
+	private RedmineBaseAdapterListFormHelper<RedmineProjectListAdapter> formList;
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		formList.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		formList.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
 	@Override
 	protected void onDestroy() {
 		cancelTask();
@@ -53,18 +57,14 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connectionlist);
 
-		modelProject = new RedmineProjectModel(getHelper());
-
-		ListView list = (ListView)findViewById(R.id.listConnectionList);
-		listAdapter = new ArrayAdapter<RedmineProject>(
-				this,android.R.layout.simple_list_item_1
-				,new ArrayList<RedmineProject>());
-
-		list.setAdapter(listAdapter);
-
+		formList = new RedmineBaseAdapterListFormHelper<RedmineProjectListAdapter>();
+		formList.setList((ListView)findViewById(R.id.listConnectionList));
+		formList.setFooter(getLayoutInflater().inflate(R.layout.listview_footer,null), false);
+		formList.setAdapter(new RedmineProjectListAdapter(getHelper()));
+		formList.onRestoreInstanceState(savedInstanceState);
 
 		//リスト項目がクリックされた時の処理
-		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		formList.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 				ListView listView = (ListView) parent;
 				RedmineProject item = (RedmineProject) listView.getItemAtPosition(position);
@@ -75,7 +75,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 
 		/*
 		//リスト項目が長押しされた時の処理
-		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+		formList.list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
@@ -92,29 +92,15 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 	@Override
 	protected void onStart() {
 		super.onStart();
-		onReload();
-		if(listAdapter.getCount() == 0){
+		ConnectionIntent intent = new ConnectionIntent(getIntent());
+		formList.adapter.setupParameter(intent.getConnectionId());
+		formList.refresh();
+		if(formList.adapter.getCount() == 0){
 			onRefresh();
 		}
 	}
 
-	protected void onReload(){
-		listAdapter.notifyDataSetInvalidated();
-		listAdapter.clear();
-		ConnectionIntent intent = new ConnectionIntent(getIntent());
-		int id = intent.getConnectionId();
-		try {
-			for (RedmineProject i : modelProject.fetchAll(id)){
-				listAdapter.add(i);
-			}
-		} catch (SQLException e) {
-			Log.e("ProjectListActivity","onReload",e);
-		}
-		listAdapter.notifyDataSetChanged();
-	}
-
 	protected void onItemSelect(RedmineProject item) {
-
 		ProjectIntent intent = new ProjectIntent( getApplicationContext(), IssueListActivity.class );
 		intent.setConnectionId(item.getConnectionId());
 		intent.setProjectId(item.getId());
@@ -129,10 +115,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 	}
 
 	private class SelectDataTask extends SelectProjectTask {
-		private ProgressDialog dialog;
-		private Context parentContext;
 		public SelectDataTask(final Context tex){
-			parentContext = tex;
 			helper = getHelper();
 			ConnectionIntent intent = new ConnectionIntent(getIntent());
 			int id = intent.getConnectionId();
@@ -143,18 +126,14 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
-			dialog = new ProgressDialog(parentContext);
-			dialog.setMessage(parentContext.getString(R.string.menu_settings_loading));
-			dialog.show();
+			formList.setFooterViewVisible(true);
 		}
 
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(List<RedmineProject> b) {
-			onReload();
-			if (dialog.isShowing()) {
-				dialog.dismiss();
-			}
+			formList.setFooterViewVisible(false);
+			formList.refresh(false);
 		}
 	}
 

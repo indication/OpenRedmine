@@ -7,21 +7,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class RedmineIssueViewForm extends FormHelper {
 	public TextView textIssueId;
 	public TextView textSubject;
-	public ListView list;
-	public View viewHeader;
-	public View viewFooter;
 	public LinearLayout layoutTitleContent;
 	public ViewGroup layoutTitle1;
 	public ViewGroup layoutTitle2;
 	public RedmineIssueViewForm(Activity activity){
 		this.setup(activity);
-
 		this.setupEvents();
 	}
 
@@ -29,22 +24,11 @@ public class RedmineIssueViewForm extends FormHelper {
 	public void setup(Activity view){
 		textIssueId = (TextView)view.findViewById(R.id.textIssueId);
 		textSubject = (TextView)view.findViewById(R.id.textSubject);
-		list = (ListView)view.findViewById(R.id.list);
 		layoutTitleContent = (LinearLayout)view.findViewById(R.id.layoutTitleContent);
 		layoutTitle1 = (ViewGroup)view.findViewById(R.id.layoutTitle1);
 		layoutTitle2 = (ViewGroup)view.findViewById(R.id.layoutTitle2);
-
-		viewHeader = view.getLayoutInflater().inflate(R.layout.issueviewdetail,null);
-		viewFooter = view.getLayoutInflater().inflate(R.layout.listview_footer,null);
-		list.addHeaderView(viewHeader);
-		setListHeaderViewVisible(false);
-		list.addFooterView(viewFooter);
-		setListFooterViewVisible(false);
 	}
 
-	public void setListHeaderViewVisible(boolean isVisible){
-		viewHeader.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-	}
 	public void setupEvents(){
 		textSubject.setOnClickListener(new OnClickListener() {
 
@@ -65,11 +49,6 @@ public class RedmineIssueViewForm extends FormHelper {
 			}
 		});
 	}
-
-	public void setListFooterViewVisible(boolean isVisible){
-		viewFooter.setVisibility(isVisible ? View.VISIBLE : View.GONE);
-	}
-
 
 	public void setIssueId(int id){
 		textIssueId.setText("#"+String.valueOf(id));

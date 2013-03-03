@@ -10,6 +10,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
@@ -18,6 +19,7 @@ import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.util.Log;
+import android.widget.ListView;
 
 public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
 	public IssueViewActivity(){
@@ -26,8 +28,18 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	private SelectDataTask task;
 	private RedmineIssueViewForm form;
 	private RedmineIssueViewDetailForm formDetail;
-	private RedmineJournalListAdapter listAdapter;
+	private RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter> formList;
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		formList.onSaveInstanceState(outState);
+		super.onSaveInstanceState(outState);
+	}
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		formList.onRestoreInstanceState(savedInstanceState);
+		super.onRestoreInstanceState(savedInstanceState);
+	}
 	@Override
 	protected void onDestroy() {
 		cancelTask();
@@ -45,11 +57,15 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.issueview);
 
-		form = new RedmineIssueViewForm(this);
-		formDetail = new RedmineIssueViewDetailForm(form.viewHeader);
+		formList = new RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter>();
+		formList.setList((ListView)findViewById(R.id.list));
+		formList.setHeader(getLayoutInflater().inflate(R.layout.issueviewdetail,null), false);
+		formList.setFooter(getLayoutInflater().inflate(R.layout.listview_footer,null), false);
+		formList.setAdapter(new RedmineJournalListAdapter(new RedmineJournalModel(getHelper())));
+		formList.onRestoreInstanceState(savedInstanceState);
 
-		listAdapter = new RedmineJournalListAdapter(new RedmineJournalModel(getHelper()));
-		form.list.setAdapter(listAdapter);
+		form = new RedmineIssueViewForm(this);
+		formDetail = new RedmineIssueViewDetailForm(formList.viewHeader);
 	}
 
 	@Override
@@ -69,10 +85,10 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		}
 		form.setValue(issue);
 		formDetail.setValue(issue);
-		form.setListHeaderViewVisible(true);
+		formList.setHeaderViewVisible(true);
 
-		listAdapter.setupParameter(connectionid,issue.getId());
-		listAdapter.notifyDataSetInvalidated();
+		formList.adapter.setupParameter(connectionid,issue.getId());
+		formList.refresh();
 
 		task = new SelectDataTask();
 		task.execute(issueid);
@@ -91,19 +107,14 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
-			form.setListFooterViewVisible(true);
+			formList.setFooterViewVisible(true);
 		}
 
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(List<RedmineIssue> issues) {
-			form.setListFooterViewVisible(false);
-			if(listAdapter != null){
-				listAdapter.notifyDataSetChanged();
-			}
-
-
-
+			formList.setFooterViewVisible(false);
+			formList.refresh(false);
 		}
 
 

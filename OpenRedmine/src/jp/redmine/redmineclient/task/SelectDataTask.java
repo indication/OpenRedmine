@@ -32,7 +32,7 @@ import jp.redmine.redmineclient.url.RemoteUrl;
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
-public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, List<T>> {
+public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 	/**
 	 * Notify error request on UI thread
 	 * @param statuscode http response code

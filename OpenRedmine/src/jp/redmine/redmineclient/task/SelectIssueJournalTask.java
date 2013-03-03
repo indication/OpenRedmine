@@ -3,20 +3,17 @@ package jp.redmine.redmineclient.task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 
-public class SelectIssueJournalTask extends SelectDataTask<RedmineIssue> {
+public class SelectIssueJournalTask extends SelectDataTask<Void> {
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;
@@ -30,8 +27,7 @@ public class SelectIssueJournalTask extends SelectDataTask<RedmineIssue> {
 	}
 
 	@Override
-	protected List<RedmineIssue> doInBackground(Integer... params) {
-		List<RedmineIssue> issues = new ArrayList<RedmineIssue>();
+	protected Void doInBackground(Integer... params) {
 		final ParserIssue parser = new ParserIssue();
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
 			@Override
@@ -51,7 +47,7 @@ public class SelectIssueJournalTask extends SelectDataTask<RedmineIssue> {
 			fetchData(client,connection, url, handler);
 		}
 		client.close();
-		return issues;
+		return null;
 	}
 
 	@Override

@@ -3,24 +3,20 @@ package jp.redmine.redmineclient.task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
-import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
-public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
+public class SelectIssueTask extends SelectDataTask<Void> {
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineProject project;
@@ -36,13 +32,11 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 	}
 
 	@Override
-	protected List<RedmineIssue> doInBackground(Integer... params) {
+	protected Void doInBackground(Integer... params) {
 		long offset = params[0];
 		long limit = params[1];
 		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
-		List<RedmineIssue> issues = null;
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
-		RedmineIssueModel mIssue = new RedmineIssueModel(helper);
 		try {
 			RedmineFilter filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
 			if(filter == null)
@@ -82,13 +76,10 @@ public class SelectIssueTask extends SelectDataTask<RedmineIssue> {
 				filter.setLast(new Date());
 				mFilter.updateCurrent(filter);
 			}
-			issues = mIssue.fetchAllByFilter(filter,offset,limit);
 		} catch (SQLException e) {
 			publishError(e);
 		}
-		if(issues == null)
-			issues = new ArrayList<RedmineIssue>();
-		return issues;
+		return null;
 	}
 
 	@Override

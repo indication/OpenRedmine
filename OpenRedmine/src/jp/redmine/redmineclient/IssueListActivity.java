@@ -1,8 +1,6 @@
 package jp.redmine.redmineclient;
 
 import java.sql.SQLException;
-import java.util.List;
-
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
@@ -157,7 +155,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 		// can use UI thread here
 		@Override
-		protected void onPostExecute(List<RedmineIssue> issues) {
+		protected void onPostExecute(Void v) {
 			formList.refresh();
 			formList.setFooterViewVisible(false);
 		}

@@ -36,7 +36,7 @@ import jp.redmine.redmineclient.url.RemoteUrlTrackers;
 import jp.redmine.redmineclient.url.RemoteUrlUsers;
 import jp.redmine.redmineclient.url.RemoteUrlVersion;
 
-public class SelectProjectTask extends SelectDataTask<RedmineProject> {
+public class SelectProjectTask extends SelectDataTask<List<RedmineProject>> {
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;

@@ -17,7 +17,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 
 
 
-	public RedmineJournalListAdapter(RedmineJournalModel m, int connection, long issue){
+	public RedmineJournalListAdapter(RedmineJournalModel m){
 		super();
 		model = m;
 	}

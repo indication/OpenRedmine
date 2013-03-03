@@ -48,6 +48,8 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		form = new RedmineIssueViewForm(this);
 		formDetail = new RedmineIssueViewDetailForm(form.viewHeader);
 
+		listAdapter = new RedmineJournalListAdapter(new RedmineJournalModel(getHelper()));
+		form.list.setAdapter(listAdapter);
 	}
 
 	@Override
@@ -69,9 +71,8 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		formDetail.setValue(issue);
 		form.setListHeaderViewVisible(true);
 
-		listAdapter = new RedmineJournalListAdapter(new RedmineJournalModel(getHelper())
-					,connectionid,issue.getId());
-		form.list.setAdapter(listAdapter);
+		listAdapter.setupParameter(connectionid,issue.getId());
+		listAdapter.notifyDataSetInvalidated();
 
 		task = new SelectDataTask();
 		task.execute(issueid);

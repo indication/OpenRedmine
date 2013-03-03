@@ -10,6 +10,7 @@ import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
@@ -35,18 +36,13 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	}
 
 	private static final int ACTIVITY_FILTER = 2001;
-	private RedmineIssueListAdapter listAdapter;
 	private SelectDataTask task;
-	private View mFooter;
-	private ListView listView;
 	private long lastPos = 0;
-	private int stateFirstPos = 0;
-	private int statePosTop = 0;
+	private RedmineBaseAdapterListFormHelper<RedmineIssueListAdapter> formList;
 
 	@Override
 	protected void onDestroy() {
 		cancelTask();
-		listAdapter = null;
 		super.onDestroy();
 	}
 	protected void cancelTask(){
@@ -55,26 +51,15 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			task.cancel(true);
 		}
 	}
-	static final private String stateListViewFirstVisiblePosition = "ListViewFirstVisiblePosition";
-	static final private String stateListViewTopPosition = "ListViewTopPosition";
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		// save the listview status
-		if (listView != null && listView.getChildCount() > 0) {
-			stateFirstPos = listView.getFirstVisiblePosition();
-			statePosTop = listView.getChildAt(0).getTop();
-			outState.putInt(stateListViewFirstVisiblePosition, stateFirstPos);
-			outState.putInt(stateListViewTopPosition, statePosTop);
-		}
+		formList.onSaveInstanceState(outState);
 		super.onSaveInstanceState(outState);
 	}
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		formList.onRestoreInstanceState(savedInstanceState);
 		super.onRestoreInstanceState(savedInstanceState);
-		if (savedInstanceState != null) {
-			stateFirstPos = savedInstanceState.getInt(stateListViewFirstVisiblePosition);
-			statePosTop = savedInstanceState.getInt(stateListViewTopPosition);
-		}
 	}
 
 	/** Called when the activity is first created. */
@@ -83,15 +68,13 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.issuelist);
 
+		formList = new RedmineBaseAdapterListFormHelper<RedmineIssueListAdapter>();
+		formList.setList((ListView)findViewById(R.id.listConnectionList));
+		formList.setFooter(getLayoutInflater().inflate(R.layout.listview_footer,null), false);
+		formList.setAdapter(new RedmineIssueListAdapter(getHelper()));
+		formList.onRestoreInstanceState(savedInstanceState);
 
-		listView = (ListView)findViewById(R.id.listConnectionList);
-		listView.addFooterView(getFooter());
-		getFooter().setVisibility(View.INVISIBLE);
-
-		listAdapter = new RedmineIssueListAdapter(getHelper());
-		listView.setAdapter(listAdapter);
-
-		listView.setOnScrollListener(new OnScrollListener() {
+		formList.list.setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
 				int visibleItemCount, int totalItemCount) {
@@ -112,7 +95,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		});
 
 		//リスト項目がクリックされた時の処理
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		formList.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 
 				ListView listView = (ListView) parent;
@@ -129,11 +112,6 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			}
 		});
 
-		if (savedInstanceState != null) {
-			stateFirstPos = savedInstanceState.getInt(stateListViewFirstVisiblePosition);
-			statePosTop = savedInstanceState.getInt(stateListViewTopPosition);
-		}
-
 	}
 
 	@Override
@@ -141,28 +119,15 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		super.onStart();
 
 		ProjectIntent intent = new ProjectIntent( getIntent() );
-		listAdapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
+		formList.adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 		this.onRefresh(false);
-	}
-	private View getFooter() {
-		if (mFooter == null) {
-			mFooter = getLayoutInflater()
-				.inflate(R.layout.listview_footer,null);
-		}
-		return mFooter;
 	}
 
 	protected void onRefresh(boolean isFlush){
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		if(listAdapter != null){
-			listAdapter.notifyDataSetInvalidated();
-			listAdapter.notifyDataSetChanged();
-		}
-		if(stateFirstPos != 0 && statePosTop != 0){
-			listView.setSelectionFromTop(stateFirstPos,statePosTop);
-		}
+		formList.refresh();
 		task = new SelectDataTask();
 		task.execute(0,10,isFlush ? 1 : 0);
 	}
@@ -187,15 +152,14 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
-			getFooter().setVisibility(View.VISIBLE);
+			formList.setFooterViewVisible(true);
 		}
 
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(List<RedmineIssue> issues) {
-			listAdapter.notifyDataSetInvalidated();
-			listAdapter.notifyDataSetChanged();
-			getFooter().setVisibility(View.GONE);
+			formList.refresh();
+			formList.setFooterViewVisible(false);
 		}
 
 		@Override

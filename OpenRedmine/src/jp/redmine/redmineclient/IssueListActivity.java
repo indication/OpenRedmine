@@ -126,6 +126,9 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			return;
 		}
 		formList.refresh();
+		if(lastPos != formList.list.getChildCount()){
+			lastPos = 0; //reset
+		}
 		task = new SelectDataTask();
 		task.execute(0,10,isFlush ? 1 : 0);
 	}

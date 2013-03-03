@@ -37,47 +37,66 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 		long limit = params[1];
 		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
+		RedmineFilter filter = null;
 		try {
-			RedmineFilter filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
-			if(filter == null)
-				filter = mFilter.generateDefault(connection.getId(), project);
-
-			boolean isRemote = false;
-			/*
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.DATE, 10);	///@todo
-			if(filter.getFirst() == null || cal.after(filter.getFirst()))
-				filter.setFetched(0);
-				*/
-			long fetched = (isRest) ? 0 : filter.getFetched();
-			if((offset+limit) > fetched)
-				isRemote = true;
-
-			if(isRemote){
-				final ParserIssue parser = new ParserIssue();
-				RemoteUrlIssues url = new RemoteUrlIssues();
-				RemoteUrlIssues.setupFilter(url, filter);
-				url.filterOffset((int)offset);
-				url.filterLimit((int)limit);
-				SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
-				fetchData(client,connection, url, new SelectDataTaskDataHandler() {
-					@Override
-					public void onContent(InputStream stream)
-							throws XmlPullParserException, IOException, SQLException {
-						IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
-						parser.registerDataCreation(handler);
-						helperSetupParserStream(stream, parser);
-						parser.parse(connection);
-					}
-				});
-				client.close();
-
-				filter.setFetched(parser.getCount()+fetched);
-				filter.setLast(new Date());
-				mFilter.updateCurrent(filter);
-			}
+			filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
 		} catch (SQLException e) {
 			publishError(e);
+		}
+		if(filter == null)
+			filter = mFilter.generateDefault(connection.getId(), project);
+
+		boolean isRemote = false;
+		/*
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 10);	///@todo
+		if(filter.getFirst() == null || cal.after(filter.getFirst()))
+			filter.setFetched(0);
+			*/
+		long fetched = (isRest) ? 0 : filter.getFetched();
+		if((offset+limit) > fetched)
+			isRemote = true;
+
+		if(isRemote){
+			SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+			final ParserIssue parser = new ParserIssue();
+			SelectDataTaskDataHandler taskhandler = new SelectDataTaskDataHandler() {
+				@Override
+				public void onContent(InputStream stream)
+						throws XmlPullParserException, IOException, SQLException {
+					IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
+					parser.registerDataCreation(handler);
+					helperSetupParserStream(stream, parser);
+					parser.parse(connection);
+				}
+			};
+			RemoteUrlIssues url = new RemoteUrlIssues();
+			RemoteUrlIssues.setupFilter(url, filter);
+
+			try {
+				while(fetched < filter.getFetched() || fetched < offset){
+					url.filterOffset((int)fetched + 1);
+					url.filterLimit((int)limit);
+					fetchData(client,connection, url, taskhandler);
+
+					// update fetch status
+					fetched += parser.getCount();
+					filter.setFetched(fetched);
+					filter.setLast(new Date());
+					mFilter.updateCurrent(filter);
+
+					if(parser.getCount() < 1)
+						break;
+					Thread.sleep(1000);
+				}
+			} catch (SQLException e) {
+				publishError(e);
+			} catch (InterruptedException e) {
+				publishError(e);
+			} finally {
+				client.close();
+			}
+
 		}
 		return null;
 	}

@@ -494,5 +494,10 @@ public class RedmineIssue {
 		return additional_modified;
 	}
 
+	public void setClosed(Date parseDateTime) {
+		// TODO
+
+	}
+
 
 }

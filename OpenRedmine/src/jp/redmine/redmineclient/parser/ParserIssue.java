@@ -128,11 +128,17 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			parserJournal.unregisterDataCreation(handler);
 			item.setJournals(journals);
 
+		} else if("closed_on".equalsIgnoreCase(xml.getName())){
+			item.setClosed(TypeConverter.parseDateTime(getNextText()));
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("updated_on".equalsIgnoreCase(xml.getName())){
 			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
+		// TODO attachments
+		// TODO relations
+		// TODO changesets
+		// TODO watchers
 
 	}
 

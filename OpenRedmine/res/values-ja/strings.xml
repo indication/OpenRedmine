@@ -32,10 +32,11 @@
 	<string name="remove_cache_all">すべてのキャッシュを削除</string>
 	<string name="format_name">%1$s</string>
 	<string name="format_date" formatted="false">%tF</string>
+	<string name="format_datetime" formatted="false">%1$tF %1$tH:%1$tM</string>
 	<string name="ticket_title">タイトル</string>
 	<string name="ticket_private">プライベート</string>
 	<string name="ticket_tracker">トラッカー</string>
-	<string name="ticket_created_by">by %1$s</string>
+	<string name="ticket_created_by">by %1$s on %2$s</string>
 	<string name="ticket_status">状態</string>
 	<string name="ticket_priority">優先度</string>
 	<string name="ticket_progress">進捗</string>
@@ -44,6 +45,8 @@
 	<string name="ticket_assigned_to">担当</string>
 	<string name="ticket_date">日付</string>
 	<string name="ticket_date_arrow">▶</string>
+	<string name="ticket_modified">最終更新</string>
+	<string name="ticket_modified_by">%2$s</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
 
 次に、リンクするRedmineを設定してください。

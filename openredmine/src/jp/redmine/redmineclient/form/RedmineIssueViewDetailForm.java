@@ -1,5 +1,7 @@
 package jp.redmine.redmineclient.form;
 
+import java.util.Date;
+
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
@@ -7,6 +9,7 @@ import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
+import jp.redmine.redmineclient.entity.RedmineUser;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	public TextView textDateFrom;
 	public TextView textDateTo;
 	public TextView textVersion;
+	public TextView textModified;
 	public TextView textDescription;
 	public ProgressBar progressBar;
 	public RedmineIssueViewDetailForm(View activity){
@@ -44,6 +48,7 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textDateFrom = (TextView)view.findViewById(R.id.textDateFrom);
 		textDateTo = (TextView)view.findViewById(R.id.textDateTo);
 		textVersion = (TextView)view.findViewById(R.id.textVersion);
+		textModified = (TextView)view.findViewById(R.id.textModified);
 		textDescription = (TextView)view.findViewById(R.id.textDescription);
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 	}
@@ -80,7 +85,8 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		setDate(textDateFrom,rd.getDateStart());
 		setDate(textDateTo,rd.getDateDue());
 		setTracker(rd.getTracker());
-		setUserName(textAuthor,rd.getAuthor());
+		setUserNameDateTime(textAuthor,R.string.ticket_created_by,rd.getAuthor(),rd.getCreated());
+		setUserNameDateTime(textModified,R.string.ticket_modified_by,null,rd.getModified());
 		setUserName(textAssignedTo,rd.getAssigned());
 		setStatus(rd.getStatus());
 		setPriority(rd.getPriority());
@@ -89,6 +95,10 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		setVersion(rd.getVersion());
 		setProgress(rd.getProgressRate(),rd.getDoneRate());
 
+	}
+	protected void setUserNameDateTime(TextView v,int format,RedmineUser ct,Date date){
+		String ret = v.getContext().getString(format, convertUserName(v,ct), convertDateTime(v, date));
+		v.setText(ret);
 	}
 
 }

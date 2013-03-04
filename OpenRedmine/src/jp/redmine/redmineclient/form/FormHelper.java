@@ -111,7 +111,6 @@ abstract public class FormHelper {
 	}
 
 
-
 	/**
 	 * Convert username by text format
 	 * @param form view
@@ -138,6 +137,11 @@ abstract public class FormHelper {
 			return "";
 		return form.getContext().getString(R.string.format_date, date);
 	}
+	protected String convertDateTime(View form,Date date){
+		if(date == null)
+			return "";
+		return form.getContext().getString(R.string.format_datetime, date);
+	}
 
 	/**
 	 * Set ct to v
@@ -146,5 +150,13 @@ abstract public class FormHelper {
 	 */
 	protected void setDate(TextView v,Date date){
 		v.setText(convertDate(v,date));
+	}
+	/**
+	 * Set ct to v
+	 * @param v TextView to set user name
+	 * @param ct User name
+	 */
+	protected void setDateTime(TextView v,Date date){
+		v.setText(convertDateTime(v,date));
 	}
 }

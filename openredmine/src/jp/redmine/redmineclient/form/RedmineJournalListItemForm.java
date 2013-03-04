@@ -6,17 +6,15 @@ import android.view.View;
 import android.widget.TextView;
 
 public class RedmineJournalListItemForm extends FormHelper {
-	private View view;
 	public TextView textDescription;
 	public TextView textUser;
 	public TextView textDate;
 	public RedmineJournalListItemForm(View activity){
-		this.view = activity;
-		this.setup();
+		this.setup(activity);
 	}
 
 
-	public void setup(){
+	public void setup(View view){
 		textDescription = (TextView)view.findViewById(R.id.description);
 		textUser = (TextView)view.findViewById(R.id.user);
 		textDate = (TextView)view.findViewById(R.id.date);
@@ -29,6 +27,9 @@ public class RedmineJournalListItemForm extends FormHelper {
 		setDateTime(textDate,jr.getCreated());
 	}
 
+	protected String convertName(View v,String name){
+		return "";
+	}
 
 }
 

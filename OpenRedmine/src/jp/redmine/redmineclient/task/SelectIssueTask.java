@@ -53,7 +53,8 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 		if(filter.getFirst() == null || cal.after(filter.getFirst()))
 			filter.setFetched(0);
 			*/
-		long fetched = (isRest) ? 0 : filter.getFetched();
+		long lastfetched = filter.getFetched();
+		long fetched = (isRest) ? 0 : lastfetched;
 		if((offset+limit) > fetched)
 			isRemote = true;
 
@@ -74,7 +75,7 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 			RemoteUrlIssues.setupFilter(url, filter);
 
 			try {
-				while(fetched < filter.getFetched() || fetched < offset){
+				while(fetched < lastfetched || fetched < offset){
 					url.filterOffset((int)fetched + 1);
 					url.filterLimit((int)limit);
 					fetchData(client,connection, url, taskhandler);

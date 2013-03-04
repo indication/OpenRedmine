@@ -89,6 +89,8 @@ public class RedmineIssue {
 	static public void setupProjectId(RedmineIssue item){
 		if(item.getVersion() != null)
 			item.getVersion().setProject(item.getProject());
+		if(item.getCategory() != null)
+			item.getCategory().setProject(item.getProject());
 
 	}
 	static public void setupJournals(RedmineIssue item){

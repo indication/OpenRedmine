@@ -58,6 +58,10 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 		if((offset+limit) > fetched)
 			isRemote = true;
 
+		//accelerate fetch issues
+		if(isRest && lastfetched > (limit*2))
+			limit *= 2;
+
 		if(isRemote){
 			SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 			final ParserIssue parser = new ParserIssue();
@@ -76,7 +80,7 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 
 			try {
 				while(fetched < lastfetched || fetched < offset){
-					url.filterOffset((int)fetched + 1);
+					url.filterOffset((int)fetched);
 					url.filterLimit((int)limit);
 					fetchData(client,connection, url, taskhandler);
 
@@ -85,9 +89,13 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 					filter.setFetched(fetched);
 					filter.setLast(new Date());
 					mFilter.updateCurrent(filter);
-
 					if(parser.getCount() < 1)
 						break;
+
+					//update offset for next fetch
+					fetched++;
+
+					//sleep for server
 					Thread.sleep(1000);
 				}
 			} catch (SQLException e) {

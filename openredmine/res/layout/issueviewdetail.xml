@@ -220,11 +220,9 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="1dp" />
 
-	<TextView
-	    android:id="@+id/textDescription"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="Description here. This area may long content."
-	    tools:ignore="HardcodedText" />
+	<WebView
+	    android:id="@+id/webView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -179,4 +179,7 @@ abstract public class FormHelper {
 	protected void setTextileText(TextView v,String text){
 		v.setText(Html.fromHtml(convertTextileToHtml(text)));
 	}
+	protected void setTextileText(WebView v,String text){
+		v.loadDataWithBaseURL("", convertTextileToHtml(text), "text/html", "UTF-8", "");
+	}
 }

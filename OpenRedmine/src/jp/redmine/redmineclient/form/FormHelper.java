@@ -1,21 +1,18 @@
 package jp.redmine.redmineclient.form;
 
-import java.io.StringWriter;
 import java.util.Date;
 
-import net.java.textilej.parser.MarkupParser;
-import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import net.java.textilej.parser.markup.textile.TextileDialect;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.external.lib.ConvertTextUtil;
 
 import com.andreabaccega.widget.FormEditText;
 
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 abstract public class FormHelper {
@@ -165,21 +162,10 @@ abstract public class FormHelper {
 	protected void setDateTime(TextView v,Date date){
 		v.setText(convertDateTime(v,date));
 	}
-	protected String convertTextileToHtml(String text){
-		StringWriter sw = new StringWriter();
-		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(sw);
-		builder.setEmitAsDocument(false);
-
-		MarkupParser parser = new MarkupParser(new TextileDialect());
-		parser.setBuilder(builder);
-		parser.parse(text);
-		Log.d("convertTextileToHtml",sw.toString());
-		return  sw.toString();
-	}
 	protected void setTextileText(TextView v,String text){
-		v.setText(Html.fromHtml(convertTextileToHtml(text)));
+		v.setText(Html.fromHtml(ConvertTextUtil.convertTextileToHtml(text)));
 	}
 	protected void setTextileText(WebView v,String text){
-		v.loadDataWithBaseURL("", convertTextileToHtml(text), "text/html", "UTF-8", "");
+		v.loadDataWithBaseURL("", ConvertTextUtil.convertTextileToHtml(text), "text/html", "UTF-8", "");
 	}
 }

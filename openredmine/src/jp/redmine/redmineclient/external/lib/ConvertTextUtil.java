@@ -11,12 +11,14 @@ import net.java.textilej.parser.markup.textile.TextileDialect;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import android.content.Context;
 import android.util.Log;
+import android.util.TypedValue;
 
 public class ConvertTextUtil {
 
 	static protected String reduceExternalHtml(String input, HashMap<String,String> export){
-		Pattern p = Pattern.compile("(?m)<\\s*pre\\s*>.*<\\s*/\\s*pre\\s*>");
+		Pattern p = Pattern.compile("<\\s*pre\\s*>(.*)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);
 		String texttile = input;
 		Matcher m = p.matcher(texttile);
 		while(m.find()){
@@ -24,18 +26,21 @@ public class ConvertTextUtil {
 			String key = RandomStringUtils.randomAlphabetic(10);
 			export.put(key, target);
 			texttile = m.replaceFirst(key);
-			m =  p.matcher(texttile);
+			m = p.matcher(texttile);
 		}
 		return texttile;
 	}
 	static public String convertTextileToHtml(String text){
+		return convertTextileToHtml(text, false);
+	}
+	static public String convertTextileToHtml(String text, boolean isDocument){
 		HashMap<String,String> restore = new HashMap<String,String>();
 		Log.d("convertTextileToHtml input",text);
 		String textile = reduceExternalHtml(text,restore);
 		Log.d("convertTextileToHtml reduced",textile);
 		StringWriter sw = new StringWriter();
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(sw);
-		builder.setEmitAsDocument(false);
+		builder.setEmitAsDocument(isDocument);
 
 		MarkupParser parser = new MarkupParser(new TextileDialect());
 		parser.setBuilder(builder);
@@ -47,5 +52,38 @@ public class ConvertTextUtil {
 		}
 		Log.d("convertTextileToHtml return",textile);
 		return  textile;
+	}
+	static public String getHtml(Context context,String innerhtml,String headerhtml){
+		StringBuffer sb = new StringBuffer();
+		sb.append("<?xml version=\"1.0\" ?>");
+		sb.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">");
+		sb.append("<head>");
+		sb.append(headerhtml);
+		sb.append("</head>");
+		sb.append("<body");
+		sb.append(" bgcolor=\"#" + getRGBString(getBackgroundColor(context)) + "\"");
+		sb.append(" text=\"#" + getRGBString(getFontColor(context)) + "\"");
+		sb.append(" style=\"margin:0;\"");
+		sb.append(">");
+		sb.append(innerhtml);
+		sb.append("</body></html>");
+		return sb.toString();
+	}
+
+	static public int getAttribute(Context context,int target){
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(target, typedValue, true);
+		int resourceId = typedValue.resourceId;
+		return context.getResources().getColor(resourceId);
+	}
+	static public String getRGBString(int color){
+		String hex = Integer.toHexString(0xFF000000 | color);
+		return hex.substring(hex.length()-6);
+	}
+	static public int getBackgroundColor(Context context){
+		return getAttribute(context, android.R.attr.colorBackground);
+	}
+	static public int getFontColor(Context context){
+		return getAttribute(context, android.R.attr.colorForeground);
 	}
 }

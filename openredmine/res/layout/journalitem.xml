@@ -28,10 +28,8 @@
 
     </LinearLayout>
 
-	<TextView
-	    android:id="@+id/description"
+	<WebView
+	    android:id="@+id/webView"
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:text="description"
-	    tools:ignore="HardcodedText" />
+	    android:layout_height="wrap_content" />
 </LinearLayout>

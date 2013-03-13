@@ -52,6 +52,7 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textModified = (TextView)view.findViewById(R.id.textModified);
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 		webView = (WebView)view.findViewById(R.id.webView);
+		webView.getSettings().setBlockNetworkLoads(true);
 	}
 
 

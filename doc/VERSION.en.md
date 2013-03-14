@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+v1.7
+===========
+Supports textile in issue detail
+
 v1.6
 ===========
 Issue list keep scroll point.

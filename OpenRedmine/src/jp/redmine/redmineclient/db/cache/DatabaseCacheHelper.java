@@ -12,6 +12,8 @@ import jp.redmine.redmineclient.entity.RedmineProjectMember;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineRole;
 import jp.redmine.redmineclient.entity.RedmineStatus;
+import jp.redmine.redmineclient.entity.RedmineTimeActivity;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
@@ -25,7 +27,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=3;
+	private static int DB_VERSION=4;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -50,6 +52,8 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(source, RedmineProjectMember.class);
 			TableUtils.createTable(source, RedmineFilter.class);
 			TableUtils.createTable(source, RedmineJournal.class);
+			TableUtils.createTable(source, RedmineTimeEntry.class);
+			TableUtils.createTable(source, RedmineTimeActivity.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -70,6 +74,9 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			case 3:
 				addColumn(db,RedmineProjectVersion.class,"sharing TEXT");
 				addColumn(db,RedmineProjectVersion.class,"description TEXT");
+				addColumn(db,RedmineProject.class,"parent INTEGER");
+				TableUtils.createTable(source, RedmineTimeEntry.class);
+				TableUtils.createTable(source, RedmineTimeActivity.class);
 				break;
 			}
 
@@ -83,7 +90,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 
 	protected void addColumn(SQLiteDatabase db, Class<?> name, String column){
 		db.execSQL("ALTER TABLE "
-				+ name.getName()
+				+ name.getSimpleName()
 				+ " ADD COLUMN "
 				+ column
 				+ ";");

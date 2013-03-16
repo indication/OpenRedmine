@@ -25,7 +25,19 @@
 	<string name="menu_config_delete_no">いいえ</string>
 	<string name="app_description">説明</string>
 	<string name="preference_category_network">ネットワーク</string>
-	<string name="preference_network_allow_untrusted_cert">信頼できない証明書を許可する</string>
+	<string name="preference_category_issue">チケット</string>
+	<string name="preference_issue_get_all">すべてを取得する</string>
+	<string name="preference_issue_description_get_all">リモートからチケットを取得するとき、終了していないチケットのみを取得します。すべてを取得する場合はチェックを入れてください。</string>
+	<string name="preference_category_appearance">表示</string>
+	<string name="preference_category_appearance_themes">テーマ</string>
+	<string-array name="preference_appearance_themes_entries">
+		<item >暗い</item>
+		<item >明るい</item>
+	</string-array>
+	<string-array name="preference_appearance_themes_values">
+		<item >dark</item>
+		<item >light</item>
+	</string-array>
 	<string name="menu_refresh">更新</string>
 	<string name="menu_setting_permit_unsafe">信頼できないSSL接続を許可する</string>
 	<string name="menu_setting_label_certkey">証明書キー (オプション)</string>

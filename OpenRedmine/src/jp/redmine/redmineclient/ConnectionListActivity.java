@@ -14,6 +14,7 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -248,6 +249,13 @@ public class ConnectionListActivity extends Activity {
 				Log.d("Cache Deleted",path);
 				this.finish();
 				//@todo show dialog
+				return true;
+			}
+			case R.id.menu_settings:
+			{
+				Intent intent = new Intent( getApplicationContext(), CommonPreferenceActivity.class );
+				startActivity( intent );
+
 				return true;
 			}
 		}

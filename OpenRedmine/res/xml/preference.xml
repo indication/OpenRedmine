@@ -3,10 +3,9 @@
     <PreferenceCategory android:title="@string/preference_category_appearance">
         <ListPreference android:entries="@array/preference_appearance_themes_entries"
             android:entryValues="@array/preference_appearance_themes_values"
-            android:title="@string/preference_category_appearance_themes" android:defaultValue="dark"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preference_category_network" android:enabled="false">
-
+            android:title="@string/preference_category_appearance_themes"
+            android:defaultValue="default"
+            android:key="appearance_themes"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_category_issue">
         <CheckBoxPreference android:title="@string/preference_issue_get_all"

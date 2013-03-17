@@ -66,6 +66,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.issuelist);
 
 		formList = new RedmineBaseAdapterListFormHelper<RedmineIssueListAdapter>();

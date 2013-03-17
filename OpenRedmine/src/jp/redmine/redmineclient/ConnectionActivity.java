@@ -36,6 +36,7 @@ public class ConnectionActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.connection);
 
 		modelConnection = new ConnectionModel(getApplicationContext());

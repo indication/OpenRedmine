@@ -54,6 +54,7 @@ public class ConnectionListActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.connectionlist);
 
 		notifManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);

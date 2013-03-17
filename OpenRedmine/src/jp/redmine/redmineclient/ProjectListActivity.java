@@ -55,6 +55,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.connectionlist);
 
 		formList = new RedmineBaseAdapterListFormHelper<RedmineProjectListAdapter>();

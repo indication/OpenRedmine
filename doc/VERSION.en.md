@@ -2,6 +2,12 @@ OpenRedmine
 ===========
 Release history
 
+v1.8
+===========
+Add settings
+Fetch all issues(closed issues) by setting. By default fetches only unclosed issues.
+Add theme switcher
+
 v1.7
 ===========
 Supports textile in issue detail

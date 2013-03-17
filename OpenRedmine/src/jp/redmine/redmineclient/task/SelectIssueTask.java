@@ -21,6 +21,7 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 	protected DatabaseCacheHelper helper;
 	protected RedmineProject project;
 	protected RedmineConnection connection;
+	protected boolean isFetchAll = false;
 	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,RedmineProject proj){
 		this.helper = helper;
 		this.project = proj;
@@ -76,7 +77,7 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 				}
 			};
 			RemoteUrlIssues url = new RemoteUrlIssues();
-			RemoteUrlIssues.setupFilter(url, filter);
+			RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
 
 			try {
 				while(fetched < lastfetched || fetched < offset){

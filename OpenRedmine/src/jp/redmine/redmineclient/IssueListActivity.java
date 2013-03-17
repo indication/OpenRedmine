@@ -14,8 +14,10 @@ import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,6 +66,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.issuelist);
 
 		formList = new RedmineBaseAdapterListFormHelper<RedmineIssueListAdapter>();
@@ -149,6 +152,9 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			} catch (SQLException e) {
 				Log.e("IssueListActivity","SelectDataTask",e);
 			}
+
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			isFetchAll = sp.getBoolean("issue_get_all", false);
 		}
 		// can use UI thread here
 		@Override

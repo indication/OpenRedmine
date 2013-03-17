@@ -24,8 +24,23 @@
 	<string name="menu_config_delete_yes">Yes</string>
 	<string name="menu_config_delete_no">No</string>
 	<string name="app_description">description</string>
-	<string name="preference_category_network">Network</string>
-	<string name="preference_network_allow_untrusted_cert">Allow untrusted certification</string>
+	<string name="preference_category_issue">Issues</string>
+	<string name="preference_issue_get_all">Get all issues</string>
+	<string name="preference_issue_description_get_all">By default, fetch UNCLOSED issues from remote. If you wish to get all issues from remote, check this option.</string>
+	<string name="preference_category_appearance">Appearance</string>
+	<string name="preference_category_appearance_themes">Theme</string>
+	<string-array name="preference_appearance_themes_entries">
+		<item >Default</item>
+		<item >Dark</item>
+		<item >Light</item>
+		<item >Holo Light</item>
+	</string-array>
+	<string-array name="preference_appearance_themes_values">
+		<item >default</item>
+		<item >dark</item>
+		<item >light</item>
+		<item >hololight</item>
+	</string-array>
 	<string name="menu_refresh">Refresh list</string>
 	<string name="menu_setting_permit_unsafe">Permit unsafe SSL connection</string>
 	<string name="menu_setting_label_certkey">Certification key (Optional)</string>

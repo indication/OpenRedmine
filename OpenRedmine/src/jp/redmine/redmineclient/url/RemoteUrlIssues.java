@@ -12,7 +12,7 @@ import android.text.format.DateFormat;
 public class RemoteUrlIssues extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
 
-	public static void setupFilter(RemoteUrlIssues url,RedmineFilter filter){
+	public static void setupFilter(RemoteUrlIssues url,RedmineFilter filter, boolean isFetchAll){
 		if(filter.getAssigned() != null)
 			url.filterAssigned(String.valueOf(filter.getAssigned().getUserId()));
 		if(filter.getAuthor() != null)
@@ -29,6 +29,10 @@ public class RemoteUrlIssues extends RemoteUrl {
 			url.filterCategory(String.valueOf(filter.getCategory().getCategoryId()));
 		if(filter.getVersion() != null)
 			url.filterVersion(String.valueOf(filter.getVersion().getVersionId()));
+		if(filter.getStatus() != null)
+			url.filterStatus(String.valueOf(filter.getStatus().getStatusId()));
+		else if(isFetchAll)
+			url.filterStatus("*");
 		//@todo
 		url.addSort("id", false);
 

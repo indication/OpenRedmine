@@ -29,6 +29,7 @@
         <activity android:name=".IssueListActivity"></activity>
         <activity android:name=".IssueViewActivity"></activity>
         <activity android:name=".FilterViewActivity"></activity>
+        <activity android:name=".CommonPreferenceActivity"></activity>
     </application>
 
 </manifest>

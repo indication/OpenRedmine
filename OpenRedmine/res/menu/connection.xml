@@ -9,6 +9,7 @@
         <item android:id="@+id/menu_access_removecache"
             android:title="@string/remove_cache_all"
             android:icon="@android:drawable/ic_menu_delete" />
+        <item android:id="@+id/menu_settings" android:title="@string/menu_settings"></item>
     </group>
 
 

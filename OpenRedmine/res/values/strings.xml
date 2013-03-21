@@ -86,6 +86,7 @@ After the setting, list up the connection.]]></string>
 	<string name="button_cancel">Cancel</string>
 	<string name="menu_filter">Filter</string>
 	<string name="filter_none">None</string>
+	<string name="ticket_description">Description</string>
 	<string name="changes_from_to">Change <b>%1$s</b> from %2$s to %3$s</string>
 	<string name="changes_set_to">Set <b>%1$s</b> to %3$s</string>
 	<string name="changes_remove_from">Remove <s>%2$s</s> from <b>%1$s</b></string>

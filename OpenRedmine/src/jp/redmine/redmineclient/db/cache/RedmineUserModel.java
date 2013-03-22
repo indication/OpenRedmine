@@ -95,11 +95,12 @@ public class RedmineUserModel {
 		if(data == null)
 			return null;
 		RedmineUser project = this.fetchById(connection_id, data.getUserId());
+		data.setConnectionId(connection_id);
 		if(project.getId() == null){
-			data.setConnectionId(connection_id);
 			this.insert(data);
 			project = fetchById(connection_id, data.getUserId());
 		} else {
+			data.setId(project.getId());
 
 			if(project.getModified() == null){
 				project.setModified(new java.util.Date());
@@ -108,8 +109,6 @@ public class RedmineUserModel {
 				data.setModified(new java.util.Date());
 			}
 			if(project.getModified().after(data.getModified())){
-				data.setId(project.getId());
-				data.setConnectionId(connection_id);
 				this.update(data);
 			}
 		}

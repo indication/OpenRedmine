@@ -85,10 +85,12 @@ public class RedmineCategoryModel implements IMasterModel<RedmineProjectCategory
 			return null;
 
 		RedmineProjectCategory project = this.fetchById(connection_id, data.getCategoryId());
+		data.setConnectionId(connection_id);
 		if(project.getId() == null){
-			data.setConnectionId(connection_id);
 			this.insert(data);
+			data = fetchById(connection_id, data.getCategoryId());
 		} else {
+			data.setId(project.getId());
 
 			if(project.getModified() == null){
 				project.setModified(new java.util.Date());
@@ -97,8 +99,6 @@ public class RedmineCategoryModel implements IMasterModel<RedmineProjectCategory
 				data.setModified(new java.util.Date());
 			}
 			if(project.getModified().after(data.getModified())){
-				data.setId(project.getId());
-				data.setConnectionId(connection_id);
 				this.update(data);
 			}
 		}

@@ -82,18 +82,17 @@ public class RedmineProjectModel  implements IMasterModel<RedmineProject>{
 	public RedmineProject refreshItem(RedmineConnection info,RedmineProject data) throws SQLException{
 
 		RedmineProject project = this.fetchById(info.getId(), data.getProjectId());
+		data.setRedmineConnection(info);
 		if(project.getId() == null){
-			data.setRedmineConnection(info);
 			this.insert(data);
+			data = fetchById(info.getId(), data.getProjectId());
 		} else {
+			data.setId(project.getId());
 			if(data.getModified() != null && project.getModified().after(data.getModified())){
-				data.setId(project.getId());
-				data.setRedmineConnection(info);
 				this.update(data);
-				project = data;
 			}
 		}
-		return project;
+		return data;
 	}
 
 	@Override

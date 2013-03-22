@@ -87,12 +87,12 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 		if(data == null)
 			return null;
 		RedmineTracker project = this.fetchById(connection_id, data.getTrackerId());
+		data.setConnectionId(connection_id);
 		if(project.getId() == null){
-			data.setConnectionId(connection_id);
 			this.insert(data);
-
 			project = fetchById(connection_id, data.getTrackerId());
 		} else {
+			data.setId(project.getId());
 			if(project.getModified() == null){
 				project.setModified(new java.util.Date());
 			}
@@ -100,8 +100,6 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 				data.setModified(new java.util.Date());
 			}
 			if (project.getModified().after(data.getModified())){
-				data.setId(project.getId());
-				data.setConnectionId(connection_id);
 				this.update(data);
 			}
 		}

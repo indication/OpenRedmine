@@ -85,6 +85,7 @@ public class RedmineIssueModel {
 		if(filter.getCategory()	 != null) dic.put(RedmineFilter.CATEGORY,		filter.getCategory()	);
 		if(filter.getStatus()	 != null) dic.put(RedmineFilter.STATUS,			filter.getStatus()		);
 		if(filter.getVersion()	 != null) dic.put(RedmineFilter.VERSION,		filter.getVersion()		);
+		if(filter.getPriority()	 != null) dic.put(RedmineFilter.PRIORITY,		filter.getPriority()	);
 
 		QueryBuilder<RedmineIssue, Integer> builder = dao.queryBuilder();
 		Where<RedmineIssue, Integer> where = builder.where();

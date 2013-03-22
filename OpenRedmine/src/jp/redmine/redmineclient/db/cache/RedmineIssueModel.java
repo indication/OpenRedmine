@@ -184,15 +184,14 @@ public class RedmineIssueModel {
 	public void refreshItem(int connection_id,RedmineIssue data) throws SQLException{
 
 		RedmineIssue issue = this.fetchById(connection_id, data.getIssueId());
+		data.setConnectionId(connection_id);
 		if(issue.getId() == null){
-			data.setConnectionId(connection_id);
 			this.insert(data);
 			issue = this.fetchById(connection_id, data.getIssueId());
 			data.setId(issue.getId());
 		} else {
 			data.setId(issue.getId());
-			data.setConnectionId(connection_id);
-			if(issue.getModified().after(data.getModified())){
+			if(!issue.getModified().before(data.getModified())){
 				this.update(data);
 			}
 		}

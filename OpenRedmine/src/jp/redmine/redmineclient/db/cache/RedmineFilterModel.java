@@ -111,6 +111,9 @@ public class RedmineFilterModel {
 				continue;
 			if(!compareMaster.isSame(filter.getStatus(), item.getStatus()))
 				continue;
+			if(!compareMaster.isSame(filter.getPriority(), item.getPriority()))
+				continue;
+
 
 			target = item;
 			break;

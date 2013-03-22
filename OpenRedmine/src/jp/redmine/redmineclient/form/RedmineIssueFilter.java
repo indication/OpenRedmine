@@ -9,12 +9,14 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
+import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.DummySelection;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
@@ -65,6 +67,10 @@ public class RedmineIssueFilter {
 		RedmineIssueFilterExpander expTracker = generate(activity, R.id.listViewTracker);
 		addList(expTracker,activity, new RedmineTrackerModel(helper));
 		addTab(activity,R.string.ticket_tracker,R.id.tab4,R.drawable.stickynote);
+
+		RedmineIssueFilterExpander expPriority = generate(activity, R.id.listViewPriority);
+		addList(expPriority,activity, new RedminePriorityModel(helper));
+		addTab(activity,R.string.ticket_priority,R.id.tab5,null);
 	}
 	public void setupParameter(int connection, long project){
 		for(RedmineIssueFilterExpander ex: dic.values()){
@@ -105,6 +111,7 @@ public class RedmineIssueFilter {
 		setFilter(RedmineVersionModel.class,filter.getVersion());
 		setFilter(RedmineCategoryModel.class,filter.getCategory());
 		setFilter(RedmineTrackerModel.class,filter.getTracker());
+		setFilter(RedminePriorityModel.class,filter.getPriority());
 
 	}
 
@@ -121,6 +128,7 @@ public class RedmineIssueFilter {
 		filter.setVersion((RedmineProjectVersion)getFilter(RedmineVersionModel.class));
 		filter.setCategory((RedmineProjectCategory)getFilter(RedmineCategoryModel.class));
 		filter.setTracker((RedmineTracker)getFilter(RedmineTrackerModel.class));
+		filter.setPriority((RedminePriority)getFilter(RedminePriorityModel.class));
 		return filter;
 	}
 	protected IMasterRecord getFilterRaw(Class<?> key){

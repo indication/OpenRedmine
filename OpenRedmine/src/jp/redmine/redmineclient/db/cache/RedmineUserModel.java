@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -15,7 +16,7 @@ import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
 
-public class RedmineUserModel {
+public class RedmineUserModel implements IMasterModel<RedmineUser> {
 	protected Dao<RedmineUser, Integer> dao;
 	public RedmineUserModel(DatabaseCacheHelper helper) {
 		try {
@@ -113,5 +114,34 @@ public class RedmineUserModel {
 			}
 		}
 		return project;
+	}
+
+	@Override
+	public long countByProject(int connection_id, long project_id)
+			throws SQLException {
+		QueryBuilder<RedmineUser, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+			.where()
+				.eq(RedmineUser.CONNECTION, connection_id)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	@Override
+	public RedmineUser fetchItemByProject(int connection_id, long project_id,
+			long offset, long limit) throws SQLException {
+		QueryBuilder<RedmineUser, ?> builder = dao.queryBuilder();
+		builder
+			.limit(limit)
+			.offset(offset)
+			.orderBy(RedmineUser.NAME, true)
+			.where()
+				.eq(RedmineUser.CONNECTION, connection_id)
+				;
+		RedmineUser item = builder.queryForFirst();
+		if(item == null)
+			item = new RedmineUser();
+		return item;
 	}
 }

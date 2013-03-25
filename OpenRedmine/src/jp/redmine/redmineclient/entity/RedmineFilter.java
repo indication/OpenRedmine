@@ -13,7 +13,7 @@ public class RedmineFilter {
 	public final static String PROJECT = "project_id";
 	public final static String TRACKER = "tracker_id";
 	public final static String AUTHOR = "author_id";
-	public final static String ASSIGNED = "assigned_id";
+	public final static String ASSIGNED = "assign_id";
 	public final static String STATUS = "status_id";
 	public final static String PRIORITY = "priority_id";
 	public final static String CATEGORY = "category_id";

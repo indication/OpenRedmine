@@ -2,6 +2,11 @@ OpenRedmine
 ===========
 Release history
 
+v1.9
+===========
+Add filter about Priority/Author/Assined
+Fix update issue attributes
+
 v1.8
 ===========
 Add settings

@@ -21,7 +21,7 @@ Connection:
 
 Features:
 * View issues offline
-* Filter (Status/Tracker/Category/Priority,Some of them also buggy)
+* Filter (Status/Tracker/Category/Priority/Author/Assined,Some of them also buggy)
 
 Now testing:
 * All of features

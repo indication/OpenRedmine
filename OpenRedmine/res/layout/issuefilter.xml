@@ -88,6 +88,30 @@
 
 				    </ListView>
 	            </LinearLayout>
+	            <LinearLayout
+	                android:id="@+id/tab6"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent" >
+				    <ListView
+				        android:id="@+id/listViewUserCreated"
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:choiceMode="singleChoice" >
+
+				    </ListView>
+	            </LinearLayout>
+	            <LinearLayout
+	                android:id="@+id/tab7"
+	                android:layout_width="match_parent"
+	                android:layout_height="match_parent" >
+				    <ListView
+				        android:id="@+id/listViewUserAssing"
+				        android:layout_width="match_parent"
+				        android:layout_height="match_parent"
+				        android:choiceMode="singleChoice" >
+
+				    </ListView>
+	            </LinearLayout>
 	        </FrameLayout>
 	    </LinearLayout>
 	</TabHost>

@@ -12,6 +12,7 @@ import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
+import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.DummySelection;
 import jp.redmine.redmineclient.entity.IMasterRecord;
@@ -21,15 +22,17 @@ import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
+import jp.redmine.redmineclient.entity.RedmineUser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 public class RedmineIssueFilter {
-	private HashMap<String,RedmineIssueFilterExpander> dic = new HashMap<String,RedmineIssueFilterExpander>();
+	@SuppressLint("UseSparseArrays")
+	private HashMap<Integer,RedmineIssueFilterExpander> dic = new HashMap<Integer,RedmineIssueFilterExpander>();
 	public Button buttonSave;
 	public TabHost tabHost;
 	RedmineFilterModel mFilter;
@@ -53,24 +56,32 @@ public class RedmineIssueFilter {
 		mFilter = new RedmineFilterModel(helper);
 
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.listViewStatus);
-		addList(expStatus,activity, new RedmineStatusModel(helper));
+		addList(expStatus,activity, new RedmineStatusModel(helper),R.string.ticket_status);
 		addTab(activity,R.string.ticket_status,R.id.tab1,R.drawable.runner);
 
 		RedmineIssueFilterExpander expVersion = generate(activity,R.id.listViewVersion);
-		addList(expVersion,activity, new RedmineVersionModel(helper));
+		addList(expVersion,activity, new RedmineVersionModel(helper),R.string.ticket_version);
 		addTab(activity,R.string.ticket_version,R.id.tab2,R.drawable.flag);
 
 		RedmineIssueFilterExpander expCategory = generate(activity, R.id.listViewCategory);
-		addList(expCategory,activity, new RedmineCategoryModel(helper));
+		addList(expCategory,activity, new RedmineCategoryModel(helper),R.string.ticket_category);
 		addTab(activity,R.string.ticket_category,R.id.tab3,R.drawable.cabinet);
 
 		RedmineIssueFilterExpander expTracker = generate(activity, R.id.listViewTracker);
-		addList(expTracker,activity, new RedmineTrackerModel(helper));
+		addList(expTracker,activity, new RedmineTrackerModel(helper),R.string.ticket_tracker);
 		addTab(activity,R.string.ticket_tracker,R.id.tab4,R.drawable.stickynote);
 
 		RedmineIssueFilterExpander expPriority = generate(activity, R.id.listViewPriority);
-		addList(expPriority,activity, new RedminePriorityModel(helper));
+		addList(expPriority,activity, new RedminePriorityModel(helper),R.string.ticket_priority);
 		addTab(activity,R.string.ticket_priority,R.id.tab5,null);
+
+		RedmineIssueFilterExpander expUserCreated = generate(activity, R.id.listViewUserCreated);
+		addList(expUserCreated,activity, new RedmineUserModel(helper),R.string.ticket_creator);
+		addTab(activity,R.string.ticket_creator,R.id.tab6,null);
+
+		RedmineIssueFilterExpander expUserAssing = generate(activity, R.id.listViewUserAssing);
+		addList(expUserAssing,activity, new RedmineUserModel(helper),R.string.ticket_assigned);
+		addTab(activity,R.string.ticket_assigned,R.id.tab7,null);
 	}
 	public void setupParameter(int connection, long project){
 		for(RedmineIssueFilterExpander ex: dic.values()){
@@ -89,12 +100,9 @@ public class RedmineIssueFilter {
 		}
 	}
 
-	public void addList(RedmineIssueFilterExpander ex,Activity activity, IMasterModel<? extends IMasterRecord> master ){
+	public void addList(RedmineIssueFilterExpander ex,Activity activity, IMasterModel<? extends IMasterRecord> master, int key ){
 		RedmineFilterListAdapter adapter = new RedmineFilterListAdapter(master);
 		adapter.setupDummyItem(activity.getApplicationContext());
-		addList(ex, adapter, master.getClass().getSimpleName());
-	}
-	public void addList(RedmineIssueFilterExpander ex, BaseAdapter adapter, String key ){
 		ex.adapter = adapter;
 		dic.put(key, ex);
 	}
@@ -107,16 +115,18 @@ public class RedmineIssueFilter {
 	public void setFilter(RedmineFilter filter){
 		if(filter == null)
 			filter = new RedmineFilter();
-		setFilter(RedmineStatusModel.class,filter.getStatus());
-		setFilter(RedmineVersionModel.class,filter.getVersion());
-		setFilter(RedmineCategoryModel.class,filter.getCategory());
-		setFilter(RedmineTrackerModel.class,filter.getTracker());
-		setFilter(RedminePriorityModel.class,filter.getPriority());
+		setFilter(R.string.ticket_status,filter.getStatus());
+		setFilter(R.string.ticket_version,filter.getVersion());
+		setFilter(R.string.ticket_category,filter.getCategory());
+		setFilter(R.string.ticket_tracker,filter.getTracker());
+		setFilter(R.string.ticket_priority,filter.getPriority());
+		setFilter(R.string.ticket_creator,filter.getAuthor());
+		setFilter(R.string.ticket_assigned,filter.getAssigned());
 
 	}
 
-	protected void setFilter(Class<?> key,IMasterRecord rec){
-		RedmineIssueFilterExpander ex = dic.get(key.getSimpleName());
+	protected void setFilter(int key,IMasterRecord rec){
+		RedmineIssueFilterExpander ex = dic.get(key);
 		if(ex!=null){
 			ex.selectItem(rec);
 		}
@@ -124,21 +134,23 @@ public class RedmineIssueFilter {
 	public RedmineFilter getFilter(RedmineFilter filter){
 		if(filter == null)
 			filter = new RedmineFilter();
-		filter.setStatus((RedmineStatus)getFilter(RedmineStatusModel.class));
-		filter.setVersion((RedmineProjectVersion)getFilter(RedmineVersionModel.class));
-		filter.setCategory((RedmineProjectCategory)getFilter(RedmineCategoryModel.class));
-		filter.setTracker((RedmineTracker)getFilter(RedmineTrackerModel.class));
-		filter.setPriority((RedminePriority)getFilter(RedminePriorityModel.class));
+		filter.setStatus((RedmineStatus)			getFilter(R.string.ticket_status));
+		filter.setVersion((RedmineProjectVersion)	getFilter(R.string.ticket_version));
+		filter.setCategory((RedmineProjectCategory)	getFilter(R.string.ticket_category));
+		filter.setTracker((RedmineTracker)			getFilter(R.string.ticket_tracker));
+		filter.setPriority((RedminePriority)		getFilter(R.string.ticket_priority));
+		filter.setAuthor((RedmineUser)				getFilter(R.string.ticket_creator));
+		filter.setAssigned((RedmineUser)			getFilter(R.string.ticket_assigned));
 		return filter;
 	}
-	protected IMasterRecord getFilterRaw(Class<?> key){
-		RedmineIssueFilterExpander ex = dic.get(key.getSimpleName());
+	protected IMasterRecord getFilterRaw(int key){
+		RedmineIssueFilterExpander ex = dic.get(key);
 		if(ex==null)
 			return null;
 		return ex.getSelectedItem();
 	}
 
-	protected IMasterRecord getFilter(Class<?> key){
+	protected IMasterRecord getFilter(int key){
 		IMasterRecord rec = getFilterRaw(key);
 		if(rec == null || rec instanceof DummySelection)
 			return null;

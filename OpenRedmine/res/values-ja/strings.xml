@@ -52,7 +52,7 @@
 	<string name="ticket_private">プライベート</string>
 	<string name="ticket_tracker">トラッカー</string>
 	<string name="ticket_created_by">by %1$s on %2$s</string>
-	<string name="ticket_creator">作成者</string>
+	<string name="ticket_author">作成者</string>
 	<string name="ticket_status">状態</string>
 	<string name="ticket_priority">優先度</string>
 	<string name="ticket_progress">進捗</string>

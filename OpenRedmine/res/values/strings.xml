@@ -49,7 +49,7 @@
 	<string name="format_date" formatted="false">%tF</string>
 	<string name="format_datetime" formatted="false">%1$tF %1$tH:%1$tM</string>
 	<string name="ticket_created_by">by %1$s on %2$s</string>
-	<string name="ticket_creator">Creator</string>
+	<string name="ticket_author">Author</string>
 	<string name="ticket_title">Title</string>
 	<string name="ticket_private">Private</string>
 	<string name="ticket_tracker">Tracker</string>

@@ -76,8 +76,8 @@ public class RedmineIssueFilter {
 		addTab(activity,R.string.ticket_priority,R.id.tab5,null);
 
 		RedmineIssueFilterExpander expUserCreated = generate(activity, R.id.listViewUserCreated);
-		addList(expUserCreated,activity, new RedmineUserModel(helper),R.string.ticket_creator);
-		addTab(activity,R.string.ticket_creator,R.id.tab6,null);
+		addList(expUserCreated,activity, new RedmineUserModel(helper),R.string.ticket_author);
+		addTab(activity,R.string.ticket_author,R.id.tab6,null);
 
 		RedmineIssueFilterExpander expUserAssing = generate(activity, R.id.listViewUserAssing);
 		addList(expUserAssing,activity, new RedmineUserModel(helper),R.string.ticket_assigned);
@@ -120,7 +120,7 @@ public class RedmineIssueFilter {
 		setFilter(R.string.ticket_category,filter.getCategory());
 		setFilter(R.string.ticket_tracker,filter.getTracker());
 		setFilter(R.string.ticket_priority,filter.getPriority());
-		setFilter(R.string.ticket_creator,filter.getAuthor());
+		setFilter(R.string.ticket_author,filter.getAuthor());
 		setFilter(R.string.ticket_assigned,filter.getAssigned());
 
 	}
@@ -139,7 +139,7 @@ public class RedmineIssueFilter {
 		filter.setCategory((RedmineProjectCategory)	getFilter(R.string.ticket_category));
 		filter.setTracker((RedmineTracker)			getFilter(R.string.ticket_tracker));
 		filter.setPriority((RedminePriority)		getFilter(R.string.ticket_priority));
-		filter.setAuthor((RedmineUser)				getFilter(R.string.ticket_creator));
+		filter.setAuthor((RedmineUser)				getFilter(R.string.ticket_author));
 		filter.setAssigned((RedmineUser)			getFilter(R.string.ticket_assigned));
 		return filter;
 	}

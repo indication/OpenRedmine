@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+v1.10
+===========
+Fix update issue
+
 v1.9
 ===========
 Add filter about Priority/Author/Assined

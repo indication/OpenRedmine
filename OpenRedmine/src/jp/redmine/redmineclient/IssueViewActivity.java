@@ -18,6 +18,9 @@ import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
@@ -71,27 +74,45 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	@Override
 	protected void onStart() {
 		super.onStart();
+		onRefresh(true);
+	}
+
+	protected void onRefresh(boolean isFetch){
 		IssueIntent intent = new IssueIntent(getIntent());
 		int connectionid = intent.getConnectionId();
-		int issueid = intent.getIssueId();
 
 		RedmineIssueModel model = new RedmineIssueModel(getHelper());
 		RedmineIssue issue = new RedmineIssue();
 		Log.d("SelectDataTask","ParserIssue Start");
 		try {
-			issue = model.fetchById(connectionid, issueid);
+			issue = model.fetchById(connectionid, intent.getIssueId());
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserIssue",e);
 		}
-		form.setValue(issue);
-		formDetail.setValue(issue);
-		formList.setHeaderViewVisible(true);
+		if(issue.getId() == null){
+			if(isFetch){
+				onFetchRemote();
+			}
+		} else {
+			form.setValue(issue);
+			formDetail.setValue(issue);
+			formList.setHeaderViewVisible(true);
 
-		formList.adapter.setupParameter(connectionid,issue.getId());
-		formList.refresh();
+			formList.adapter.setupParameter(connectionid,issue.getId());
+			formList.refresh(isFetch);
 
+			if(formList.adapter.getCount() < 1 && isFetch){
+				onFetchRemote();
+			}
+		}
+	}
+
+	protected void onFetchRemote(){
+		if(task != null && task.getStatus() == Status.RUNNING)
+			return;
+		IssueIntent intent = new IssueIntent(getIntent());
 		task = new SelectDataTask();
-		task.execute(issueid);
+		task.execute(intent.getIssueId());
 	}
 
 	private class SelectDataTask extends SelectIssueJournalTask{
@@ -114,9 +135,32 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		@Override
 		protected void onPostExecute(Void v) {
 			formList.setFooterViewVisible(false);
-			formList.refresh(false);
+			onRefresh(false);
 		}
 
 
+	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		super.onCreateOptionsMenu( menu );
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate( R.menu.issue_view, menu );
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch ( item.getItemId() )
+		{
+			case R.id.menu_refresh:
+			{
+				onFetchRemote();
+				return true;
+			}
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.form;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import android.view.View;
+import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -19,11 +20,14 @@ public class RedmineJournalListItemForm extends FormHelper {
 		textUser = (TextView)view.findViewById(R.id.user);
 		textDate = (TextView)view.findViewById(R.id.date);
 		webView = (WebView)view.findViewById(R.id.webView);
+		webView.getSettings().setPluginState(PluginState.OFF);
 		webView.getSettings().setBlockNetworkLoads(true);
 	}
 
 
 	public void setValue(RedmineJournal jr){
+		setTextileText(webView, "");
+		webView.requestLayout();
 		setTextileText(webView,jr.getNotes());
 		setUserName(textUser, jr.getUser());
 		setDateTime(textDate,jr.getCreated());

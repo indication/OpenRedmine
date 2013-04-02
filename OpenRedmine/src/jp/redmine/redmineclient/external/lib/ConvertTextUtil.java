@@ -12,6 +12,7 @@ import net.java.textilej.parser.markup.textile.TextileDialect;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.TypedValue;
 
 public class ConvertTextUtil {
@@ -20,10 +21,24 @@ public class ConvertTextUtil {
 		Pattern p = Pattern.compile("<\\s*pre\\s*>(.*)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);
 		String texttile = input;
 		Matcher m = p.matcher(texttile);
+
 		while(m.find()){
-			String target = m.group();
+			String target = m.group(1);
+			StringBuffer sb = new StringBuffer();
+			if(!TextUtils.isEmpty(target)){
+				sb.append("<div class=\"pre\">");
+				sb.append(target
+						.replaceAll("&", "&amp;")
+						.replaceAll("<", "&lt;")
+						.replaceAll(">", "&gt;")
+						.replaceAll("[\\r\\n]+", "<br>\r\n")
+						.replaceAll(" ", "&nbsp;")
+						.replaceAll("	", "&#009;")
+						);
+				sb.append("</div>");
+			}
 			String key = RandomStringUtils.randomAlphabetic(10);
-			export.put(key, target);
+			export.put(key, sb.toString());
 			texttile = m.replaceFirst(key);
 			m = p.matcher(texttile);
 		}

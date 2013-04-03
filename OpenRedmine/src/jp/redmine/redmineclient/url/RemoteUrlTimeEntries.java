@@ -8,11 +8,15 @@ import android.net.Uri;
 public class RemoteUrlTimeEntries extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
 
+	//:project, :activity, :user, {:issue => :tracker}
 	public void filterIssue(String status){
 		params.put("issue_id", status);
 	}
 	public void filterProject(String status){
 		params.put("project_id", status);
+	}
+	public void filterUser(String status){
+		params.put("user_id", status);
 	}
 	public void filterLimit(int limit){
 		params.put("limit", Integer.toString(limit));
@@ -27,7 +31,7 @@ public class RemoteUrlTimeEntries extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("tile_entries." + getExtention());
+		url.appendEncodedPath("time_entries." + getExtention());
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){
 				url.appendQueryParameter(data.getKey(), data.getValue());

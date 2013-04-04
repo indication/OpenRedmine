@@ -205,6 +205,21 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/ticket_time" />
+	    <TextView
+	        android:id="@+id/textTimeEntry"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="3dip"
+	        android:text="@string/ticket_time_estimate"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="3dip"
+	        android:layout_marginRight="3dip"
+	        android:text="/"
+	        tools:ignore="HardcodedText" />
 
 	    <TextView
 	        android:id="@+id/textEstimate"
@@ -213,6 +228,7 @@
 	        android:layout_marginLeft="3dip"
 	        android:text="@string/ticket_time_estimate"
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
+
 	</LinearLayout>
 
 	<LinearLayout

@@ -34,6 +34,7 @@ public class ParserTimeEntry extends BaseParserInternal<RedmineConnection,Redmin
 			RedmineProject entity = new RedmineProject();
 			setMasterRecord(entity);
 			item.setProject(entity);
+			item.setProjectId(getAttributeInteger("id"));
 		} else if(equalsTagName("issue")){
 			item.setIssueId(getAttributeInteger("id"));
 		} else if(equalsTagName("user")){

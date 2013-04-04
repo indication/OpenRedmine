@@ -9,6 +9,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeActivity;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -103,6 +104,14 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 		return count;
 	}
 
+	public void refreshItem(RedmineTimeEntry data) throws SQLException{
+		if(data == null || data.getActivity() == null)
+			return;
+		RedmineTimeActivity item = refreshItem(data.getConnectionId(),data.getActivity());
+		if(item == null)
+			return;
+		data.setActivity(item);
+	}
 	public RedmineTimeActivity refreshItem(RedmineConnection info,RedmineTimeActivity data) throws SQLException{
 		return refreshItem(info.getId(),data);
 	}

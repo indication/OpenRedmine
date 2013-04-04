@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.db.cache;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +56,20 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 		return item;
 	}
 
+	public BigDecimal sumByIssueId(int connection_id, int issue_id) throws SQLException{
+		QueryBuilder<RedmineTimeEntry, ?> builder = dao.queryBuilder();
+		builder
+			.where()
+				.eq(RedmineTimeEntry.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineTimeEntry.ISSUE_ID, issue_id)
+				;
+		BigDecimal result = new BigDecimal(0);
+		for(RedmineTimeEntry ent : builder.query()){
+			result.add(ent.getHours());
+		}
+		return result;
+	}
 
 	@Override
 	public long countByProject(int connection_id, long project_id) throws SQLException {

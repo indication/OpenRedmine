@@ -64,6 +64,8 @@
 	<string name="ticket_date_arrow">▶</string>
 	<string name="ticket_modified">最終更新</string>
 	<string name="ticket_modified_by">%2$s</string>
+	<string name="ticket_time">時間</string>
+	<string name="ticket_time_estimate">%.2f</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
 
 次に、リンクするRedmineを設定してください。

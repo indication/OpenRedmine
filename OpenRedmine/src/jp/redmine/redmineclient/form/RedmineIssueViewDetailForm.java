@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.form;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jp.redmine.redmineclient.R;
@@ -29,6 +30,8 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	public TextView textDateTo;
 	public TextView textVersion;
 	public TextView textModified;
+	public TextView textTimeEstimate;
+	public TextView textTimeEntry;
 	public WebView webView;
 	public ProgressBar progressBar;
 	public RedmineIssueViewDetailForm(View activity){
@@ -50,6 +53,8 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textDateTo = (TextView)view.findViewById(R.id.textDateTo);
 		textVersion = (TextView)view.findViewById(R.id.textVersion);
 		textModified = (TextView)view.findViewById(R.id.textModified);
+		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
+		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 		webView = (WebView)view.findViewById(R.id.webView);
 		webView.getSettings().setBlockNetworkLoads(true);
@@ -75,6 +80,9 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textPriority.setText(pr == null ? "" : pr.getName());
 	}
 
+	public void setTime(TextView v,int format,Double dc){
+		v.setText(dc == null ? "" : v.getContext().getString(format, dc));
+	}
 	public void setProgress(short progress,short donerate){
 		progressBar.setMax(100);
 		progressBar.setProgress(progress);
@@ -96,7 +104,13 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		setCategory(rd.getCategory());
 		setVersion(rd.getVersion());
 		setProgress(rd.getProgressRate(),rd.getDoneRate());
+		setTime(textTimeEstimate,R.string.ticket_time_estimate,rd.getEstimatedHours());
 
+
+	}
+
+	public void setValueTimeEntry(BigDecimal val){
+		setTime(textTimeEntry,R.string.ticket_time_estimate,val.doubleValue());
 	}
 	protected void setUserNameDateTime(TextView v,int format,RedmineUser ct,Date date){
 		String ret = v.getContext().getString(format, convertUserName(v,ct), convertDateTime(v, date));

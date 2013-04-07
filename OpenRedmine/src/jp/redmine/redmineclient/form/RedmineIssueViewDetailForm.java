@@ -13,6 +13,7 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	public TextView textModified;
 	public TextView textTimeEstimate;
 	public TextView textTimeEntry;
+	public LinearLayout linearTimeEntry;
 	public WebView webView;
 	public ProgressBar progressBar;
 	public RedmineIssueViewDetailForm(View activity){
@@ -53,11 +55,11 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textModified = (TextView)view.findViewById(R.id.textModified);
 		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
 		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
+		linearTimeEntry = (LinearLayout)view.findViewById(R.id.linearTimeEntry);
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 		webView = (WebView)view.findViewById(R.id.webView);
 		webView.getSettings().setBlockNetworkLoads(true);
 	}
-
 
 	public void setTracker(RedmineTracker tk){
 		textTracker.setText(tk == null ? "" : tk.getName());

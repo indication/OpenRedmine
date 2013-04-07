@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
@@ -71,6 +72,19 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 
 		form = new RedmineIssueViewForm(this);
 		formDetail = new RedmineIssueViewDetailForm(formList.viewHeader);
+
+		formDetail.linearTimeEntry.setOnClickListener(new android.view.View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				IssueIntent baseintent = new IssueIntent(getIntent());
+				IssueIntent intent = new IssueIntent(getApplicationContext(), TimeEntryViewActivity.class );
+				intent.setConnectionId(baseintent.getConnectionId());
+				intent.setIssueId(baseintent.getIssueId());
+				startActivity( intent.getIntent() );
+
+			}
+		});
 	}
 
 	@Override

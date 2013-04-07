@@ -134,6 +134,10 @@ abstract public class FormHelper {
 		v.setText(convertUserName(v,ct));
 	}
 
+	public void setTime(TextView v,int format,Double dc){
+		v.setText(dc == null ? "" : v.getContext().getString(format, dc));
+	}
+
 
 	protected String convertDate(View form,Date date){
 		if(date == null)

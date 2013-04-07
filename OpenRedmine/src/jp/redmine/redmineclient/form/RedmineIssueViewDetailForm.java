@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class RedmineIssueViewDetailForm extends FormHelper {
-	private View view;
 	public TextView textTracker;
 	public TextView textCategory;
 	public TextView textPrivate;
@@ -80,9 +79,6 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textPriority.setText(pr == null ? "" : pr.getName());
 	}
 
-	public void setTime(TextView v,int format,Double dc){
-		v.setText(dc == null ? "" : v.getContext().getString(format, dc));
-	}
 	public void setProgress(short progress,short donerate){
 		progressBar.setMax(100);
 		progressBar.setProgress(progress);

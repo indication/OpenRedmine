@@ -4,6 +4,7 @@ import java.util.Date;
 
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.external.lib.ConvertTextUtil;
 
@@ -136,6 +137,9 @@ abstract public class FormHelper {
 
 	public void setTime(TextView v,int format,Double dc){
 		v.setText(dc == null ? "" : v.getContext().getString(format, dc));
+	}
+	protected void setMasterName(TextView v,IMasterRecord ct){
+		v.setText(ct.getName());
 	}
 
 

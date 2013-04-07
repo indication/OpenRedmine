@@ -34,12 +34,11 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	public WebView webView;
 	public ProgressBar progressBar;
 	public RedmineIssueViewDetailForm(View activity){
-		this.view = activity;
-		this.setup();
+		this.setup(activity);
 	}
 
 
-	public void setup(){
+	public void setup(View view){
 		textTracker = (TextView)view.findViewById(R.id.textTracker);
 		textCategory = (TextView)view.findViewById(R.id.textCategory);
 		textPrivate = (TextView)view.findViewById(R.id.textPrivate);

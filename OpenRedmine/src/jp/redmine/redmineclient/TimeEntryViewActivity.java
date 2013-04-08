@@ -72,7 +72,9 @@ public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 
 			formList.adapter.setupParameter(connectionid,issue.getIssueId());
 			formList.refresh(isFetch);
-
+			if(formList.adapter.getCount() < 1 && isFetch){
+				finish();
+			}
 		}
 	}
 

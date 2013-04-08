@@ -128,14 +128,13 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 		if(data == null)
 			return null;
 
+		data.setConnectionId(connection_id);
 		RedmineTimeEntry timeentry = this.fetchById(connection_id, data.getTimeentryId());
 		if(timeentry.getId() == null){
-			data.setConnectionId(connection_id);
 			this.insert(data);
 			timeentry = fetchById(connection_id, data.getTimeentryId());
 		} else {
 			data.setId(timeentry.getId());
-			data.setConnectionId(connection_id);
 			if(timeentry.getModified() == null){
 				timeentry.setModified(new java.util.Date());
 			}

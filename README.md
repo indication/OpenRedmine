@@ -48,6 +48,9 @@ Used references
 - Textile useage from "Diary of tanamon"
   http://d.hatena.ne.jp/tanamon/20090723/1248322655
 
+- Table layout(timeentryitem) usecase from "Setagaya Enginner Blog"
+  http://suka4.blogspot.jp/2011/03/android-tablelayout.html
+ 
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs

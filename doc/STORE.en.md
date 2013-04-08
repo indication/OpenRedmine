@@ -8,6 +8,7 @@ OpenRedmine is an android Redmine client. alpha release.
 
 Requirement:
 * Redmine 1.2 later
+* API access key (Change from "My Account")
 
 CAUTION:
 * Cache data(downloaded issues) are stored WITHOUT encryption. To remove cache data immediately , open connection list - show menu - remove all cache 
@@ -27,13 +28,10 @@ Now testing:
 * All of features
 
 Working:
+* Show changelogs
 * Filter issues from remote or local
 
-Known issues:
-* App cannot close when the last activity is finished
-
 Release planing:
-* Show TimeEntry (2013/04)
 * TimeEntry like stop watch (no plan...)
 
 Thanks:

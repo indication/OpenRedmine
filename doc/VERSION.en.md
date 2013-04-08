@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+v1.11
+===========
+Add time entries
+
 v1.10
 ===========
 Fix update issue

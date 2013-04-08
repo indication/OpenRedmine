@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.form;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import jp.redmine.redmineclient.R;
@@ -12,11 +13,11 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class RedmineIssueViewDetailForm extends FormHelper {
-	private View view;
 	public TextView textTracker;
 	public TextView textCategory;
 	public TextView textPrivate;
@@ -29,15 +30,17 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	public TextView textDateTo;
 	public TextView textVersion;
 	public TextView textModified;
+	public TextView textTimeEstimate;
+	public TextView textTimeEntry;
+	public LinearLayout linearTimeEntry;
 	public WebView webView;
 	public ProgressBar progressBar;
 	public RedmineIssueViewDetailForm(View activity){
-		this.view = activity;
-		this.setup();
+		this.setup(activity);
 	}
 
 
-	public void setup(){
+	public void setup(View view){
 		textTracker = (TextView)view.findViewById(R.id.textTracker);
 		textCategory = (TextView)view.findViewById(R.id.textCategory);
 		textPrivate = (TextView)view.findViewById(R.id.textPrivate);
@@ -50,11 +53,13 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textDateTo = (TextView)view.findViewById(R.id.textDateTo);
 		textVersion = (TextView)view.findViewById(R.id.textVersion);
 		textModified = (TextView)view.findViewById(R.id.textModified);
+		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
+		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
+		linearTimeEntry = (LinearLayout)view.findViewById(R.id.linearTimeEntry);
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 		webView = (WebView)view.findViewById(R.id.webView);
 		webView.getSettings().setBlockNetworkLoads(true);
 	}
-
 
 	public void setTracker(RedmineTracker tk){
 		textTracker.setText(tk == null ? "" : tk.getName());
@@ -96,7 +101,13 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		setCategory(rd.getCategory());
 		setVersion(rd.getVersion());
 		setProgress(rd.getProgressRate(),rd.getDoneRate());
+		setTime(textTimeEstimate,R.string.ticket_time_estimate,rd.getEstimatedHours());
 
+
+	}
+
+	public void setValueTimeEntry(BigDecimal val){
+		setTime(textTimeEntry,R.string.ticket_time_estimate,val.doubleValue());
 	}
 	protected void setUserNameDateTime(TextView v,int format,RedmineUser ct,Date date){
 		String ret = v.getContext().getString(format, convertUserName(v,ct), convertDateTime(v, date));

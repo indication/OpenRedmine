@@ -7,13 +7,21 @@ import java.sql.SQLException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineTimeActivityModel;
+import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
+import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
+import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
+import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
+import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 
 public class SelectIssueJournalTask extends SelectDataTask<Void> {
+	private final static int LIMIT = 50;
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;
@@ -28,6 +36,14 @@ public class SelectIssueJournalTask extends SelectDataTask<Void> {
 
 	@Override
 	protected Void doInBackground(Integer... params) {
+		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		doInBackgroundIssue(client, params);
+		doInBackgroundTimeEntry(client, params);
+		client.close();
+		return null;
+	}
+
+	protected void doInBackgroundIssue(SelectDataTaskConnectionHandler client,Integer... params) {
 		final ParserIssue parser = new ParserIssue();
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
 			@Override
@@ -41,13 +57,51 @@ public class SelectIssueJournalTask extends SelectDataTask<Void> {
 		};
 		RemoteUrlIssue url = new RemoteUrlIssue();
 		url.setOption(RemoteUrlIssue.IssueOption.WithJournals);
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		for(int param: params){
 			url.setIssueId(param);
 			fetchData(client,connection, url, handler);
 		}
-		client.close();
-		return null;
+	}
+
+	protected void doInBackgroundTimeEntry(SelectDataTaskConnectionHandler client,Integer... params) {
+		final RedmineTimeEntryModel model = new RedmineTimeEntryModel(helper);
+		final RedmineTimeActivityModel mActivity = new RedmineTimeActivityModel(helper);
+		final RedmineUserModel mUser = new RedmineUserModel(helper);
+		final ParserTimeEntry parser = new ParserTimeEntry();
+		parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTimeEntry>() {
+			public void onData(RedmineConnection con,RedmineTimeEntry data) throws SQLException {
+				data.setConnectionId(con.getId());
+				if(data.getActivity() != null){
+					data.getActivity().setConnectionId(con.getId());
+					mActivity.refreshItem(data);
+				}
+				if(data.getUser() != null){
+					data.getUser().setConnectionId(con.getId());
+					data.setUser(mUser.refreshItem(con.getId(), data.getUser()));
+				}
+				model.refreshItem(con,data);
+			}
+		});
+		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
+			@Override
+			public void onContent(InputStream stream)
+					throws XmlPullParserException, IOException, SQLException {
+				helperSetupParserStream(stream,parser);
+				parser.parse(connection);
+			}
+		};
+
+		RemoteUrlTimeEntries url = new RemoteUrlTimeEntries();
+		for(int item : params){
+			int offset = 0;
+			url.filterLimit(LIMIT);
+			url.filterIssue(String.valueOf(item));
+			do {
+				url.filterOffset(offset);
+				fetchData(client,connection, url, handler);
+				offset += parser.getCount() + 1;
+			} while(parser.getCount() == LIMIT);
+		}
 	}
 
 	@Override

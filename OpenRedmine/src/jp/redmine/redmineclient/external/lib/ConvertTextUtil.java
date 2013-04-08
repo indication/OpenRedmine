@@ -12,7 +12,6 @@ import net.java.textilej.parser.markup.textile.TextileDialect;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.TypedValue;
 
 public class ConvertTextUtil {
@@ -35,9 +34,7 @@ public class ConvertTextUtil {
 	}
 	static public String convertTextileToHtml(String text, boolean isDocument){
 		HashMap<String,String> restore = new HashMap<String,String>();
-		Log.d("convertTextileToHtml input",text);
 		String textile = reduceExternalHtml(text,restore);
-		Log.d("convertTextileToHtml reduced",textile);
 		StringWriter sw = new StringWriter();
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(sw);
 		builder.setEmitAsDocument(isDocument);
@@ -46,11 +43,9 @@ public class ConvertTextUtil {
 		parser.setBuilder(builder);
 		parser.parse(textile);
 		textile = sw.toString();
-		Log.d("convertTextileToHtml export",textile);
 		for(String item : restore.keySet()){
 			textile = textile.replace(item, restore.get(item));
 		}
-		Log.d("convertTextileToHtml return",textile);
 		return  textile;
 	}
 	static public String getHtml(Context context,String innerhtml,String headerhtml){

@@ -66,7 +66,7 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 				;
 		BigDecimal result = new BigDecimal(0);
 		for(RedmineTimeEntry ent : builder.query()){
-			result.add(ent.getHours());
+			result = result.add(ent.getHours());
 		}
 		return result;
 	}
@@ -79,7 +79,7 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 			.where()
 				.eq(RedmineTimeEntry.CONNECTION, connection_id)
 				.and()
-				.eq(RedmineTimeEntry.PROJECT_ID, project_id)
+				.eq(RedmineTimeEntry.ISSUE_ID, (int)project_id)
 				;
 		return dao.countOf(builder.prepare());
 	}
@@ -95,7 +95,7 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 			.where()
 				.eq(RedmineTimeEntry.CONNECTION, connection_id)
 				.and()
-				.eq(RedmineTimeEntry.PROJECT_ID, project_id)
+				.eq(RedmineTimeEntry.ISSUE_ID, (int) project_id)
 				;
 		RedmineTimeEntry item = builder.queryForFirst();
 		if(item == null)

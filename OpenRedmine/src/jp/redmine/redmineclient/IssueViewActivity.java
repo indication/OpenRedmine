@@ -104,7 +104,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		Log.d("SelectDataTask","ParserIssue Start");
 		try {
 			issue = model.fetchById(connectionid, intent.getIssueId());
-			hours = mTimeEntry.sumByIssueId(connectionid, intent.getIssueId());
+			hours = mTimeEntry.sumByIssueId(connectionid, issue.getIssueId());
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserIssue",e);
 		}

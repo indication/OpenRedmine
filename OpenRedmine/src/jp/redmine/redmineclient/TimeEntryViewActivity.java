@@ -69,9 +69,8 @@ public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			//item is not found
 		} else {
 			form.setValue(issue);
-			formList.setHeaderViewVisible(true);
 
-			formList.adapter.setupParameter(connectionid,issue.getId());
+			formList.adapter.setupParameter(connectionid,issue.getIssueId());
 			formList.refresh(isFetch);
 
 		}

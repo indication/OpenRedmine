@@ -14,20 +14,20 @@ import android.view.View;
 public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeEntry> {
 	private RedmineTimeEntryModel model;
 	protected Integer connection_id;
-	protected Long project_id;
+	protected Integer issue_id;
 	public RedmineTimeEntryListAdapter(DatabaseCacheHelper helper) {
 		super();
 		model = new RedmineTimeEntryModel(helper);
 
 	}
 
-	public void setupParameter(int connection, long project){
+	public void setupParameter(int connection, int issue){
 		connection_id = connection;
-		project_id = project;
+		issue_id = issue;
 	}
 
 	public boolean isValidParameter(){
-		if(project_id == null || connection_id == null)
+		if(issue_id == null || connection_id == null)
 			return false;
 		else
 			return true;
@@ -46,12 +46,12 @@ public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeE
 
 	@Override
 	protected int getDbCount() throws SQLException {
-		return (int) model.countByProject(connection_id, project_id);
+		return (int) model.countByProject(connection_id, issue_id);
 	}
 
 	@Override
 	protected RedmineTimeEntry getDbItem(int position) throws SQLException {
-		return model.fetchItemByProject(connection_id, project_id, position, 1L);
+		return model.fetchItemByProject(connection_id, issue_id, position, 1L);
 	}
 
 	@Override

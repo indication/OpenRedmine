@@ -13,11 +13,11 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class RedmineIssueViewDetailForm extends FormHelper {
-	private View view;
 	public TextView textTracker;
 	public TextView textCategory;
 	public TextView textPrivate;
@@ -32,15 +32,15 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	public TextView textModified;
 	public TextView textTimeEstimate;
 	public TextView textTimeEntry;
+	public LinearLayout linearTimeEntry;
 	public WebView webView;
 	public ProgressBar progressBar;
 	public RedmineIssueViewDetailForm(View activity){
-		this.view = activity;
-		this.setup();
+		this.setup(activity);
 	}
 
 
-	public void setup(){
+	public void setup(View view){
 		textTracker = (TextView)view.findViewById(R.id.textTracker);
 		textCategory = (TextView)view.findViewById(R.id.textCategory);
 		textPrivate = (TextView)view.findViewById(R.id.textPrivate);
@@ -55,11 +55,11 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textModified = (TextView)view.findViewById(R.id.textModified);
 		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
 		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
+		linearTimeEntry = (LinearLayout)view.findViewById(R.id.linearTimeEntry);
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 		webView = (WebView)view.findViewById(R.id.webView);
 		webView.getSettings().setBlockNetworkLoads(true);
 	}
-
 
 	public void setTracker(RedmineTracker tk){
 		textTracker.setText(tk == null ? "" : tk.getName());
@@ -80,9 +80,6 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textPriority.setText(pr == null ? "" : pr.getName());
 	}
 
-	public void setTime(TextView v,int format,Double dc){
-		v.setText(dc == null ? "" : v.getContext().getString(format, dc));
-	}
 	public void setProgress(short progress,short donerate){
 		progressBar.setMax(100);
 		progressBar.setProgress(progress);

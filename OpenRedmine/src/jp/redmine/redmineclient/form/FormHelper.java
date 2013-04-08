@@ -139,7 +139,7 @@ abstract public class FormHelper {
 		v.setText(dc == null ? "" : v.getContext().getString(format, dc));
 	}
 	protected void setMasterName(TextView v,IMasterRecord ct){
-		v.setText(ct.getName());
+		v.setText(ct == null ? "" : ct.getName());
 	}
 
 

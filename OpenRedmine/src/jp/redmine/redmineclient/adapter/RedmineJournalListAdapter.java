@@ -6,6 +6,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
+import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -14,12 +15,14 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	private RedmineJournalModel model;
 	protected Integer connection_id;
 	protected Long issue_id;
+	protected IntentAction action;
 
 
 
-	public RedmineJournalListAdapter(RedmineJournalModel m){
+	public RedmineJournalListAdapter(RedmineJournalModel m,IntentAction act){
 		super();
 		model = m;
+		action = act;
 	}
 
 	public void setupParameter(int connection, long issue){
@@ -42,6 +45,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	@Override
 	protected void setupView(View view, RedmineJournal data) {
 		RedmineJournalListItemForm form = new RedmineJournalListItemForm(view);
+		form.setupWebView(action);
 		form.setValue(data);
 	}
 

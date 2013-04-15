@@ -1,9 +1,11 @@
-package jp.redmine.redmineclient.external.lib;
+package jp.redmine.redmineclient.form.helper;
 
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
@@ -14,8 +16,98 @@ import org.apache.commons.lang3.RandomStringUtils;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.webkit.WebView;
+import android.webkit.WebSettings.PluginState;
+import android.webkit.WebViewClient;
 
-public class ConvertTextUtil {
+public class TextileHelper {
+	protected WebView view;
+	static public final String URL_PREFIX = "redmine://";
+	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
+	private Pattern patternIssue = Pattern.compile("#(\\d+)");
+	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
+	private IntentAction action;
+	public TextileHelper(WebView web){
+		view = web;
+	}
+	public void setAction(IntentAction act){
+		action = act;
+	}
+	public void setup(){
+		setupWebView();
+		setupHandler();
+	}
+
+	public interface IntentAction{
+		public void issue(int connection,int issueid);
+	}
+
+	protected void setupWebView(){
+		view.getSettings().setPluginState(PluginState.OFF);
+		view.getSettings().setBlockNetworkLoads(true);
+	}
+
+	protected void setupHandler(){
+		view.setWebViewClient(new WebViewClient(){
+
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				Matcher m = patternIntent.matcher(url);
+				if(m.find()){
+					return kickAction(m.replaceAll(""));
+				} else {
+					return super.shouldOverrideUrlLoading(view, url);
+				}
+			}
+		});
+	}
+
+	protected boolean kickAction(String urlpath){
+
+		String[] items = urlpath.split("/");
+		int cnt = items.length;
+		if(cnt < 3 || action == null){
+			/* do nothing */
+		} else if("issue".equals(items[0])){
+			action.issue(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]));
+			return true;
+		}
+		return false;
+	}
+
+	protected String  extendHtml(int connection_id,String input){
+		return extendHtml(String.valueOf(connection_id),input);
+	}
+	protected String  extendHtml(String connection,String input){
+		String result = "";
+		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1"));
+		return result;
+	}
+
+	protected String getAnchor(String name,String... params){
+		StringBuffer sb = new StringBuffer();
+		sb.append("<a href=\"");
+		sb.append(URL_PREFIX);
+		for(String item : params){
+			sb.append(item);
+		}
+		sb.append("\">");
+		sb.append(name);
+		sb.append("</a>");
+		return sb.toString();
+	}
+
+	public void setContent(int connectionid,String text){
+		String inner = extendHtml(connectionid,convertTextileToHtml(text));
+		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
+
+	}
+
+	public void setContent(String text){
+		String inner = convertTextileToHtml(text);
+		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
+	}
+
 
 	static protected String reduceExternalHtml(String input, HashMap<String,String> export){
 		Pattern p = Pattern.compile("<\\s*pre\\s*>(.*)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);
@@ -79,7 +171,6 @@ public class ConvertTextUtil {
 		sb.append("</body></html>");
 		return sb.toString();
 	}
-
 	static public int getAttribute(Context context,int target){
 		TypedValue typedValue = new TypedValue();
 		context.getTheme().resolveAttribute(target, typedValue, true);

@@ -11,6 +11,8 @@ import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.form.helper.TextileHelper;
+import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
@@ -34,11 +36,18 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	public TextView textTimeEntry;
 	public LinearLayout linearTimeEntry;
 	public WebView webView;
+	public TextileHelper webViewHelper;
 	public ProgressBar progressBar;
 	public RedmineIssueViewDetailForm(View activity){
 		this.setup(activity);
 	}
 
+
+	public void setupWebView(IntentAction act){
+		webViewHelper = new TextileHelper(webView);
+		webViewHelper.setup();
+		webViewHelper.setAction(act);
+	}
 
 	public void setup(View view){
 		textTracker = (TextView)view.findViewById(R.id.textTracker);
@@ -88,7 +97,7 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 	}
 
 	public void setValue(RedmineIssue rd){
-		setTextileText(webView,rd.getDescription());
+		webViewHelper.setContent(rd.getConnectionId(), rd.getDescription());
 		setDate(textDateFrom,rd.getDateStart());
 		setDate(textDateTo,rd.getDateDue());
 		setTracker(rd.getTracker());

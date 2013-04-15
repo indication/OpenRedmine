@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
+import jp.redmine.redmineclient.activity.helper.ActionActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineJournalListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -62,16 +63,21 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.issueview);
+		ActionActivityHelper actionhelper = new ActionActivityHelper(this);
 
 		formList = new RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter>();
 		formList.setList((ListView)findViewById(R.id.list));
 		formList.setHeader(getLayoutInflater().inflate(R.layout.issueviewdetail,null), false);
 		formList.setFooter(getLayoutInflater().inflate(R.layout.listview_footer,null), false);
-		formList.setAdapter(new RedmineJournalListAdapter(new RedmineJournalModel(getHelper())));
+		formList.setAdapter(new RedmineJournalListAdapter(
+				new RedmineJournalModel(getHelper())
+				, actionhelper
+				));
 		formList.onRestoreInstanceState(savedInstanceState);
 
 		form = new RedmineIssueViewForm(this);
 		formDetail = new RedmineIssueViewDetailForm(formList.viewHeader);
+		formDetail.setupWebView(actionhelper);
 
 		formDetail.linearTimeEntry.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -98,13 +104,10 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		int connectionid = intent.getConnectionId();
 
 		RedmineIssueModel model = new RedmineIssueModel(getHelper());
-		RedmineTimeEntryModel mTimeEntry = new RedmineTimeEntryModel(getHelper());
 		RedmineIssue issue = new RedmineIssue();
-		BigDecimal hours = new BigDecimal(0);
 		Log.d("SelectDataTask","ParserIssue Start");
 		try {
 			issue = model.fetchById(connectionid, intent.getIssueId());
-			hours = mTimeEntry.sumByIssueId(connectionid, issue.getIssueId());
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserIssue",e);
 		}
@@ -113,6 +116,13 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				onFetchRemote();
 			}
 		} else {
+			RedmineTimeEntryModel mTimeEntry = new RedmineTimeEntryModel(getHelper());
+			BigDecimal hours = new BigDecimal(0);
+			try {
+				hours = mTimeEntry.sumByIssueId(connectionid, issue.getIssueId());
+			} catch (SQLException e) {
+				Log.e("SelectDataTask","ParserIssue",e);
+			}
 			form.setValue(issue);
 			formDetail.setValue(issue);
 			formDetail.setValueTimeEntry(hours);

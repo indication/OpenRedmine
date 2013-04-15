@@ -6,14 +6,12 @@ import java.util.Date;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.external.lib.ConvertTextUtil;
 
 import com.andreabaccega.widget.FormEditText;
 
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 abstract public class FormHelper {
@@ -169,13 +167,5 @@ abstract public class FormHelper {
 	 */
 	protected void setDateTime(TextView v,Date date){
 		v.setText(convertDateTime(v,date));
-	}
-	protected void setTextileText(TextView v,String text){
-		v.setText(Html.fromHtml(ConvertTextUtil.convertTextileToHtml(text)));
-	}
-	protected void setTextileText(WebView v,String text){
-		String inner = ConvertTextUtil.convertTextileToHtml(text);
-
-		v.loadDataWithBaseURL("", ConvertTextUtil.getHtml(v.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
 }

@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
+import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.TextView;
 

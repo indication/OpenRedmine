@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
+import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;

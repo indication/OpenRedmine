@@ -34,7 +34,6 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 
 	@Override
 	protected Void doInBackground(Integer... params) {
-		long offset = params[0];
 		long limit = params[1];
 		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
@@ -47,7 +46,6 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 		if(filter == null)
 			filter = mFilter.generateDefault(connection.getId(), project);
 
-		boolean isRemote = false;
 		/*
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, 10);	///@todo
@@ -56,58 +54,54 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 			*/
 		long lastfetched = filter.getFetched();
 		long fetched = (isRest) ? 0 : lastfetched;
-		if((offset+limit) > fetched)
-			isRemote = true;
 
 		//accelerate fetch issues
 		if(isRest && lastfetched > (limit*2))
 			limit *= 2;
 
-		if(isRemote){
-			SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
-			final ParserIssue parser = new ParserIssue();
-			SelectDataTaskDataHandler taskhandler = new SelectDataTaskDataHandler() {
-				@Override
-				public void onContent(InputStream stream)
-						throws XmlPullParserException, IOException, SQLException {
-					IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
-					parser.registerDataCreation(handler);
-					helperSetupParserStream(stream, parser);
-					parser.parse(connection);
-				}
-			};
-			RemoteUrlIssues url = new RemoteUrlIssues();
-			RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
-
-			try {
-				while(fetched < lastfetched || fetched < offset){
-					url.filterOffset((int)fetched);
-					url.filterLimit((int)limit);
-					fetchData(client,connection, url, taskhandler);
-
-					// update fetch status
-					fetched += parser.getCount();
-					filter.setFetched(fetched);
-					filter.setLast(new Date());
-					mFilter.updateCurrent(filter);
-					if(parser.getCount() < 1)
-						break;
-
-					//update offset for next fetch
-					fetched++;
-
-					//sleep for server
-					Thread.sleep(1000);
-				}
-			} catch (SQLException e) {
-				publishError(e);
-			} catch (InterruptedException e) {
-				publishError(e);
-			} finally {
-				client.close();
+		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		final ParserIssue parser = new ParserIssue();
+		SelectDataTaskDataHandler taskhandler = new SelectDataTaskDataHandler() {
+			@Override
+			public void onContent(InputStream stream)
+					throws XmlPullParserException, IOException, SQLException {
+				IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
+				parser.registerDataCreation(handler);
+				helperSetupParserStream(stream, parser);
+				parser.parse(connection);
 			}
+		};
+		RemoteUrlIssues url = new RemoteUrlIssues();
+		RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
 
+		try {
+			while(fetched < lastfetched){
+				url.filterOffset((int)fetched);
+				url.filterLimit((int)limit);
+				fetchData(client,connection, url, taskhandler);
+
+				// update fetch status
+				fetched += parser.getCount();
+				filter.setFetched(fetched);
+				filter.setLast(new Date());
+				mFilter.updateCurrent(filter);
+				if(parser.getCount() < 1)
+					break;
+
+				//update offset for next fetch
+				fetched++;
+
+				//sleep for server
+				Thread.sleep(1000);
+			}
+		} catch (SQLException e) {
+			publishError(e);
+		} catch (InterruptedException e) {
+			publishError(e);
+		} finally {
+			client.close();
 		}
+
 		return null;
 	}
 

@@ -51,8 +51,8 @@ public class RedmineIssueViewForm extends FormHelper {
 		});
 	}
 
-	public void setIssueId(int id){
-		textIssueId.setText("#"+String.valueOf(id));
+	public void setIssueId(Integer id){
+		textIssueId.setText(id == null ? "" : "#"+String.valueOf(id));
 	}
 
 

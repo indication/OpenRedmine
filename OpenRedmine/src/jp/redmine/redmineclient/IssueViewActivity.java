@@ -112,6 +112,9 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserIssue",e);
 		}
+
+		form.setValue(issue);
+
 		if(issue.getId() == null){
 			if(isFetch){
 				onFetchRemote();
@@ -124,7 +127,6 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			} catch (SQLException e) {
 				Log.e("SelectDataTask","ParserIssue",e);
 			}
-			form.setValue(issue);
 			formDetail.setValue(issue);
 			formDetail.setValueTimeEntry(hours);
 			formList.setHeaderViewVisible(true);

@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.TextView;
 

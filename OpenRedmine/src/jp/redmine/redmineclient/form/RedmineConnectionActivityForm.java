@@ -4,6 +4,7 @@ import com.andreabaccega.widget.FormEditText;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.app.Activity;
 import android.widget.Button;
 import android.widget.CheckBox;

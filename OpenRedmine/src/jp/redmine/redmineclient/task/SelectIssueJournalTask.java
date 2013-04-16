@@ -106,13 +106,11 @@ public class SelectIssueJournalTask extends SelectDataTask<Void> {
 
 	@Override
 	protected void onErrorRequest(int statuscode) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	@Override
 	protected void onProgress(int max, int proc) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 

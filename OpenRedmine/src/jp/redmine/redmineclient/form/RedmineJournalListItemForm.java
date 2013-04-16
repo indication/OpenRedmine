@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineJournal;
+import jp.redmine.redmineclient.form.helper.FormHelper;
 import jp.redmine.redmineclient.form.helper.TextileHelper;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.view.View;

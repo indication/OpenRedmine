@@ -8,12 +8,10 @@ public class RemoteUrlIssueTest extends TestCase {
 
 	private final String testurl = "http://test/";
 	public RemoteUrlIssueTest() {
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
 	public RemoteUrlIssueTest(String name) {
 		super(name);
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
 	public void testRaw(){

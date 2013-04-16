@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient;
 
+import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
 import jp.redmine.redmineclient.intent.ConnectionIntent;

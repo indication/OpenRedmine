@@ -4,6 +4,7 @@ import com.andreabaccega.widget.FormEditText;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.external.lib.MyWebViewClient;
+import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;

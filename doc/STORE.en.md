@@ -22,20 +22,22 @@ Connection:
 
 Features:
 * View issues offline
-* Filter (Status/Tracker/Category/Priority/Author/Assined,Some of them also buggy)
+* Filter (Status/Tracker/Category/Priority/Author/Assined)
 
 Now testing:
 * All of features
 
 Working:
+* Add journal
 * Show changelogs
-* Filter issues from remote or local
 
 Release planing:
+* Switch to beta(2013/05)
 * TimeEntry like stop watch (no plan...)
 
 Thanks:
 * Great icons from Glyphish: http://glyphish.com
 
 Note:
-* This app is open source, you can contribute.(eg. translation)
+* This app is open source, you can contribute.
+* Notice via github or twitter @OpenRedmine if you feel something good or bad.

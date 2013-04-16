@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.redmine.redmineclient"
 	android:installLocation="auto"
-    android:versionCode="18"
-    android:versionName="1.11" >
+    android:versionCode="19"
+    android:versionName="1.12" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11"/>
     <uses-permission android:name="android.permission.INTERNET" />

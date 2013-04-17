@@ -77,9 +77,6 @@ Using Icons
  Redmine Logo is Copyright (C) 2009 Martin Herr and is licensed under the Creative Commons Attribution-Share Alike 2.5 Generic license.
  See http://creativecommons.org/licenses/by-sa/2.5/ for more details.
 
-- Glyphish (by/3.0/us)
- Great icons from Glyphish 
- Created by Joseph Wain, 2012
- Web: http://glyphish.com or http://penandthink.com
- This work is licensed under the Creative Commons Attribution 3.0 United States License. To view a copy of this license,
- visit http://creativecommons.org/licenses/by/3.0/us/ .
+- Action Bar Icon Pack (by/2.5)
+ http://developer.android.com/design/downloads/
+ See http://creativecommons.org/licenses/by/2.5/ for more details.

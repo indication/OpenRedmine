@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
+import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
@@ -39,6 +40,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	private SelectDataTask task;
 	private long lastPos = 0;
 	private RedmineBaseAdapterListFormHelper<RedmineIssueListAdapter> formList;
+	private MenuItem menu_refresh;
 
 	@Override
 	protected void onDestroy() {
@@ -160,6 +162,8 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		@Override
 		protected void onPreExecute() {
 			formList.setFooterViewVisible(true);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(false);
 		}
 
 		// can use UI thread here
@@ -167,6 +171,8 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		protected void onPostExecute(Void v) {
 			formList.refresh();
 			formList.setFooterViewVisible(false);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(true);
 		}
 
 		@Override
@@ -197,6 +203,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 			super.onErrorRequest(statuscode);
 		}
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -204,6 +211,9 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate( R.menu.issues, menu );
+		menu_refresh = menu.findItem(R.id.menu_refresh);
+		if(task != null && task.getStatus() == Status.RUNNING)
+			menu_refresh.setEnabled(false);
 		return true;
 	}
 

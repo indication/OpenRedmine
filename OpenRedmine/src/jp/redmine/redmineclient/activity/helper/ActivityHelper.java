@@ -1,5 +1,7 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity.helper;
 
+import jp.redmine.redmineclient.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -7,7 +9,8 @@ import android.view.Window;
 
 
 public class ActivityHelper {
-	static void setupTheme(Activity activity){
+	@SuppressLint("InlinedApi")
+	static public void setupTheme(Activity activity){
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 		String setting = sp.getString("appearance_themes", "default");

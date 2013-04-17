@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="fill_vertical"
-    android:drawableLeft="@drawable/medical"
+    android:drawableLeft="@android:drawable/ic_menu_add"
     android:drawablePadding="5dp"
     android:padding="10dp"
     android:text="@string/add_new_item"

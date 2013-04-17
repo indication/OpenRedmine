@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
+import jp.redmine.redmineclient.activity.helper.ActionActivityHelper;
+import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineJournalListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -34,6 +36,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	private RedmineIssueViewForm form;
 	private RedmineIssueViewDetailForm formDetail;
 	private RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter> formList;
+	private MenuItem menu_refresh;
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -62,16 +65,21 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.issueview);
+		ActionActivityHelper actionhelper = new ActionActivityHelper(this);
 
 		formList = new RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter>();
 		formList.setList((ListView)findViewById(R.id.list));
 		formList.setHeader(getLayoutInflater().inflate(R.layout.issueviewdetail,null), false);
 		formList.setFooter(getLayoutInflater().inflate(R.layout.listview_footer,null), false);
-		formList.setAdapter(new RedmineJournalListAdapter(new RedmineJournalModel(getHelper())));
+		formList.setAdapter(new RedmineJournalListAdapter(
+				new RedmineJournalModel(getHelper())
+				, actionhelper
+				));
 		formList.onRestoreInstanceState(savedInstanceState);
 
 		form = new RedmineIssueViewForm(this);
 		formDetail = new RedmineIssueViewDetailForm(formList.viewHeader);
+		formDetail.setupWebView(actionhelper);
 
 		formDetail.linearTimeEntry.setOnClickListener(new android.view.View.OnClickListener() {
 
@@ -98,22 +106,28 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		int connectionid = intent.getConnectionId();
 
 		RedmineIssueModel model = new RedmineIssueModel(getHelper());
-		RedmineTimeEntryModel mTimeEntry = new RedmineTimeEntryModel(getHelper());
 		RedmineIssue issue = new RedmineIssue();
-		BigDecimal hours = new BigDecimal(0);
 		Log.d("SelectDataTask","ParserIssue Start");
 		try {
 			issue = model.fetchById(connectionid, intent.getIssueId());
-			hours = mTimeEntry.sumByIssueId(connectionid, issue.getIssueId());
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserIssue",e);
 		}
+
+		form.setValue(issue);
+
 		if(issue.getId() == null){
 			if(isFetch){
 				onFetchRemote();
 			}
 		} else {
-			form.setValue(issue);
+			RedmineTimeEntryModel mTimeEntry = new RedmineTimeEntryModel(getHelper());
+			BigDecimal hours = new BigDecimal(0);
+			try {
+				hours = mTimeEntry.sumByIssueId(connectionid, issue.getIssueId());
+			} catch (SQLException e) {
+				Log.e("SelectDataTask","ParserIssue",e);
+			}
 			formDetail.setValue(issue);
 			formDetail.setValueTimeEntry(hours);
 			formList.setHeaderViewVisible(true);
@@ -149,6 +163,8 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		@Override
 		protected void onPreExecute() {
 			formList.setFooterViewVisible(true);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(false);
 		}
 
 		// can use UI thread here
@@ -156,6 +172,8 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		protected void onPostExecute(Void v) {
 			formList.setFooterViewVisible(false);
 			onRefresh(false);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(true);
 		}
 
 
@@ -167,6 +185,9 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate( R.menu.issue_view, menu );
+		menu_refresh = menu.findItem(R.id.menu_refresh);
+		if(task != null && task.getStatus() == Status.RUNNING)
+			menu_refresh.setEnabled(false);
 		return true;
 	}
 

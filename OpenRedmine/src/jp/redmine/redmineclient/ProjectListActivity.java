@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
+import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -29,6 +30,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 
 	private SelectDataTask task;
 	private RedmineBaseAdapterListFormHelper<RedmineProjectListAdapter> formList;
+	private MenuItem menu_refresh;
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -128,6 +130,8 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		@Override
 		protected void onPreExecute() {
 			formList.setFooterViewVisible(true);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(false);
 		}
 
 		// can use UI thread here
@@ -135,6 +139,8 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		protected void onPostExecute(List<RedmineProject> b) {
 			formList.setFooterViewVisible(false);
 			formList.refresh(false);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(true);
 		}
 	}
 
@@ -145,6 +151,9 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate( R.menu.projects, menu );
+		menu_refresh = menu.findItem(R.id.menu_refresh);
+		if(task != null && task.getStatus() == Status.RUNNING)
+			menu_refresh.setEnabled(false);
 		return true;
 	}
 
@@ -153,7 +162,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 	{
 		switch ( item.getItemId() )
 		{
-			case R.id.menu_projects_refresh:
+			case R.id.menu_refresh:
 			{
 				this.onRefresh();
 				return true;

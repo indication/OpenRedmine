@@ -23,7 +23,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
 		try {
-			//自動生成
 			TableUtils.createTable(arg1, RedmineConnection.class);
 
 		} catch (SQLException e) {
@@ -34,7 +33,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, ConnectionSource arg1, int arg2,
 			int arg3) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 

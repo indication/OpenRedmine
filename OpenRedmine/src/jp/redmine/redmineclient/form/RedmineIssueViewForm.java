@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,8 +51,8 @@ public class RedmineIssueViewForm extends FormHelper {
 		});
 	}
 
-	public void setIssueId(int id){
-		textIssueId.setText("#"+String.valueOf(id));
+	public void setIssueId(Integer id){
+		textIssueId.setText(id == null ? "" : "#"+String.valueOf(id));
 	}
 
 

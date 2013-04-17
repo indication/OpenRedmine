@@ -2,6 +2,13 @@ OpenRedmine
 ===========
 Release history
 
+v1.12
+===========
+Fix update issue
+Jump to issue from description or journal
+Add tracker to issues list
+Refresh icons
+
 v1.11
 ===========
 Add time entries

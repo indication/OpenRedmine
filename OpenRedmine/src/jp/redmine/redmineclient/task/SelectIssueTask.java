@@ -75,7 +75,7 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 		RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
 
 		try {
-			while(fetched < lastfetched){
+			while(fetched < lastfetched || fetched < limit){
 				url.filterOffset((int)fetched);
 				url.filterLimit((int)limit);
 				fetchData(client,connection, url, taskhandler);

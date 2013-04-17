@@ -35,9 +35,6 @@ OpenRedmine はアンドロイドクライアントです。 アルファリリースです。
 * ベータ版へスイッチ(2013/05)
 * ストップウォッチ(未計画)
 
-謝辞:
-* すばらしいアイコンは Glyphish: http://glyphish.com
-
 ノート:
 * このアプリはオープンソースです。あなたが参加できます。(例: 翻訳)
 * Notice via github or twitter @OpenRedmine if you feel something good or bad.

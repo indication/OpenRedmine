@@ -3,7 +3,7 @@
     <item android:id="@+id/menu_refresh"
         android:title="@string/menu_refresh"
         android:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_more"
+        android:icon="@drawable/ic_action_refresh"
         android:numericShortcut="5"
         android:alphabeticShortcut="r"/>
 </menu>

@@ -35,9 +35,6 @@ Release planing:
 * Switch to beta(2013/05)
 * TimeEntry like stop watch (no plan...)
 
-Thanks:
-* Great icons from Glyphish: http://glyphish.com
-
 Note:
 * This app is open source, you can contribute.
 * Notice via github or twitter @OpenRedmine if you feel something good or bad.

@@ -36,6 +36,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	private RedmineIssueViewForm form;
 	private RedmineIssueViewDetailForm formDetail;
 	private RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter> formList;
+	private MenuItem menu_refresh;
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -162,6 +163,8 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		@Override
 		protected void onPreExecute() {
 			formList.setFooterViewVisible(true);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(false);
 		}
 
 		// can use UI thread here
@@ -169,6 +172,8 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		protected void onPostExecute(Void v) {
 			formList.setFooterViewVisible(false);
 			onRefresh(false);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(true);
 		}
 
 
@@ -180,6 +185,9 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate( R.menu.issue_view, menu );
+		menu_refresh = menu.findItem(R.id.menu_refresh);
+		if(task != null && task.getStatus() == Status.RUNNING)
+			menu_refresh.setEnabled(false);
 		return true;
 	}
 

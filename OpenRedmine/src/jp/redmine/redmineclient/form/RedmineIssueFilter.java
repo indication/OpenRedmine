@@ -57,19 +57,19 @@ public class RedmineIssueFilter {
 
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.listViewStatus);
 		addList(expStatus,activity, new RedmineStatusModel(helper),R.string.ticket_status);
-		addTab(activity,R.string.ticket_status,R.id.tab1,R.drawable.runner);
+		addTab(activity,R.string.ticket_status,R.id.tab1,null);
 
 		RedmineIssueFilterExpander expVersion = generate(activity,R.id.listViewVersion);
 		addList(expVersion,activity, new RedmineVersionModel(helper),R.string.ticket_version);
-		addTab(activity,R.string.ticket_version,R.id.tab2,R.drawable.flag);
+		addTab(activity,R.string.ticket_version,R.id.tab2,null);
 
 		RedmineIssueFilterExpander expCategory = generate(activity, R.id.listViewCategory);
 		addList(expCategory,activity, new RedmineCategoryModel(helper),R.string.ticket_category);
-		addTab(activity,R.string.ticket_category,R.id.tab3,R.drawable.cabinet);
+		addTab(activity,R.string.ticket_category,R.id.tab3,null);
 
 		RedmineIssueFilterExpander expTracker = generate(activity, R.id.listViewTracker);
 		addList(expTracker,activity, new RedmineTrackerModel(helper),R.string.ticket_tracker);
-		addTab(activity,R.string.ticket_tracker,R.id.tab4,R.drawable.stickynote);
+		addTab(activity,R.string.ticket_tracker,R.id.tab4,null);
 
 		RedmineIssueFilterExpander expPriority = generate(activity, R.id.listViewPriority);
 		addList(expPriority,activity, new RedminePriorityModel(helper),R.string.ticket_priority);

@@ -2,6 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/menu_issues_filter"
         android:title="@string/menu_filter"
+	    android:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_filter"
         android:numericShortcut="3"
          android:alphabeticShortcut="f" />
     <item android:id="@+id/menu_refresh"

@@ -5,182 +5,182 @@
 	android:layout_height="wrap_content"
 	android:orientation="vertical" >
 
-<ScrollView
-		android:layout_width="fill_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1" >
+	<ScrollView
+			android:layout_width="fill_parent"
+			android:layout_height="0dp"
+			android:layout_weight="1" >
 
-<LinearLayout
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical" >
-
-
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/menu_setting_label_name"
-		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-
-
-	<com.andreabaccega.widget.FormEditText
-		style="@android:style/Widget.EditText"
-		android:id="@+id/editName"
-		android:inputType="text"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:ems="10"
-		android:hint="@string/menu_setting_edit_name"
-		android:singleLine="true"
-		validate:testType="nocheck" >
-		<requestFocus />
-	</com.andreabaccega.widget.FormEditText>
-
-
-
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/menu_setting_label_accessurl"
-		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-
-	<com.andreabaccega.widget.FormEditText
-		style="@android:style/Widget.EditText"
-		android:id="@+id/editURL"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:ems="10"
-		android:hint="@string/menu_setting_edit_accessurl"
-		android:inputType="textUri"
-		android:singleLine="true"
-		validate:testType="webUrl" />
-
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal" >
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/menu_setting_label_accesstoken"
-		android:textAppearance="?android:attr/textAppearanceMedium" />
-
-
-
-
-	<Button
-		android:id="@+id/buttonAccess"
-		android:layout_width="fill_parent"
-		android:layout_height="34dp"
-		android:text="@string/menu_setting_goto_redmine" />
-
-	</LinearLayout>
-
-
-
-
-	<com.andreabaccega.widget.FormEditText
-		style="@android:style/Widget.EditText"
-		android:id="@+id/editToken"
-		android:inputType="textVisiblePassword"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:ems="10"
-		android:hint="@string/menu_setting_edit_accesstoken"
-		android:singleLine="true"
-		validate:testType="alphaNumeric"
-		validate:emptyAllowed="true"  />
-
-	<TextView
-		android:id="@+id/textView1"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="10dp"
-		android:text="@string/menu_setting_message_accesstoken" />
-
-	<CheckBox
-		android:id="@+id/checkHttpAuth"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/menu_setting_check_auth" />
-
-
-
-	<LinearLayout
-		android:id="@+id/formHttpAuth"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:paddingLeft="10dp" >
-
-		<TextView
-			android:id="@+id/textView3"
-			android:layout_width="wrap_content"
+		<LinearLayout
+			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/menu_setting_label_authid"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
-
-		<EditText
-			android:id="@+id/editAuthID"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:inputType="textPhonetic"
-			android:ems="10"
-			android:hint="@string/menu_setting_edit_authid"
-			android:singleLine="true" />
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/menu_setting_label_authpasswd"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
-
-		<EditText
-			android:id="@+id/editAuthPasswd"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:ems="10"
-			android:hint="@string/menu_setting_edit_authpasswd"
-			android:inputType="textPassword"
-			android:singleLine="true" />
-
-	</LinearLayout>
+			android:orientation="vertical" >
 
 
-	<CheckBox
-		android:id="@+id/checkPermitUnsafe"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/menu_setting_permit_unsafe" />
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/menu_setting_label_name"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
 
 
-	<LinearLayout
-		android:id="@+id/formPermitUnsafe"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:paddingLeft="10dp" >
 
-		<TextView
-			android:id="@+id/textView6"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/menu_setting_label_certkey"
-			android:textAppearance="?android:attr/textAppearanceMedium" />
+			<com.andreabaccega.widget.FormEditText
+				style="@android:style/Widget.EditText"
+				android:id="@+id/editName"
+				android:inputType="text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:ems="10"
+				android:hint="@string/menu_setting_edit_name"
+				android:singleLine="true"
+				validate:testType="nocheck" >
+				<requestFocus />
+			</com.andreabaccega.widget.FormEditText>
 
-		<EditText
-			android:id="@+id/editCertKey"
-			android:layout_width="match_parent"
-			android:layout_height="82dp"
-			android:ems="10"
-			android:inputType="textMultiLine" />
 
-	</LinearLayout>
 
-</LinearLayout>
-</ScrollView>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/menu_setting_label_accessurl"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+			<com.andreabaccega.widget.FormEditText
+				style="@android:style/Widget.EditText"
+				android:id="@+id/editURL"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:ems="10"
+				android:hint="@string/menu_setting_edit_accessurl"
+				android:inputType="textUri"
+				android:singleLine="true"
+				validate:testType="webUrl" />
+
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal" >
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/menu_setting_label_accesstoken"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+
+
+			<Button
+				android:id="@+id/buttonAccess"
+				android:layout_width="fill_parent"
+				android:layout_height="34dp"
+				android:text="@string/menu_setting_goto_redmine" />
+
+			</LinearLayout>
+
+
+
+
+			<com.andreabaccega.widget.FormEditText
+				style="@android:style/Widget.EditText"
+				android:id="@+id/editToken"
+				android:inputType="textVisiblePassword"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:ems="10"
+				android:hint="@string/menu_setting_edit_accesstoken"
+				android:singleLine="true"
+				validate:testType="alphaNumeric"
+				validate:emptyAllowed="true"  />
+
+			<TextView
+				android:id="@+id/textView1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:text="@string/menu_setting_message_accesstoken" />
+
+			<CheckBox
+				android:id="@+id/checkHttpAuth"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/menu_setting_check_auth" />
+
+
+
+			<LinearLayout
+				android:id="@+id/formHttpAuth"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingLeft="10dp" >
+
+				<TextView
+					android:id="@+id/textView3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/menu_setting_label_authid"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+
+				<EditText
+					android:id="@+id/editAuthID"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:inputType="textPhonetic"
+					android:ems="10"
+					android:hint="@string/menu_setting_edit_authid"
+					android:singleLine="true" />
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/menu_setting_label_authpasswd"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+
+				<EditText
+					android:id="@+id/editAuthPasswd"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:ems="10"
+					android:hint="@string/menu_setting_edit_authpasswd"
+					android:inputType="textPassword"
+					android:singleLine="true" />
+
+			</LinearLayout>
+
+
+			<CheckBox
+				android:id="@+id/checkPermitUnsafe"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/menu_setting_permit_unsafe" />
+
+
+			<LinearLayout
+				android:id="@+id/formPermitUnsafe"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:paddingLeft="10dp" >
+
+				<TextView
+					android:id="@+id/textView6"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/menu_setting_label_certkey"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+
+				<EditText
+					android:id="@+id/editCertKey"
+					android:layout_width="match_parent"
+					android:layout_height="82dp"
+					android:ems="10"
+					android:inputType="textMultiLine" />
+
+			</LinearLayout>
+
+		</LinearLayout>
+	</ScrollView>
 	<Button
 		android:id="@+id/buttonSave"
 		android:layout_width="match_parent"

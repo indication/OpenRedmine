@@ -66,6 +66,7 @@
 	<string name="ticket_modified_by">%2$s</string>
 	<string name="ticket_time">Time</string>
 	<string name="ticket_time_estimate">%.2f</string>
+	<string name="ticket_issue">Issue</string>
 	<string name="message_first_time"><![CDATA[Thank you for downloading.
 
 Next step, setup connection to your Redmine.

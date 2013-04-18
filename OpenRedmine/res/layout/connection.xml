@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:validate="http://schemas.android.com/apk/res/jp.redmine.redmineclient"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical" >
 
 	<ScrollView
-			android:layout_width="fill_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1" >
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1" >
 
 		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical" >
-
 
 			<TextView
 				android:layout_width="wrap_content"
@@ -22,33 +22,72 @@
 				android:text="@string/menu_setting_label_name"
 				android:textAppearance="?android:attr/textAppearanceMedium" />
 
-
-
 			<com.andreabaccega.widget.FormEditText
-				style="@android:style/Widget.EditText"
 				android:id="@+id/editName"
-				android:inputType="text"
+				style="@android:style/Widget.EditText"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:ems="10"
 				android:hint="@string/menu_setting_edit_name"
+				android:inputType="text"
 				android:singleLine="true"
 				validate:testType="nocheck" >
+
 				<requestFocus />
 			</com.andreabaccega.widget.FormEditText>
 
-
-
-			<TextView
-				android:layout_width="wrap_content"
+			<LinearLayout
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/menu_setting_label_accessurl"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
+				android:orientation="horizontal" >
 
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/menu_setting_label_accessurl"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
+
+				<Button
+					android:id="@+id/buttonUrl1"
+					style="?android:attr/buttonStyleSmall"
+					android:layout_width="wrap_content"
+					android:layout_height="34dp"
+					android:tag="^https?://"
+					android:text="http://"
+					tools:ignore="HardcodedText" />
+
+				<Button
+					android:id="@+id/buttonUrl2"
+					style="?android:attr/buttonStyleSmall"
+					android:layout_width="wrap_content"
+					android:layout_height="34dp"
+					android:tag="^https?://"
+					android:text="https://"
+					tools:ignore="HardcodedText" />
+
+				<Button
+					android:id="@+id/buttonUrl3"
+					style="?android:attr/buttonStyleSmall"
+					android:layout_width="34dp"
+					android:layout_height="34dp"
+					android:tag="/$"
+					android:text="/"
+					tools:ignore="HardcodedText" />
+
+				<Button
+					android:id="@+id/buttonUrl4"
+					style="?android:attr/buttonStyleSmall"
+					android:layout_width="wrap_content"
+					android:layout_height="34dp"
+					android:tag="redmine$"
+					android:text="redmine"
+					tools:ignore="HardcodedText" />
+
+			</LinearLayout>
 
 			<com.andreabaccega.widget.FormEditText
-				style="@android:style/Widget.EditText"
 				android:id="@+id/editURL"
+				style="@android:style/Widget.EditText"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:ems="10"
@@ -61,37 +100,31 @@
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal" >
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/menu_setting_label_accesstoken"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
 
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/menu_setting_label_accesstoken"
+					android:textAppearance="?android:attr/textAppearanceMedium" />
 
-
-
-			<Button
-				android:id="@+id/buttonAccess"
-				android:layout_width="fill_parent"
-				android:layout_height="34dp"
-				android:text="@string/menu_setting_goto_redmine" />
-
+				<Button
+					android:id="@+id/buttonAccess"
+					android:layout_width="fill_parent"
+					android:layout_height="34dp"
+					android:text="@string/menu_setting_goto_redmine" />
 			</LinearLayout>
 
-
-
-
 			<com.andreabaccega.widget.FormEditText
-				style="@android:style/Widget.EditText"
 				android:id="@+id/editToken"
-				android:inputType="textVisiblePassword"
+				style="@android:style/Widget.EditText"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:ems="10"
 				android:hint="@string/menu_setting_edit_accesstoken"
+				android:inputType="textVisiblePassword"
 				android:singleLine="true"
-				validate:testType="alphaNumeric"
-				validate:emptyAllowed="true"  />
+				validate:emptyAllowed="true"
+				validate:testType="alphaNumeric" />
 
 			<TextView
 				android:id="@+id/textView1"
@@ -105,8 +138,6 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/menu_setting_check_auth" />
-
-
 
 			<LinearLayout
 				android:id="@+id/formHttpAuth"
@@ -126,9 +157,9 @@
 					android:id="@+id/editAuthID"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:inputType="textPhonetic"
 					android:ems="10"
 					android:hint="@string/menu_setting_edit_authid"
+					android:inputType="textPhonetic"
 					android:singleLine="true" />
 
 				<TextView
@@ -145,16 +176,13 @@
 					android:hint="@string/menu_setting_edit_authpasswd"
 					android:inputType="textPassword"
 					android:singleLine="true" />
-
 			</LinearLayout>
-
 
 			<CheckBox
 				android:id="@+id/checkPermitUnsafe"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/menu_setting_permit_unsafe" />
-
 
 			<LinearLayout
 				android:id="@+id/formPermitUnsafe"
@@ -176,14 +204,14 @@
 					android:layout_height="82dp"
 					android:ems="10"
 					android:inputType="textMultiLine" />
-
 			</LinearLayout>
-
 		</LinearLayout>
 	</ScrollView>
+
 	<Button
 		android:id="@+id/buttonSave"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/menu_setting_button_save" />
+
 </LinearLayout>

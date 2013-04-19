@@ -53,11 +53,16 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 			filter.setFetched(0);
 			*/
 		long lastfetched = filter.getFetched();
-		long fetched = (isRest) ? 0 : lastfetched;
+		long fetched = 0;
 
 		//accelerate fetch issues
-		if(isRest && lastfetched > (limit*2))
-			limit *= 2;
+		if(isRest){
+			if(lastfetched > (limit*2))
+				limit *= 2;
+		} else {
+			fetched = lastfetched;
+			lastfetched += limit;
+		}
 
 		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		final ParserIssue parser = new ParserIssue();
@@ -75,7 +80,7 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 		RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
 
 		try {
-			while(fetched < lastfetched || fetched < limit){
+			while(fetched < lastfetched){
 				url.filterOffset((int)fetched);
 				url.filterLimit((int)limit);
 				fetchData(client,connection, url, taskhandler);

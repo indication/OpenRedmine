@@ -6,6 +6,9 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.app.Activity;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -26,6 +29,10 @@ public class RedmineConnectionActivityForm extends FormHelper {
 	public CheckBox checkUnsafeConnection;
 	public EditText editCertKey;
 	public Button buttonAccess;
+	public Button buttonUrl1;
+	public Button buttonUrl2;
+	public Button buttonUrl3;
+	public Button buttonUrl4;
 	public RedmineConnectionActivityForm(Activity activity){
 		this.activity = activity;
 		this.setup();
@@ -46,6 +53,11 @@ public class RedmineConnectionActivityForm extends FormHelper {
 		formPermitUnsafe = (LinearLayout)activity.findViewById(R.id.formPermitUnsafe);
 		checkUnsafeConnection = (CheckBox)activity.findViewById(R.id.checkPermitUnsafe);
 		editCertKey = (EditText)activity.findViewById(R.id.editCertKey);
+
+		buttonUrl1 = (Button)activity.findViewById(R.id.buttonUrl1);
+		buttonUrl2 = (Button)activity.findViewById(R.id.buttonUrl2);
+		buttonUrl3 = (Button)activity.findViewById(R.id.buttonUrl3);
+		buttonUrl4 = (Button)activity.findViewById(R.id.buttonUrl4);
 	}
 
 	public void setupEvents(){
@@ -59,7 +71,30 @@ public class RedmineConnectionActivityForm extends FormHelper {
 				performSetEnabled(formPermitUnsafe,flag);
 			}
 		});
-
+		OnClickListener onClick1 = new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Button btn = (Button)v;
+				String regex = (String)btn.getTag();
+				String text = editUrl.getText().toString();
+				text = TextUtils.isEmpty(text) ? "" : text;
+				text = text.replaceAll(regex, "");
+				if(regex.startsWith("^")){
+					text = btn.getText().toString().concat(text);
+				} else if(regex.endsWith("$") && !TextUtils.isEmpty(text)) {
+					text = text.concat(btn.getText().toString());
+				}
+				if(!TextUtils.isEmpty(text)){
+					editUrl.setText(text);
+					editUrl.setSelection(text.length());
+				}
+				editUrl.requestFocusFromTouch();
+			}
+		};
+		buttonUrl1.setOnClickListener(onClick1);
+		buttonUrl2.setOnClickListener(onClick1);
+		buttonUrl3.setOnClickListener(onClick1);
+		buttonUrl4.setOnClickListener(onClick1);
 	}
 
 	public void setupDefaults(){

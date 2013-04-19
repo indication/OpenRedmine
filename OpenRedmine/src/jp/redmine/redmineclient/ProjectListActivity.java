@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
+import jp.redmine.redmineclient.activity.helper.ActionActivityHelper;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
+import jp.redmine.redmineclient.form.RedmineIssueJumpForm;
 import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
@@ -16,10 +18,12 @@ import jp.redmine.redmineclient.task.SelectProjectTask;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -60,11 +64,29 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.connectionlist);
 
+		LayoutInflater inflator = getLayoutInflater();
+		View formJump = inflator.inflate(R.layout.issuejump,null);
+		final RedmineIssueJumpForm header = new RedmineIssueJumpForm(formJump);
+
 		formList = new RedmineBaseAdapterListFormHelper<RedmineProjectListAdapter>();
 		formList.setList((ListView)findViewById(R.id.listConnectionList));
-		formList.setFooter(getLayoutInflater().inflate(R.layout.listview_footer,null), false);
+		formList.setHeader(formJump, true);
+		formList.setFooter(inflator.inflate(R.layout.listview_footer,null), false);
 		formList.setAdapter(new RedmineProjectListAdapter(getHelper()));
 		formList.onRestoreInstanceState(savedInstanceState);
+
+		header.buttonOK.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if(!header.Validate())
+					return;
+
+				ActionActivityHelper help = new ActionActivityHelper(v.getContext());
+				ProjectIntent intent = new ProjectIntent( getIntent() );
+				help.issue(intent.getConnectionId(), header.getIssueId());
+			}
+		});
 
 		//リスト項目がクリックされた時の処理
 		formList.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

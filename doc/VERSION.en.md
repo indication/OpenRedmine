@@ -2,6 +2,12 @@ OpenRedmine
 ===========
 Release history
 
+v1.13
+===========
+Fix fetch issue
+Jump to issue from project list
+Add url input helper on connection
+
 v1.12
 ===========
 Fix update issue

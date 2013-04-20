@@ -81,16 +81,16 @@ public class RemoteUrlIssues extends RemoteUrl {
 		filterDate("modified_on",from,to);
 	}
 	public void addSort(String column,boolean isAscending){
-		String sort = "";
+		StringBuilder sb = new StringBuilder();
 		if(params.containsKey("sort")){
-			sort = params.get("sort");
-			sort += ",";
+			sb.append(params.get("sort"));
+			sb.append(",");
 			params.remove("sort");
 		}
-		sort += column;
+		sb.append(column);
 		if(!isAscending)
-			sort += ":desc";
-		params.put("sort",sort);
+			sb.append(":desc");
+		params.put("sort",sb.toString());
 	}
 	public void clearSort(){
 		if(params.containsKey("sort")){

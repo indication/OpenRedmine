@@ -87,9 +87,6 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 
 				// update fetch status
 				fetched += parser.getCount();
-				filter.setFetched(fetched);
-				filter.setLast(new Date());
-				mFilter.updateCurrent(filter);
 				if(parser.getCount() < 1)
 					break;
 
@@ -99,6 +96,10 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 				//sleep for server
 				Thread.sleep(1000);
 			}
+			fetched--;
+			filter.setFetched(fetched);
+			filter.setLast(new Date());
+			mFilter.updateCurrent(filter);
 		} catch (SQLException e) {
 			publishError(e);
 		} catch (InterruptedException e) {

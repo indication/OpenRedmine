@@ -2,7 +2,10 @@
 
 package jp.redmine.redmineclient.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -388,7 +391,16 @@ public class RedmineFilter {
 		this.is_completed = is_completed;
 	}
 
-
+	public List<RedmineFilterSortItem> getSortList(){
+		List<RedmineFilterSortItem> list = new ArrayList<RedmineFilterSortItem>();
+		RedmineFilterSortItem item;
+		for(String key : getSort().split("/")){
+			item = new RedmineFilterSortItem();
+			RedmineFilterSortItem.setFilter(item, key);
+			list.add(item);
+		}
+		return list;
+	}
 
 
 }

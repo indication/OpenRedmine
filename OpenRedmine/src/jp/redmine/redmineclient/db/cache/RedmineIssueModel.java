@@ -14,6 +14,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -102,7 +103,23 @@ public class RedmineIssueModel {
 			where.eq(key, dic.get(key));
 		}
 		builder.setWhere(where);
-		builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		if(TextUtils.isEmpty(filter.getSort())){
+			builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		} else {
+			for(String key : filter.getSort().split("/")){
+				String[] keys = key.split(" ");
+				boolean isAscending = false;
+				if(keys.length >= 2){
+					if("desc".equalsIgnoreCase(keys[1]))
+						isAscending = false;
+					else
+						isAscending = true;
+				} else {
+					isAscending = true;
+				}
+				builder.orderBy(keys[0], isAscending);
+			}
+		}
 		return builder;
 	}
 

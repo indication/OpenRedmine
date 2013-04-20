@@ -88,12 +88,6 @@ public class RedmineFilterModel {
 	}
 	public void updateSynonym(RedmineFilter filter) throws SQLException{
 		RedmineFilter target = filter;
-		Compare<RedmineProject> compareProject = new Compare<RedmineProject>(){
-			@Override
-			public boolean isSameInner(RedmineProject a, RedmineProject b) {
-				return a.getId() == b.getId();
-			}
-		};
 		Compare<IMasterRecord> compareMaster = new Compare<IMasterRecord>(){
 			@Override
 			public boolean isSameInner(IMasterRecord a, IMasterRecord b) {
@@ -107,7 +101,7 @@ public class RedmineFilterModel {
 			}
 		};
 		for(RedmineFilter item : fetchAllByConnection(filter.getConnectionId())){
-			if(!compareProject.isSame(filter.getProject(), item.getProject()))
+			if(!compareMaster.isSame(filter.getProject(), item.getProject()))
 				continue;
 			if(!compareMaster.isSame(filter.getCategory(), item.getCategory()))
 				continue;

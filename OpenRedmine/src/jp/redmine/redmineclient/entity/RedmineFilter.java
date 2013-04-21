@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.text.TextUtils;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -394,7 +396,11 @@ public class RedmineFilter {
 	public List<RedmineFilterSortItem> getSortList(){
 		List<RedmineFilterSortItem> list = new ArrayList<RedmineFilterSortItem>();
 		RedmineFilterSortItem item;
-		for(String key : getSort().split("/")){
+		String sort = getSort();
+		if(TextUtils.isEmpty(sort)){
+			sort = "issue desc";
+		}
+		for(String key : sort.split("/")){
 			item = new RedmineFilterSortItem();
 			RedmineFilterSortItem.setFilter(item, key);
 			list.add(item);
@@ -411,7 +417,7 @@ public class RedmineFilter {
 			if(!item.isAscending())
 				sb.append(" desc");
 		}
-		setSort(sb.toString());
+		setSort("id desc".equals(sb.toString()) ? "" : sb.toString());
 	}
 
 

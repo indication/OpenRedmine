@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 
 import android.net.Uri;
 import android.text.format.DateFormat;
@@ -33,8 +34,11 @@ public class RemoteUrlIssues extends RemoteUrl {
 			url.filterStatus(String.valueOf(filter.getStatus().getStatusId()));
 		else if(isFetchAll)
 			url.filterStatus("*");
-		//@todo
-		url.addSort("id", false);
+
+		//setup sort
+		for(RedmineFilterSortItem item : filter.getSortList()){
+			url.addSort(item.getRemoteKey(), item.isAscending());
+		}
 
 	}
 	public void filterLimit(int limit){

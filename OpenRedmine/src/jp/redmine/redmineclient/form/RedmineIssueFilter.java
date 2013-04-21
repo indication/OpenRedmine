@@ -82,6 +82,9 @@ public class RedmineIssueFilter {
 		RedmineIssueFilterExpander expUserAssing = generate(activity, R.id.listViewUserAssing);
 		addList(expUserAssing,activity, new RedmineUserModel(helper),R.string.ticket_assigned);
 		addTab(activity,R.string.ticket_assigned,R.id.tab7,null);
+
+
+		addTab(activity,R.string.ticket_sort,R.id.tab8,null);
 	}
 	public void setupParameter(int connection, long project){
 		for(RedmineIssueFilterExpander ex: dic.values()){

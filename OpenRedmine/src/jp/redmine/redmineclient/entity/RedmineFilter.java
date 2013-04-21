@@ -402,5 +402,17 @@ public class RedmineFilter {
 		return list;
 	}
 
+	public void setSortList(List<RedmineFilterSortItem> items){
+		StringBuffer sb = new StringBuffer();
+		for(RedmineFilterSortItem item : items){
+			if(sb.length()>0)
+				sb.append(",");
+			sb.append(item.getRemoteKey());
+			if(!item.isAscending())
+				sb.append(" desc");
+		}
+		setSort(sb.toString());
+	}
+
 
 }

@@ -18,3 +18,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Reference: http://www.jssec.org/dl/android_securecoding.pdf
+-dontobfuscate
+
+# Enable reduce log feature
+-assumenosideeffects class android.util.Log {
+	public static int d(...);
+	public static int v(...);
+}

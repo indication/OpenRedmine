@@ -20,6 +20,7 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 	protected static DefaultHttpClient getHttpClient(RedmineConnection connection){
 		ClientParam clientparam = new ClientParam();
 		clientparam.setSLLTrustAll(connection.isPermitUnsafe());
+		clientparam.setCertKey(connection.getCertKey());
 		clientparam.setTimeout(120000);
 		DefaultHttpClient client = ConnectionHelper.createHttpClient(clientparam);
 		if(connection.isAuth()){

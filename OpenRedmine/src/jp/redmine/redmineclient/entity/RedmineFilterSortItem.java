@@ -5,11 +5,25 @@ import java.util.List;
 
 import jp.redmine.redmineclient.R;
 
-public class RedmineFilterSortItem {
+public class RedmineFilterSortItem implements IMasterRecord {
+	private long id;
 	private String dbKey;
 	private String remoteKey;
 	private boolean isAscending;
 	private int resource;
+	private String localname;
+	/**
+	 * @return id
+	 */
+	public Long getId() {
+		return id;
+	}
+	/**
+	 * @param id セットする id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 	/**
 	 * @return dbKey
 	 */
@@ -58,6 +72,22 @@ public class RedmineFilterSortItem {
 	public void setResource(int resource) {
 		this.resource = resource;
 	}
+	@Override
+	public void setRemoteId(Long id) {
+		setId(id);
+	}
+	@Override
+	public Long getRemoteId() {
+		return getId();
+	}
+	@Override
+	public void setName(String name) {
+		localname = name;
+	}
+	@Override
+	public String getName() {
+		return localname;
+	}
 
 	public static RedmineFilterSortItem setFilter(RedmineFilterSortItem item, String input){
 		String[] keys = input.split(" ");
@@ -90,6 +120,7 @@ public class RedmineFilterSortItem {
 	}
 	public static List<RedmineFilterSortItem> getFilters(boolean isAddDesc){
 		List<RedmineFilterSortItem> list = new ArrayList<RedmineFilterSortItem>();
+		long id = 0;
 		for(String key : new String[]{
 				"issue"
 				,"tracker"
@@ -99,10 +130,12 @@ public class RedmineFilterSortItem {
 			if(isAddDesc){
 				item = setFilter(new RedmineFilterSortItem(),key);
 				item.setAscending(false);
+				item.setId(++id);
 				list.add(item);
 			}
 			item = setFilter(new RedmineFilterSortItem(),key);
 			item.setAscending(true);
+			item.setId(++id);
 			list.add(item);
 		}
 		return list;

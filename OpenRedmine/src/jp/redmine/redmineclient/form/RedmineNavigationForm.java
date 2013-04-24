@@ -16,6 +16,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class RedmineNavigationForm extends FormHelper {
 	private Activity activity;
@@ -156,6 +157,12 @@ public class RedmineNavigationForm extends FormHelper {
 		protected void afterSetHttpAuth(String id, String password) {
 			setAuthID(id);
 			setAuthPassword(password);
+		}
+
+		@Override
+		public void onReceivedError( WebView view, int errorCode, String description, String failingUrl ) {
+			Toast.makeText(activity.getApplicationContext(), "ページ読み込みエラー", Toast.LENGTH_LONG).show();
+			stopActivity();
 		}
 	}
 

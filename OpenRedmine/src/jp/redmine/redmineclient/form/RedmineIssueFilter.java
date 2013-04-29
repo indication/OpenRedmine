@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineFilterListAdapter;
+import jp.redmine.redmineclient.adapter.RedmineFilterSortListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
@@ -27,16 +28,10 @@ import jp.redmine.redmineclient.entity.RedmineUser;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
 
 public class RedmineIssueFilter {
 	@SuppressLint("UseSparseArrays")
@@ -92,31 +87,14 @@ public class RedmineIssueFilter {
 		addList(expUserAssing,activity, new RedmineUserModel(helper),R.string.ticket_assigned);
 		addTab(activity,R.string.ticket_assigned,R.id.tab7,null);
 
-		adapterSort = new ArrayAdapter<RedmineFilterSortItem>(activity, android.R.layout.simple_list_item_single_choice
-				,RedmineFilterSortItem.getFilters(true)){
-			@Override
-			public View getView(int position, View convertView,ViewGroup parent) {
-				if(convertView == null){
-					LayoutInflater inflater = (LayoutInflater) parent.getContext()
-							.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					convertView = inflater.inflate( android.R.layout.simple_list_item_single_choice, null);
-				}
-				RedmineFilterSortItem item = getItem(position);
-				TextView listitem = (TextView)convertView.findViewById(android.R.id.text1);
-				listitem.setText(activity.getString(item.getResource())
-						.concat("\t").concat(activity.getString(
-								item.isAscending() ? R.string.ascending : R.string.descending
-								)));
-				return convertView;
-			}
-		};
-		ListView sortList = (ListView)activity.findViewById(R.id.listViewSort);
-		sortList.setAdapter(adapterSort);
+		RedmineIssueFilterExpander expSort = generate(activity, R.id.listViewSort);
+		addListSort(expSort,activity, R.string.ticket_sort);
 		addTab(activity,R.string.ticket_sort,R.id.tab8,null);
 	}
 	public void setupParameter(int connection, long project){
 		for(RedmineIssueFilterExpander ex: dic.values()){
-			((RedmineFilterListAdapter)ex.adapter).setupParameter(connection, project);
+			if(ex.adapter instanceof RedmineFilterListAdapter)
+				((RedmineFilterListAdapter)ex.adapter).setupParameter(connection, project);
 		}
 	}
 
@@ -129,6 +107,10 @@ public class RedmineIssueFilter {
 		for(RedmineIssueFilterExpander ex: dic.values()){
 			ex.refresh();
 		}
+	}
+	public void addListSort(RedmineIssueFilterExpander ex,final Activity activity, int key ){
+		ex.adapter = new RedmineFilterSortListAdapter();
+		dic.put(key, ex);
 	}
 
 	public void addList(RedmineIssueFilterExpander ex,Activity activity, IMasterModel<? extends IMasterRecord> master, int key ){
@@ -153,6 +135,7 @@ public class RedmineIssueFilter {
 		setFilter(R.string.ticket_priority,filter.getPriority());
 		setFilter(R.string.ticket_author,filter.getAuthor());
 		setFilter(R.string.ticket_assigned,filter.getAssigned());
+		setFilter(R.string.ticket_sort,RedmineFilterSortItem.setFilter(new RedmineFilterSortItem(), filter.getSort()));
 
 	}
 
@@ -172,6 +155,8 @@ public class RedmineIssueFilter {
 		filter.setPriority((RedminePriority)		getFilter(R.string.ticket_priority));
 		filter.setAuthor((RedmineUser)				getFilter(R.string.ticket_author));
 		filter.setAssigned((RedmineUser)			getFilter(R.string.ticket_assigned));
+
+		filter.setSort(RedmineFilterSortItem.getFilter((RedmineFilterSortItem)getFilter(R.string.ticket_sort)));
 		return filter;
 	}
 	protected IMasterRecord getFilterRaw(int key){

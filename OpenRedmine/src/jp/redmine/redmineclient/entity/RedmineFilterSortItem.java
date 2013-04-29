@@ -3,26 +3,24 @@ package jp.redmine.redmineclient.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.text.TextUtils;
+
 import jp.redmine.redmineclient.R;
 
 public class RedmineFilterSortItem implements IMasterRecord {
-	private long id;
 	private String dbKey;
 	private String remoteKey;
 	private boolean isAscending;
 	private int resource;
 	private String localname;
-	/**
-	 * @return id
-	 */
-	public Long getId() {
-		return id;
-	}
+	static public final String KEY_ISSUE = "id";
+	static public final String KEY_TRACKER = "tracker";
+	static public final String KEY_STATUS = "status";
+	static public final String KEY_DEFAULT = "id desc";
 	/**
 	 * @param id セットする id
 	 */
 	public void setId(Long id) {
-		this.id = id;
 	}
 	/**
 	 * @return dbKey
@@ -88,8 +86,27 @@ public class RedmineFilterSortItem implements IMasterRecord {
 	public String getName() {
 		return localname;
 	}
-
+	/**
+	 * @return id
+	 */
+	public Long getId() {
+		long basekey = getKeys().indexOf(getRemoteKey());
+		if(basekey == -1)
+			return basekey;
+		basekey *= 2;
+		basekey += isAscending() ? 0 : 1;
+		return basekey;
+	}
+	public static List<String> getKeys(){
+		List<String> items = new ArrayList<String>();
+		items.add(KEY_ISSUE);
+		items.add(KEY_TRACKER);
+		items.add(KEY_STATUS);
+		return items;
+	}
 	public static RedmineFilterSortItem setFilter(RedmineFilterSortItem item, String input){
+		if(TextUtils.isEmpty(input))
+			input = KEY_DEFAULT;
 		String[] keys = input.split(" ");
 		boolean isAscending = false;
 		if(keys.length >= 2){
@@ -100,17 +117,17 @@ public class RedmineFilterSortItem implements IMasterRecord {
 		} else {
 			isAscending = true;
 		}
-		if("issue".equals(keys[0])){
+		if(KEY_ISSUE.equals(keys[0])){
 			item.setDbKey(RedmineIssue.ISSUE_ID);
-			item.setRemoteKey("id");
+			item.setRemoteKey(KEY_ISSUE);
 			item.setResource(R.string.ticket_issue);
-		} else if("tracker".equals(keys[0])){
+		} else if(KEY_TRACKER.equals(keys[0])){
 			item.setDbKey("RedmineTracker."+RedmineTracker.NAME);
-			item.setRemoteKey("tracker");
+			item.setRemoteKey(KEY_TRACKER);
 			item.setResource(R.string.ticket_tracker);
-		} else if("status".equals(keys[0])){
+		} else if(KEY_STATUS.equals(keys[0])){
 			item.setDbKey("RedmineStatus."+RedmineStatus.NAME);
-			item.setRemoteKey("status");
+			item.setRemoteKey(KEY_STATUS);
 			item.setResource(R.string.ticket_status);
 		}
 
@@ -120,25 +137,31 @@ public class RedmineFilterSortItem implements IMasterRecord {
 	}
 	public static List<RedmineFilterSortItem> getFilters(boolean isAddDesc){
 		List<RedmineFilterSortItem> list = new ArrayList<RedmineFilterSortItem>();
-		long id = 0;
-		for(String key : new String[]{
-				"issue"
-				,"tracker"
-				,"status"
-		}){
+		for(String key : getKeys()){
 			RedmineFilterSortItem item;
 			if(isAddDesc){
 				item = setFilter(new RedmineFilterSortItem(),key);
 				item.setAscending(false);
-				item.setId(++id);
 				list.add(item);
 			}
 			item = setFilter(new RedmineFilterSortItem(),key);
 			item.setAscending(true);
-			item.setId(++id);
 			list.add(item);
 		}
 		return list;
+	}
+	public static String getFilter(List<RedmineFilterSortItem> items){
+		StringBuilder sb = new StringBuilder();
+		for(RedmineFilterSortItem item : items){
+			if(sb.length() > 0 )
+				sb.append(",");
+			sb.append(getFilter(item));
+		}
+		String result = sb.toString();
+		return result.equals(KEY_DEFAULT) ? "" : result;
+	}
+	public static String getFilter(RedmineFilterSortItem item){
+		return item.isAscending() ? item.getRemoteKey() : item.getRemoteKey()+" desc";
 	}
 
 

@@ -122,9 +122,9 @@ public class RedmineFilterSortItem implements IMasterRecord {
 			item.setRemoteKey(KEY_ISSUE);
 			item.setResource(R.string.ticket_issue);
 		} else if(KEY_MODIFIED.equals(keys[0])){
-				item.setDbKey(RedmineIssue.MODIFIED);
-				item.setRemoteKey(KEY_MODIFIED);
-				item.setResource(R.string.ticket_modified);
+			item.setDbKey(RedmineIssue.MODIFIED);
+			item.setRemoteKey(KEY_MODIFIED);
+			item.setResource(R.string.ticket_modified);
 		} else if(KEY_CREATED.equals(keys[0])){
 			item.setDbKey(RedmineIssue.CREATED);
 			item.setRemoteKey(KEY_CREATED);

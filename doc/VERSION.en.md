@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+v1.14
+===========
+Add sort feature
+
 v1.13
 ===========
 Fix fetch issue

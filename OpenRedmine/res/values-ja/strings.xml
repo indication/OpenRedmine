@@ -51,6 +51,7 @@
 	<string name="ticket_title">タイトル</string>
 	<string name="ticket_private">プライベート</string>
 	<string name="ticket_tracker">トラッカー</string>
+	<string name="ticket_created">作成</string>
 	<string name="ticket_created_by">by %1$s on %2$s</string>
 	<string name="ticket_author">作成者</string>
 	<string name="ticket_status">状態</string>
@@ -67,6 +68,9 @@
 	<string name="ticket_time">時間</string>
 	<string name="ticket_time_estimate">%.2f</string>
 	<string name="ticket_issue">チケット</string>
+	<string name="ticket_sort">ソート</string>
+	<string name="ascending">昇順</string>
+	<string name="descending">降順</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
 
 次に、リンクするRedmineを設定してください。

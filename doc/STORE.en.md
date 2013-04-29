@@ -23,9 +23,7 @@ Connection:
 Features:
 * View issues offline
 * Filter (Status/Tracker/Category/Priority/Author/Assined)
-
-Now testing:
-* All of features
+* Sort (IssueID/Created/Modified)
 
 Working:
 * Add journal

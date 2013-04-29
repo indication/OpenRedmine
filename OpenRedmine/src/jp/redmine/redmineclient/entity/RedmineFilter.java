@@ -2,7 +2,12 @@
 
 package jp.redmine.redmineclient.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import android.text.TextUtils;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -388,7 +393,32 @@ public class RedmineFilter {
 		this.is_completed = is_completed;
 	}
 
+	public List<RedmineFilterSortItem> getSortList(){
+		List<RedmineFilterSortItem> list = new ArrayList<RedmineFilterSortItem>();
+		RedmineFilterSortItem item;
+		String sort = getSort();
+		if(TextUtils.isEmpty(sort)){
+			sort = "issue desc";
+		}
+		for(String key : sort.split("/")){
+			item = new RedmineFilterSortItem();
+			RedmineFilterSortItem.setupFilter(item, key);
+			list.add(item);
+		}
+		return list;
+	}
 
+	public void setSortList(List<RedmineFilterSortItem> items){
+		StringBuffer sb = new StringBuffer();
+		for(RedmineFilterSortItem item : items){
+			if(sb.length()>0)
+				sb.append(",");
+			sb.append(item.getRemoteKey());
+			if(!item.isAscending())
+				sb.append(" desc");
+		}
+		setSort("id desc".equals(sb.toString()) ? "" : sb.toString());
+	}
 
 
 }

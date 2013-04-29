@@ -48,6 +48,7 @@
 	<string name="format_name">%1$s</string>
 	<string name="format_date" formatted="false">%tF</string>
 	<string name="format_datetime" formatted="false">%1$tF %1$tH:%1$tM</string>
+	<string name="ticket_created">Created</string>
 	<string name="ticket_created_by">by %1$s on %2$s</string>
 	<string name="ticket_author">Author</string>
 	<string name="ticket_title">Title</string>
@@ -67,6 +68,9 @@
 	<string name="ticket_time">Time</string>
 	<string name="ticket_time_estimate">%.2f</string>
 	<string name="ticket_issue">Issue</string>
+	<string name="ticket_sort">Sort</string>
+	<string name="ascending">ascending</string>
+	<string name="descending">descending</string>
 	<string name="message_first_time"><![CDATA[Thank you for downloading.
 
 Next step, setup connection to your Redmine.

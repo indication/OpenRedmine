@@ -104,7 +104,7 @@ public class RedmineFilterSortItem implements IMasterRecord {
 		items.add(KEY_STATUS);
 		return items;
 	}
-	public static RedmineFilterSortItem setFilter(RedmineFilterSortItem item, String input){
+	public static RedmineFilterSortItem setupFilter(RedmineFilterSortItem item, String input){
 		if(TextUtils.isEmpty(input))
 			input = KEY_DEFAULT;
 		String[] keys = input.split(" ");
@@ -140,11 +140,11 @@ public class RedmineFilterSortItem implements IMasterRecord {
 		for(String key : getKeys()){
 			RedmineFilterSortItem item;
 			if(isAddDesc){
-				item = setFilter(new RedmineFilterSortItem(),key);
+				item = setupFilter(new RedmineFilterSortItem(),key);
 				item.setAscending(false);
 				list.add(item);
 			}
-			item = setFilter(new RedmineFilterSortItem(),key);
+			item = setupFilter(new RedmineFilterSortItem(),key);
 			item.setAscending(true);
 			list.add(item);
 		}

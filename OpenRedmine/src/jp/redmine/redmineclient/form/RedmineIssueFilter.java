@@ -135,7 +135,7 @@ public class RedmineIssueFilter {
 		setFilter(R.string.ticket_priority,filter.getPriority());
 		setFilter(R.string.ticket_author,filter.getAuthor());
 		setFilter(R.string.ticket_assigned,filter.getAssigned());
-		setFilter(R.string.ticket_sort,RedmineFilterSortItem.setFilter(new RedmineFilterSortItem(), filter.getSort()));
+		setFilter(R.string.ticket_sort,RedmineFilterSortItem.setupFilter(new RedmineFilterSortItem(), filter.getSort()));
 
 	}
 

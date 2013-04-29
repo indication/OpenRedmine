@@ -402,7 +402,7 @@ public class RedmineFilter {
 		}
 		for(String key : sort.split("/")){
 			item = new RedmineFilterSortItem();
-			RedmineFilterSortItem.setFilter(item, key);
+			RedmineFilterSortItem.setupFilter(item, key);
 			list.add(item);
 		}
 		return list;

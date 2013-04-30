@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.adapter;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
@@ -12,16 +13,16 @@ import android.view.View;
 
 public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal> {
 
-	private RedmineJournalModel model;
+	private RedmineJournalModel mJournal;
 	protected Integer connection_id;
 	protected Long issue_id;
 	protected IntentAction action;
 
 
 
-	public RedmineJournalListAdapter(RedmineJournalModel m,IntentAction act){
+	public RedmineJournalListAdapter(DatabaseCacheHelper m,IntentAction act){
 		super();
-		model = m;
+		mJournal = new RedmineJournalModel(m);
 		action = act;
 	}
 
@@ -53,14 +54,16 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	protected int getDbCount() throws SQLException {
 		if(!isValidParameter())
 			return 0;
-		return (int) model.countByIssue(connection_id, issue_id);
+		return (int) mJournal.countByIssue(connection_id, issue_id);
 	}
 
 	@Override
 	protected RedmineJournal getDbItem(int position) throws SQLException {
 		if(!isValidParameter())
 			return null;
-		return model.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
+		RedmineJournal jr = mJournal.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
+
+		return jr;
 	}
 
 	@Override

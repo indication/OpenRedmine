@@ -8,6 +8,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
+import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.DummySelection;
@@ -30,6 +31,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	private RedmineUserModel mUser;
 	private RedmineStatusModel mStatus;
 	private RedmineCategoryModel mCategory;
+	private RedmineTrackerModel mTracker;
 	protected Integer connection_id;
 	protected Long issue_id;
 	protected IntentAction action;
@@ -132,6 +134,18 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 				return R.string.ticket_category;
 			}
 		});
+		fetchMap.put("tracker_id", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) throws SQLException {
+				if(connection_id == null)
+					return null;
+				return mTracker.fetchById(connection_id, TypeConverter.parseInteger(input));
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_tracker;
+			}
+		});
 	}
 
 	private abstract class fetchHelper{
@@ -152,6 +166,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 		mUser = new RedmineUserModel(m);
 		mStatus = new RedmineStatusModel(m);
 		mCategory = new RedmineCategoryModel(m);
+		mTracker  = new RedmineTrackerModel(m);
 		action = act;
 		setupHashmap();
 	}

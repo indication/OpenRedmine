@@ -183,9 +183,9 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 			return;
 		}
 		fetchHelper helper = fetchMap.get(name);
-		cg.resourceId = helper.getResourceNameId();
-		cg.masterBefore = helper.getItem(cg.getBefore());
-		cg.masterAfter = helper.getItem(cg.getAfter());
+		cg.setResourceId(helper.getResourceNameId());
+		cg.setMasterBefore(helper.getItem(cg.getBefore()));
+		cg.setMasterAfter(helper.getItem(cg.getAfter()));
 	}
 	@Override
 	protected long getDbItemId(RedmineJournal item) {

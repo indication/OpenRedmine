@@ -55,21 +55,21 @@ public class RedmineJournalListItemForm extends FormHelper {
 		}
 	}
 	static protected void addChangeset(LinearLayout view, RedmineJournalChanges changes){
-		if(changes.resourceId == null)
+		if(changes.getResourceId() == null)
 			return;
 		int resId;
-		if(changes.masterBefore != null && changes.masterAfter != null){
+		if(changes.getMasterBefore() != null && changes.getMasterAfter() != null){
 			resId = R.string.changes_from_to;
-		} else if(changes.masterBefore == null && changes.masterAfter != null){
+		} else if(changes.getMasterBefore() == null && changes.getMasterAfter() != null){
 			resId = R.string.changes_set_to;
-		} else if(changes.masterBefore != null && changes.masterAfter == null){
+		} else if(changes.getMasterBefore() != null && changes.getMasterAfter() == null){
 			resId = R.string.changes_remove_from;
 		} else {
 			return;
 		}
 		TextView v = new TextView(view.getContext());
-		String name = view.getContext().getString(changes.resourceId);
-		String result = view.getContext().getString(resId, name, changes.getMasterNameBefore(), changes.getAfter());
+		String name = view.getContext().getString(changes.getResourceId());
+		String result = view.getContext().getString(resId, name, changes.getMasterNameBefore(), changes.getMasterNameAfter());
 		v.setText(Html.fromHtml(result));
 		view.addView(v);
 	}

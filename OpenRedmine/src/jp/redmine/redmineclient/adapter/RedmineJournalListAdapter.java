@@ -64,6 +64,18 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 				return R.string.ticket_progress;
 			}
 		});
+		fetchMap.put("estimated_hours", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) {
+				DummySelection item = new DummySelection();
+				item.setName(input);
+				return item;
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_time_estimate;
+			}
+		});
 		fetchMap.put("due_date", new fetchHelper(){
 			@Override
 			protected IMasterRecord getRawItem(String input) {

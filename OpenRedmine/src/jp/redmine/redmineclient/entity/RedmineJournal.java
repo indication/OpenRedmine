@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class RedmineJournal {
 	@DatabaseField
 	private Date modified;
 
+	public List<RedmineJournalChanges> changes;
 
     /**
 	 * @param id セットする id
@@ -91,6 +93,9 @@ public class RedmineJournal {
 	}
 	@SuppressWarnings("unchecked")
 	public List<RedmineJournalChanges> getDetails() throws IOException, ClassNotFoundException {
+		if(this.detail == null){
+			return new ArrayList<RedmineJournalChanges>();
+		}
 		ByteArrayInputStream baos = new ByteArrayInputStream(this.detail);
 		ObjectInputStream oos = new ObjectInputStream(baos);
 		return (List<RedmineJournalChanges>)oos.readObject();

@@ -16,6 +16,9 @@ public class RedmineJournalChanges
 	private String name;
 	private String before;
 	private String after;
+
+	public transient IMasterRecord masterBefore;
+	public transient IMasterRecord masterAfter;
 	/**
 	 * @return property
 	 */

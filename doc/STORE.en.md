@@ -24,10 +24,10 @@ Features:
 * View issues offline
 * Filter (Status/Tracker/Category/Priority/Author/Assined)
 * Sort (IssueID/Created/Modified)
+* Show changelogs
 
 Working:
 * Add journal
-* Show changelogs
 
 Release planing:
 * Switch to beta(2013/05)

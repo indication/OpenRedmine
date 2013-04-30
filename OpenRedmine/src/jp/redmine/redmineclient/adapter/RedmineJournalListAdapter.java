@@ -40,6 +40,18 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, RedmineJournalListAdapter.fetchHelper>();
 
 	protected void setupHashmap(){
+		fetchMap.put("is_private", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) {
+				DummySelection item = new DummySelection();
+				item.setName(input);
+				return item;
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_private;
+			}
+		});
 		fetchMap.put("done_ratio", new fetchHelper(){
 			@Override
 			protected IMasterRecord getRawItem(String input) {

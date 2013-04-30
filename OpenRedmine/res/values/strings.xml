@@ -71,6 +71,7 @@
 	<string name="ticket_time_estimate">%.2f</string>
 	<string name="ticket_issue">Issue</string>
 	<string name="ticket_sort">Sort</string>
+	<string name="ticket_project">Project</string>
 	<string name="ascending">ascending</string>
 	<string name="descending">descending</string>
 	<string name="message_first_time"><![CDATA[Thank you for downloading.

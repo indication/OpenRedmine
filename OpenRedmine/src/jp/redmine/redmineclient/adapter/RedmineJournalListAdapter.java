@@ -1,29 +1,102 @@
 package jp.redmine.redmineclient.adapter;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
+import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
+import jp.redmine.redmineclient.entity.DummySelection;
+import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineJournal;
+import jp.redmine.redmineclient.entity.RedmineJournalChanges;
+import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal> {
+	private final static String TAG = "RedmineJournalListAdapter";
 
 	private RedmineJournalModel mJournal;
+	private RedmineVersionModel mVersion;
 	protected Integer connection_id;
 	protected Long issue_id;
 	protected IntentAction action;
+	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, RedmineJournalListAdapter.fetchHelper>();
 
+	protected void setupHashmap(){
+		fetchMap.put("done_ratio", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) {
+				DummySelection item = new DummySelection();
+				item.setName(input + "%");
+				return item;
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_progress;
+			}
+		});
+		fetchMap.put("due_date", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) {
+				DummySelection item = new DummySelection();
+				item.setName(input);
+				return item;
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_date_due;
+			}
+		});
+		fetchMap.put("start_date", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) {
+				DummySelection item = new DummySelection();
+				item.setName(input);
+				return item;
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_date_start;
+			}
+		});
+		fetchMap.put("fixed_version", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) throws SQLException {
+				if(connection_id == null)
+					return null;
+				return mVersion.fetchById(connection_id, TypeConverter.parseInteger(input));
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_version;
+			}
+		});
+	}
+
+	private abstract class fetchHelper{
+		abstract protected IMasterRecord getRawItem(String input) throws SQLException;
+		abstract public int getResourceNameId();
+		public IMasterRecord getItem(String input) throws SQLException{
+			if(TextUtils.isEmpty(input))
+				return null;
+			return getRawItem(input);
+		}
+	}
 
 
 	public RedmineJournalListAdapter(DatabaseCacheHelper m,IntentAction act){
 		super();
 		mJournal = new RedmineJournalModel(m);
+		mVersion = new RedmineVersionModel(m);
 		action = act;
+		setupHashmap();
 	}
 
 	public void setupParameter(int connection, long issue){
@@ -62,10 +135,28 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 		if(!isValidParameter())
 			return null;
 		RedmineJournal jr = mJournal.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
-
+		for(RedmineJournalChanges cg : jr.changes){
+			if("attr".equalsIgnoreCase(cg.getProperty()))
+				getAttributeDetail(cg);
+			else
+				Log.w(TAG,"Changes: " + cg.getName() + "," + cg.getProperty());
+		}
 		return jr;
 	}
 
+	protected void getAttributeDetail(RedmineJournalChanges cg) throws SQLException{
+		if(TextUtils.isEmpty(cg.getName()))
+			return;
+		String name = cg.getName();
+		if(!fetchMap.containsKey(name)){
+			Log.w(TAG,"Undefined key: " + name + "," + cg.getProperty());
+			return;
+		}
+		fetchHelper helper = fetchMap.get(name);
+		cg.resourceId = helper.getResourceNameId();
+		cg.masterBefore = helper.getItem(cg.getBefore());
+		cg.masterAfter = helper.getItem(cg.getAfter());
+	}
 	@Override
 	protected long getDbItemId(RedmineJournal item) {
 		if(item == null){

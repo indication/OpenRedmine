@@ -1,6 +1,9 @@
 package jp.redmine.redmineclient.entity;
 
 import java.io.Serializable;
+
+import android.text.TextUtils;
+
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
@@ -19,6 +22,7 @@ public class RedmineJournalChanges
 
 	public transient IMasterRecord masterBefore;
 	public transient IMasterRecord masterAfter;
+	public transient Integer resourceId;
 	/**
 	 * @return property
 	 */
@@ -68,4 +72,15 @@ public class RedmineJournalChanges
 		return after;
 	}
 
+	public String getMasterNameBefore(){
+		if(masterBefore == null || TextUtils.isEmpty(masterBefore.getName()))
+			return "";
+		return masterBefore.getName();
+	}
+
+	public String getMasterNameAfter(){
+		if(masterAfter == null || TextUtils.isEmpty(masterAfter.getName()))
+			return "";
+		return masterAfter.getName();
+	}
 }

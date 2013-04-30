@@ -93,10 +93,8 @@ public class RedmineJournalModel {
 			} catch (ClassNotFoundException e) {
 				Log.e(TAG,"getDetails",e);
 			}
-			if(item.changes != null){
-				for(RedmineJournalChanges c : item.changes){
-					Log.d(TAG,"Changes: " + c.getName() + "," + c.getProperty());
-				}
+			if(item.changes == null){
+				item.changes = new ArrayList<RedmineJournalChanges>();
 			}
 		}
 		return item;

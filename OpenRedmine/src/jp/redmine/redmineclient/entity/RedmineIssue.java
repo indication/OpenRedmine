@@ -12,6 +12,8 @@ public class RedmineIssue {
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
 	public final static String ISSUE_ID = "issue_id";
+	public final static String MODIFIED = "modified";
+	public final static String CREATED = "created";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)

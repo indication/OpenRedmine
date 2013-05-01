@@ -15,7 +15,6 @@ import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 public class MyWebViewClient extends WebViewClient {
 
@@ -45,11 +44,6 @@ public class MyWebViewClient extends WebViewClient {
 	public void onPageFinished( WebView view, String url ) {
 		CookieManager cookieManager = CookieManager.getInstance();
 		cookieManager.setCookie(url, loginCookie);
-	}
-
-	@Override
-	public void onReceivedError( WebView view, int errorCode, String description, String failingUrl ) {
-		Toast.makeText(view.getContext(), "ページ読み込みエラー", Toast.LENGTH_LONG).show();
 	}
 
 	@Override

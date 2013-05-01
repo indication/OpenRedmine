@@ -1,6 +1,9 @@
 package jp.redmine.redmineclient.entity;
 
 import java.io.Serializable;
+
+import android.text.TextUtils;
+
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
@@ -16,6 +19,10 @@ public class RedmineJournalChanges
 	private String name;
 	private String before;
 	private String after;
+
+	private transient IMasterRecord masterBefore;
+	private transient IMasterRecord masterAfter;
+	private transient Integer resourceId;
 	/**
 	 * @return property
 	 */
@@ -65,4 +72,51 @@ public class RedmineJournalChanges
 		return after;
 	}
 
+	public String getMasterNameBefore(){
+		if(getMasterBefore() == null || TextUtils.isEmpty(getMasterBefore().getName()))
+			return "";
+		return getMasterBefore().getName();
+	}
+
+	public String getMasterNameAfter(){
+		if(getMasterAfter() == null || TextUtils.isEmpty(getMasterAfter().getName()))
+			return "";
+		return getMasterAfter().getName();
+	}
+	/**
+	 * @return resourceId
+	 */
+	public Integer getResourceId() {
+		return resourceId;
+	}
+	/**
+	 * @param resourceId セットする resourceId
+	 */
+	public void setResourceId(Integer resourceId) {
+		this.resourceId = resourceId;
+	}
+	/**
+	 * @return masterBefore
+	 */
+	public IMasterRecord getMasterBefore() {
+		return masterBefore;
+	}
+	/**
+	 * @param masterBefore セットする masterBefore
+	 */
+	public void setMasterBefore(IMasterRecord masterBefore) {
+		this.masterBefore = masterBefore;
+	}
+	/**
+	 * @return masterAfter
+	 */
+	public IMasterRecord getMasterAfter() {
+		return masterAfter;
+	}
+	/**
+	 * @param masterAfter セットする masterAfter
+	 */
+	public void setMasterAfter(IMasterRecord masterAfter) {
+		this.masterAfter = masterAfter;
+	}
 }

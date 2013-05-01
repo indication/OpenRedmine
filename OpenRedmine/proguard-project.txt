@@ -18,3 +18,38 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-libraryjars libs/android-support-v4.jar
+-libraryjars libs/commons-lang3-3.1.jar
+-libraryjars libs/net.java.textilej_2.2.864.jar
+-libraryjars libs/ormlite-android-4.42.jar
+-libraryjars libs/ormlite-core-4.42.jar
+
+-dontwarn **CompatHoneycomb,**CompatCreatorHoneycombMR2
+-dontwarn **CompatJellybean,**CompatJB,android.support.v4.app.NavUtilsJB
+-dontwarn android.support.v4.app.TaskStackBuilderJellybean,android.support.v4.net.ConnectivityManagerCompatJellyBean
+-dontwarn android.support.v4.view.**
+-keep class android.support.v4.** { *; }
+
+-dontwarn java.awt.**,javax.security.**,java.beans.**,javax.xml.**,java.util.**,org.w3c.dom.**
+
+
+-keep class net.java.textilej.** { *;}
+-dontwarn net.java.textilej.TextileJPlugin,net.java.textilej.util.anttask.*
+-dontwarn org.osgi.framework.*,org.eclipse.**,org.apache.tools.ant.**
+
+
+-keep class net.java.textilej.** { *;}
+
+-keep class com.j256.ormlite.** { *;}
+
+-keep class com.andreabaccega.** { *;}
+
+# Reference: http://www.jssec.org/dl/android_securecoding.pdf
+#-dontobfuscate
+
+# Enable reduce log feature
+-assumenosideeffects class android.util.Log {
+	public static int d(...);
+	public static int v(...);
+}

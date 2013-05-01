@@ -12,8 +12,10 @@ import com.j256.ormlite.stmt.Where;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import android.text.TextUtils;
 import android.util.Log;
 
 
@@ -102,7 +104,13 @@ public class RedmineIssueModel {
 			where.eq(key, dic.get(key));
 		}
 		builder.setWhere(where);
-		builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		if(TextUtils.isEmpty(filter.getSort())){
+			builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		} else {
+			for(RedmineFilterSortItem key : filter.getSortList()){
+				builder.orderBy(key.getDbKey(),key.isAscending());
+			}
+		}
 		return builder;
 	}
 

@@ -10,7 +10,6 @@ import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineJournalListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
-import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
@@ -72,7 +71,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		formList.setHeader(getLayoutInflater().inflate(R.layout.issueviewdetail,null), false);
 		formList.setFooter(getLayoutInflater().inflate(R.layout.listview_footer,null), false);
 		formList.setAdapter(new RedmineJournalListAdapter(
-				new RedmineJournalModel(getHelper())
+				getHelper()
 				, actionhelper
 				));
 		formList.onRestoreInstanceState(savedInstanceState);

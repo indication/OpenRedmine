@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.db.cache;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +9,12 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineJournal;
+import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import android.util.Log;
 
 
 public class RedmineJournalModel {
+	private final static String TAG = "RedmineJournalModel";
 	protected Dao<RedmineJournal, Long> dao;
 	public RedmineJournalModel(DatabaseCacheHelper helper) {
 		try {
@@ -80,8 +83,20 @@ public class RedmineJournalModel {
 				.eq(RedmineJournal.ISSUE_ID, issue_id)
 				;
 		RedmineJournal item = builder.queryForFirst();
-		if(item == null)
+		if(item == null){
 			item = new RedmineJournal();
+		} else {
+			try {
+				item.changes = item.getDetails();
+			} catch (IOException e) {
+				Log.e(TAG,"getDetails",e);
+			} catch (ClassNotFoundException e) {
+				Log.e(TAG,"getDetails",e);
+			}
+			if(item.changes == null){
+				item.changes = new ArrayList<RedmineJournalChanges>();
+			}
+		}
 		return item;
 	}
 

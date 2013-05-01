@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient.activity.helper;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import jp.redmine.redmineclient.IssueViewActivity;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.intent.IssueIntent;
@@ -16,6 +18,12 @@ public class ActionActivityHelper implements IntentAction {
 		intent.setConnectionId(connection);
 		intent.setIssueId(issueid);
 		context.startActivity(intent.getIntent());
+	}
+	@Override
+	public boolean url(String url) {
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		context.startActivity(intent);
+		return true;
 	}
 
 }

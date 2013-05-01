@@ -51,6 +51,7 @@
 	<string name="ticket_title">タイトル</string>
 	<string name="ticket_private">プライベート</string>
 	<string name="ticket_tracker">トラッカー</string>
+	<string name="ticket_created">作成</string>
 	<string name="ticket_created_by">by %1$s on %2$s</string>
 	<string name="ticket_author">作成者</string>
 	<string name="ticket_status">状態</string>
@@ -61,12 +62,18 @@
 	<string name="ticket_assigned_to">担当</string>
 	<string name="ticket_assigned">担当者</string>
 	<string name="ticket_date">日付</string>
+	<string name="ticket_date_start">開始日</string>
+	<string name="ticket_date_due">終了日</string>
 	<string name="ticket_date_arrow">▶</string>
 	<string name="ticket_modified">最終更新</string>
 	<string name="ticket_modified_by">%2$s</string>
 	<string name="ticket_time">時間</string>
 	<string name="ticket_time_estimate">%.2f</string>
 	<string name="ticket_issue">チケット</string>
+	<string name="ticket_sort">ソート</string>
+	<string name="ticket_project">プロジェクト</string>
+	<string name="ascending">昇順</string>
+	<string name="descending">降順</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
 
 次に、リンクするRedmineを設定してください。
@@ -79,5 +86,8 @@
 	<string name="button_cancel">キャンセル</string>
 	<string name="menu_filter">フィルタ</string>
 	<string name="filter_none">選択なし</string>
+	<string name="changes_from_to"><b>%1$s</b> を %2$s から %3$s へ変更</string>
+	<string name="changes_set_to"><b>%1$s</b> に %3$s を設定</string>
+	<string name="changes_remove_from"><b>%1$s</b> から <s>%2$s</s> を削除</string>
 
 </resources>

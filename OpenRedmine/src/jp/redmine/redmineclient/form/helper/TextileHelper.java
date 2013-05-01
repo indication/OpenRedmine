@@ -24,7 +24,33 @@ public class TextileHelper {
 	protected WebView view;
 	static public final String URL_PREFIX = "redmine://";
 	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
-	private Pattern patternIssue = Pattern.compile("#(\\d+)");
+	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
+	private Pattern patternInlineUrl = Pattern.compile(
+			"\\b((" +
+			//START inherits from http://www.din.or.jp/~ohzaki/perl.htm#URI
+			"(?:https?|shttp)://(?:(?:[-_.!~*'()a-zA-Z0-9;:&=+$,]|%[0-9A-Fa-f" +
+			"][0-9A-Fa-f])*@)?(?:(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.)" +
+			"*[a-zA-Z](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\." +
+			"[0-9]+)(?::[0-9]*)?(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f]" +
+			"[0-9A-Fa-f])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-" +
+			"Fa-f])*)*(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f" +
+			"])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*)" +
+			"*)?(?:\\?(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])" +
+			"*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*" +
+			")?" +
+			")|(" +	 // ftp section
+			"s?ftps?://(?:(?:[-_.!~*'()a-zA-Z0-9;&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*" +
+			"(?::(?:[-_.!~*'()a-zA-Z0-9;&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)?@)?(?" +
+			":(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.)*[a-zA-Z](?:[-a-zA-" +
+			"Z0-9]*[a-zA-Z0-9])?\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(?::[0-9]*)?" +
+			"(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*(?:/(?" +
+			":[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*(?:;type=[" +
+			"AIDaid])?)?(?:\\?(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9" +
+			"A-Fa-f])*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A" +
+			"-Fa-f])*)?" +
+			//END
+			"))"
+			);
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
 	private IntentAction action;
 	public TextileHelper(WebView web){
@@ -40,6 +66,7 @@ public class TextileHelper {
 
 	public interface IntentAction{
 		public void issue(int connection,int issueid);
+		public boolean url(String url);
 	}
 
 	protected void setupWebView(){
@@ -55,6 +82,8 @@ public class TextileHelper {
 				Matcher m = patternIntent.matcher(url);
 				if(m.find()){
 					return kickAction(m.replaceAll(""));
+				} else if (action != null) {
+					return action.url(url);
 				} else {
 					return super.shouldOverrideUrlLoading(view, url);
 				}
@@ -80,7 +109,8 @@ public class TextileHelper {
 	}
 	protected String  extendHtml(String connection,String input){
 		String result = "";
-		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1"));
+		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1")+"$2");
+		result = patternInlineUrl.matcher(result).replaceAll("<a href=\"$1\">$1</a>");
 		return result;
 	}
 

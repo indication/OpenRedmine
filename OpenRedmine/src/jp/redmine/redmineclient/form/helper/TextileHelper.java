@@ -24,7 +24,7 @@ public class TextileHelper {
 	protected WebView view;
 	static public final String URL_PREFIX = "redmine://";
 	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
-	private Pattern patternIssue = Pattern.compile("#(\\d+)");
+	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
 	private IntentAction action;
 	public TextileHelper(WebView web){
@@ -80,7 +80,7 @@ public class TextileHelper {
 	}
 	protected String  extendHtml(String connection,String input){
 		String result = "";
-		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1"));
+		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1")+"$2");
 		return result;
 	}
 

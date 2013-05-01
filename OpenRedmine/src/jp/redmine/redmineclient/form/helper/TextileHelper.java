@@ -40,6 +40,7 @@ public class TextileHelper {
 
 	public interface IntentAction{
 		public void issue(int connection,int issueid);
+		public boolean url(String url);
 	}
 
 	protected void setupWebView(){
@@ -55,6 +56,8 @@ public class TextileHelper {
 				Matcher m = patternIntent.matcher(url);
 				if(m.find()){
 					return kickAction(m.replaceAll(""));
+				} else if (action != null) {
+					return action.url(url);
 				} else {
 					return super.shouldOverrideUrlLoading(view, url);
 				}

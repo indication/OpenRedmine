@@ -50,7 +50,10 @@ Used references
 
 - Table layout(timeentryitem) usecase from "Setagaya Enginner Blog"
   http://suka4.blogspot.jp/2011/03/android-tablelayout.html
- 
+
+- URI handling on TextileHelper from "Perl note"
+  http://www.din.or.jp/~ohzaki/perl.htm#URI
+
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs

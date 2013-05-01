@@ -4,7 +4,9 @@ Release history
 
 v1.14
 ===========
-Add sort feature
+- Add sort feature
+- Show changes on journals
+- Show link (URLs) on issue details
 
 v1.13
 ===========

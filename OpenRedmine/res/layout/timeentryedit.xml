@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/jp.redmine.redmineclient"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+	<TableLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+
+	    <TableRow
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_activity" />
+
+	        <Spinner
+	            android:id="@+id/spinnerActivity"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_time" />
+
+			<com.andreabaccega.widget.FormEditText
+			    android:id="@+id/textTime"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:ems="10"
+			    android:imeOptions="actionNext"
+			    android:inputType="numberSigned|numberDecimal"
+			    android:text="8.0"
+			    app:emptyAllowed="false"
+			    app:testType="numeric"
+			    tools:ignore="HardcodedText" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_date" />
+
+			<com.andreabaccega.widget.FormEditText
+			    android:id="@+id/textDate"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:ems="10"
+			    android:imeOptions="actionNext"
+			    android:inputType="numberSigned|numberDecimal"
+			    android:text="2012-11-11"
+			    app:emptyAllowed="false"
+			    app:testType="numeric"
+			    tools:ignore="HardcodedText" />
+
+	    </TableRow>
+
+
+	</TableLayout>
+
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/ticket_description" />
+
+	<com.andreabaccega.widget.FormEditText
+	    android:id="@+id/textDescription"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:ems="10"
+	    android:text="@string/ticket_description"
+	    app:emptyAllowed="true" />
+
+</LinearLayout>

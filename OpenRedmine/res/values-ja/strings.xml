@@ -74,6 +74,7 @@
 	<string name="ticket_issue">チケット</string>
 	<string name="ticket_sort">ソート</string>
 	<string name="ticket_project">プロジェクト</string>
+	<string name="ticket_description">説明</string>
 	<string name="ascending">昇順</string>
 	<string name="descending">降順</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。

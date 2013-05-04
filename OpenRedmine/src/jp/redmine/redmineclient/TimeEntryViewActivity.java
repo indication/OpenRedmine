@@ -12,8 +12,12 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
+import jp.redmine.redmineclient.intent.TimeEntryIntent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
@@ -78,5 +82,39 @@ public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			}
 		}
 	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		super.onCreateOptionsMenu( menu );
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate( R.menu.timeentry_view, menu );
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch ( item.getItemId() )
+		{
+			case R.id.menu_refresh:
+			{
+				this.onRefresh(true);
+				return true;
+			}
+			case R.id.menu_access_addnew:
+			{
+				IssueIntent intent = new IssueIntent( getIntent() );
+				TimeEntryIntent send = new TimeEntryIntent( getApplicationContext(), TimeEntryEditActivity.class );
+				send.setConnectionId(intent.getConnectionId());
+				send.setIssueId(intent.getIssueId());
+				startActivity(send.getIntent());
+				return true;
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+
 
 }

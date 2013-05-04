@@ -69,6 +69,8 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>> {
 			}
 			List<RedmineProject> projects = fetchProject(client,offset,limit);
 			count = projects.size();
+			//TODO
+			publishProgress(0, 0);
 			for(RedmineProject project : projects){
 				fetchVersions(client,project);
 				fetchCategory(client,project);

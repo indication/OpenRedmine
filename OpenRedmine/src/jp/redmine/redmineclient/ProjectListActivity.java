@@ -164,6 +164,12 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 		}
+
+		@Override
+		protected void onProgress(int max, int proc) {
+			formList.refresh(false);
+			super.onProgress(max, proc);
+		}
 	}
 
 	@Override

@@ -2,11 +2,19 @@ package jp.redmine.redmineclient.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineTimeEntry {
+public class RedmineTimeEntry implements IPostingRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String TIMEENTRY_ID = "timeentry_id";
@@ -18,7 +26,7 @@ public class RedmineTimeEntry {
     @DatabaseField(uniqueIndexName="timeentry_target")
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="timeentry_target")
-    private int timeentry_id;
+    private Integer timeentry_id;
     @DatabaseField
     private Integer project_id;
     private RedmineProject project;
@@ -63,13 +71,13 @@ public class RedmineTimeEntry {
 	/**
 	 * @return timeentry_id
 	 */
-	public int getTimeentryId() {
+	public Integer getTimeentryId() {
 		return timeentry_id;
 	}
 	/**
 	 * @param timeentry_id セットする timeentry_id
 	 */
-	public void setTimeentryId(int timeentry_id) {
+	public void setTimeentryId(Integer timeentry_id) {
 		this.timeentry_id = timeentry_id;
 	}
 	/**
@@ -237,6 +245,52 @@ public class RedmineTimeEntry {
 	 */
 	public Integer getConnectionId() {
 		return connection_id;
+	}
+	@Override
+	public String getXml() throws ParserConfigurationException,IllegalArgumentException {
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+		Document document = dbuilder.newDocument();
+		Element root = document.createElement("time_entry");
+		/*
+		if(this.getTimeentryId() != null){
+			Element name = document.createElement("id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getTimeentryId())));
+			root.appendChild(name);
+		}
+		*/
+		if(this.getIssue() != null){
+			Element name = document.createElement("issue_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getIssue())));
+			root.appendChild(name);
+		} else if(this.getProjectId() != null){
+			Element name = document.createElement("project_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getProjectId())));
+			root.appendChild(name);
+		}
+		if(this.getSpentsOn() != null){
+			Element name = document.createElement("spent_on");
+			name.appendChild(document.createTextNode(String.format(TypeConverter.FORMAT_DATE, this.getSpentsOn())));
+			root.appendChild(name);
+		}
+		if(this.getHours() != null){
+			Element name = document.createElement("hours");
+			name.appendChild(document.createTextNode(this.getHours().toPlainString()));
+			root.appendChild(name);
+		}
+		if(this.getActivity() != null && this.getActivity().getActivityId() != null){
+			Element name = document.createElement("activity_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getActivity().getActivityId())));
+			root.appendChild(name);
+		} else {
+			throw new IllegalArgumentException("RedmineTimeEntry Activity is null or its id is null.");
+		}
+		if(this.getComment() != null){
+			Element name = document.createElement("comments");
+			name.appendChild(document.createTextNode(String.valueOf(this.getComment())));
+			root.appendChild(name);
+		}
+		return document.getTextContent();
 	}
 
 }

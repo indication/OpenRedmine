@@ -51,21 +51,44 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>> {
 
 	@Override
 	protected List<RedmineProject> doInBackground(Integer... params) {
+		int limit = 20;
+		int offset = 0;
+		int count = 0;
 		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
-		fetchProject(client);
 		fetchStatus(client);
 		fetchUsers(client);
 		fetchTracker(client);
+		do {
+			if(count != 0){
+				//sleep for server
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					publishError(e);
+				}
+			}
+			List<RedmineProject> projects = fetchProject(client,offset,limit);
+			count = projects.size();
+			//TODO
+			publishProgress(0, 0);
+			for(RedmineProject project : projects){
+				fetchVersions(client,project);
+				fetchCategory(client,project);
+			}
+			offset += limit + 1;
+		} while(count >= limit);
 		client.close();
 		return null;
 	}
 
-	protected void fetchProject(SelectDataTaskConnectionHandler client){
+	protected List<RedmineProject> fetchProject(SelectDataTaskConnectionHandler client, int offset, int limit){
 		final RedmineProjectModel model =
 			new RedmineProjectModel(helper);
 		RemoteUrlProjects url = new RemoteUrlProjects();
 		final List<RedmineProject> projects = new ArrayList<RedmineProject>();
-
+		url.filterLimit(limit);
+		if(offset != 0)
+			url.filterOffset(offset);
 		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
@@ -81,10 +104,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>> {
 				parser.parse(connection);
 			}
 		});
-		for(RedmineProject project : projects){
-			fetchVersions(client,project);
-			fetchCategory(client,project);
-		}
+		return projects;
 	}
 	protected void fetchStatus(SelectDataTaskConnectionHandler client){
 		final RedmineStatusModel model = new RedmineStatusModel(helper);

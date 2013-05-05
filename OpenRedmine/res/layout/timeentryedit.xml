@@ -17,22 +17,6 @@
 	        <TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="@string/ticket_activity" />
-
-	        <Spinner
-	            android:id="@+id/spinnerActivity"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content" />
-
-	    </TableRow>
-
-	    <TableRow
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" >
-
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
 	            android:text="@string/ticket_time" />
 
 			<com.andreabaccega.widget.FormEditText
@@ -72,6 +56,63 @@
 
 	    </TableRow>
 
+	    <TableRow
+			android:id="@+id/rowCreated"
+			android:visibility="gone"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_created" />
+
+	        <TextView
+			    android:id="@+id/textCreated"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="2012-12-11 11:00:00"
+			    tools:ignore="HardcodedText" />
+
+
+	    </TableRow>
+
+	    <TableRow
+			android:id="@+id/rowModified"
+			android:visibility="gone"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_modified" />
+
+	        <TextView
+			    android:id="@+id/textModified"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="2012-12-11 11:00:00"
+			    tools:ignore="HardcodedText" />
+
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_activity" />
+
+	        <Spinner
+	            android:id="@+id/spinnerActivity"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
 
 	</TableLayout>
 

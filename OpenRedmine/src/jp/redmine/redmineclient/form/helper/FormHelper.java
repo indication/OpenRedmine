@@ -6,10 +6,12 @@ import java.util.Date;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 import com.andreabaccega.widget.FormEditText;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -167,5 +169,16 @@ abstract public class FormHelper {
 	 */
 	protected void setDateTime(TextView v,Date date){
 		v.setText(convertDateTime(v,date));
+	}
+
+	/**
+	 * Set ct to v
+	 * @param v TextView to set user name
+	 * @param ct User name
+	 */
+	protected Date getDate(TextView v){
+		if(TextUtils.isEmpty(v.getText()))
+			return null;
+		return TypeConverter.parseDate(v.getText().toString());
 	}
 }

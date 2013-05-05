@@ -54,7 +54,7 @@ public class RedmineTimeentryEditForm extends FormHelper {
 
 	public void setupParameter(int connection, long project){
 
-		adapterActivity.setupParameter(connection, project);
+		adapterActivity.setupParameter(connection, project, false);
 		spinnerActivity.setAdapter(adapterActivity);
 		adapterActivity.notifyDataSetInvalidated();
 		adapterActivity.notifyDataSetChanged();

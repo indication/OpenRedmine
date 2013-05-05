@@ -9,6 +9,7 @@ import jp.redmine.redmineclient.adapter.RedmineTimeEntryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
@@ -18,6 +19,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
@@ -48,6 +52,23 @@ public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 		formList.setList((ListView)findViewById(R.id.list));
 		formList.setAdapter(new RedmineTimeEntryListAdapter(getHelper()));
 		formList.onRestoreInstanceState(savedInstanceState);
+		formList.list.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
+				if(formList.adapter == null)
+					return;
+				@SuppressWarnings("deprecation")
+				RedmineTimeEntry entry = (RedmineTimeEntry)formList.adapter.getItem(position);
+				if(entry == null)
+					return;
+
+				TimeEntryIntent send = new TimeEntryIntent( getApplicationContext(), TimeEntryEditActivity.class );
+				send.setConnectionId(entry.getConnectionId());
+				send.setIssueId(entry.getIssueId());
+				send.setTimeEntryId(entry.getTimeentryId());
+				startActivity(send.getIntent());
+			}
+		});
 
 		form = new RedmineIssueViewForm(this);
 	}

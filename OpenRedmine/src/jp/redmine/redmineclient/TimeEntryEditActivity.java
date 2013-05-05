@@ -6,10 +6,10 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
-import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
-import jp.redmine.redmineclient.intent.IssueIntent;
+import jp.redmine.redmineclient.intent.TimeEntryIntent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -40,22 +40,24 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 	}
 
 	protected void onRefresh(boolean isFetch){
-		IssueIntent intent = new IssueIntent(getIntent());
+		TimeEntryIntent intent = new TimeEntryIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 
 		form.setupParameter(connectionid, 0);
 
-		RedmineIssueModel model = new RedmineIssueModel(getHelper());
-		RedmineIssue issue = new RedmineIssue();
+		if(intent.getTimeEntryId() == -1)
+			return;
+		RedmineTimeEntryModel model = new RedmineTimeEntryModel(getHelper());
+		RedmineTimeEntry timeentry = new RedmineTimeEntry();
 		try {
-			issue = model.fetchById(connectionid, intent.getIssueId());
+			timeentry = model.fetchById(connectionid, intent.getTimeEntryId());
 		} catch (SQLException e) {
 			Log.e("SelectDataTask","ParserIssue",e);
 		}
-		if(issue.getId() == null){
+		if(timeentry.getId() == null){
 			//item is not found
 		} else {
-
+			form.setValue(timeentry);
 		}
 	}
 	@Override

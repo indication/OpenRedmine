@@ -66,7 +66,7 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 		super.onCreateOptionsMenu( menu );
 
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate( R.menu.timeentry_view, menu );
+		inflater.inflate( R.menu.edit, menu );
 		//if(task != null && task.getStatus() == Status.RUNNING)
 		//	menu_refresh.setEnabled(false);
 		return true;
@@ -77,7 +77,7 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 	{
 		switch ( item.getItemId() )
 		{
-			case R.id.menu_refresh:
+			case R.id.menu_save:
 			{
 				this.onRefresh(true);
 				return true;

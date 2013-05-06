@@ -23,6 +23,7 @@
 	<string name="menu_confirm_delete_msg">この接続を削除してもよいですか？</string>
 	<string name="menu_config_delete_yes">はい</string>
 	<string name="menu_config_delete_no">いいえ</string>
+	<string name="menu_cancel">キャンセル</string>
 	<string name="app_description">説明</string>
 	<string name="preference_category_issue">チケット</string>
 	<string name="preference_issue_get_all">すべてを取得する</string>

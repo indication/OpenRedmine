@@ -16,6 +16,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -124,6 +125,25 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 		fetchData(connectionhandler, url.getUrl(connection.getUrl()),handler);
 	}
 
+	protected void postData(SelectDataTaskConnectionHandler connectionhandler,Builder builder){
+		Uri remoteurl = builder.build();
+		DefaultHttpClient client = connectionhandler.getHttpClient();
+		boolean isInError = true;
+		try {
+			HttpPost post = new HttpPost(new URI(remoteurl.toString()));
+			connectionhandler.setupOnMessage(post);
+			post.setHeader("Accept-Encoding", "gzip, deflate");
+
+
+
+
+
+		} catch (URISyntaxException e) {
+			publishErrorRequest(404);
+		}
+		if(isInError)
+			connectionhandler.close();
+	}
 
 	protected void fetchData(SelectDataTaskConnectionHandler connectionhandler,Builder builder,SelectDataTaskDataHandler handler){
 		Uri remoteurl = builder.build();

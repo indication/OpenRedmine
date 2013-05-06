@@ -168,7 +168,7 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 		} catch (SQLException e) {
 			publishError(e);
 		}
-		if(isInError)
+		if(isInError && "https".equalsIgnoreCase(remoteurl.getScheme()))
 			connectionhandler.close();
 	}
 }

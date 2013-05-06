@@ -34,6 +34,7 @@ import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
+	public final String CHARSET = "UTF-8";
 	/**
 	 * Notify error request on UI thread
 	 * @param statuscode http response code
@@ -101,7 +102,7 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 
 	protected void helperSetupParserStream(InputStream stream,BaseParser<?,?> parser) throws XmlPullParserException{
 		XmlPullParser xmlPullParser = Xml.newPullParser();
-		xmlPullParser.setInput(stream, "UTF-8");
+		xmlPullParser.setInput(stream, CHARSET);
 		parser.setXml(xmlPullParser);
 	}
 

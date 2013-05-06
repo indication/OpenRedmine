@@ -75,7 +75,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>> {
 				fetchVersions(client,project);
 				fetchCategory(client,project);
 			}
-			offset += limit + 1;
+			offset += limit;
 		} while(count >= limit);
 		client.close();
 		return null;

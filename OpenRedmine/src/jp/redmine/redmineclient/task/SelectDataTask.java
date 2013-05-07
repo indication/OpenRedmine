@@ -11,12 +11,17 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -120,41 +125,62 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		return (!TextUtils.isEmpty(value) && value.contains("deflate"));
 	}
 	protected void fetchData(SelectDataTaskConnectionHandler connectionhandler, RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler){
+		fetchData(RemoteType.get,connectionhandler,connection,url,handler,null);
+	}
+	protected void putData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		fetchData(RemoteType.put,connectionhandler,connection,url,handler,puthandler);
+	}
+	protected void postData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		fetchData(RemoteType.post,connectionhandler,connection,url,handler,puthandler);
+	}
+
+	protected enum RemoteType{
+		get,
+		put,
+		post,
+		delete,
+	}
+	protected void fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
 		url.setupRequest(requests.xml);
 		url.setupVersion(versions.v130);
-		fetchData(connectionhandler, url.getUrl(connection.getUrl()),handler);
+		fetchData(type,connectionhandler, url.getUrl(connection.getUrl()),handler,puthandler);
 	}
-
-	protected void postData(SelectDataTaskConnectionHandler connectionhandler,Builder builder){
+	protected void fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,Builder builder
+			,SelectDataTaskDataHandler handler,SelectDataTaskPutHandler puthandler){
 		Uri remoteurl = builder.build();
 		DefaultHttpClient client = connectionhandler.getHttpClient();
 		boolean isInError = true;
 		try {
-			HttpPost post = new HttpPost(new URI(remoteurl.toString()));
-			connectionhandler.setupOnMessage(post);
-			post.setHeader("Accept-Encoding", "gzip, deflate");
+			URI uri = new URI(remoteurl.toString());
+			HttpUriRequest msg = null;
+			switch(type){
+			case get:
+				HttpGet get = new HttpGet(uri);
+				Log.i("requestGet", "Url: " + get.getURI().toASCIIString());
+				msg = get;
+				break;
+			case delete:
+				break;
+			case post:
+				HttpPost post = new HttpPost(new URI(remoteurl.toString()));
+				Log.i("requestPost", "Url: " + post.getURI().toASCIIString());
+				post.setEntity(puthandler.getContent());
+				msg = post;
+				break;
+			case put:
+				HttpPut put = new HttpPut(new URI(remoteurl.toString()));
+				Log.i("requestPut", "Url: " + put.getURI().toASCIIString());
+				put.setEntity(puthandler.getContent());
+				msg = put;
+				break;
+			default:
+				return;
 
+			}
+			connectionhandler.setupOnMessage(msg);
+			msg.setHeader("Accept-Encoding", "gzip, deflate");
 
-
-
-
-		} catch (URISyntaxException e) {
-			publishErrorRequest(404);
-		}
-		if(isInError)
-			connectionhandler.close();
-	}
-
-	protected void fetchData(SelectDataTaskConnectionHandler connectionhandler,Builder builder,SelectDataTaskDataHandler handler){
-		Uri remoteurl = builder.build();
-		DefaultHttpClient client = connectionhandler.getHttpClient();
-		boolean isInError = true;
-		try {
-			HttpGet get = new HttpGet(new URI(remoteurl.toString()));
-			connectionhandler.setupOnMessage(get);
-			get.setHeader("Accept-Encoding", "gzip, deflate");
-			Log.i("requestGet", "Url: " + get.getURI().toASCIIString());
-			HttpResponse response = client.execute(get);
+			HttpResponse response = client.execute(msg);
 			int status = response.getStatusLine().getStatusCode();
 			Log.i("requestGet", "Status: " + status);
 			Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
@@ -186,6 +212,12 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		} catch (XmlPullParserException e) {
 			publishError(e);
 		} catch (SQLException e) {
+			publishError(e);
+		} catch (IllegalArgumentException e) {
+			publishError(e);
+		} catch (ParserConfigurationException e) {
+			publishError(e);
+		} catch (TransformerException e) {
 			publishError(e);
 		}
 		if(isInError && "https".equalsIgnoreCase(remoteurl.getScheme()))

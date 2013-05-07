@@ -28,7 +28,7 @@
 			    android:inputType="numberSigned|numberDecimal"
 			    android:text="8.0"
 			    app:emptyAllowed="false"
-			    app:testType="numeric"
+			    app:testType="nocheck"
 			    tools:ignore="HardcodedText" />
 
 	    </TableRow>
@@ -51,7 +51,7 @@
 			    android:inputType="numberSigned|numberDecimal"
 			    android:text="2012-11-11"
 			    app:emptyAllowed="false"
-			    app:testType="numeric"
+			    app:testType="nocheck"
 			    tools:ignore="HardcodedText" />
 
 	    </TableRow>

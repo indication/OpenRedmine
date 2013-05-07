@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.InflaterInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -33,6 +34,7 @@ import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
+	public final String CHARSET = "UTF-8";
 	/**
 	 * Notify error request on UI thread
 	 * @param statuscode http response code
@@ -100,7 +102,7 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 
 	protected void helperSetupParserStream(InputStream stream,BaseParser<?,?> parser) throws XmlPullParserException{
 		XmlPullParser xmlPullParser = Xml.newPullParser();
-		xmlPullParser.setInput(stream, "UTF-8");
+		xmlPullParser.setInput(stream, CHARSET);
 		parser.setXml(xmlPullParser);
 	}
 
@@ -109,6 +111,12 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 		if (header == null) return false;
 		String value = header.getValue();
 		return (!TextUtils.isEmpty(value) && value.contains("gzip"));
+	}
+	private boolean isDeflateHttpResponse(HttpResponse response) {
+		Header header = response.getEntity().getContentEncoding();
+		if (header == null) return false;
+		String value = header.getValue();
+		return (!TextUtils.isEmpty(value) && value.contains("deflate"));
 	}
 	protected void fetchData(SelectDataTaskConnectionHandler connectionhandler, RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler){
 		url.setupRequest(requests.xml);
@@ -134,6 +142,9 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 			if (isGZipHttpResponse(response)) {
 				Log.i("requestGet", "Gzip: Enabled");
 				stream =  new GZIPInputStream(stream);
+			} else if(isDeflateHttpResponse(response)){
+				Log.i("requestGet", "Deflate: Enabled");
+				stream =  new InflaterInputStream(stream);
 			}
 			if (HttpStatus.SC_OK == status) {
 			    isInError = false;
@@ -157,7 +168,7 @@ public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
 		} catch (SQLException e) {
 			publishError(e);
 		}
-		if(isInError)
+		if(isInError && "https".equalsIgnoreCase(remoteurl.getScheme()))
 			connectionhandler.close();
 	}
 }

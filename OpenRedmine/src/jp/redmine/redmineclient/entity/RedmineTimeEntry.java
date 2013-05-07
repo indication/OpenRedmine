@@ -1,17 +1,7 @@
 package jp.redmine.redmineclient.entity;
 
-import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -253,10 +243,8 @@ public class RedmineTimeEntry implements IPostingRecord {
 		return connection_id;
 	}
 	@Override
-	public String getXml() throws ParserConfigurationException,IllegalArgumentException, TransformerException {
-		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
-		Document document = dbuilder.newDocument();
+	public Element getXml(Document document) {
+
 		Element root = document.createElement("time_entry");
 		/*
 		if(this.getTimeentryId() != null){
@@ -297,14 +285,7 @@ public class RedmineTimeEntry implements IPostingRecord {
 			root.appendChild(name);
 		}
 
-		document.appendChild(root);
-
-		StringWriter writer = new StringWriter();
-		TransformerFactory transFactory = TransformerFactory.newInstance();
-		Transformer transformer = transFactory.newTransformer();
-		transformer.transform(new DOMSource(document), new StreamResult(writer));
-
-		return writer.toString();
+		return root;
 	}
 
 }

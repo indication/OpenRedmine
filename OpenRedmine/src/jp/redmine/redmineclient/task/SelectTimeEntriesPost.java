@@ -1,22 +1,32 @@
 package jp.redmine.redmineclient.task;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.InputStreamBody;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.os.Build;
 import android.util.Log;
 
+import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -52,11 +62,33 @@ public class SelectTimeEntriesPost extends SelectDataTask<Void,RedmineTimeEntry>
 				@Override
 				public HttpEntity getContent() throws IOException,
 						SQLException, IllegalArgumentException, ParserConfigurationException, TransformerException {
-					List<NameValuePair> data = new ArrayList<NameValuePair>();
-					data.add(new BasicNameValuePair("xml", item.getXml()));
-					Log.d("xml",item.getXml());
-					Log.d("postdata",data.toString());
-					return new UrlEncodedFormEntity(data, "UTF-8");
+					DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+					DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+					Document document = dbuilder.newDocument();
+
+					Element root = item.getXml(document);
+					document.appendChild(root);
+
+
+
+
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+					TransformerFactory transFactory = TransformerFactory.newInstance();
+					Transformer transformer = transFactory.newTransformer();
+					transformer.transform(new DOMSource(document), new StreamResult(outputStream));
+					MultipartEntity multi = new MultipartEntity();
+					ByteArrayInputStream input = new ByteArrayInputStream(outputStream.toByteArray());
+					InputStreamBody body = new InputStreamBody(input, "application/xml; charset=\"utf-8\"", "");
+					multi.addPart("data",body);
+					if(BuildConfig.DEBUG){
+						StringWriter writer = new StringWriter();
+						transformer.transform(new DOMSource(document), new StreamResult(writer));
+
+						Log.d("post content",writer.toString());
+					}
+
+					return multi;
+
 				}
 			};
 			if(item.getTimeentryId() == null){

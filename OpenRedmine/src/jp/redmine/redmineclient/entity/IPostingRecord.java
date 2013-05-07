@@ -1,9 +1,9 @@
 package jp.redmine.redmineclient.entity;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public interface IPostingRecord {
 
-	public String getXml() throws ParserConfigurationException, IllegalArgumentException, TransformerException;
+	public Element getXml(Document document);
 }

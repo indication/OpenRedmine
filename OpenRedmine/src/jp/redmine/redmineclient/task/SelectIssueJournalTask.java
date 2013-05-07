@@ -20,7 +20,7 @@ import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 
-public class SelectIssueJournalTask extends SelectDataTask<Void> {
+public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 	private final static int LIMIT = 50;
 
 	protected DatabaseCacheHelper helper;

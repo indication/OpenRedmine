@@ -34,7 +34,7 @@ import jp.redmine.redmineclient.url.RemoteUrl;
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
-public abstract class SelectDataTask<T> extends AsyncTask<Integer, Integer, T> {
+public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	public final String CHARSET = "UTF-8";
 	/**
 	 * Notify error request on UI thread

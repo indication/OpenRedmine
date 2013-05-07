@@ -7,6 +7,7 @@ import android.net.Uri;
 
 public class RemoteUrlTimeEntries extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
+	private Integer timeentry_id;
 
 	//:project, :activity, :user, {:issue => :tracker}
 	public void filterIssue(String status){
@@ -24,6 +25,9 @@ public class RemoteUrlTimeEntries extends RemoteUrl {
 	public void filterOffset(int offset){
 		params.put("offset", Integer.toString(offset));
 	}
+	public void setId(Integer id){
+		timeentry_id = id;
+	}
 	@Override
 	public versions getMinVersion(){
 		return versions.v110;
@@ -31,7 +35,11 @@ public class RemoteUrlTimeEntries extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("time_entries." + getExtention());
+		if(timeentry_id == null){
+			url.appendEncodedPath("time_entries." + getExtention());
+		} else {
+			url.appendEncodedPath("time_entries/"+String.valueOf(timeentry_id)+"."+getExtention());
+		}
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){
 				url.appendQueryParameter(data.getKey(), data.getValue());

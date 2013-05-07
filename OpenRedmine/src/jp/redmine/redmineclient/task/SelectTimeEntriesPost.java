@@ -1,7 +1,5 @@
 package jp.redmine.redmineclient.task;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -17,16 +15,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.os.Build;
-import android.util.Log;
-
-import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -69,26 +62,15 @@ public class SelectTimeEntriesPost extends SelectDataTask<Void,RedmineTimeEntry>
 					Element root = item.getXml(document);
 					document.appendChild(root);
 
-
-
-
-					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 					TransformerFactory transFactory = TransformerFactory.newInstance();
 					Transformer transformer = transFactory.newTransformer();
-					transformer.transform(new DOMSource(document), new StreamResult(outputStream));
-					MultipartEntity multi = new MultipartEntity();
-					ByteArrayInputStream input = new ByteArrayInputStream(outputStream.toByteArray());
-					InputStreamBody body = new InputStreamBody(input, "application/xml; charset=\"utf-8\"", "");
-					multi.addPart("data",body);
-					if(BuildConfig.DEBUG){
-						StringWriter writer = new StringWriter();
-						transformer.transform(new DOMSource(document), new StreamResult(writer));
-
-						Log.d("post content",writer.toString());
-					}
-
-					return multi;
-
+					StringWriter writer = new StringWriter();
+					transformer.transform(new DOMSource(document), new StreamResult(writer));
+					String data = writer.toString();
+					StringEntity  entity = new StringEntity(data);
+					entity.setContentEncoding(document.getInputEncoding());
+					entity.setContentType("application/xml");
+					return entity;
 				}
 			};
 			if(item.getTimeentryId() == null){

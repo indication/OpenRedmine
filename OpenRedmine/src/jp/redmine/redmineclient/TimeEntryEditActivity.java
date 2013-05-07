@@ -10,6 +10,7 @@ import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
+import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.intent.TimeEntryIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
@@ -85,7 +86,7 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			{
 				if(!form.Validate())
 					return true;
-				ProjectIntent intent = new ProjectIntent(getIntent());
+				IssueIntent intent = new IssueIntent(getIntent());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
 				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
@@ -95,6 +96,7 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 				SelectTimeEntriesPost post = new SelectTimeEntriesPost(getHelper(), connection);
 				RedmineTimeEntry entry = new RedmineTimeEntry();
 				form.getValue(entry);
+				entry.setIssueId(intent.getIssueId());
 				post.execute(entry);
 				return true;
 			}

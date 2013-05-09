@@ -10,8 +10,6 @@ import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
-import jp.redmine.redmineclient.intent.IssueIntent;
-import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.intent.TimeEntryIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
@@ -50,20 +48,17 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 
 		form.setupParameter(connectionid, 0);
 
-		if(intent.getTimeEntryId() == -1)
-			return;
-		RedmineTimeEntryModel model = new RedmineTimeEntryModel(getHelper());
 		RedmineTimeEntry timeentry = new RedmineTimeEntry();
-		try {
-			timeentry = model.fetchById(connectionid, intent.getTimeEntryId());
-		} catch (SQLException e) {
-			Log.e("SelectDataTask","ParserIssue",e);
+		RedmineTimeEntryModel model = new RedmineTimeEntryModel(getHelper());
+
+		if(intent.getTimeEntryId() != -1){
+			try {
+				timeentry = model.fetchById(connectionid, intent.getTimeEntryId());
+			} catch (SQLException e) {
+				Log.e("SelectDataTask","ParserIssue",e);
+			}
 		}
-		if(timeentry.getId() == null){
-			//item is not found
-		} else {
-			form.setValue(timeentry);
-		}
+		form.setValue(timeentry);
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -86,18 +81,29 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			{
 				if(!form.Validate())
 					return true;
-				IssueIntent intent = new IssueIntent(getIntent());
+				TimeEntryIntent intent = new TimeEntryIntent(getIntent());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
 				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
 				connection = mConnection.getItem(connectionid);
 				mConnection.finalize();
 
+				RedmineTimeEntry timeentry = new RedmineTimeEntry();
+				RedmineTimeEntryModel model = new RedmineTimeEntryModel(getHelper());
+
+				if(intent.getTimeEntryId() != -1){
+					try {
+						timeentry = model.fetchById(connectionid, intent.getTimeEntryId());
+					} catch (SQLException e) {
+						Log.e("SelectDataTask","ParserIssue",e);
+					}
+				}
+				form.getValue(timeentry);
 				SelectTimeEntriesPost post = new SelectTimeEntriesPost(getHelper(), connection);
-				RedmineTimeEntry entry = new RedmineTimeEntry();
-				form.getValue(entry);
-				entry.setIssueId(intent.getIssueId());
-				post.execute(entry);
+				if(timeentry.getId() == null){
+					timeentry.setIssueId(intent.getIssueId());
+				}
+				post.execute(timeentry);
 				return true;
 			}
 			case R.id.menu_delete:

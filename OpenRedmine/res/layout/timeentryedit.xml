@@ -20,11 +20,15 @@
 		    android:layout_height="wrap_content"
 		    android:ems="10"
 		    android:imeOptions="actionNext"
-		    android:inputType="numberSigned|numberDecimal"
+		    android:inputType="numberDecimal"
 		    android:text="8.0"
 		    app:emptyAllowed="false"
 		    app:testType="nocheck"
-		    tools:ignore="HardcodedText" />
+			android:hint="8.0"
+		    tools:ignore="HardcodedText" >
+				<requestFocus />
+		</com.andreabaccega.widget.FormEditText>
+
 
     </TableRow>
 
@@ -43,10 +47,11 @@
 		    android:layout_height="wrap_content"
 		    android:ems="10"
 		    android:imeOptions="actionNext"
-		    android:inputType="numberSigned|numberDecimal"
+		    android:inputType="date"
 		    android:text="2012-11-11"
 		    app:emptyAllowed="false"
 		    app:testType="nocheck"
+			android:hint="2012-11-11"
 		    tools:ignore="HardcodedText" />
 
     </TableRow>
@@ -65,6 +70,7 @@
 		    android:layout_height="wrap_content"
 		    android:ems="10"
 		    android:text="@string/ticket_description"
+			android:hint="@string/ticket_description"
 		    app:emptyAllowed="true" />
     </TableRow>
 

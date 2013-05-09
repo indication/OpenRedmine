@@ -20,6 +20,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
+
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -58,7 +60,6 @@ public class SelectTimeEntriesPost extends SelectDataTask<Void,RedmineTimeEntry>
 					DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
 					DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
 					Document document = dbuilder.newDocument();
-
 					Element root = item.getXml(document);
 					document.appendChild(root);
 
@@ -67,9 +68,9 @@ public class SelectTimeEntriesPost extends SelectDataTask<Void,RedmineTimeEntry>
 					StringWriter writer = new StringWriter();
 					transformer.transform(new DOMSource(document), new StreamResult(writer));
 					String data = writer.toString();
-					StringEntity  entity = new StringEntity(data);
-					entity.setContentEncoding(document.getInputEncoding());
+					StringEntity  entity = new StringEntity(data,"UTF-8");
 					entity.setContentType("application/xml");
+					Log.d("post",entity.getContent().toString());
 					return entity;
 				}
 			};

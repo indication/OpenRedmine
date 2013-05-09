@@ -14,6 +14,7 @@ import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.TimeEntryIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -109,7 +110,7 @@ public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 		inflater.inflate( R.menu.timeentry_view, menu );
 		return true;
 	}
-
+	private final int FORM_TIMEENTRY = 1;
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -126,13 +127,25 @@ public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 				TimeEntryIntent send = new TimeEntryIntent( getApplicationContext(), TimeEntryEditActivity.class );
 				send.setConnectionId(intent.getConnectionId());
 				send.setIssueId(intent.getIssueId());
-				startActivity(send.getIntent());
+				startActivityForResult(send.getIntent(),FORM_TIMEENTRY);
 				return true;
 			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(requestCode){
+		case FORM_TIMEENTRY:
+			if(resultCode !=RESULT_OK )
+				break;
+			finish();
+			break;
+		default:
+			break;
+		}
+	}
 
 
 }

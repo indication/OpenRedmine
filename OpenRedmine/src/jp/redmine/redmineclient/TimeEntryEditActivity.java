@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
 	public TimeEntryEditActivity(){
@@ -99,7 +100,29 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 					}
 				}
 				form.getValue(timeentry);
-				SelectTimeEntriesPost post = new SelectTimeEntriesPost(getHelper(), connection);
+				SelectTimeEntriesPost post = new SelectTimeEntriesPost(getHelper(), connection){
+					private boolean isSuccess = true;
+					@Override
+					protected void onError(Exception lasterror) {
+						isSuccess = false;
+						ActivityHelper.toastRemoteError(getApplicationContext(), ActivityHelper.ERROR_APP);
+						super.onError(lasterror);
+					}
+					@Override
+					protected void onErrorRequest(int statuscode) {
+						isSuccess = false;
+						ActivityHelper.toastRemoteError(getApplicationContext(), statuscode);
+						super.onErrorRequest(statuscode);
+					}
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);
+						if(isSuccess){
+							Toast.makeText(getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							finishActivity(RESULT_OK);
+						}
+					}
+				};
 				if(timeentry.getId() == null){
 					timeentry.setIssueId(intent.getIssueId());
 				}

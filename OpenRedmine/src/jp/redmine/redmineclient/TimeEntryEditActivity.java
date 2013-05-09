@@ -13,6 +13,7 @@ import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
 import jp.redmine.redmineclient.intent.TimeEntryIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,6 +27,8 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 	}
 	private RedmineTimeentryEditForm form;
 
+	private ProgressDialog dialog;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,10 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 
 		form = new RedmineTimeentryEditForm(this);
 		form.setupDatabase(getHelper());
+
+
+		dialog = new ProgressDialog(this);
+		dialog.setMessage(getString(R.string.menu_settings_loading));
 	}
 
 	@Override
@@ -115,11 +122,19 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 						super.onErrorRequest(statuscode);
 					}
 					@Override
+					protected void onPreExecute() {
+						dialog.show();
+						super.onPreExecute();
+					}
+					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
+						if (dialog.isShowing())
+							dialog.dismiss();
 						if(isSuccess){
 							Toast.makeText(getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							finishActivity(RESULT_OK);
+							setResult(RESULT_OK);
+							finish();
 						}
 					}
 				};

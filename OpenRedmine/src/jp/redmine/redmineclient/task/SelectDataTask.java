@@ -33,6 +33,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.ArrayAdapter;
+import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
@@ -179,11 +180,14 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 			}
 			connectionhandler.setupOnMessage(msg);
 			msg.setHeader("Accept-Encoding", "gzip, deflate");
-
 			HttpResponse response = client.execute(msg);
 			int status = response.getStatusLine().getStatusCode();
-			Log.i("requestGet", "Status: " + status);
-			Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
+			if(BuildConfig.DEBUG){
+				for(Header h : msg.getAllHeaders())
+					Log.d("request header", h.toString());
+				Log.i("requestGet", "Status: " + status);
+				Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
+			}
 			InputStream stream = response.getEntity().getContent();
 			if (isGZipHttpResponse(response)) {
 				Log.i("requestGet", "Gzip: Enabled");
@@ -197,11 +201,13 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 				handler.onContent(stream);
 			} else {
 				publishErrorRequest(status);
-				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-			    String str;
-			    while((str = reader.readLine()) != null){
-			    	Log.d("requestGet", str);
-			    }
+				if(BuildConfig.DEBUG){
+					BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+				    String str;
+				    while((str = reader.readLine()) != null){
+				    	Log.d("requestGet", str);
+				    }
+				}
 			}
 		} catch (URISyntaxException e) {
 			publishErrorRequest(404);

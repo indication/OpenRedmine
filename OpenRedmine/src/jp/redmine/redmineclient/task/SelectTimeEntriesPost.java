@@ -22,6 +22,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Log;
 
+import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -70,7 +71,8 @@ public class SelectTimeEntriesPost extends SelectDataTask<Void,RedmineTimeEntry>
 					String data = writer.toString();
 					StringEntity  entity = new StringEntity(data,"UTF-8");
 					entity.setContentType("application/xml");
-					Log.d("post",entity.getContent().toString());
+
+					if(BuildConfig.DEBUG) Log.d("post",entity.getContent().toString());
 					return entity;
 				}
 			};

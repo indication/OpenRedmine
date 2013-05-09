@@ -28,7 +28,6 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	{
@@ -177,29 +176,18 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 		@Override
 		protected void onError(Exception lasterror) {
-			Toast.makeText(getApplicationContext(),
-					"Something wrong with program.", Toast.LENGTH_SHORT).show();
+			ActivityHelper.toastRemoteError(getApplicationContext(), ActivityHelper.ERROR_APP);
 			super.onError(lasterror);
 		}
 
 		@Override
 		protected void onErrorRequest(int statuscode) {
-			String message = "Something wrong with the connection.";
 			switch(statuscode){
 			case 404:
-				message = "Something with wrong with connection. Try later.";
 				lastPos = 0;
 				break;
-			case 403:
-				message = "Something wrong with connection settings.";
-				break;
-			case 500:
-			case 503:
-				message = "Something wrong with server. Please check access by browser.";
-				break;
 			}
-			Toast.makeText(getApplicationContext(),
-					message, Toast.LENGTH_SHORT).show();
+			ActivityHelper.toastRemoteError(getApplicationContext(), statuscode);
 			super.onErrorRequest(statuscode);
 		}
 	}

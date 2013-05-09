@@ -3,12 +3,15 @@ package jp.redmine.redmineclient.activity.helper;
 import jp.redmine.redmineclient.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.Window;
+import android.widget.Toast;
 
 
 public class ActivityHelper {
+	static public final int ERROR_APP = 600;
 	@SuppressLint("InlinedApi")
 	static public void setupTheme(Activity activity){
 
@@ -25,6 +28,40 @@ public class ActivityHelper {
 		if(theme != null){
 			activity.setTheme(theme);
 			activity.getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+		}
+	}
+
+	static public void toastRemoteError(Context context, int statuscode){
+
+		Integer resid = null;
+		switch(statuscode){
+		case 401:
+			resid = R.string.remote_401;
+			break;
+		case 403:
+			resid = R.string.remote_403;
+			break;
+		case 404:
+			resid = R.string.remote_404;
+			break;
+		case 407:
+			resid = R.string.remote_407;
+			break;
+		case 402:
+		case 405:
+			resid = R.string.remote_4xx;
+			break;
+		case 500:
+		case 501:
+		case 503:
+			resid = R.string.remote_5xx;
+			break;
+		case ERROR_APP: //program error
+			resid = R.string.remote_600;
+			break;
+		}
+		if(resid != null){
+			Toast.makeText(context,resid, Toast.LENGTH_SHORT).show();
 		}
 	}
 

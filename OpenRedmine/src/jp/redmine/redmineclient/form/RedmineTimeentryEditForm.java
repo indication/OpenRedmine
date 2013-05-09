@@ -62,7 +62,7 @@ public class RedmineTimeentryEditForm extends FormHelper {
 
 	public void setValue(RedmineTimeEntry data){
 		textTime.setText(data.getHours() == null ? "" : String.valueOf(data.getHours()));
-		convertDate(textDate, data.getSpentsOn());
+		setDate(textDate, data.getSpentsOn());
 		textDescription.setText(data.getComment());
 		if(data.getActivity() == null){
 			spinnerActivity.setSelection(0);
@@ -76,6 +76,10 @@ public class RedmineTimeentryEditForm extends FormHelper {
 				}
 			}
 		}
+		textCreated.setVisibility(data.getCreated() == null ? View.GONE : View.VISIBLE);
+		rowModified.setVisibility(data.getModified() == null ? View.GONE : View.VISIBLE);
+		setDateTime(textCreated, data.getCreated());
+		setDateTime(textModified, data.getModified());
 
 	}
 
@@ -84,10 +88,6 @@ public class RedmineTimeentryEditForm extends FormHelper {
 		data.setSpentsOn(getDate(textDate));
 		data.setComment(textDescription.getText().toString());
 		data.setActivity((RedmineTimeActivity) spinnerActivity.getSelectedItem());
-		textCreated.setVisibility(data.getCreated() == null ? View.GONE : View.VISIBLE);
-		rowModified.setVisibility(data.getModified() == null ? View.GONE : View.VISIBLE);
-		setDateTime(textCreated, data.getCreated());
-		setDateTime(textModified, data.getModified());
 	}
 
 	public boolean Validate(){

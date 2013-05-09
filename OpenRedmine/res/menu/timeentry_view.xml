@@ -8,6 +8,7 @@
         android:title="@string/menu_refresh"
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_refresh"
+        android:visible="false"
         android:numericShortcut="5"
         android:alphabeticShortcut="r"/>
 </menu>

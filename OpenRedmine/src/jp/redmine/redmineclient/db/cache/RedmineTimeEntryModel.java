@@ -141,7 +141,7 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 			if(data.getModified() == null){
 				data.setModified(new java.util.Date());
 			}
-			if(timeentry.getModified().after(data.getModified())){
+			if(timeentry.getModified().before(data.getModified())){
 				this.update(data);
 			}
 		}

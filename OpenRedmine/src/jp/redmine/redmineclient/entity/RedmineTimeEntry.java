@@ -246,14 +246,11 @@ public class RedmineTimeEntry implements IPostingRecord {
 	public Element getXml(Document document) {
 
 		Element root = document.createElement("time_entry");
-		/*
 		if(this.getTimeentryId() != null){
 			Element name = document.createElement("id");
 			name.appendChild(document.createTextNode(String.valueOf(this.getTimeentryId())));
 			root.appendChild(name);
-		}
-		*/
-		if(this.getIssueId() != null){
+		} else if(this.getIssueId() != null){
 			Element name = document.createElement("issue_id");
 			name.appendChild(document.createTextNode(String.valueOf(this.getIssueId())));
 			root.appendChild(name);

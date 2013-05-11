@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class RedmineTimeentryEditForm extends FormHelper {
 	public TableRow rowModified;
 	public TextView textCreated;
 	public TextView textModified;
+	public ImageButton imageCalendar;
 	public Button buttonOK;
 	RedmineFilterListAdapter adapterActivity;
 	public RedmineTimeentryEditForm(Activity activity){
@@ -44,6 +46,7 @@ public class RedmineTimeentryEditForm extends FormHelper {
 		rowModified = (TableRow)view.findViewById(R.id.rowModified);
 		textCreated = (TextView)view.findViewById(R.id.textCreated);
 		textModified = (TextView)view.findViewById(R.id.textModified);
+		imageCalendar = (ImageButton)view.findViewById(R.id.imageCalendar);
 		//buttonOK = (Button)view.findViewById(R.id.buttonOK);
 		textCreated.setVisibility(View.GONE);
 		rowModified.setVisibility(View.GONE);

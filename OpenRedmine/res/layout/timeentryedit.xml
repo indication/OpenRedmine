@@ -16,15 +16,16 @@
 
 		<com.andreabaccega.widget.FormEditText
 		    android:id="@+id/textTime"
-		    android:layout_width="fill_parent"
+		    android:layout_width="120dp"
 		    android:layout_height="wrap_content"
 		    android:ems="10"
+		    android:hint="8.0"
 		    android:imeOptions="actionNext"
 		    android:inputType="numberDecimal"
+		    android:maxLength="10"
 		    android:text="8.0"
 		    app:emptyAllowed="false"
 		    app:testType="nocheck"
-			android:hint="8.0"
 		    tools:ignore="HardcodedText" >
 				<requestFocus />
 		</com.andreabaccega.widget.FormEditText>

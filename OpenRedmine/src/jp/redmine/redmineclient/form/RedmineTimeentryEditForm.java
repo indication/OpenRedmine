@@ -1,5 +1,8 @@
 package jp.redmine.redmineclient.form;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import com.andreabaccega.widget.FormEditText;
 
 import jp.redmine.redmineclient.R;
@@ -10,10 +13,15 @@ import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.form.helper.FormHelper;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TableRow;
@@ -30,6 +38,7 @@ public class RedmineTimeentryEditForm extends FormHelper {
 	public TextView textModified;
 	public ImageButton imageCalendar;
 	public Button buttonOK;
+	public DatePickerDialog dialogDatePicker;
 	RedmineFilterListAdapter adapterActivity;
 	public RedmineTimeentryEditForm(Activity activity){
 		this.setup(activity);
@@ -51,6 +60,36 @@ public class RedmineTimeentryEditForm extends FormHelper {
 		textCreated.setVisibility(View.GONE);
 		rowModified.setVisibility(View.GONE);
 	}
+
+	@Override
+	public void setupEvents() {
+		imageCalendar.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Calendar date = Calendar.getInstance();
+				if(!TextUtils.isEmpty(textDate.getText()))
+					date.setTime(TypeConverter.parseDate(textDate.getText().toString()));
+				if(dialogDatePicker == null){
+					dialogDatePicker = new DatePickerDialog(v.getContext(), new OnDateSetListener() {
+
+						@SuppressLint("SimpleDateFormat")
+						@Override
+						public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
+							Calendar selected = Calendar.getInstance();
+							selected.set(year, monthOfYear, dayOfMonth);
+							SimpleDateFormat format = new SimpleDateFormat();
+							format.applyPattern(TypeConverter.FORMAT_DATE);
+							textDate.setText(format.format(selected.getTime()));
+
+						}
+					}, date.get(Calendar.YEAR),  date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));
+				}
+				dialogDatePicker.show();
+			}
+		});
+	}
+
 	public void setupDatabase(DatabaseCacheHelper helper){
 		adapterActivity = new RedmineFilterListAdapter(new RedmineTimeActivityModel(helper));
 	}

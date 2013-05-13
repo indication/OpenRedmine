@@ -102,5 +102,6 @@ After the setting, list up the connection.]]></string>
 	<string name="remote_5xx">Something wrong with server. Please check access by browser.</string>
 	<string name="remote_600">A problem was occurred on this application</string>
 	<string name="remote_saved">Has been saved to remote</string>
+	<string name="input_error_invalid_decimal">Input valid number.</string>
 
 </resources>

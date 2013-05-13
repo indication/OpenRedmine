@@ -25,7 +25,9 @@
 		    android:maxLength="10"
 		    android:text="8.0"
 		    app:emptyAllowed="false"
-		    app:testType="nocheck"
+		    app:testType="regexp"
+		    app:customRegexp="\\d+(\\.\d+)?"
+		    app:testErrorString="@string/input_error_invalid_decimal"
 		    tools:ignore="HardcodedText" >
 				<requestFocus />
 		</com.andreabaccega.widget.FormEditText>
@@ -57,7 +59,8 @@
 			    android:maxLength="10"
 			    android:text="2012-11-11"
 			    app:emptyAllowed="false"
-			    app:testType="nocheck"
+			    app:testType="date"
+			    app:customFormat="yyyy-MM-dd"
 			    tools:ignore="HardcodedText" />
 
 			<ImageButton

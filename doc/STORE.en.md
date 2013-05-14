@@ -1,10 +1,10 @@
 Title
 ===========
-OpenRedmine alpha
+OpenRedmine beta
 
 Description
 ==========
-OpenRedmine is an android Redmine client. alpha release.
+OpenRedmine is an android Redmine client. beta release.
 
 Requirement:
 * Redmine 1.2 later
@@ -12,7 +12,7 @@ Requirement:
 
 CAUTION:
 * Cache data(downloaded issues) are stored WITHOUT encryption. To remove cache data immediately , open connection list - show menu - remove all cache 
-* This is alpha release, so it is not safe for anything
+* This is beta release, so it is not safe for anything
 
 Connection:
 * Allow to connect UNSAFE SSL sites powered by transdroid
@@ -30,7 +30,6 @@ Working:
 * Add journal
 
 Release planing:
-* Switch to beta(2013/05)
 * TimeEntry like stop watch (no plan...)
 
 Note:

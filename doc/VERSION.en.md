@@ -2,6 +2,11 @@ OpenRedmine
 ===========
 Release history
 
+v2.0
+===========
+- Add post or modify time entry
+- Fetch all of projects
+
 v1.14
 ===========
 - Add sort feature

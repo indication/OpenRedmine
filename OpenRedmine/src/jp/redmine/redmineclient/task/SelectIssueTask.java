@@ -16,7 +16,7 @@ import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
-public class SelectIssueTask extends SelectDataTask<Void> {
+public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineProject project;

@@ -20,9 +20,11 @@
 	<string name="menu_setting_list_menu_edit">編集</string>
 	<string name="menu_setting_list_menu_delete">削除</string>
 	<string name="menu_settings_loading"><![CDATA[データを受信中....]]></string>
+	<string name="menu_settings_uploading"><![CDATA[データを送信中....]]></string>
 	<string name="menu_confirm_delete_msg">この接続を削除してもよいですか？</string>
 	<string name="menu_config_delete_yes">はい</string>
 	<string name="menu_config_delete_no">いいえ</string>
+	<string name="menu_cancel">キャンセル</string>
 	<string name="app_description">説明</string>
 	<string name="preference_category_issue">チケット</string>
 	<string name="preference_issue_get_all">すべてを取得する</string>
@@ -69,9 +71,12 @@
 	<string name="ticket_modified_by">%2$s</string>
 	<string name="ticket_time">時間</string>
 	<string name="ticket_time_estimate">%.2f</string>
+	<string name="ticket_date">日付</string>
+	<string name="ticket_activity">活動</string>
 	<string name="ticket_issue">チケット</string>
 	<string name="ticket_sort">ソート</string>
 	<string name="ticket_project">プロジェクト</string>
+	<string name="ticket_description">説明</string>
 	<string name="ascending">昇順</string>
 	<string name="descending">降順</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
@@ -89,5 +94,15 @@
 	<string name="changes_from_to"><b>%1$s</b> を %2$s から %3$s へ変更</string>
 	<string name="changes_set_to"><b>%1$s</b> に %3$s を設定</string>
 	<string name="changes_remove_from"><b>%1$s</b> から <s>%2$s</s> を削除</string>
+	<string name="remote_401">認証が必要です。APIキーの設定を見直してください。</string>
+	<string name="remote_403">接続設定に問題があるようです。</string>
+	<string name="remote_404">接続が悪いようです。あとで試してください。</string>
+	<string name="remote_407">Proxy接続は残念ながら対応していません。</string>
+	<string name="remote_4xx">接続が悪いようです。ブラウザから試してみてください。</string>
+	<string name="remote_5xx">サーバーがなんだか、おかしいようです。ブラウザから試してみてください。</string>
+	<string name="remote_600">このアプリで問題が発生しました。</string>
+	<string name="remote_saved">リモートへ保存しました。</string>
+	<string name="input_error_invalid_decimal">有効な数値を入力してください。</string>
+	<string name="warning_experimental_feature">これは実験的です。この機能は、Redmineのに悪い影響を与える可能性があります。</string>
 
 </resources>

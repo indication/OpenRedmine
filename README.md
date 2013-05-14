@@ -73,6 +73,9 @@ Using Libraries
 - textile-j (LGPL) - show the descriptions in rich text
   http://java.net/projects/textile-j/sources/svn/show/trunk/www/builds/net.java.textilej/latest
 
+- httpmime (Apache License, Version 2.0) - This module provides support for MIME multipart encoded entities
+  http://hc.apache.org/httpcomponents-client-ga/httpmime/
+
 Using Icons
 ==========
 - redmine (by-sa/2.5)

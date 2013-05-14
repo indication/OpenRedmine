@@ -1,7 +1,5 @@
 package jp.redmine.redmineclient.task;
 
-import java.util.Locale;
-
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.external.lib.AuthenticationParam;
 import jp.redmine.redmineclient.external.lib.ClientParam;
@@ -52,7 +50,6 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 		if(TextUtils.isEmpty(key))
 			return;
 		msg.setHeader("X-Redmine-API-Key", key);
-		msg.setHeader("Accept-Language",Locale.getDefault().getISO3Language());
 	}
 
 }

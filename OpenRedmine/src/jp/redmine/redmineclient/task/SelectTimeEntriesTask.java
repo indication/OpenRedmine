@@ -14,7 +14,7 @@ import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 
-public class SelectTimeEntriesTask extends SelectDataTask<Void> {
+public class SelectTimeEntriesTask extends SelectDataTask<Void,Integer> {
 	private final static int LIMIT = 50;
 
 	protected DatabaseCacheHelper helper;

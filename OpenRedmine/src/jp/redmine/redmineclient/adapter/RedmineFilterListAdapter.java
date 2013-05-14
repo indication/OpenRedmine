@@ -40,7 +40,11 @@ public class RedmineFilterListAdapter extends RedmineBaseAdapter<IMasterRecord> 
 	}
 
 	public void setupParameter(int connection, long project){
-		addNone = true;
+		setupParameter(connection, project, true);
+	}
+
+	public void setupParameter(int connection, long project, boolean isAddNone){
+		addNone = isAddNone;
 		connection_id = connection;
 		project_id = project;
 	}

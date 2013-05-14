@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.task;
 
 
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.AbstractHttpMessage;
 
@@ -23,5 +24,8 @@ abstract class SelectDataTaskConnectionHandler {
 	public void setupOnMessage(AbstractHttpMessage msg){
 	}
 
+	public void setupOnMessage(HttpUriRequest msg){
+		setupOnMessage((AbstractHttpMessage)msg);
+	}
 
 }

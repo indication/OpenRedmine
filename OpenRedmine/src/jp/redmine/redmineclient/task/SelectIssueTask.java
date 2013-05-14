@@ -16,7 +16,7 @@ import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
-public class SelectIssueTask extends SelectDataTask<Void> {
+public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineProject project;
@@ -78,8 +78,8 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 		};
 		RemoteUrlIssues url = new RemoteUrlIssues();
 		RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
-
 		try {
+			boolean isFirst = true;
 			while(fetched < lastfetched){
 				url.filterOffset((int)fetched);
 				url.filterLimit((int)limit);
@@ -92,9 +92,11 @@ public class SelectIssueTask extends SelectDataTask<Void> {
 
 				//update offset for next fetch
 				fetched++;
-
-				//sleep for server
-				Thread.sleep(1000);
+				if(isFirst){
+					//sleep for server
+					Thread.sleep(1000);
+					isFirst = false;
+				}
 			}
 			fetched--;
 			filter.setFetched(fetched);

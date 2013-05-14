@@ -1,0 +1,3 @@
+[submodule "android-form-edittext"]
+	path = android-form-edittext
+	url = git@github.com:indication/android-form-edittext.git

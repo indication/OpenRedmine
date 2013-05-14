@@ -42,7 +42,7 @@
 		    android:text="8.0"
 		    app:emptyAllowed="false"
 		    app:testType="regexp"
-		    app:customRegexp="\\d+(\\.\d+)?"
+		    app:customRegexp="\\d+(\\.\\d+)?"
 		    app:testErrorString="@string/input_error_invalid_decimal"
 		    tools:ignore="HardcodedText" >
 				<requestFocus />

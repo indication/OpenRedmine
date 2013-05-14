@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res/jp.redmine.redmineclient"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+	android:orientation="vertical" >
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:text="@string/warning_experimental_feature"
+    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+<TableLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
@@ -152,3 +168,5 @@
 
     </TableRow>
 </TableLayout>
+</LinearLayout>
+</ScrollView>

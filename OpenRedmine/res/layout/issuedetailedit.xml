@@ -113,7 +113,7 @@
 		        android:text="@string/ticket_progress" />
 
 		    <ProgressBar
-		        android:id="@+id/progressissue"
+		        android:id="@+id/progressIssue"
 		        style="?android:attr/progressBarStyleHorizontal"
 		        android:layout_width="fill_parent"
 		        android:layout_height="fill_parent"
@@ -123,6 +123,129 @@
 
 	    </TableRow>
 
+	    <TableRow
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_date_start" />
+			<LinearLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:orientation="horizontal" >
+
+				<com.andreabaccega.widget.FormEditText
+				    android:id="@+id/textDateStart"
+				    android:layout_width="150dp"
+				    android:layout_height="wrap_content"
+				    android:ems="10"
+				    android:hint="2012-11-11"
+				    android:imeOptions="actionNext"
+				    android:inputType="date"
+				    android:maxLength="10"
+				    android:text="2012-11-11"
+				    app:emptyAllowed="false"
+				    app:testType="date"
+				    app:customFormat="yyyy-MM-dd"
+				    tools:ignore="HardcodedText" />
+
+				<ImageButton
+				    android:id="@+id/imageCalendarStart"
+				    style="imageViewStyle"
+				    android:layout_width="53dp"
+				    android:layout_height="50dp"
+				    android:contentDescription="Select start date"
+				    android:src="@android:drawable/ic_menu_today"
+				    tools:ignore="HardcodedText" />
+
+			</LinearLayout>
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_date_due" />
+			<LinearLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:orientation="horizontal" >
+
+				<com.andreabaccega.widget.FormEditText
+				    android:id="@+id/textDateDue"
+				    android:layout_width="150dp"
+				    android:layout_height="wrap_content"
+				    android:ems="10"
+				    android:hint="2012-11-11"
+				    android:imeOptions="actionNext"
+				    android:inputType="date"
+				    android:maxLength="10"
+				    android:text="2012-11-11"
+				    app:emptyAllowed="false"
+				    app:testType="date"
+				    app:customFormat="yyyy-MM-dd"
+				    tools:ignore="HardcodedText" />
+
+				<ImageButton
+				    android:id="@+id/imageCalendarDue"
+				    style="imageViewStyle"
+				    android:layout_width="53dp"
+				    android:layout_height="50dp"
+				    android:contentDescription="Select start date"
+				    android:src="@android:drawable/ic_menu_today"
+				    tools:ignore="HardcodedText" />
+
+			</LinearLayout>
+
+	    </TableRow>
+
+	    <TableRow
+			android:id="@+id/rowCreated"
+			android:visibility="gone"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_created" />
+
+	        <TextView
+			    android:id="@+id/textCreated"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="2012-12-11 11:00:00"
+			    tools:ignore="HardcodedText" />
+
+
+	    </TableRow>
+
+	    <TableRow
+			android:id="@+id/rowModified"
+			android:visibility="gone"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_modified" />
+
+	        <TextView
+			    android:id="@+id/textModified"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="2012-12-11 11:00:00"
+			    tools:ignore="HardcodedText" />
+
+
+	    </TableRow>
 	</TableLayout>
 
 	<TextView

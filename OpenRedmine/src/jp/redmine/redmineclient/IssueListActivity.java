@@ -36,6 +36,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	}
 
 	private static final int ACTIVITY_FILTER = 2001;
+	private static final int ACTIVITY_EDIT = 2010;
 	private SelectDataTask task;
 	private long lastPos = 0;
 	private RedmineBaseAdapterListFormHelper<RedmineIssueListAdapter> formList;
@@ -224,6 +225,16 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
 				return true;
 			}
+			case R.id.menu_access_addnew:
+			{
+				ProjectIntent intent = new ProjectIntent( getIntent() );
+				ProjectIntent send = new ProjectIntent( getApplicationContext(), IssueEditActivity.class );
+				send.setConnectionId(intent.getConnectionId());
+				send.setProjectId(intent.getProjectId());
+				startActivityForResult(send.getIntent(), ACTIVITY_EDIT);
+				return true;
+			}
+
 		}
 		return super.onOptionsItemSelected(item);
 	}

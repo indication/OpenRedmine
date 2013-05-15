@@ -91,6 +91,7 @@
 	<string name="button_cancel">キャンセル</string>
 	<string name="menu_filter">フィルタ</string>
 	<string name="filter_none">選択なし</string>
+	<string name="edit">編集</string>
 	<string name="changes_from_to"><b>%1$s</b> を %2$s から %3$s へ変更</string>
 	<string name="changes_set_to"><b>%1$s</b> に %3$s を設定</string>
 	<string name="changes_remove_from"><b>%1$s</b> から <s>%2$s</s> を削除</string>

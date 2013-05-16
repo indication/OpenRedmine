@@ -109,6 +109,13 @@ public class RedmineIssueEditForm extends FormHelper {
 
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+				if(fromUser){
+					int current = Math.round(((float)progress)/10)*10;
+					if(current != seekBar.getProgress()){
+						seekBar.setProgress(current);
+					}
+					progress = current;
+				}
 				textProgress.setText(textProgress.getContext().getString(R.string.format_progress, progress));
 			}
 		});

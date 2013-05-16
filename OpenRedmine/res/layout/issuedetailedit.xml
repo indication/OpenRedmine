@@ -20,11 +20,11 @@
 	    app:emptyAllowed="false" />
 
 	<TableLayout
-	    android:layout_width="match_parent"
+	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content" >
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -34,13 +34,13 @@
 
 	        <Spinner
 	            android:id="@+id/spinnerStatus"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" />
 
 	    </TableRow>
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -50,13 +50,13 @@
 
 	        <Spinner
 	            android:id="@+id/spinnerCategory"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" />
 
 	    </TableRow>
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -66,13 +66,13 @@
 
 	        <Spinner
 	            android:id="@+id/spinnerPriority"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" />
 
 	    </TableRow>
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -82,13 +82,13 @@
 
 	        <Spinner
 	            android:id="@+id/spinnerVersion"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" />
 
 	    </TableRow>
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -98,13 +98,13 @@
 
 	        <Spinner
 	            android:id="@+id/spinnerAssigned"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" />
 
 	    </TableRow>
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 		    <TextView
@@ -116,15 +116,16 @@
 		        android:id="@+id/progressIssue"
 		        style="?android:attr/progressBarStyleHorizontal"
 		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
-		        android:layout_marginLeft="3dip"
+		        android:layout_height="30dp"
+		        android:layout_marginRight="3dp"
 		        android:max="100"
-		        android:progress="30" />
+		        android:progress="30"
+		        android:progressDrawable="@android:drawable/progress_horizontal" />
 
 	    </TableRow>
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -165,7 +166,7 @@
 	    </TableRow>
 
 	    <TableRow
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -208,7 +209,7 @@
 	    <TableRow
 			android:id="@+id/rowCreated"
 			android:visibility="gone"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView
@@ -229,7 +230,7 @@
 	    <TableRow
 			android:id="@+id/rowModified"
 			android:visibility="gone"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" >
 
 	        <TextView

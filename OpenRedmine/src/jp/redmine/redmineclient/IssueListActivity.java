@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
@@ -113,6 +114,25 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				intent.setProjectId(item.getProject().getId());
 				intent.setIssueId(item.getIssueId());
 				startActivity( intent.getIntent() );
+			}
+		});
+		formList.list.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
+				ListView listView = (ListView) parent;
+				Object listitem = listView.getItemAtPosition(position);
+				if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
+				{
+					return false;
+				}
+				RedmineIssue item = (RedmineIssue) listitem;
+				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueEditActivity.class );
+				intent.setConnectionId(item.getConnectionId());
+				intent.setProjectId(item.getProject().getId());
+				intent.setIssueId(item.getIssueId());
+				startActivity( intent.getIntent() );
+				return true;
 			}
 		});
 

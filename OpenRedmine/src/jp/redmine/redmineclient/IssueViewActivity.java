@@ -205,6 +205,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				IssueIntent baseintent = new IssueIntent(getIntent());
 				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueEditActivity.class );
 				intent.setConnectionId(baseintent.getConnectionId());
+				intent.setProjectId(baseintent.getProjectId());
 				intent.setIssueId(baseintent.getIssueId());
 				startActivity( intent.getIntent() );
 				return true;

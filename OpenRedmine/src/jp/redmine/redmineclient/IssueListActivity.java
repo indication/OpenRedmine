@@ -110,6 +110,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				RedmineIssue item = (RedmineIssue) listitem;
 				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueViewActivity.class );
 				intent.setConnectionId(item.getConnectionId());
+				intent.setProjectId(item.getProject().getId());
 				intent.setIssueId(item.getIssueId());
 				startActivity( intent.getIntent() );
 			}

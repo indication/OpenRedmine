@@ -200,7 +200,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				onFetchRemote();
 				return true;
 			}
-			case R.id.menu_access_addnew:
+			case R.id.menu_edit:
 			{
 				IssueIntent baseintent = new IssueIntent(getIntent());
 				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueEditActivity.class );

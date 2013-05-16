@@ -50,6 +50,7 @@
 	<string name="format_name">%1$s</string>
 	<string name="format_date" formatted="false">%tF</string>
 	<string name="format_datetime" formatted="false">%1$tF %1$tH:%1$tM</string>
+	<string name="format_progress">%1$d%%</string>
 	<string name="ticket_title">タイトル</string>
 	<string name="ticket_private">プライベート</string>
 	<string name="ticket_tracker">トラッカー</string>

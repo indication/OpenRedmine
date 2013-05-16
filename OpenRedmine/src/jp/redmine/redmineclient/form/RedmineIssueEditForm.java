@@ -12,6 +12,7 @@ import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
+import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
@@ -30,7 +31,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -41,7 +43,7 @@ public class RedmineIssueEditForm extends FormHelper {
 	public Spinner spinnerPriority;
 	public Spinner spinnerVersion;
 	public Spinner spinnerAssigned;
-	public ProgressBar progressIssue;
+	public SeekBar progressIssue;
 
 	public FormEditText textTitle;
 	public FormEditText textDescription;
@@ -53,12 +55,14 @@ public class RedmineIssueEditForm extends FormHelper {
 	public TableRow rowModified;
 	public TextView textCreated;
 	public TextView textModified;
+	public TextView textProgress;
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
 	RedmineFilterListAdapter adapterStatus;
 	RedmineFilterListAdapter adapterCategory;
 	RedmineFilterListAdapter adapterPriority;
 	RedmineFilterListAdapter adapterUser;
+	RedmineFilterListAdapter adapterVersion;
 	public RedmineIssueEditForm(Activity activity){
 		this.setup(activity);
 		this.setupEvents();
@@ -71,7 +75,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		spinnerPriority = (Spinner)view.findViewById(R.id.spinnerPriority);
 		spinnerVersion = (Spinner)view.findViewById(R.id.spinnerVersion);
 		spinnerAssigned = (Spinner)view.findViewById(R.id.spinnerAssigned);
-		progressIssue = (ProgressBar)view.findViewById(R.id.progressIssue);
+		progressIssue = (SeekBar)view.findViewById(R.id.progressIssue);
 
 		textTitle = (FormEditText)view.findViewById(R.id.textTitle);
 		textDescription = (FormEditText)view.findViewById(R.id.textDescription);
@@ -84,6 +88,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		rowModified = (TableRow)view.findViewById(R.id.rowModified);
 		textCreated = (TextView)view.findViewById(R.id.textCreated);
 		textModified = (TextView)view.findViewById(R.id.textModified);
+		textProgress = (TextView)view.findViewById(R.id.textProgress);
 		textCreated.setVisibility(View.GONE);
 		rowModified.setVisibility(View.GONE);
 	}
@@ -92,6 +97,21 @@ public class RedmineIssueEditForm extends FormHelper {
 	public void setupEvents() {
 		setupDateSelector(imageCalendarStart, textDateStart);
 		setupDateSelector(imageCalendarDue, textDateDue);
+
+		progressIssue.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+				textProgress.setText(textProgress.getContext().getString(R.string.format_progress, progress));
+			}
+		});
 	}
 
 	protected void setupDateSelector(ImageButton button, final FormEditText text){
@@ -126,6 +146,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		adapterCategory = new RedmineFilterListAdapter(new RedmineCategoryModel(helper));
 		adapterPriority = new RedmineFilterListAdapter(new RedminePriorityModel(helper));
 		adapterUser = new RedmineFilterListAdapter(new RedmineUserModel(helper));
+		adapterVersion = new RedmineFilterListAdapter(new RedmineVersionModel(helper));
 	}
 
 	public void setupParameter(int connection, long project){
@@ -133,6 +154,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		setupParameter(spinnerCategory, adapterCategory, connection, project, true);
 		setupParameter(spinnerPriority, adapterPriority, connection, project, true);
 		setupParameter(spinnerAssigned, adapterUser, connection, project, true);
+		setupParameter(spinnerVersion, adapterVersion, connection, project, true);
 
 	}
 
@@ -151,6 +173,13 @@ public class RedmineIssueEditForm extends FormHelper {
 		textTitle.setText(data.getSubject());
 		textDescription.setText(data.getDescription());
 
+		setSpinnerItem(spinnerStatus,adapterStatus,data.getStatus());
+		setSpinnerItem(spinnerCategory,adapterCategory,data.getCategory());
+		setSpinnerItem(spinnerPriority,adapterPriority,data.getPriority());
+		setSpinnerItem(spinnerAssigned,adapterUser,data.getAssigned());
+		setSpinnerItem(spinnerVersion,adapterVersion,data.getVersion());
+
+		progressIssue.setProgress(data.getProgressRate());
 		textCreated.setVisibility(data.getCreated() == null ? View.GONE : View.VISIBLE);
 		rowModified.setVisibility(data.getModified() == null ? View.GONE : View.VISIBLE);
 		setDateTime(textCreated, data.getCreated());

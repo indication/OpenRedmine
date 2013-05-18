@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.form;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.andreabaccega.widget.FormEditText;
@@ -136,9 +135,7 @@ public class RedmineIssueEditForm extends FormHelper {
 					public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
 						Calendar selected = Calendar.getInstance();
 						selected.set(year, monthOfYear, dayOfMonth);
-						SimpleDateFormat format = new SimpleDateFormat();
-						format.applyPattern(TypeConverter.FORMAT_DATE);
-						text.setText(format.format(selected.getTime()));
+						text.setText(TypeConverter.getDateString(selected.getTime()));
 
 					}
 				}, date.get(Calendar.YEAR),  date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH));

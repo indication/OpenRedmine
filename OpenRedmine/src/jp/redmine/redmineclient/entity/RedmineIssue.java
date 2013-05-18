@@ -3,11 +3,16 @@ package jp.redmine.redmineclient.entity;
 import java.util.Date;
 import java.util.List;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import android.text.TextUtils;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineIssue {
+public class RedmineIssue implements IPostingRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
@@ -512,6 +517,91 @@ public class RedmineIssue {
 	 */
 	public Date getClosed() {
 		return closed;
+	}
+
+	@Override
+	public Element getXml(Document document) {
+		Element root = document.createElement("issue");
+		if(getIssueId() != null){
+			Element name = document.createElement("id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getIssueId())));
+			root.appendChild(name);
+		}
+		if(getProject() != null){
+			Element name = document.createElement("project_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getProject().getProjectId())));
+			root.appendChild(name);
+		} else {
+			throw new IllegalArgumentException("RedmineIssue Project is null.");
+		}
+		if(getTracker() != null){
+			Element name = document.createElement("tracker_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getTracker().getTrackerId())));
+			root.appendChild(name);
+		} else {
+			throw new IllegalArgumentException("RedmineIssue Tracker is null.");
+		}
+		if(getStatus() != null){
+			Element name = document.createElement("status_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getStatus().getStatusId())));
+			root.appendChild(name);
+		} else {
+			throw new IllegalArgumentException("RedmineIssue Status is null.");
+		}
+		if(!TextUtils.isEmpty(getSubject())){
+			Element name = document.createElement("subject");
+			name.appendChild(document.createTextNode(this.getSubject()));
+			root.appendChild(name);
+		} else {
+			throw new IllegalArgumentException("RedmineIssue Subject is empty.");
+		}
+		if(!TextUtils.isEmpty(getDescription())){
+			Element name = document.createElement("description");
+			name.appendChild(document.createTextNode(this.getDescription()));
+			root.appendChild(name);
+		}
+		if(getCategory() != null){
+			Element name = document.createElement("category_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getCategory().getCategoryId())));
+			root.appendChild(name);
+		}
+		if(getAssigned() != null){
+			Element name = document.createElement("assigned_to_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getAssigned().getUserId())));
+			root.appendChild(name);
+		}
+		if(getParentId() != 0){
+			Element name = document.createElement("parent_issue_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getParentId())));
+			root.appendChild(name);
+		}
+		if(getPriority() != null){
+			Element name = document.createElement("priority_id");
+			name.appendChild(document.createTextNode(String.valueOf(this.getPriority().getPriorityId())));
+			root.appendChild(name);
+		}
+		if(true){
+			Element name = document.createElement("done_ratio");
+			name.appendChild(document.createTextNode(String.valueOf(this.getDoneRate())));
+			root.appendChild(name);
+		}
+		if(getDateStart() != null){
+			Element name = document.createElement("start_date");
+			name.appendChild(document.createTextNode(TypeConverter.getDateString(this.getDateStart())));
+			root.appendChild(name);
+		}
+		if(getDateDue() != null){
+			Element name = document.createElement("due_date");
+			name.appendChild(document.createTextNode(TypeConverter.getDateString(this.getDateDue())));
+			root.appendChild(name);
+		}
+		if(getEstimatedHours() != null){
+			Element name = document.createElement("estimated_hours");
+			name.appendChild(document.createTextNode(String.valueOf(this.getEstimatedHours())));
+			root.appendChild(name);
+		}
+
+		return root;
 	}
 
 

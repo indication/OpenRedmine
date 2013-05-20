@@ -24,6 +24,7 @@
 -libraryjars libs/net.java.textilej_2.2.864.jar
 -libraryjars libs/ormlite-android-4.42.jar
 -libraryjars libs/ormlite-core-4.42.jar
+-libraryjars libs/httpmime-4.2.5.jar
 
 -dontwarn **CompatHoneycomb,**CompatCreatorHoneycombMR2
 -dontwarn **CompatJellybean,**CompatJB,android.support.v4.app.NavUtilsJB

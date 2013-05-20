@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+v2.1
+===========
+- Fix sync project via http
+
 v2.0
 ===========
 - Add post or modify time entry

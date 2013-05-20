@@ -366,7 +366,7 @@ public class RedmineIssue implements IPostingRecord {
 	/**
 	 * @param progress_rate セットする progress_rate
 	 */
-	public void setProgressRate(short progress_rate) {
+	public void setProgressRate(Short progress_rate) {
 		this.progress_rate = progress_rate;
 	}
 
@@ -374,7 +374,7 @@ public class RedmineIssue implements IPostingRecord {
 	/**
 	 * @return progress_rate
 	 */
-	public short getProgressRate() {
+	public Short getProgressRate() {
 		return progress_rate;
 	}
 

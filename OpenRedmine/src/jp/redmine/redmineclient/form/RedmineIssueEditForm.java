@@ -183,7 +183,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		setSpinnerItem(spinnerAssigned,adapterUser,data.getAssigned());
 		setSpinnerItem(spinnerVersion,adapterVersion,data.getVersion());
 
-		progressIssue.setProgress(data.getProgressRate());
+		progressIssue.setProgress(data.getProgressRate() == null ? 0 : data.getProgressRate());
 		textCreated.setVisibility(data.getCreated() == null ? View.GONE : View.VISIBLE);
 		rowModified.setVisibility(data.getModified() == null ? View.GONE : View.VISIBLE);
 		setDateTime(textCreated, data.getCreated());

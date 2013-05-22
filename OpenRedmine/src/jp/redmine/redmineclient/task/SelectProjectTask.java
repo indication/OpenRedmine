@@ -13,6 +13,7 @@ import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
+import jp.redmine.redmineclient.db.cache.RedmineTimeActivityModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
@@ -22,11 +23,13 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
+import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserCategory;
 import jp.redmine.redmineclient.parser.ParserEnumerationIssuePriority;
+import jp.redmine.redmineclient.parser.ParserEnumerationTimeEntryActivity;
 import jp.redmine.redmineclient.parser.ParserProject;
 import jp.redmine.redmineclient.parser.ParserStatus;
 import jp.redmine.redmineclient.parser.ParserTracker;
@@ -64,6 +67,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 		fetchUsers(client);
 		fetchTracker(client);
 		fetchPriority(client);
+		fetchTimeEntryActivity(client);
 		do {
 			if(count != 0){
 				//sleep for server
@@ -162,6 +166,26 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 				ParserEnumerationIssuePriority parser = new ParserEnumerationIssuePriority();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedminePriority>() {
 					public void onData(RedmineConnection con,RedminePriority data) throws SQLException {
+						model.refreshItem(con,data);
+					}
+				});
+				helperSetupParserStream(stream,parser);
+				parser.parse(connection);
+			}
+		});
+	}
+	protected void fetchTimeEntryActivity(SelectDataTaskConnectionHandler client){
+		final RedmineTimeActivityModel model = new RedmineTimeActivityModel(helper);
+		RemoteUrlEnumerations url = new RemoteUrlEnumerations();
+		url.setType(EnumerationType.TimeEntryActivities);
+
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
+			@Override
+			public void onContent(InputStream stream)
+					throws XmlPullParserException, IOException, SQLException {
+				ParserEnumerationTimeEntryActivity parser = new ParserEnumerationTimeEntryActivity();
+				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTimeActivity>() {
+					public void onData(RedmineConnection con,RedmineTimeActivity data) throws SQLException {
 						model.refreshItem(con,data);
 					}
 				});

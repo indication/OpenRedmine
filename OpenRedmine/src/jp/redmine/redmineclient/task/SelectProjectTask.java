@@ -10,12 +10,14 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
+import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
@@ -24,17 +26,20 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserCategory;
+import jp.redmine.redmineclient.parser.ParserEnumerationIssuePriority;
 import jp.redmine.redmineclient.parser.ParserProject;
 import jp.redmine.redmineclient.parser.ParserStatus;
 import jp.redmine.redmineclient.parser.ParserTracker;
 import jp.redmine.redmineclient.parser.ParserUser;
 import jp.redmine.redmineclient.parser.ParserVersion;
 import jp.redmine.redmineclient.url.RemoteUrlCategory;
+import jp.redmine.redmineclient.url.RemoteUrlEnumerations;
 import jp.redmine.redmineclient.url.RemoteUrlProjects;
 import jp.redmine.redmineclient.url.RemoteUrlStatus;
 import jp.redmine.redmineclient.url.RemoteUrlTrackers;
 import jp.redmine.redmineclient.url.RemoteUrlUsers;
 import jp.redmine.redmineclient.url.RemoteUrlVersion;
+import jp.redmine.redmineclient.url.RemoteUrlEnumerations.EnumerationType;
 
 public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integer> {
 
@@ -58,6 +63,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 		fetchStatus(client);
 		fetchUsers(client);
 		fetchTracker(client);
+		fetchPriority(client);
 		do {
 			if(count != 0){
 				//sleep for server
@@ -136,6 +142,26 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 				ParserTracker parser = new ParserTracker();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTracker>() {
 					public void onData(RedmineConnection con,RedmineTracker data) throws SQLException {
+						model.refreshItem(con,data);
+					}
+				});
+				helperSetupParserStream(stream,parser);
+				parser.parse(connection);
+			}
+		});
+	}
+	protected void fetchPriority(SelectDataTaskConnectionHandler client){
+		final RedminePriorityModel model = new RedminePriorityModel(helper);
+		RemoteUrlEnumerations url = new RemoteUrlEnumerations();
+		url.setType(EnumerationType.IssuePriorities);
+
+		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
+			@Override
+			public void onContent(InputStream stream)
+					throws XmlPullParserException, IOException, SQLException {
+				ParserEnumerationIssuePriority parser = new ParserEnumerationIssuePriority();
+				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedminePriority>() {
+					public void onData(RedmineConnection con,RedminePriority data) throws SQLException {
 						model.refreshItem(con,data);
 					}
 				});

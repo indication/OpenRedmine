@@ -107,7 +107,8 @@ public class RedmineTimeentryEditForm extends FormHelper {
 		setDate(textDate, data.getSpentsOn());
 		textDescription.setText(data.getComment());
 		if(data.getActivity() == null){
-			spinnerActivity.setSelection(0);
+			if(adapterActivity.getCount()>0)
+				spinnerActivity.setSelection(0);
 		} else {
 			for(int i = 0; i < adapterActivity.getCount(); i++){
 				@SuppressWarnings("deprecation")
@@ -133,10 +134,10 @@ public class RedmineTimeentryEditForm extends FormHelper {
 	}
 
 	public boolean Validate(){
-		if(spinnerActivity.getSelectedItem() == null)
+		if(spinnerActivity.getSelectedItem() == null || ! (spinnerActivity.getSelectedItem() instanceof RedmineTimeActivity)){
+
 			return false;
-		if(! (spinnerActivity.getSelectedItem() instanceof RedmineTimeActivity))
-			return false;
+		}
 
 		return ValidateForms(textDate, textTime);
 	}

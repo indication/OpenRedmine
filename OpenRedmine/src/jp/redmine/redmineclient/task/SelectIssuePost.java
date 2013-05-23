@@ -9,6 +9,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
+import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 
 public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
@@ -26,10 +28,15 @@ public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
 
 	@Override
 	protected Void doInBackground(RedmineIssue... params) {
+		final ParserIssue parser = new ParserIssue();
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
+				IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
+				parser.registerDataCreation(handler);
+				helperSetupParserStream(stream, parser);
+				parser.parse(connection);
 			}
 		};
 

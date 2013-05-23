@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
+import jp.redmine.redmineclient.parser.DataCreationHandler;
+import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 
 public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry> {
@@ -26,10 +29,19 @@ public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry>
 
 	@Override
 	protected Void doInBackground(RedmineTimeEntry... params) {
+		final RedmineTimeEntryModel model = new RedmineTimeEntryModel(helper);
+		final ParserTimeEntry parser = new ParserTimeEntry();
+		parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTimeEntry>() {
+			public void onData(RedmineConnection con,RedmineTimeEntry data) throws SQLException {
+				model.refreshItem(con,data);
+			}
+		});
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
+				helperSetupParserStream(stream,parser);
+				parser.parse(connection);
 			}
 		};
 

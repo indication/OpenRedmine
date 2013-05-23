@@ -7,8 +7,10 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineIssueEditForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
@@ -92,8 +94,8 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		{
 			case R.id.menu_save:
 			{
-				if(!form.Validate())
-					return true;
+				//if(!form.Validate())
+				//	return true;
 				IssueIntent intent = new IssueIntent(getIntent());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
@@ -101,17 +103,27 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				connection = mConnection.getItem(connectionid);
 				mConnection.finalize();
 
-				RedmineIssue timeentry = new RedmineIssue();
+				RedmineIssue issue = new RedmineIssue();
 				RedmineIssueModel model = new RedmineIssueModel(getHelper());
 
 				if(intent.getIssueId() != -1){
 					try {
-						timeentry = model.fetchById(connectionid, intent.getIssueId());
+						issue = model.fetchById(connectionid, intent.getIssueId());
 					} catch (SQLException e) {
 						Log.e("SelectDataTask","ParserIssue",e);
 					}
+				} else {
+					RedmineProject project = null;
+					RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+					try {
+						project = mProject.fetchById(intent.getProjectId());
+					} catch (SQLException e) {
+						Log.e("SelectDataTask","Project",e);
+					}
+					if(project != null)
+						issue.setProject(project);
 				}
-				form.getValue(timeentry);
+				form.getValue(issue);
 				SelectIssuePost post = new SelectIssuePost(getHelper(), connection){
 					private boolean isSuccess = true;
 					@Override
@@ -143,10 +155,7 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 						}
 					}
 				};
-				if(timeentry.getId() == null){
-					timeentry.setIssueId(intent.getIssueId());
-				}
-				post.execute(timeentry);
+				post.execute(issue);
 
 				return true;
 			}

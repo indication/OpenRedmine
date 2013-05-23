@@ -41,7 +41,7 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 
 
 		dialog = new ProgressDialog(this);
-		dialog.setMessage(getString(R.string.menu_settings_loading));
+		dialog.setMessage(getString(R.string.menu_settings_uploading));
 	}
 
 	@Override

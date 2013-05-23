@@ -49,11 +49,11 @@ public class RedmineIssue {
     @DatabaseField
     private Date due_date;
     @DatabaseField
-    private short progress_rate;
+    private Short progress_rate;
     @DatabaseField
-    private short done_rate;
+    private Short done_rate;
     @DatabaseField
-    private double estimated_hours;
+    private Double estimated_hours;
     @DatabaseField
     private boolean is_private;
     @DatabaseField
@@ -64,6 +64,8 @@ public class RedmineIssue {
     private Date data_modified;
     @DatabaseField
     private Date additional_modified;
+    @DatabaseField
+    private Date closed;
 
 	private List<RedmineJournal> journals;
 
@@ -375,7 +377,7 @@ public class RedmineIssue {
 	/**
 	 * @param done_rate セットする done_rate
 	 */
-	public void setDoneRate(short done_rate) {
+	public void setDoneRate(Short done_rate) {
 		this.done_rate = done_rate;
 	}
 
@@ -383,7 +385,7 @@ public class RedmineIssue {
 	/**
 	 * @return done_rate
 	 */
-	public short getDoneRate() {
+	public Short getDoneRate() {
 		return done_rate;
 	}
 
@@ -391,7 +393,7 @@ public class RedmineIssue {
 	/**
 	 * @param estimated_hours セットする estimated_hours
 	 */
-	public void setEstimatedHours(double estimated_hours) {
+	public void setEstimatedHours(Double estimated_hours) {
 		this.estimated_hours = estimated_hours;
 	}
 
@@ -399,7 +401,7 @@ public class RedmineIssue {
 	/**
 	 * @return estimated_hours
 	 */
-	public double getEstimatedHours() {
+	public Double getEstimatedHours() {
 		return estimated_hours;
 	}
 
@@ -498,9 +500,18 @@ public class RedmineIssue {
 		return additional_modified;
 	}
 
-	public void setClosed(Date parseDateTime) {
-		// TODO
+	/**
+	 * @param closed セットする closed
+	 */
+	public void setClosed(Date date) {
+		closed = date;
+	}
 
+	/**
+	 * @return closed
+	 */
+	public Date getClosed() {
+		return closed;
 	}
 
 

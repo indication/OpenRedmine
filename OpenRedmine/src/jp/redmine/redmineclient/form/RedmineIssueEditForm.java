@@ -10,13 +10,18 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
 import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
+import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
+import jp.redmine.redmineclient.entity.DummySelection;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
+import jp.redmine.redmineclient.entity.RedmineProjectVersion;
+import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTimeActivity;
+import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.form.helper.FormHelper;
@@ -38,6 +43,7 @@ import android.widget.TextView;
 
 public class RedmineIssueEditForm extends FormHelper {
 	public Spinner spinnerStatus;
+	public Spinner spinnerTracker;
 	public Spinner spinnerCategory;
 	public Spinner spinnerPriority;
 	public Spinner spinnerVersion;
@@ -58,6 +64,7 @@ public class RedmineIssueEditForm extends FormHelper {
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
 	RedmineFilterListAdapter adapterStatus;
+	RedmineFilterListAdapter adapterTracker;
 	RedmineFilterListAdapter adapterCategory;
 	RedmineFilterListAdapter adapterPriority;
 	RedmineFilterListAdapter adapterUser;
@@ -70,6 +77,7 @@ public class RedmineIssueEditForm extends FormHelper {
 
 	public void setup(Activity view){
 		spinnerStatus = (Spinner)view.findViewById(R.id.spinnerStatus);
+		spinnerTracker = (Spinner)view.findViewById(R.id.spinnerTracker);
 		spinnerCategory = (Spinner)view.findViewById(R.id.spinnerCategory);
 		spinnerPriority = (Spinner)view.findViewById(R.id.spinnerPriority);
 		spinnerVersion = (Spinner)view.findViewById(R.id.spinnerVersion);
@@ -147,6 +155,7 @@ public class RedmineIssueEditForm extends FormHelper {
 
 	public void setupDatabase(DatabaseCacheHelper helper){
 		adapterStatus = new RedmineFilterListAdapter(new RedmineStatusModel(helper));
+		adapterTracker = new RedmineFilterListAdapter(new RedmineTrackerModel(helper));
 		adapterCategory = new RedmineFilterListAdapter(new RedmineCategoryModel(helper));
 		adapterPriority = new RedmineFilterListAdapter(new RedminePriorityModel(helper));
 		adapterUser = new RedmineFilterListAdapter(new RedmineUserModel(helper));
@@ -155,6 +164,7 @@ public class RedmineIssueEditForm extends FormHelper {
 
 	public void setupParameter(int connection, long project){
 		setupParameter(spinnerStatus, adapterStatus, connection, project, true);
+		setupParameter(spinnerTracker, adapterTracker, connection, project, true);
 		setupParameter(spinnerCategory, adapterCategory, connection, project, true);
 		setupParameter(spinnerPriority, adapterPriority, connection, project, true);
 		setupParameter(spinnerAssigned, adapterUser, connection, project, true);
@@ -178,6 +188,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		textDescription.setText(data.getDescription());
 
 		setSpinnerItem(spinnerStatus,adapterStatus,data.getStatus());
+		setSpinnerItem(spinnerTracker,adapterTracker,data.getTracker());
 		setSpinnerItem(spinnerCategory,adapterCategory,data.getCategory());
 		setSpinnerItem(spinnerPriority,adapterPriority,data.getPriority());
 		setSpinnerItem(spinnerAssigned,adapterUser,data.getAssigned());
@@ -204,27 +215,43 @@ public class RedmineIssueEditForm extends FormHelper {
 				}
 			}
 		}
-
+	}
+	@SuppressWarnings("unchecked")
+	protected <T> T getSpinnerItem(Spinner spinner){
+		if(spinner == null || spinner.getSelectedItem() == null)
+			return null;
+		if(spinner.getSelectedItem() instanceof DummySelection)
+			return null;
+		return (T)spinner.getSelectedItem();
 	}
 
 	public void getValue(RedmineIssue data){
+		data.setDateStart(getDate(textDateStart));
+		data.setDateDue(getDate(textDateDue));
+		data.setSubject(textTitle.getText().toString());
+		data.setDescription(textDescription.getText().toString());
+
+		data.setStatus(this.<RedmineStatus>getSpinnerItem(spinnerStatus));
+		data.setTracker(this.<RedmineTracker>getSpinnerItem(spinnerTracker));
+		data.setCategory(this.<RedmineProjectCategory>getSpinnerItem(spinnerCategory));
+		data.setPriority(this.<RedminePriority>getSpinnerItem(spinnerPriority));
+		data.setAssigned(this.<RedmineUser>getSpinnerItem(spinnerAssigned));
+		data.setVersion(this.<RedmineProjectVersion>getSpinnerItem(spinnerVersion));
+
+		data.setProgressRate((short)progressIssue.getProgress());
 
 	}
 
+	@Override
 	public boolean Validate(){
 		if(spinnerStatus.getSelectedItem() == null || ! (spinnerStatus.getSelectedItem() instanceof RedmineTimeActivity))
 			return false;
-
-		if(spinnerCategory.getSelectedItem() == null || ! (spinnerCategory.getSelectedItem() instanceof RedmineProjectCategory))
-			return false;
-
 		if(spinnerPriority.getSelectedItem() == null || ! (spinnerPriority.getSelectedItem() instanceof RedminePriority))
 			return false;
-
-		if(spinnerAssigned.getSelectedItem() == null || ! (spinnerAssigned.getSelectedItem() instanceof RedmineUser))
+		if(spinnerTracker.getSelectedItem() == null || ! (spinnerTracker.getSelectedItem() instanceof RedmineTracker))
 			return false;
 
-		return ValidateForms(textDateStart, textDateDue, textTitle, textDescription);
+		return ValidateForms(textDateStart, textDateDue, textTitle);
 	}
 
 }

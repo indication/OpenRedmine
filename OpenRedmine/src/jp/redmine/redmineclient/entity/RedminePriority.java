@@ -19,6 +19,8 @@ public class RedminePriority implements IMasterRecord {
     private int priority_id;
     @DatabaseField
     private String name;
+    //@DatabaseField
+    private boolean is_default;
     @DatabaseField
     private Date created;
     @DatabaseField
@@ -130,5 +132,21 @@ public class RedminePriority implements IMasterRecord {
 	public Long getRemoteId() {
 		return (long)getPriorityId();
 	}
+
+	/**
+	 * @return is_default
+	 */
+	public boolean isDefault() {
+		return is_default;
+	}
+
+
+	/**
+	 * @param is_default セットする is_default
+	 */
+	public void setDefault(boolean is_default) {
+		this.is_default = is_default;
+	}
+
 
 }

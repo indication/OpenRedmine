@@ -9,6 +9,7 @@ public abstract class RemoteUrl {
 		min
 		,v110
 		,v130
+		,v220
 		,max
 	}
 	public enum requests {

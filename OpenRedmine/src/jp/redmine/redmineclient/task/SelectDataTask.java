@@ -196,18 +196,23 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 				Log.i("requestGet", "Deflate: Enabled");
 				stream =  new InflaterInputStream(stream);
 			}
-			if (HttpStatus.SC_OK == status) {
+			switch(status){
+			case HttpStatus.SC_OK:
+			case HttpStatus.SC_CREATED:
 			    isInError = false;
 				handler.onContent(stream);
-			} else {
+				break;
+			default:
 				publishErrorRequest(status);
 				if(BuildConfig.DEBUG){
+					Log.d("requestError", "Status: " + String.valueOf(status));
 					BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 				    String str;
 				    while((str = reader.readLine()) != null){
-				    	Log.d("requestGet", str);
+				    	Log.d("requestError", str);
 				    }
 				}
+				break;
 			}
 		} catch (URISyntaxException e) {
 			publishErrorRequest(404);

@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
+
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
@@ -15,7 +17,7 @@ import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 
 public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry> {
-
+	private final static String TAG = "SelectTimeEntriesPost";
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;
 	public SelectTimeEntriesPost(DatabaseCacheHelper helper,RedmineConnection con){
@@ -55,7 +57,14 @@ public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry>
 				postData(client, connection, url, handler, puthandler);
 			} else {
 				url.setId(item.getTimeentryId());
-				putData(client, connection, url, handler, puthandler);
+				boolean isSuccess = putData(client, connection, url, handler, puthandler);
+				if(isSuccess && parser.getCount() < 1){
+					try {
+						model.refreshItem(connection, item);
+					} catch (SQLException e) {
+						Log.e(TAG,"update timeentry",e);
+					}
+				}
 			}
 		}
 		client.close();

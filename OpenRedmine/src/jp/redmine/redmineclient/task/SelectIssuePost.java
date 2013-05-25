@@ -6,7 +6,10 @@ import java.sql.SQLException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import android.util.Log;
+
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
@@ -14,7 +17,7 @@ import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 
 public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
-
+	private final static String TAG = "SelectIssuePost";
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;
 	public SelectIssuePost(DatabaseCacheHelper helper,RedmineConnection con){
@@ -41,6 +44,7 @@ public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
 		};
 
 		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		RedmineIssueModel mIssue = new RedmineIssueModel(helper);
 		RemoteUrlIssue url = new RemoteUrlIssue();
 		for(final RedmineIssue item : params){
 			SelectDataTaskPutHandler puthandler = getPutHandler(item);
@@ -50,7 +54,14 @@ public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
 				postData(client, connection, url, handler, puthandler);
 			} else {
 				url.setIssueId(item.getIssueId());
-				putData(client, connection, url, handler, puthandler);
+				boolean isSuccess = putData(client, connection, url, handler, puthandler);
+				if(isSuccess && parser.getCount() < 1){
+					try {
+						mIssue.refreshItem(connection, item);
+					} catch (SQLException e) {
+						Log.e(TAG,"update issue",e);
+					}
+				}
 			}
 		}
 		client.close();

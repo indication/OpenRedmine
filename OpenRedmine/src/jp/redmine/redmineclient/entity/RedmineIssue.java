@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -475,6 +476,27 @@ public class RedmineIssue implements IPostingRecord {
 	 */
 	public void setJournals(List<RedmineJournal> journals) {
 		this.journals = journals;
+	}
+
+	/**
+	 * Get first item of journals
+	 * @return journals
+	 */
+	public RedmineJournal getJournal() {
+		if(journals == null)
+			return null;
+		if(journals.size() < 1)
+			return null;
+		return journals.get(0);
+	}
+
+	/**
+	 * Set journal for posting note
+	 * @param journal for notes
+	 */
+	public void setJournal(RedmineJournal journal) {
+		this.journals = new ArrayList<RedmineJournal>();
+		this.journals.add(journal);
 	}
 
 	/**

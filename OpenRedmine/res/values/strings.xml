@@ -18,6 +18,7 @@
 	<string name="menu_setting_check_auth">HTTP Basic Authentication</string>
 	<string name="menu_setting_list_menu_title">%1$s :</string>
 	<string name="menu_setting_list_menu_edit">Edit</string>
+	<string name="menu_setting_list_menu_comment">Comment</string>
 	<string name="menu_setting_list_menu_delete">Delete</string>
 	<string name="menu_settings_loading">Retreiving item data.. </string>
 	<string name="menu_settings_uploading">Posting item data.. </string>

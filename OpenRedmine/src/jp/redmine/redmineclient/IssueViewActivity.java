@@ -210,6 +210,11 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				startActivity( intent.getIntent() );
 				return true;
 			}
+			case R.id.menu_comment:
+			{
+				//TODO
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -238,7 +238,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		data.setAssigned(this.<RedmineUser>getSpinnerItem(spinnerAssigned));
 		data.setVersion(this.<RedmineProjectVersion>getSpinnerItem(spinnerVersion));
 
-		data.setProgressRate((short)progressIssue.getProgress());
+		data.setDoneRate((short)progressIssue.getProgress());
 
 	}
 

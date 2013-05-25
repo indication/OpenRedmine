@@ -12,7 +12,9 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
+import jp.redmine.redmineclient.form.RedmineIssueCommentForm;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
@@ -25,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
@@ -34,6 +37,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	private SelectDataTask task;
 	private RedmineIssueViewForm form;
 	private RedmineIssueViewDetailForm formDetail;
+	private RedmineIssueCommentForm formComment;
 	private RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter> formList;
 	private MenuItem menu_refresh;
 
@@ -65,6 +69,19 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.issueview);
 		ActionActivityHelper actionhelper = new ActionActivityHelper(this);
+		View comment = getLayoutInflater().inflate(R.layout.issuecomment,null);
+		formComment = new RedmineIssueCommentForm(comment);
+		formComment.buttonOK.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!formComment.Validate())
+					return;
+				RedmineJournal journal = new RedmineJournal();
+				formComment.getValue(journal);
+
+				formComment.clear();
+			}
+		});
 
 		formList = new RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter>();
 		formList.setList((ListView)findViewById(R.id.list));
@@ -74,6 +91,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				getHelper()
 				, actionhelper
 				));
+		formList.list.addFooterView(comment);
 		formList.onRestoreInstanceState(savedInstanceState);
 
 		form = new RedmineIssueViewForm(this);
@@ -89,7 +107,6 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				intent.setConnectionId(baseintent.getConnectionId());
 				intent.setIssueId(baseintent.getIssueId());
 				startActivity( intent.getIntent() );
-
 			}
 		});
 	}

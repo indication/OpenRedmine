@@ -260,7 +260,7 @@ public class RedmineIssueEditForm extends FormHelper {
 			sb.append(context.getString(R.string.input_error_select,context.getString(R.string.ticket_tracker)));
 			sb.append("\n");
 		}
-		if(sb.capacity() > 0){
+		if(sb.length() > 0){
 			Toast.makeText(spinnerStatus.getContext(), sb.toString(), Toast.LENGTH_LONG).show();
 			ValidateForms(textDateStart, textDateDue, textTitle);
 			return false;

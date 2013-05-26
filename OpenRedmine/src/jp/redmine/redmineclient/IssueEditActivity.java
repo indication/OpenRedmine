@@ -6,13 +6,15 @@ import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
-import jp.redmine.redmineclient.intent.TimeEntryIntent;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.form.RedmineIssueEditForm;
+import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
-import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
+import jp.redmine.redmineclient.task.SelectIssuePost;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +23,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
-	public TimeEntryEditActivity(){
+public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
+	private static final String TAG = "IssueEditActivity";
+	public IssueEditActivity(){
 		super();
 	}
-	private RedmineTimeentryEditForm form;
+	private RedmineIssueEditForm form;
 
 	private ProgressDialog dialog;
 
@@ -34,9 +37,9 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.timeentryedit);
+		setContentView(R.layout.issuedetailedit);
 
-		form = new RedmineTimeentryEditForm(this);
+		form = new RedmineIssueEditForm(this);
 		form.setupDatabase(getHelper());
 
 
@@ -47,26 +50,30 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 	@Override
 	protected void onStart() {
 		super.onStart();
-		onRefresh(true);
+		try {
+			onRefresh(true);
+		} catch (SQLException e) {
+			Log.e(TAG,"onStart",e);
+		}
 	}
 
-	protected void onRefresh(boolean isFetch){
-		TimeEntryIntent intent = new TimeEntryIntent(getIntent());
+	protected void onRefresh(boolean isFetch) throws SQLException{
+		IssueIntent intent = new IssueIntent(getIntent());
 		int connectionid = intent.getConnectionId();
+		long projectid = 0;
 
-		form.setupParameter(connectionid, 0);
+		RedmineIssue issue = new RedmineIssue();
+		RedmineIssueModel model = new RedmineIssueModel(getHelper());
 
-		RedmineTimeEntry timeentry = new RedmineTimeEntry();
-		RedmineTimeEntryModel model = new RedmineTimeEntryModel(getHelper());
-
-		if(intent.getTimeEntryId() != -1){
-			try {
-				timeentry = model.fetchById(connectionid, intent.getTimeEntryId());
-			} catch (SQLException e) {
-				Log.e("SelectDataTask","ParserIssue",e);
-			}
+		if(intent.getIssueId() != -1){
+			issue = model.fetchById(connectionid, intent.getIssueId());
+			projectid = issue.getProject().getId();
+		} else {
+			projectid = intent.getProjectId();
 		}
-		form.setValue(timeentry);
+
+		form.setupParameter(connectionid, projectid);
+		form.setValue(issue);
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -89,25 +96,35 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			{
 				if(!form.Validate())
 					return true;
-				TimeEntryIntent intent = new TimeEntryIntent(getIntent());
+				IssueIntent intent = new IssueIntent(getIntent());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
 				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
 				connection = mConnection.getItem(connectionid);
 				mConnection.finalize();
 
-				RedmineTimeEntry timeentry = new RedmineTimeEntry();
-				RedmineTimeEntryModel model = new RedmineTimeEntryModel(getHelper());
+				RedmineIssue issue = new RedmineIssue();
+				RedmineIssueModel model = new RedmineIssueModel(getHelper());
 
-				if(intent.getTimeEntryId() != -1){
+				if(intent.getIssueId() != -1){
 					try {
-						timeentry = model.fetchById(connectionid, intent.getTimeEntryId());
+						issue = model.fetchById(connectionid, intent.getIssueId());
 					} catch (SQLException e) {
 						Log.e("SelectDataTask","ParserIssue",e);
 					}
+				} else {
+					RedmineProject project = null;
+					RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+					try {
+						project = mProject.fetchById(intent.getProjectId());
+					} catch (SQLException e) {
+						Log.e("SelectDataTask","Project",e);
+					}
+					if(project != null)
+						issue.setProject(project);
 				}
-				form.getValue(timeentry);
-				SelectTimeEntriesPost post = new SelectTimeEntriesPost(getHelper(), connection){
+				form.getValue(issue);
+				SelectIssuePost post = new SelectIssuePost(getHelper(), connection){
 					private boolean isSuccess = true;
 					@Override
 					protected void onError(Exception lasterror) {
@@ -138,10 +155,8 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 						}
 					}
 				};
-				if(timeentry.getId() == null){
-					timeentry.setIssueId(intent.getIssueId());
-				}
-				post.execute(timeentry);
+				post.execute(issue);
+
 				return true;
 			}
 			case R.id.menu_delete:

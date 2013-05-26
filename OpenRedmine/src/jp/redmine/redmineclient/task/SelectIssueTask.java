@@ -21,7 +21,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	protected DatabaseCacheHelper helper;
 	protected RedmineProject project;
 	protected RedmineConnection connection;
-	protected boolean isFetchAll = false;
+	private boolean isFetchAll = false;
 	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,RedmineProject proj){
 		this.helper = helper;
 		this.project = proj;
@@ -77,7 +77,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 			}
 		};
 		RemoteUrlIssues url = new RemoteUrlIssues();
-		RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
+		RemoteUrlIssues.setupFilter(url, filter, isFetchAll());
 		try {
 			boolean isFirst = true;
 			while(fetched < lastfetched){
@@ -121,6 +121,22 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	@Override
 	protected void onProgress(int max, int proc) {
 
+	}
+
+
+	/**
+	 * @return isFetchAll
+	 */
+	public boolean isFetchAll() {
+		return isFetchAll;
+	}
+
+
+	/**
+	 * @param isFetchAll セットする isFetchAll
+	 */
+	public void setFetchAll(boolean isFetchAll) {
+		this.isFetchAll = isFetchAll;
 	}
 
 }

@@ -102,7 +102,7 @@ public class RedmineConnectionActivityForm extends FormHelper {
 		performSetEnabled(formPermitUnsafe,checkUnsafeConnection.isChecked());
 	}
 
-
+	@Override
 	public boolean Validate(){
 		return ValidateForms(
 				editName

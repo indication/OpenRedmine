@@ -125,14 +125,14 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		String value = header.getValue();
 		return (!TextUtils.isEmpty(value) && value.contains("deflate"));
 	}
-	protected void fetchData(SelectDataTaskConnectionHandler connectionhandler, RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler){
-		fetchData(RemoteType.get,connectionhandler,connection,url,handler,null);
+	protected boolean fetchData(SelectDataTaskConnectionHandler connectionhandler, RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler){
+		return fetchData(RemoteType.get,connectionhandler,connection,url,handler,null);
 	}
-	protected void putData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
-		fetchData(RemoteType.put,connectionhandler,connection,url,handler,puthandler);
+	protected boolean putData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		return fetchData(RemoteType.put,connectionhandler,connection,url,handler,puthandler);
 	}
-	protected void postData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
-		fetchData(RemoteType.post,connectionhandler,connection,url,handler,puthandler);
+	protected boolean postData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		return fetchData(RemoteType.post,connectionhandler,connection,url,handler,puthandler);
 	}
 
 	protected enum RemoteType{
@@ -141,12 +141,12 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		post,
 		delete,
 	}
-	protected void fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
 		url.setupRequest(requests.xml);
 		url.setupVersion(versions.v130);
-		fetchData(type,connectionhandler, url.getUrl(connection.getUrl()),handler,puthandler);
+		return fetchData(type,connectionhandler, url.getUrl(connection.getUrl()),handler,puthandler);
 	}
-	protected void fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,Builder builder
+	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,Builder builder
 			,SelectDataTaskDataHandler handler,SelectDataTaskPutHandler puthandler){
 		Uri remoteurl = builder.build();
 		DefaultHttpClient client = connectionhandler.getHttpClient();
@@ -175,7 +175,7 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 				msg = put;
 				break;
 			default:
-				return;
+				return false;
 
 			}
 			connectionhandler.setupOnMessage(msg);
@@ -196,18 +196,23 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 				Log.i("requestGet", "Deflate: Enabled");
 				stream =  new InflaterInputStream(stream);
 			}
-			if (HttpStatus.SC_OK == status) {
+			switch(status){
+			case HttpStatus.SC_OK:
+			case HttpStatus.SC_CREATED:
 			    isInError = false;
 				handler.onContent(stream);
-			} else {
+				break;
+			default:
 				publishErrorRequest(status);
 				if(BuildConfig.DEBUG){
+					Log.d("requestError", "Status: " + String.valueOf(status));
 					BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 				    String str;
 				    while((str = reader.readLine()) != null){
-				    	Log.d("requestGet", str);
+				    	Log.d("requestError", str);
 				    }
 				}
+				break;
 			}
 		} catch (URISyntaxException e) {
 			publishErrorRequest(404);
@@ -228,5 +233,6 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		}
 		if(isInError)
 			connectionhandler.close();
+		return !isInError;
 	}
 }

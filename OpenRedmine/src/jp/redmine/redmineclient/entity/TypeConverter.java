@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -27,6 +28,7 @@ public class TypeConverter {
 		else
 			return parseDateTimeFormat(datetime,FORMAT_DATETIME);
 	}
+	@SuppressLint("SimpleDateFormat")
 	public static Date parseDateTimeFormat(String datetime,String formatstr){
 		SimpleDateFormat format = new SimpleDateFormat(formatstr);
 		if(TextUtils.isEmpty(datetime)) return null;
@@ -45,5 +47,11 @@ public class TypeConverter {
 	public static Integer parseInteger(String str){
 		if(TextUtils.isEmpty(str)) return null;
 		return Integer.parseInt(str);
+	}
+	@SuppressLint("SimpleDateFormat")
+	public static String getDateString(Date date){
+		SimpleDateFormat format = new SimpleDateFormat();
+		format.applyPattern(FORMAT_DATE);
+		return format.format(date);
 	}
 }

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.redmine.redmineclient"
 	android:installLocation="auto"
-    android:versionCode="23"
-    android:versionName="2.1" >
+    android:versionCode="26"
+    android:versionName="2.2" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="11"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,6 +34,7 @@
         <activity android:name=".ConnectionNaviActivity"></activity>
         <activity android:name=".ProjectListActivity"></activity>
         <activity android:name=".IssueListActivity"></activity>
+        <activity android:name=".IssueEditActivity"></activity>
         <activity android:name=".IssueViewActivity"></activity>
         <activity android:name=".FilterViewActivity"></activity>
         <activity android:name=".TimeEntryViewActivity"></activity>

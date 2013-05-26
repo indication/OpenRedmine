@@ -9,60 +9,57 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.util.Log;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.parser.DataCreationHandler;
-import jp.redmine.redmineclient.parser.ParserTimeEntry;
-import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
+import jp.redmine.redmineclient.parser.ParserIssue;
+import jp.redmine.redmineclient.url.RemoteUrlIssue;
 
-public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry> {
-	private final static String TAG = "SelectTimeEntriesPost";
+public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
+	private final static String TAG = "SelectIssuePost";
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;
-	public SelectTimeEntriesPost(DatabaseCacheHelper helper,RedmineConnection con){
+	public SelectIssuePost(DatabaseCacheHelper helper,RedmineConnection con){
 		this.helper = helper;
 		this.connection = con;
 	}
 
 
-	public SelectTimeEntriesPost() {
+	public SelectIssuePost() {
 	}
 
 	@Override
-	protected Void doInBackground(RedmineTimeEntry... params) {
-		final RedmineTimeEntryModel model = new RedmineTimeEntryModel(helper);
-		final ParserTimeEntry parser = new ParserTimeEntry();
-		parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTimeEntry>() {
-			public void onData(RedmineConnection con,RedmineTimeEntry data) throws SQLException {
-				model.refreshItem(con,data);
-			}
-		});
+	protected Void doInBackground(RedmineIssue... params) {
+		final ParserIssue parser = new ParserIssue();
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
-				helperSetupParserStream(stream,parser);
+				IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
+				parser.registerDataCreation(handler);
+				helperSetupParserStream(stream, parser);
 				parser.parse(connection);
 			}
 		};
 
 		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
-		RemoteUrlTimeEntries url = new RemoteUrlTimeEntries();
-		for(final RedmineTimeEntry item : params){
+		RedmineIssueModel mIssue = new RedmineIssueModel(helper);
+		RemoteUrlIssue url = new RemoteUrlIssue();
+		for(final RedmineIssue item : params){
 			SelectDataTaskPutHandler puthandler = getPutHandler(item);
-			if(item.getTimeentryId() == null){
-				url.setId(null);
+			if(item.getIssueId() == null){
+				url.setIssueId((Integer)null);
 
 				postData(client, connection, url, handler, puthandler);
 			} else {
-				url.setId(item.getTimeentryId());
+				url.setIssueId(item.getIssueId());
 				boolean isSuccess = putData(client, connection, url, handler, puthandler);
 				if(isSuccess && parser.getCount() < 1){
 					try {
-						model.refreshItem(connection, item);
+						mIssue.refreshItem(connection, item);
 					} catch (SQLException e) {
-						Log.e(TAG,"update timeentry",e);
+						Log.e(TAG,"update issue",e);
 					}
 				}
 			}

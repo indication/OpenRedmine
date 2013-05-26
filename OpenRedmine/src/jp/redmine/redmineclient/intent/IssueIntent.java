@@ -3,7 +3,7 @@ package jp.redmine.redmineclient.intent;
 import android.content.Context;
 import android.content.Intent;
 
-public class IssueIntent extends ConnectionIntent {
+public class IssueIntent extends ProjectIntent {
 	public IssueIntent(Intent intent) {
 		super(intent);
 	}

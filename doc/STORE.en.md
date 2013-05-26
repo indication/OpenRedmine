@@ -25,6 +25,7 @@ Features:
 * Filter (Status/Tracker/Category/Priority/Author/Assined)
 * Sort (IssueID/Created/Modified)
 * Show changelogs
+* Create or modify issue/timeentry
 
 Working:
 * Add journal

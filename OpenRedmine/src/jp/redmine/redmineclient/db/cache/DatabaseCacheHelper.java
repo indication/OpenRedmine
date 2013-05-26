@@ -27,7 +27,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=5;
+	private static int DB_VERSION=6;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -81,6 +81,8 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				if(older > 2){
 					addColumn(db,RedmineIssue.class,"closed TEXT");
 				}
+			case 5:
+				addColumn(db,RedminePriority.class,"is_default BOOLEAN");
 				break;
 			}
 

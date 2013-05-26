@@ -94,8 +94,8 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		{
 			case R.id.menu_save:
 			{
-				//if(!form.Validate())
-				//	return true;
+				if(!form.Validate())
+					return true;
 				IssueIntent intent = new IssueIntent(getIntent());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;

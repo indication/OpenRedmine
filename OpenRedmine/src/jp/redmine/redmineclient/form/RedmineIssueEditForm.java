@@ -29,6 +29,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,6 +41,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RedmineIssueEditForm extends FormHelper {
 	public Spinner spinnerStatus;
@@ -174,6 +176,7 @@ public class RedmineIssueEditForm extends FormHelper {
 
 	protected void setupParameter(Spinner spinner, RedmineFilterListAdapter adapter
 			,int connection, long project, boolean isAdd){
+		adapter.setupDummyItem(spinner.getContext());
 		adapter.setupParameter(connection, project, isAdd);
 		spinner.setAdapter(adapter);
 
@@ -244,14 +247,27 @@ public class RedmineIssueEditForm extends FormHelper {
 
 	@Override
 	public boolean Validate(){
-		if(spinnerStatus.getSelectedItem() == null || ! (spinnerStatus.getSelectedItem() instanceof RedmineTimeActivity))
+		StringBuilder sb = new StringBuilder();
+		Context context = spinnerStatus.getContext();
+		if(spinnerStatus.getSelectedItem() == null || ! (spinnerStatus.getSelectedItem() instanceof RedmineTimeActivity)){
+			sb.append(context.getString(R.string.input_error_select,context.getString(R.string.ticket_status)));
+			sb.append("\n");
+		}
+		if(spinnerPriority.getSelectedItem() == null || ! (spinnerPriority.getSelectedItem() instanceof RedminePriority)){
+			sb.append(context.getString(R.string.input_error_select,context.getString(R.string.ticket_priority)));
+			sb.append("\n");
+		}
+		if(spinnerTracker.getSelectedItem() == null || ! (spinnerTracker.getSelectedItem() instanceof RedmineTracker)){
+			sb.append(context.getString(R.string.input_error_select,context.getString(R.string.ticket_tracker)));
+			sb.append("\n");
+		}
+		if(sb.capacity() > 0){
+			Toast.makeText(spinnerStatus.getContext(), sb.toString(), Toast.LENGTH_LONG).show();
+			ValidateForms(textDateStart, textDateDue, textTitle);
 			return false;
-		if(spinnerPriority.getSelectedItem() == null || ! (spinnerPriority.getSelectedItem() instanceof RedminePriority))
-			return false;
-		if(spinnerTracker.getSelectedItem() == null || ! (spinnerTracker.getSelectedItem() instanceof RedmineTracker))
-			return false;
-
-		return ValidateForms(textDateStart, textDateDue, textTitle);
+		} else {
+			return ValidateForms(textDateStart, textDateDue, textTitle);
+		}
 	}
 
 }

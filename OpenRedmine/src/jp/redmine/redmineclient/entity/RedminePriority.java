@@ -19,7 +19,7 @@ public class RedminePriority implements IMasterRecord {
     private int priority_id;
     @DatabaseField
     private String name;
-    //@DatabaseField
+    @DatabaseField
     private boolean is_default;
     @DatabaseField
     private Date created;

@@ -75,7 +75,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 			}
 			@Override
 			public int getResourceNameId() {
-				return R.string.ticket_time_estimate;
+				return R.string.ticket_time;
 			}
 		});
 		fetchMap.put("due_date", new fetchHelper(){

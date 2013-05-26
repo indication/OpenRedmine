@@ -133,6 +133,7 @@ public class RedmineTimeentryEditForm extends FormHelper {
 		data.setActivity((RedmineTimeActivity) spinnerActivity.getSelectedItem());
 	}
 
+	@Override
 	public boolean Validate(){
 		if(spinnerActivity.getSelectedItem() == null || ! (spinnerActivity.getSelectedItem() instanceof RedmineTimeActivity)){
 

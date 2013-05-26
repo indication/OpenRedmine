@@ -94,7 +94,7 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		progressBar.setMax(100);
 		progressBar.setProgress(progress);
 		progressBar.setSecondaryProgress(donerate);
-		textProgress.setText(String.valueOf(donerate).concat("%"));
+		textProgress.setText(textProgress.getContext().getString(R.string.format_progress,donerate));
 	}
 
 	public void setValue(RedmineIssue rd){

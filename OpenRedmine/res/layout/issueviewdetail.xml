@@ -130,9 +130,10 @@
 	    <ProgressBar
 	        android:id="@+id/progressissue"
 	        style="?android:attr/progressBarStyleHorizontal"
+		    android:progressDrawable="@android:drawable/progress_horizontal"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="3dip"
+	        android:layout_height="20dp"
+	        android:layout_marginRight="3dp"
 	        android:max="100"
 	        android:progress="30" />
 	</LinearLayout>

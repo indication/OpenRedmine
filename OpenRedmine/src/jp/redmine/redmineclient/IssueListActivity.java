@@ -8,12 +8,15 @@ import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectIssueTask;
+import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask.Status;
@@ -27,6 +30,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
@@ -36,8 +40,9 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	}
 
 	private static final int ACTIVITY_FILTER = 2001;
+	private static final int ACTIVITY_EDIT = 2010;
 	private SelectDataTask task;
-	private long lastPos = 0;
+	private long lastPos = -1;
 	private RedmineBaseAdapterListFormHelper<RedmineIssueListAdapter> formList;
 	private MenuItem menu_refresh;
 
@@ -85,8 +90,7 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 						return;
 					if(lastPos == totalItemCount)
 						return;
-					task = new SelectDataTask();
-					task.execute(totalItemCount,20);
+					onRefresh(false);
 					lastPos = totalItemCount;
 				}
 			}
@@ -109,8 +113,28 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				RedmineIssue item = (RedmineIssue) listitem;
 				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueViewActivity.class );
 				intent.setConnectionId(item.getConnectionId());
+				intent.setProjectId(item.getProject().getId());
 				intent.setIssueId(item.getIssueId());
 				startActivity( intent.getIntent() );
+			}
+		});
+		formList.list.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
+				ListView listView = (ListView) parent;
+				Object listitem = listView.getItemAtPosition(position);
+				if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
+				{
+					return false;
+				}
+				RedmineIssue item = (RedmineIssue) listitem;
+				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueEditActivity.class );
+				intent.setConnectionId(item.getConnectionId());
+				intent.setProjectId(item.getProject().getId());
+				intent.setIssueId(item.getIssueId());
+				startActivity( intent.getIntent() );
+				return true;
 			}
 		});
 
@@ -122,7 +146,10 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 		ProjectIntent intent = new ProjectIntent( getIntent() );
 		formList.adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		this.onRefresh(false);
+		formList.refresh();
+		if(formList.adapter.getCount() < 1){
+			this.onRefresh(true);
+		}
 	}
 
 	protected void onRefresh(boolean isFlush){
@@ -131,32 +158,38 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		}
 		formList.refresh();
 		if(lastPos != formList.list.getChildCount()){
-			lastPos = 0; //reset
+			lastPos = -1; //reset
 		}
-		task = new SelectDataTask();
+
+		ProjectIntent intent = new ProjectIntent(getIntent());
+		DatabaseCacheHelper helper = getHelper();
+		RedmineConnection connection = null;
+		RedmineProject project = null;
+		try {
+			ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+			connection = mConnection.getItem(intent.getConnectionId());
+			mConnection.finalize();
+			RedmineProjectModel mProject = new RedmineProjectModel(helper);
+			project = mProject.fetchById(intent.getProjectId());
+		} catch (SQLException e) {
+			Log.e("IssueListActivity","SelectDataTask",e);
+		}
+
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		task = new SelectDataTask(helper,connection,project);
+		task.setFetchAll(sp.getBoolean("issue_get_all", false));
 		task.execute(0,10,isFlush ? 1 : 0);
+		if(isFlush){
+			SelectProjectEnumerationTask enumtask = new SelectProjectEnumerationTask(helper,connection,project);
+			enumtask.execute();
+		}
 	}
 
 	private class SelectDataTask extends SelectIssueTask {
-		public SelectDataTask() {
-			super();
-			ProjectIntent intent = new ProjectIntent(getIntent());
-			int connectionid = intent.getConnectionId();
-			long projectid = intent.getProjectId();
-			helper = getHelper();
-			try {
-				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
-				connection = mConnection.getItem(connectionid);
-				mConnection.finalize();
-				RedmineProjectModel mProject = new RedmineProjectModel(helper);
-				project = mProject.fetchById(projectid);
-			} catch (SQLException e) {
-				Log.e("IssueListActivity","SelectDataTask",e);
-			}
-
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			isFetchAll = sp.getBoolean("issue_get_all", false);
+		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, RedmineProject project) {
+			super(helper,connection,project);
 		}
+
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
@@ -224,6 +257,16 @@ public class IssueListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 				startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
 				return true;
 			}
+			case R.id.menu_access_addnew:
+			{
+				ProjectIntent intent = new ProjectIntent( getIntent() );
+				ProjectIntent send = new ProjectIntent( getApplicationContext(), IssueEditActivity.class );
+				send.setConnectionId(intent.getConnectionId());
+				send.setProjectId(intent.getProjectId());
+				startActivityForResult(send.getIntent(), ACTIVITY_EDIT);
+				return true;
+			}
+
 		}
 		return super.onOptionsItemSelected(item);
 	}

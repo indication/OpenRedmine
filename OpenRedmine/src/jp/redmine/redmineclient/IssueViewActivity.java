@@ -200,6 +200,16 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				onFetchRemote();
 				return true;
 			}
+			case R.id.menu_edit:
+			{
+				IssueIntent baseintent = new IssueIntent(getIntent());
+				IssueIntent intent = new IssueIntent(getApplicationContext(), IssueEditActivity.class );
+				intent.setConnectionId(baseintent.getConnectionId());
+				intent.setProjectId(baseintent.getProjectId());
+				intent.setIssueId(baseintent.getIssueId());
+				startActivity( intent.getIntent() );
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -3,11 +3,16 @@ package jp.redmine.redmineclient.entity;
 import java.util.Date;
 import java.util.List;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import android.text.TextUtils;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineIssue {
+public class RedmineIssue implements IPostingRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
@@ -361,7 +366,7 @@ public class RedmineIssue {
 	/**
 	 * @param progress_rate セットする progress_rate
 	 */
-	public void setProgressRate(short progress_rate) {
+	public void setProgressRate(Short progress_rate) {
 		this.progress_rate = progress_rate;
 	}
 
@@ -369,7 +374,7 @@ public class RedmineIssue {
 	/**
 	 * @return progress_rate
 	 */
-	public short getProgressRate() {
+	public Short getProgressRate() {
 		return progress_rate;
 	}
 
@@ -512,6 +517,48 @@ public class RedmineIssue {
 	 */
 	public Date getClosed() {
 		return closed;
+	}
+
+	@Override
+	public Element getXml(Document document) {
+		Element root = document.createElement("issue");
+		if(getIssueId() != null){
+			root.appendChild(getElement(document,"id",		String.valueOf(this.getIssueId())));
+		}
+		root.appendChild(getElement(document,"project_id",	getProject()));
+		root.appendChild(getElement(document,"tracker_id",	getTracker()));
+		root.appendChild(getElement(document,"status_id",	getStatus()));
+		if(!TextUtils.isEmpty(getSubject())){
+			root.appendChild(getElement(document,"subject",		this.getSubject()));
+		} else {
+			throw new IllegalArgumentException("RedmineIssue Subject is empty.");
+		}
+		if(!TextUtils.isEmpty(getDescription())){
+			root.appendChild(getElement(document,"description",	this.getDescription()));
+		}
+		root.appendChild(getElement(document,"category_id",		getCategory()));
+		root.appendChild(getElement(document,"assigned_to_id",	getAssigned()));
+		if(getParentId() != 0){
+			root.appendChild(getElement(document,"parent_issue_id",String.valueOf(this.getParentId())));
+		}
+		root.appendChild(getElement(document,"priority_id",		getPriority()));
+		root.appendChild(getElement(document,"done_ratio",		String.valueOf(this.getDoneRate())));
+		root.appendChild(getElement(document,"start_date",		getDateStart()));
+		root.appendChild(getElement(document,"due_date",		getDateDue()));
+		root.appendChild(getElement(document,"estimated_hours",	this.getEstimatedHours() == 0 ? "" : String.valueOf(this.getEstimatedHours())));
+		return root;
+	}
+
+	protected Element getElement(Document document, String name, IMasterRecord record){
+		return getElement(document, name, record == null ? "" : String.valueOf(record.getRemoteId()));
+	}
+	protected Element getElement(Document document, String name, Date record){
+		return getElement(document, name, record == null ? "" : TypeConverter.getDateString(record));
+	}
+	protected Element getElement(Document document, String name, String record){
+		Element element = document.createElement(name);
+		element.appendChild(document.createTextNode(record == null ? "" : record));
+		return element;
 	}
 
 

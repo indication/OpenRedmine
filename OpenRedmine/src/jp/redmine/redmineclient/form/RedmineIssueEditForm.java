@@ -20,7 +20,6 @@ import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
-import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
@@ -249,7 +248,7 @@ public class RedmineIssueEditForm extends FormHelper {
 	public boolean Validate(){
 		StringBuilder sb = new StringBuilder();
 		Context context = spinnerStatus.getContext();
-		if(spinnerStatus.getSelectedItem() == null || ! (spinnerStatus.getSelectedItem() instanceof RedmineTimeActivity)){
+		if(spinnerStatus.getSelectedItem() == null || ! (spinnerStatus.getSelectedItem() instanceof RedmineStatus)){
 			sb.append(context.getString(R.string.input_error_select,context.getString(R.string.ticket_status)));
 			sb.append("\n");
 		}

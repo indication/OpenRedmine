@@ -523,85 +523,42 @@ public class RedmineIssue implements IPostingRecord {
 	public Element getXml(Document document) {
 		Element root = document.createElement("issue");
 		if(getIssueId() != null){
-			Element name = document.createElement("id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getIssueId())));
-			root.appendChild(name);
+			root.appendChild(getElement(document,"id",		String.valueOf(this.getIssueId())));
 		}
-		if(getProject() != null){
-			Element name = document.createElement("project_id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getProject().getProjectId())));
-			root.appendChild(name);
-		} else {
-			throw new IllegalArgumentException("RedmineIssue Project is null.");
-		}
-		if(getTracker() != null){
-			Element name = document.createElement("tracker_id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getTracker().getTrackerId())));
-			root.appendChild(name);
-		} else {
-			throw new IllegalArgumentException("RedmineIssue Tracker is null.");
-		}
-		if(getStatus() != null){
-			Element name = document.createElement("status_id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getStatus().getStatusId())));
-			root.appendChild(name);
-		} else {
-			throw new IllegalArgumentException("RedmineIssue Status is null.");
-		}
+		root.appendChild(getElement(document,"project_id",	getProject()));
+		root.appendChild(getElement(document,"tracker_id",	getTracker()));
+		root.appendChild(getElement(document,"status_id",	getStatus()));
 		if(!TextUtils.isEmpty(getSubject())){
-			Element name = document.createElement("subject");
-			name.appendChild(document.createTextNode(this.getSubject()));
-			root.appendChild(name);
+			root.appendChild(getElement(document,"subject",		this.getSubject()));
 		} else {
 			throw new IllegalArgumentException("RedmineIssue Subject is empty.");
 		}
 		if(!TextUtils.isEmpty(getDescription())){
-			Element name = document.createElement("description");
-			name.appendChild(document.createTextNode(this.getDescription()));
-			root.appendChild(name);
+			root.appendChild(getElement(document,"description",	this.getDescription()));
 		}
-		if(getCategory() != null){
-			Element name = document.createElement("category_id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getCategory().getCategoryId())));
-			root.appendChild(name);
-		}
-		if(getAssigned() != null){
-			Element name = document.createElement("assigned_to_id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getAssigned().getUserId())));
-			root.appendChild(name);
-		}
+		root.appendChild(getElement(document,"category_id",		getCategory()));
+		root.appendChild(getElement(document,"assigned_to_id",	getAssigned()));
 		if(getParentId() != 0){
-			Element name = document.createElement("parent_issue_id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getParentId())));
-			root.appendChild(name);
+			root.appendChild(getElement(document,"parent_issue_id",String.valueOf(this.getParentId())));
 		}
-		if(getPriority() != null){
-			Element name = document.createElement("priority_id");
-			name.appendChild(document.createTextNode(String.valueOf(this.getPriority().getPriorityId())));
-			root.appendChild(name);
-		}
-		if(true){
-			Element name = document.createElement("done_ratio");
-			name.appendChild(document.createTextNode(String.valueOf(this.getDoneRate())));
-			root.appendChild(name);
-		}
-		if(getDateStart() != null){
-			Element name = document.createElement("start_date");
-			name.appendChild(document.createTextNode(TypeConverter.getDateString(this.getDateStart())));
-			root.appendChild(name);
-		}
-		if(getDateDue() != null){
-			Element name = document.createElement("due_date");
-			name.appendChild(document.createTextNode(TypeConverter.getDateString(this.getDateDue())));
-			root.appendChild(name);
-		}
-		if(getEstimatedHours() != null){
-			Element name = document.createElement("estimated_hours");
-			name.appendChild(document.createTextNode(String.valueOf(this.getEstimatedHours())));
-			root.appendChild(name);
-		}
-
+		root.appendChild(getElement(document,"priority_id",		getPriority()));
+		root.appendChild(getElement(document,"done_ratio",		String.valueOf(this.getDoneRate())));
+		root.appendChild(getElement(document,"start_date",		getDateStart()));
+		root.appendChild(getElement(document,"due_date",		getDateDue()));
+		root.appendChild(getElement(document,"estimated_hours",	this.getEstimatedHours() == 0 ? "" : String.valueOf(this.getEstimatedHours())));
 		return root;
+	}
+
+	protected Element getElement(Document document, String name, IMasterRecord record){
+		return getElement(document, name, record == null ? "" : String.valueOf(record.getRemoteId()));
+	}
+	protected Element getElement(Document document, String name, Date record){
+		return getElement(document, name, record == null ? "" : TypeConverter.getDateString(record));
+	}
+	protected Element getElement(Document document, String name, String record){
+		Element element = document.createElement(name);
+		element.appendChild(document.createTextNode(record == null ? "" : record));
+		return element;
 	}
 
 

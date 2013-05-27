@@ -11,6 +11,7 @@ import jp.redmine.redmineclient.adapter.RedmineJournalListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
@@ -19,7 +20,9 @@ import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.task.SelectIssueJournalPost;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.util.Log;
@@ -29,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
 	public IssueViewActivity(){
@@ -40,6 +44,8 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	private RedmineIssueCommentForm formComment;
 	private RedmineBaseAdapterListFormHelper<RedmineJournalListAdapter> formList;
 	private MenuItem menu_refresh;
+
+	private ProgressDialog dialog;
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -75,10 +81,48 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			public void onClick(View v) {
 				if(!formComment.Validate())
 					return;
+				IssueIntent intent = new IssueIntent(getIntent());
+
+				RedmineConnection connection = null;
+				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+				connection = mConnection.getItem(intent.getConnectionId());
+				mConnection.finalize();
+
 				RedmineJournal journal = new RedmineJournal();
+				journal.setIssueId((long)intent.getIssueId());
 				formComment.getValue(journal);
 
-				formComment.clear();
+				SelectIssueJournalPost post = new SelectIssueJournalPost(getHelper(), connection){
+					private boolean isSuccess = true;
+					@Override
+					protected void onError(Exception lasterror) {
+						isSuccess = false;
+						ActivityHelper.toastRemoteError(getApplicationContext(), ActivityHelper.ERROR_APP);
+						super.onError(lasterror);
+					}
+					@Override
+					protected void onErrorRequest(int statuscode) {
+						isSuccess = false;
+						ActivityHelper.toastRemoteError(getApplicationContext(), statuscode);
+						super.onErrorRequest(statuscode);
+					}
+					@Override
+					protected void onPreExecute() {
+						dialog.show();
+						super.onPreExecute();
+					}
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);
+						if (dialog.isShowing())
+							dialog.dismiss();
+						if(isSuccess){
+							Toast.makeText(getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							formComment.clear();
+						}
+					}
+				};
+				post.execute(journal);
 			}
 		});
 
@@ -107,6 +151,9 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				startActivity( intent.getIntent() );
 			}
 		});
+
+		dialog = new ProgressDialog(this);
+		dialog.setMessage(getString(R.string.menu_settings_uploading));
 	}
 
 	@Override

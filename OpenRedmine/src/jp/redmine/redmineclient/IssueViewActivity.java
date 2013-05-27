@@ -69,8 +69,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.issueview);
 		ActionActivityHelper actionhelper = new ActionActivityHelper(this);
-		View comment = getLayoutInflater().inflate(R.layout.issuecomment,null);
-		formComment = new RedmineIssueCommentForm(comment);
+		formComment = new RedmineIssueCommentForm(this);
 		formComment.buttonOK.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -91,7 +90,6 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 				getHelper()
 				, actionhelper
 				));
-		formList.list.addFooterView(comment);
 		formList.onRestoreInstanceState(savedInstanceState);
 
 		form = new RedmineIssueViewForm(this);
@@ -229,7 +227,7 @@ public class IssueViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			}
 			case R.id.menu_comment:
 			{
-				//TODO
+				formComment.toggle();
 				return true;
 			}
 		}

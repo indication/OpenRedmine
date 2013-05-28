@@ -196,7 +196,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		setDate(textDateDue, data.getDateDue());
 		textTitle.setText(data.getSubject());
 		textDescription.setText(data.getDescription());
-		textTime.setText(String.valueOf(data.getEstimatedHours()));
+		textTime.setText(data.getEstimatedHours() == null ? "" : String.valueOf(data.getEstimatedHours()));
 
 		setSpinnerItem(spinnerStatus,adapterStatus,data.getStatus());
 		setSpinnerItem(spinnerTracker,adapterTracker,data.getTracker());
@@ -279,13 +279,22 @@ public class RedmineIssueEditForm extends FormHelper {
 			sb.append(context.getString(R.string.input_error_select,context.getString(R.string.ticket_tracker)));
 			sb.append("\n");
 		}
+		boolean valid = true;
+		//Validate spinners
 		if(sb.length() > 0){
 			Toast.makeText(spinnerStatus.getContext(), sb.toString(), Toast.LENGTH_LONG).show();
-			ValidateForms(textDateStart, textDateDue, textTitle);
-			return false;
-		} else {
-			return ValidateForms(textDateStart, textDateDue, textTitle);
+			valid  = false;
 		}
+		//Validate forms
+		if(!ValidateForms(
+				textDateStart
+				, textDateDue
+				, textTitle
+				, textTime
+				))
+			valid = false;
+
+		return valid;
 	}
 
 }

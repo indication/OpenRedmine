@@ -16,6 +16,7 @@ import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.DummySelection;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
@@ -35,6 +36,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
@@ -53,10 +55,12 @@ public class RedmineIssueEditForm extends FormHelper {
 
 	public FormEditText textTitle;
 	public FormEditText textDescription;
+	public FormEditText textComment;
 	public FormEditText textDateStart;
 	public FormEditText textDateDue;
 	public ImageButton imageCalendarStart;
 	public ImageButton imageCalendarDue;
+	public FormEditText textTime;
 	public TableRow rowCreated;
 	public TableRow rowModified;
 	public TextView textCreated;
@@ -64,12 +68,13 @@ public class RedmineIssueEditForm extends FormHelper {
 	public TextView textProgress;
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
-	RedmineFilterListAdapter adapterStatus;
-	RedmineFilterListAdapter adapterTracker;
-	RedmineFilterListAdapter adapterCategory;
-	RedmineFilterListAdapter adapterPriority;
-	RedmineFilterListAdapter adapterUser;
-	RedmineFilterListAdapter adapterVersion;
+	public LinearLayout layoutComment;
+	protected RedmineFilterListAdapter adapterStatus;
+	protected RedmineFilterListAdapter adapterTracker;
+	protected RedmineFilterListAdapter adapterCategory;
+	protected RedmineFilterListAdapter adapterPriority;
+	protected RedmineFilterListAdapter adapterUser;
+	protected RedmineFilterListAdapter adapterVersion;
 	public RedmineIssueEditForm(Activity activity){
 		this.setup(activity);
 		this.setupEvents();
@@ -87,11 +92,14 @@ public class RedmineIssueEditForm extends FormHelper {
 
 		textTitle = (FormEditText)view.findViewById(R.id.textTitle);
 		textDescription = (FormEditText)view.findViewById(R.id.textDescription);
+		textComment = (FormEditText)view.findViewById(R.id.textComment);
 		textDateStart = (FormEditText)view.findViewById(R.id.textDateStart);
 		textDateDue = (FormEditText)view.findViewById(R.id.textDateDue);
 		imageCalendarStart = (ImageButton)view.findViewById(R.id.imageCalendarStart);
 		imageCalendarDue = (ImageButton)view.findViewById(R.id.imageCalendarDue);
+		textTime = (FormEditText)view.findViewById(R.id.textTime);
 
+		layoutComment = (LinearLayout)view.findViewById(R.id.layoutComment);
 		rowCreated = (TableRow)view.findViewById(R.id.rowCreated);
 		rowModified = (TableRow)view.findViewById(R.id.rowModified);
 		textCreated = (TextView)view.findViewById(R.id.textCreated);
@@ -188,6 +196,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		setDate(textDateDue, data.getDateDue());
 		textTitle.setText(data.getSubject());
 		textDescription.setText(data.getDescription());
+		textTime.setText(data.getEstimatedHours() == null ? "" : String.valueOf(data.getEstimatedHours()));
 
 		setSpinnerItem(spinnerStatus,adapterStatus,data.getStatus());
 		setSpinnerItem(spinnerTracker,adapterTracker,data.getTracker());
@@ -199,6 +208,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		progressIssue.setProgress(data.getProgressRate() == null ? 0 : data.getProgressRate());
 		textCreated.setVisibility(data.getCreated() == null ? View.GONE : View.VISIBLE);
 		rowModified.setVisibility(data.getModified() == null ? View.GONE : View.VISIBLE);
+		layoutComment.setVisibility(data.getIssueId() == null ? View.GONE : View.VISIBLE);
 		setDateTime(textCreated, data.getCreated());
 		setDateTime(textModified, data.getModified());
 
@@ -232,6 +242,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		data.setDateDue(getDate(textDateDue));
 		data.setSubject(textTitle.getText().toString());
 		data.setDescription(textDescription.getText().toString());
+		data.setEstimatedHours(TextUtils.isEmpty(textTime.getText()) ? null : TypeConverter.parseBigDecimal(textTime.getText().toString()).doubleValue());
 
 		data.setStatus(this.<RedmineStatus>getSpinnerItem(spinnerStatus));
 		data.setTracker(this.<RedmineTracker>getSpinnerItem(spinnerTracker));
@@ -242,6 +253,14 @@ public class RedmineIssueEditForm extends FormHelper {
 
 		data.setDoneRate((short)progressIssue.getProgress());
 
+		if(!TextUtils.isEmpty(textComment.getText())){
+			RedmineJournal journal = data.getJournal();
+			if(journal == null){
+				journal = new RedmineJournal();
+				data.setJournal(journal);
+			}
+			journal.setNotes(textComment.getText().toString());
+		}
 	}
 
 	@Override
@@ -260,13 +279,22 @@ public class RedmineIssueEditForm extends FormHelper {
 			sb.append(context.getString(R.string.input_error_select,context.getString(R.string.ticket_tracker)));
 			sb.append("\n");
 		}
+		boolean valid = true;
+		//Validate spinners
 		if(sb.length() > 0){
 			Toast.makeText(spinnerStatus.getContext(), sb.toString(), Toast.LENGTH_LONG).show();
-			ValidateForms(textDateStart, textDateDue, textTitle);
-			return false;
-		} else {
-			return ValidateForms(textDateStart, textDateDue, textTitle);
+			valid  = false;
 		}
+		//Validate forms
+		if(!ValidateForms(
+				textDateStart
+				, textDateDue
+				, textTitle
+				, textTime
+				))
+			valid = false;
+
+		return valid;
 	}
 
 }

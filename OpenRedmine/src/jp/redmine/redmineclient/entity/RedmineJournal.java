@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineJournal {
+public class RedmineJournal implements IPostingRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String JOURNAL_ID = "journal_id";
@@ -175,6 +178,19 @@ public class RedmineJournal {
 	 */
 	public void setUser(RedmineUser user) {
 		this.user = user;
+	}
+	@Override
+	public Element getXml(Document document) {
+		Element root = document.createElement("issue");
+
+		if(getNotes() != null){
+			Element name = document.createElement("notes");
+			name.appendChild(document.createTextNode(this.getNotes()));
+			root.appendChild(name);
+		} else {
+			throw new IllegalArgumentException("RedmineJournal Notes is null.");
+		}
+		return root;
 	}
 
 }

@@ -27,10 +27,8 @@ Features:
 * Show changelogs
 * Create or modify issue/timeentry
 
-Working:
-* Add journal
-
 Release planing:
+* Show relative issues
 * TimeEntry like stop watch (no plan...)
 
 Note:

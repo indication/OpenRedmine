@@ -563,11 +563,12 @@ public class RedmineIssue implements IPostingRecord {
 		if(getParentId() != 0){
 			root.appendChild(getElement(document,"parent_issue_id",String.valueOf(this.getParentId())));
 		}
+		root.appendChild(getElement(document,"fixed_version_id",	getVersion()));
 		root.appendChild(getElement(document,"priority_id",		getPriority()));
 		root.appendChild(getElement(document,"done_ratio",		String.valueOf(this.getDoneRate())));
 		root.appendChild(getElement(document,"start_date",		getDateStart()));
 		root.appendChild(getElement(document,"due_date",		getDateDue()));
-		root.appendChild(getElement(document,"estimated_hours",	this.getEstimatedHours() == 0 ? "" : String.valueOf(this.getEstimatedHours())));
+		root.appendChild(getElement(document,"estimated_hours",	getEstimatedHours() == null || getEstimatedHours() == 0 ? "" : String.valueOf(this.getEstimatedHours())));
 		return root;
 	}
 

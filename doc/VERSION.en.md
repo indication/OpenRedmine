@@ -2,6 +2,11 @@ OpenRedmine
 ===========
 Release history
 
+v2.3
+===========
+- Add post notes to issue
+- Fix edit issue about version/estimated time
+
 v2.2
 ===========
 - Add post or modify issue

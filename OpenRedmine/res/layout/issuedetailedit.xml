@@ -323,6 +323,29 @@
 	    app:emptyAllowed="true" >
 
 	</com.andreabaccega.widget.FormEditText>
+	<LinearLayout
+		android:id="@+id/layoutComment"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:visibility="gone"
+	    android:orientation="vertical" >
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/menu_setting_list_menu_comment" />
+
+		<com.andreabaccega.widget.FormEditText
+		    android:id="@+id/textComment"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+			app:testType="nocheck"
+		    app:emptyAllowed="true"
+		    android:ems="10"
+		    android:minLines="3" />
+
+
+	</LinearLayout>
 
 </LinearLayout>
 </ScrollView>

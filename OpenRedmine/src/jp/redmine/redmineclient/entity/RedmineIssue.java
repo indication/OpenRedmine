@@ -569,6 +569,10 @@ public class RedmineIssue implements IPostingRecord {
 		root.appendChild(getElement(document,"start_date",		getDateStart()));
 		root.appendChild(getElement(document,"due_date",		getDateDue()));
 		root.appendChild(getElement(document,"estimated_hours",	getEstimatedHours() == null || getEstimatedHours() == 0 ? "" : String.valueOf(this.getEstimatedHours())));
+		RedmineJournal journal = getJournal();
+		if( journal != null && !TextUtils.isEmpty(journal.getNotes()) ){
+			root.appendChild(getElement(document,"notes",		journal.getNotes()));
+		}
 		return root;
 	}
 

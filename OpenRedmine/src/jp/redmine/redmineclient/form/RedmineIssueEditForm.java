@@ -64,12 +64,12 @@ public class RedmineIssueEditForm extends FormHelper {
 	public TextView textProgress;
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
-	RedmineFilterListAdapter adapterStatus;
-	RedmineFilterListAdapter adapterTracker;
-	RedmineFilterListAdapter adapterCategory;
-	RedmineFilterListAdapter adapterPriority;
-	RedmineFilterListAdapter adapterUser;
-	RedmineFilterListAdapter adapterVersion;
+	protected RedmineFilterListAdapter adapterStatus;
+	protected RedmineFilterListAdapter adapterTracker;
+	protected RedmineFilterListAdapter adapterCategory;
+	protected RedmineFilterListAdapter adapterPriority;
+	protected RedmineFilterListAdapter adapterUser;
+	protected RedmineFilterListAdapter adapterVersion;
 	public RedmineIssueEditForm(Activity activity){
 		this.setup(activity);
 		this.setupEvents();

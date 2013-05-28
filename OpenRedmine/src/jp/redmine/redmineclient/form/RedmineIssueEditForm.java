@@ -57,6 +57,7 @@ public class RedmineIssueEditForm extends FormHelper {
 	public FormEditText textDateDue;
 	public ImageButton imageCalendarStart;
 	public ImageButton imageCalendarDue;
+	public FormEditText textTime;
 	public TableRow rowCreated;
 	public TableRow rowModified;
 	public TextView textCreated;
@@ -91,6 +92,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		textDateDue = (FormEditText)view.findViewById(R.id.textDateDue);
 		imageCalendarStart = (ImageButton)view.findViewById(R.id.imageCalendarStart);
 		imageCalendarDue = (ImageButton)view.findViewById(R.id.imageCalendarDue);
+		textTime = (FormEditText)view.findViewById(R.id.textTime);
 
 		rowCreated = (TableRow)view.findViewById(R.id.rowCreated);
 		rowModified = (TableRow)view.findViewById(R.id.rowModified);
@@ -188,6 +190,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		setDate(textDateDue, data.getDateDue());
 		textTitle.setText(data.getSubject());
 		textDescription.setText(data.getDescription());
+		textTime.setText(String.valueOf(data.getEstimatedHours()));
 
 		setSpinnerItem(spinnerStatus,adapterStatus,data.getStatus());
 		setSpinnerItem(spinnerTracker,adapterTracker,data.getTracker());
@@ -232,6 +235,7 @@ public class RedmineIssueEditForm extends FormHelper {
 		data.setDateDue(getDate(textDateDue));
 		data.setSubject(textTitle.getText().toString());
 		data.setDescription(textDescription.getText().toString());
+		data.setEstimatedHours(TextUtils.isEmpty(textTime.getText()) ? null : TypeConverter.parseBigDecimal(textTime.getText().toString()).doubleValue());
 
 		data.setStatus(this.<RedmineStatus>getSpinnerItem(spinnerStatus));
 		data.setTracker(this.<RedmineTracker>getSpinnerItem(spinnerTracker));

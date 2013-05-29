@@ -16,6 +16,17 @@ public class RedmineFilterSortItem implements IMasterRecord {
 	static public final String KEY_ISSUE = "id";
 	static public final String KEY_MODIFIED = "updated_on";
 	static public final String KEY_CREATED = "created_on";
+	static public final String KEY_DATE_START = "start_date";
+	static public final String KEY_DATE_DUE = "due_date";
+	static public final String KEY_DATE_CLOSED = "closed";
+	static public final String KEY_PRIORITY = "priority";
+	static public final String KEY_STATUS = "status";
+	static public final String KEY_TRACKER = "tracker";
+	static public final String KEY_VERSION = "fixed_version";
+	static public final String KEY_CATEGORY = "category";
+	static public final String KEY_ASSIGN = "assigned_to";
+	static public final String KEY_AUTHOR = "author_id";
+	static public final String KEY_DONERATE = "done_ratio";
 	static public final String KEY_DEFAULT = "id desc";
 	/**
 	 * @param id セットする id
@@ -102,6 +113,17 @@ public class RedmineFilterSortItem implements IMasterRecord {
 		items.add(KEY_ISSUE);
 		items.add(KEY_MODIFIED);
 		items.add(KEY_CREATED);
+		items.add(KEY_DATE_START);
+		items.add(KEY_DATE_DUE);
+		items.add(KEY_PRIORITY);
+		items.add(KEY_STATUS);
+		items.add(KEY_TRACKER);
+		items.add(KEY_VERSION);
+		items.add(KEY_CATEGORY);
+		items.add(KEY_ASSIGN);
+		items.add(KEY_AUTHOR);
+		items.add(KEY_DONERATE);
+		items.add(KEY_DATE_CLOSED);
 		return items;
 	}
 	public static RedmineFilterSortItem setupFilter(RedmineFilterSortItem item, String input){
@@ -129,6 +151,50 @@ public class RedmineFilterSortItem implements IMasterRecord {
 			item.setDbKey(RedmineIssue.CREATED);
 			item.setRemoteKey(KEY_CREATED);
 			item.setResource(R.string.ticket_created);
+		} else if(KEY_DATE_START.equals(keys[0])){
+			item.setDbKey(RedmineIssue.DATE_START);
+			item.setRemoteKey(KEY_DATE_START);
+			item.setResource(R.string.ticket_date_start);
+		} else if(KEY_DATE_DUE.equals(keys[0])){
+			item.setDbKey(RedmineIssue.DATE_DUE);
+			item.setRemoteKey(KEY_DATE_DUE);
+			item.setResource(R.string.ticket_date_due);
+		} else if(KEY_DATE_CLOSED.equals(keys[0])){
+			item.setDbKey(RedmineIssue.DATE_CLOSED);
+			item.setRemoteKey(KEY_DATE_CLOSED);
+			item.setResource(R.string.ticket_date_closed);
+		} else if(KEY_PRIORITY.equals(keys[0])){
+			item.setDbKey(RedmineIssue.PRIORITY);
+			item.setRemoteKey(KEY_PRIORITY);
+			item.setResource(R.string.ticket_priority);
+		} else if(KEY_STATUS.equals(keys[0])){
+			item.setDbKey(RedmineIssue.STATUS);
+			item.setRemoteKey(KEY_STATUS);
+			item.setResource(R.string.ticket_status);
+		} else if(KEY_TRACKER.equals(keys[0])){
+			item.setDbKey(RedmineIssue.TRACKER);
+			item.setRemoteKey(KEY_TRACKER);
+			item.setResource(R.string.ticket_tracker);
+		} else if(KEY_VERSION.equals(keys[0])){
+			item.setDbKey(RedmineIssue.VERSION);
+			item.setRemoteKey(KEY_VERSION);
+			item.setResource(R.string.ticket_version);
+		} else if(KEY_CATEGORY.equals(keys[0])){
+			item.setDbKey(RedmineIssue.CATEGORY);
+			item.setRemoteKey(KEY_CATEGORY);
+			item.setResource(R.string.ticket_category);
+		} else if(KEY_ASSIGN.equals(keys[0])){
+			item.setDbKey(RedmineIssue.ASSIGN);
+			item.setRemoteKey(KEY_ASSIGN);
+			item.setResource(R.string.ticket_assigned);
+		} else if(KEY_AUTHOR.equals(keys[0])){
+			item.setDbKey(RedmineIssue.AUTHOR);
+			item.setRemoteKey(KEY_AUTHOR);
+			item.setResource(R.string.ticket_author);
+		} else if(KEY_DONERATE.equals(keys[0])){
+			item.setDbKey(RedmineIssue.PROGRESS);
+			item.setRemoteKey(KEY_DONERATE);
+			item.setResource(R.string.ticket_progress);
 		}
 
 		item.setAscending(isAscending);

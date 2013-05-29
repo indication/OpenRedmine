@@ -23,7 +23,7 @@ Connection:
 Features:
 * View issues offline
 * Filter (Status/Tracker/Category/Priority/Author/Assined)
-* Sort (IssueID/Created/Modified)
+* Sort (IssueID/Created/Modified/... etc)
 * Show changelogs
 * Create or modify issue/timeentry
 

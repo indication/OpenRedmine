@@ -23,6 +23,7 @@ public class RedmineFilterSortItem implements IMasterRecord {
 	static public final String KEY_TRACKER = "tracker";
 	static public final String KEY_VERSION = "fixed_version";
 	static public final String KEY_CATEGORY = "category";
+	static public final String KEY_ASSIGN = "assigned_to";
 	static public final String KEY_DEFAULT = "id desc";
 	/**
 	 * @param id セットする id
@@ -116,6 +117,7 @@ public class RedmineFilterSortItem implements IMasterRecord {
 		items.add(KEY_TRACKER);
 		items.add(KEY_VERSION);
 		items.add(KEY_CATEGORY);
+		items.add(KEY_ASSIGN);
 		return items;
 	}
 	public static RedmineFilterSortItem setupFilter(RedmineFilterSortItem item, String input){
@@ -171,6 +173,10 @@ public class RedmineFilterSortItem implements IMasterRecord {
 			item.setDbKey(RedmineIssue.CATEGORY);
 			item.setRemoteKey(KEY_CATEGORY);
 			item.setResource(R.string.ticket_category);
+		} else if(KEY_ASSIGN.equals(keys[0])){
+			item.setDbKey(RedmineIssue.ASSIGN);
+			item.setRemoteKey(KEY_ASSIGN);
+			item.setResource(R.string.ticket_assigned);
 		}
 
 		item.setAscending(isAscending);

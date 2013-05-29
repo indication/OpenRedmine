@@ -67,7 +67,8 @@
 	<string name="ticket_assigned">担当者</string>
 	<string name="ticket_date">日付</string>
 	<string name="ticket_date_start">開始日</string>
-	<string name="ticket_date_due">終了日</string>
+	<string name="ticket_date_due">期日</string>
+	<string name="ticket_date_closed">終了日</string>
 	<string name="ticket_date_arrow">▶</string>
 	<string name="ticket_modified">最終更新</string>
 	<string name="ticket_modified_by">%2$s</string>

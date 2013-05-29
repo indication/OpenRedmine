@@ -18,6 +18,7 @@ public class RedmineFilterSortItem implements IMasterRecord {
 	static public final String KEY_CREATED = "created_on";
 	static public final String KEY_DATE_START = "start_date";
 	static public final String KEY_DATE_DUE = "due_date";
+	static public final String KEY_DATE_CLOSED = "closed";
 	static public final String KEY_PRIORITY = "priority";
 	static public final String KEY_STATUS = "status";
 	static public final String KEY_TRACKER = "tracker";
@@ -122,6 +123,7 @@ public class RedmineFilterSortItem implements IMasterRecord {
 		items.add(KEY_ASSIGN);
 		items.add(KEY_AUTHOR);
 		items.add(KEY_DONERATE);
+		items.add(KEY_DATE_CLOSED);
 		return items;
 	}
 	public static RedmineFilterSortItem setupFilter(RedmineFilterSortItem item, String input){
@@ -157,6 +159,10 @@ public class RedmineFilterSortItem implements IMasterRecord {
 			item.setDbKey(RedmineIssue.DATE_DUE);
 			item.setRemoteKey(KEY_DATE_DUE);
 			item.setResource(R.string.ticket_date_due);
+		} else if(KEY_DATE_CLOSED.equals(keys[0])){
+			item.setDbKey(RedmineIssue.DATE_CLOSED);
+			item.setRemoteKey(KEY_DATE_CLOSED);
+			item.setResource(R.string.ticket_date_closed);
 		} else if(KEY_PRIORITY.equals(keys[0])){
 			item.setDbKey(RedmineIssue.PRIORITY);
 			item.setRemoteKey(KEY_PRIORITY);

@@ -69,6 +69,7 @@
 	<string name="ticket_date_start">Start date</string>
 	<string name="ticket_date_due">Due date</string>
 	<string name="ticket_date_arrow">▶</string>
+	<string name="ticket_date_closed">Closed date</string>
 	<string name="ticket_modified">Last modified</string>
 	<string name="ticket_modified_by">%2$s</string>
 	<string name="ticket_time">Time</string>

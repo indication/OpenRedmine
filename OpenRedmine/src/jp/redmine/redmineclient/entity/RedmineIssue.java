@@ -20,6 +20,7 @@ public class RedmineIssue implements IPostingRecord {
 	public final static String ISSUE_ID = "issue_id";
 	public final static String DATE_START = "start_date";
 	public final static String DATE_DUE = "due_date";
+	public final static String DATE_CLOSED = "closed";
 	public final static String MODIFIED = "modified";
 	public final static String CREATED = "created";
 	public final static String NAME = "name";

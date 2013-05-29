@@ -27,6 +27,7 @@ public class RedmineIssue implements IPostingRecord {
 	public final static String STATUS = "status_id";
 	public final static String TRACKER = "tracker_id";
 	public final static String VERSION = "version_id";
+	public final static String CATEGORY = "category_id";
 
     @DatabaseField(generatedId = true)
     private Long id;

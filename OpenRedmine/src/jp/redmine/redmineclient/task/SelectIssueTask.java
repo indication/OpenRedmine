@@ -57,6 +57,9 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 		//accelerate fetch issues
 		if(isRest){
+			if(lastfetched <= 0){
+				lastfetched = limit;
+			}
 			if(lastfetched > (limit*2))
 				limit *= 2;
 		} else {

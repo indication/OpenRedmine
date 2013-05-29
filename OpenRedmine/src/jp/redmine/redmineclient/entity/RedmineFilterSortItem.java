@@ -18,6 +18,7 @@ public class RedmineFilterSortItem implements IMasterRecord {
 	static public final String KEY_CREATED = "created_on";
 	static public final String KEY_DATE_START = "start_date";
 	static public final String KEY_DATE_DUE = "due_date";
+	static public final String KEY_PRIORITY = "priority";
 	static public final String KEY_DEFAULT = "id desc";
 	/**
 	 * @param id セットする id
@@ -106,6 +107,7 @@ public class RedmineFilterSortItem implements IMasterRecord {
 		items.add(KEY_CREATED);
 		items.add(KEY_DATE_START);
 		items.add(KEY_DATE_DUE);
+		items.add(KEY_PRIORITY);
 		return items;
 	}
 	public static RedmineFilterSortItem setupFilter(RedmineFilterSortItem item, String input){
@@ -141,6 +143,10 @@ public class RedmineFilterSortItem implements IMasterRecord {
 			item.setDbKey(RedmineIssue.DATE_DUE);
 			item.setRemoteKey(KEY_DATE_DUE);
 			item.setResource(R.string.ticket_date_due);
+		} else if(KEY_PRIORITY.equals(keys[0])){
+			item.setDbKey(RedmineIssue.PRIORITY);
+			item.setRemoteKey(KEY_PRIORITY);
+			item.setResource(R.string.ticket_priority);
 		}
 
 		item.setAscending(isAscending);

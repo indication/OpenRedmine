@@ -23,6 +23,7 @@ public class RedmineIssue implements IPostingRecord {
 	public final static String MODIFIED = "modified";
 	public final static String CREATED = "created";
 	public final static String NAME = "name";
+	public final static String PRIORITY = "priority_id";
 
     @DatabaseField(generatedId = true)
     private Long id;

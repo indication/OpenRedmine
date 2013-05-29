@@ -30,6 +30,7 @@ public class RedmineIssue implements IPostingRecord {
 	public final static String CATEGORY = "category_id";
 	public final static String ASSIGN = "assign_id";
 	public final static String AUTHOR = "author_id";
+	public final static String PROGRESS = "progress_rate";
 
     @DatabaseField(generatedId = true)
     private Long id;

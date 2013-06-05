@@ -15,6 +15,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.transdroid.daemon.util.FakeSocketFactory;
 
+import android.text.TextUtils;
+
 public class ConnectionHelper {
 
 	public static void setupHttpGet(HttpGet client){
@@ -30,8 +32,8 @@ public class ConnectionHelper {
 		SchemeRegistry registry = new SchemeRegistry();
 		registry.register(new Scheme("http", new PlainSocketFactory(), 80));
 		SocketFactory https_socket =
-				isTrustAll 				? new FakeSocketFactory()
-			: certkey != null			? new FakeSocketFactory(certkey)
+				isTrustAll					? new FakeSocketFactory()
+			: !TextUtils.isEmpty(certkey)	? new FakeSocketFactory(certkey)
 			: SSLSocketFactory.getSocketFactory();
 		registry.register(new Scheme("https", https_socket, 443));
 		return registry;

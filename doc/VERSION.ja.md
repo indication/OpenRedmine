@@ -2,6 +2,11 @@ OpenRedmine
 ===========
 Release history
 
+v2.4
+===========
+- チケット取得を修正 (無限ループ)
+- android 2.2での更新の修正 (v1.XmlPullParser サポート)
+
 v2.3
 ===========
 - コメントの投稿

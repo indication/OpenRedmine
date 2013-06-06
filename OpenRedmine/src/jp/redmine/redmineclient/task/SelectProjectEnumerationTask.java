@@ -14,7 +14,6 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
-import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserCategory;
 import jp.redmine.redmineclient.parser.ParserVersion;
@@ -81,10 +80,8 @@ public class SelectProjectEnumerationTask extends SelectDataTask<Void,Integer> {
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProjectCategory>() {
 					public void onData(RedmineConnection con,RedmineProjectCategory data) throws SQLException {
 						data.setConnectionId(con.getId());
-						RedmineUser currentuser = null;
-						while(currentuser == null){
-							currentuser = modelUser.fetchById(con.getId(), data.getAssignTo().getUserId());
-
+						if(data.getAssignTo() != null){
+							data.setAssignTo(modelUser.fetchById(con.getId(), data.getAssignTo().getUserId()));
 						}
 						data.setProject(project);
 						model.refreshItem(con,data);

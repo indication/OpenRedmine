@@ -36,7 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Used references
 ==========
-- DefaultHttpClient and Deflate settings inherit from "DenkiYagi"
+- DefaultHttpClient and Deflate settings and guide to better code inherit from "DenkiYagi"
   http://terurou.hateblo.jp/entry/20110702/1309541200
 
 - Expanded list ideas from "My life with Android :-)"

@@ -61,7 +61,11 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 		fetchPriority(client);
 		fetchTimeEntryActivity(client);
 		do {
-			if(count != 0){
+			List<RedmineProject> projects = fetchProject(client,offset,limit);
+			count = projects.size();
+			//TODO
+			publishProgress(0, 0);
+			if(offset != 0){
 				//sleep for server
 				try {
 					Thread.sleep(1000);
@@ -69,10 +73,6 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 					publishError(e);
 				}
 			}
-			List<RedmineProject> projects = fetchProject(client,offset,limit);
-			count = projects.size();
-			//TODO
-			publishProgress(0, 0);
 			offset += limit;
 		} while(count >= limit);
 		client.close();

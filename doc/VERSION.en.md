@@ -2,6 +2,11 @@ OpenRedmine
 ===========
 Release history
 
+v2.4
+===========
+- Fix sync issues (loop forever)
+- Fix posting in android 2.2 (v1.XmlPullParser support)
+
 v2.3
 ===========
 - Add post notes to issue

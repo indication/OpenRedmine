@@ -194,16 +194,16 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 					int status = response.getStatusLine().getStatusCode();
 					long length = response.getEntity().getContentLength();
 					if(BuildConfig.DEBUG){
-						Log.i("requestGet", "Status: " + status);
-						Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
+						Log.i("request", "Status: " + status);
+						Log.i("request", "Protocol: " + response.getProtocolVersion());
 						Log.i("request", "Length: " + length);
 					}
 					InputStream stream = response.getEntity().getContent();
 					if (isGZipHttpResponse(response)) {
-						Log.i("requestGet", "Gzip: Enabled");
+						Log.i("request", "Gzip: Enabled");
 						stream =  new GZIPInputStream(stream);
 					} else if(isDeflateHttpResponse(response)){
-						Log.i("requestGet", "Deflate: Enabled");
+						Log.i("request", "Deflate: Enabled");
 						stream =  new InflaterInputStream(stream);
 					}
 					switch(status){

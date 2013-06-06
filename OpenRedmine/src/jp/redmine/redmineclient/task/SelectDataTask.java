@@ -192,9 +192,11 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 				public Boolean handleResponse(HttpResponse response)
 						throws ClientProtocolException, IOException {
 					int status = response.getStatusLine().getStatusCode();
+					long length = response.getEntity().getContentLength();
 					if(BuildConfig.DEBUG){
 						Log.i("requestGet", "Status: " + status);
 						Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
+						Log.i("request", "Length: " + length);
 					}
 					InputStream stream = response.getEntity().getContent();
 					if (isGZipHttpResponse(response)) {
@@ -208,13 +210,15 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 					case HttpStatus.SC_OK:
 					case HttpStatus.SC_CREATED:
 						try {
-							handler.onContent(stream);
+							if(length != 0)
+								handler.onContent(stream);
+							return true;
 						} catch (XmlPullParserException e) {
 							publishError(e);
 						} catch (SQLException e) {
 							publishError(e);
 						}
-						return true;
+						break;
 					default:
 						publishErrorRequest(status);
 						if(BuildConfig.DEBUG){

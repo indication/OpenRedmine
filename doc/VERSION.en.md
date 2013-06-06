@@ -2,6 +2,17 @@ OpenRedmine
 ===========
 Release history
 
+v2.3
+===========
+- Add post notes to issue
+- Fix edit issue about version/estimated time
+- Add sort key
+ - start/due/close date
+ - priority/status/tracker
+ - fixed_version/category
+ - assigned to/author
+ - done rate
+
 v2.2
 ===========
 - Add post or modify issue

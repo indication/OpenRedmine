@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,9 +18,20 @@ public class RedmineIssue implements IPostingRecord {
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
 	public final static String ISSUE_ID = "issue_id";
+	public final static String DATE_START = "start_date";
+	public final static String DATE_DUE = "due_date";
+	public final static String DATE_CLOSED = "closed";
 	public final static String MODIFIED = "modified";
 	public final static String CREATED = "created";
 	public final static String NAME = "name";
+	public final static String PRIORITY = "priority_id";
+	public final static String STATUS = "status_id";
+	public final static String TRACKER = "tracker_id";
+	public final static String VERSION = "version_id";
+	public final static String CATEGORY = "category_id";
+	public final static String ASSIGN = "assign_id";
+	public final static String AUTHOR = "author_id";
+	public final static String PROGRESS = "progress_rate";
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -478,6 +490,27 @@ public class RedmineIssue implements IPostingRecord {
 	}
 
 	/**
+	 * Get first item of journals
+	 * @return journals
+	 */
+	public RedmineJournal getJournal() {
+		if(journals == null)
+			return null;
+		if(journals.size() < 1)
+			return null;
+		return journals.get(0);
+	}
+
+	/**
+	 * Set journal for posting note
+	 * @param journal for notes
+	 */
+	public void setJournal(RedmineJournal journal) {
+		this.journals = new ArrayList<RedmineJournal>();
+		this.journals.add(journal);
+	}
+
+	/**
 	 * @param data_modified セットする data_modified
 	 */
 	public void setDataModified(Date data_modified) {
@@ -541,11 +574,16 @@ public class RedmineIssue implements IPostingRecord {
 		if(getParentId() != 0){
 			root.appendChild(getElement(document,"parent_issue_id",String.valueOf(this.getParentId())));
 		}
+		root.appendChild(getElement(document,"fixed_version_id",	getVersion()));
 		root.appendChild(getElement(document,"priority_id",		getPriority()));
 		root.appendChild(getElement(document,"done_ratio",		String.valueOf(this.getDoneRate())));
 		root.appendChild(getElement(document,"start_date",		getDateStart()));
 		root.appendChild(getElement(document,"due_date",		getDateDue()));
-		root.appendChild(getElement(document,"estimated_hours",	this.getEstimatedHours() == 0 ? "" : String.valueOf(this.getEstimatedHours())));
+		root.appendChild(getElement(document,"estimated_hours",	getEstimatedHours() == null || getEstimatedHours() == 0 ? "" : String.valueOf(this.getEstimatedHours())));
+		RedmineJournal journal = getJournal();
+		if( journal != null && !TextUtils.isEmpty(journal.getNotes()) ){
+			root.appendChild(getElement(document,"notes",		journal.getNotes()));
+		}
 		return root;
 	}
 

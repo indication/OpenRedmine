@@ -23,14 +23,12 @@ Connection:
 Features:
 * View issues offline
 * Filter (Status/Tracker/Category/Priority/Author/Assined)
-* Sort (IssueID/Created/Modified)
+* Sort (IssueID/Created/Modified/... etc)
 * Show changelogs
 * Create or modify issue/timeentry
 
-Working:
-* Add journal
-
 Release planing:
+* Show relative issues
 * TimeEntry like stop watch (no plan...)
 
 Note:

@@ -114,7 +114,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 				return R.string.ticket_date_start;
 			}
 		});
-		fetchMap.put("fixed_version", new fetchHelper(){
+		fetchMap.put("fixed_version_id", new fetchHelper(){
 			@Override
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)

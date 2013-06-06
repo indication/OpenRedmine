@@ -92,8 +92,10 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		formList.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 				ListView listView = (ListView) parent;
-				RedmineProject item = (RedmineProject) listView.getItemAtPosition(position);
-				onItemSelect(item);
+				Object item =  listView.getItemAtPosition(position);
+				if(item == null || !(item instanceof RedmineProject))
+					return;
+				onItemSelect((RedmineProject)item);
 			}
 
 		});

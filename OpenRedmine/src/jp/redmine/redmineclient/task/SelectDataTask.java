@@ -18,6 +18,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -147,10 +148,10 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		return fetchData(type,connectionhandler, url.getUrl(connection.getUrl()),handler,puthandler);
 	}
 	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,Builder builder
-			,SelectDataTaskDataHandler handler,SelectDataTaskPutHandler puthandler){
+			,final SelectDataTaskDataHandler handler,SelectDataTaskPutHandler puthandler){
 		Uri remoteurl = builder.build();
 		DefaultHttpClient client = connectionhandler.getHttpClient();
-		boolean isInError = true;
+		Boolean isOk = false;
 		try {
 			URI uri = new URI(remoteurl.toString());
 			HttpUriRequest msg = null;
@@ -180,47 +181,61 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 			}
 			connectionhandler.setupOnMessage(msg);
 			msg.setHeader("Accept-Encoding", "gzip, deflate");
-			HttpResponse response = client.execute(msg);
-			int status = response.getStatusLine().getStatusCode();
 			if(BuildConfig.DEBUG){
 				for(Header h : msg.getAllHeaders())
 					Log.d("request header", h.toString());
-				Log.i("requestGet", "Status: " + status);
-				Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
 			}
-			InputStream stream = response.getEntity().getContent();
-			if (isGZipHttpResponse(response)) {
-				Log.i("requestGet", "Gzip: Enabled");
-				stream =  new GZIPInputStream(stream);
-			} else if(isDeflateHttpResponse(response)){
-				Log.i("requestGet", "Deflate: Enabled");
-				stream =  new InflaterInputStream(stream);
-			}
-			switch(status){
-			case HttpStatus.SC_OK:
-			case HttpStatus.SC_CREATED:
-			    isInError = false;
-				handler.onContent(stream);
-				break;
-			default:
-				publishErrorRequest(status);
-				if(BuildConfig.DEBUG){
-					Log.d("requestError", "Status: " + String.valueOf(status));
-					BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-				    String str;
-				    while((str = reader.readLine()) != null){
-				    	Log.d("requestError", str);
-				    }
+			// fetch remote
+			isOk = client.execute(msg, new ResponseHandler<Boolean>() {
+
+				@Override
+				public Boolean handleResponse(HttpResponse response)
+						throws ClientProtocolException, IOException {
+					int status = response.getStatusLine().getStatusCode();
+					if(BuildConfig.DEBUG){
+						Log.i("requestGet", "Status: " + status);
+						Log.i("requestGet", "Protocol: " + response.getProtocolVersion());
+					}
+					InputStream stream = response.getEntity().getContent();
+					if (isGZipHttpResponse(response)) {
+						Log.i("requestGet", "Gzip: Enabled");
+						stream =  new GZIPInputStream(stream);
+					} else if(isDeflateHttpResponse(response)){
+						Log.i("requestGet", "Deflate: Enabled");
+						stream =  new InflaterInputStream(stream);
+					}
+					switch(status){
+					case HttpStatus.SC_OK:
+					case HttpStatus.SC_CREATED:
+						try {
+							handler.onContent(stream);
+						} catch (XmlPullParserException e) {
+							publishError(e);
+						} catch (SQLException e) {
+							publishError(e);
+						}
+						return true;
+					default:
+						publishErrorRequest(status);
+						if(BuildConfig.DEBUG){
+							Log.d("requestError", "Status: " + String.valueOf(status));
+							BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+						    String str;
+						    while((str = reader.readLine()) != null){
+						    	Log.d("requestError", str);
+						    }
+						}
+						break;
+					}
+					return false;
 				}
-				break;
-			}
+
+			});
 		} catch (URISyntaxException e) {
 			publishErrorRequest(404);
 		} catch (ClientProtocolException e) {
 			publishError(e);
 		} catch (IOException e) {
-			publishError(e);
-		} catch (XmlPullParserException e) {
 			publishError(e);
 		} catch (SQLException e) {
 			publishError(e);
@@ -231,8 +246,8 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		} catch (TransformerException e) {
 			publishError(e);
 		}
-		if(isInError)
+		if(!isOk)
 			connectionhandler.close();
-		return !isInError;
+		return (isOk == true);
 	}
 }

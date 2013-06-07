@@ -1,10 +1,9 @@
 package jp.redmine.redmineclient.task;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.external.lib.AuthenticationParam;
-import jp.redmine.redmineclient.external.lib.ClientParam;
 
 import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -39,38 +38,24 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 		return registry;
 
 	}
-	public static DefaultHttpClient createHttpClient(ClientParam settings) {
-		HttpParams httpparams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpparams, settings.getTimeout());
-		HttpConnectionParams.setSoTimeout(httpparams, settings.getTimeout());
-		DefaultHttpClient httpclient = new DefaultHttpClient(
-				new ThreadSafeClientConnManager(httpparams
-						, getSchemeRegistry(settings.isSLLTrustAll(),settings.getCertKey()))
-				, httpparams);
-
-		return httpclient;
-	}
 
 	protected static DefaultHttpClient getHttpClient(RedmineConnection connection){
-		ClientParam clientparam = new ClientParam();
-		clientparam.setSLLTrustAll(connection.isPermitUnsafe());
-		clientparam.setCertKey(connection.getCertKey());
-		clientparam.setTimeout(120000);
-		DefaultHttpClient client = createHttpClient(clientparam);
+		HttpParams httpparams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpparams, 120000);
+		HttpConnectionParams.setSoTimeout(httpparams, 120000);
+		DefaultHttpClient client = new DefaultHttpClient(
+				new ThreadSafeClientConnManager(httpparams
+						, getSchemeRegistry(connection.isPermitUnsafe(),connection.getCertKey()))
+				, httpparams);
 		if(connection.isAuth()){
 			Uri remoteurl = Uri.parse(connection.getUrl());
-			AuthenticationParam param = new AuthenticationParam();
-			param.setId(connection.getAuthId());
-			param.setPass(connection.getAuthPasswd());
-			param.setAddress(remoteurl.getHost());
-			if(remoteurl.getPort() <= 0){
-				param.setPort("https".equals(remoteurl.getScheme()) ? 443: 80);
-			} else {
-				param.setPort(remoteurl.getPort());
+			Credentials credential = new UsernamePasswordCredentials(connection.getAuthId(), connection.getAuthPasswd());
+			int port = remoteurl.getPort();
+			if(port <= 0){
+				port = "https".equals(remoteurl.getScheme()) ? 443: 80;
 			}
-			client.getCredentialsProvider().setCredentials(
-					new AuthScope(param.getAddress(), param.getPort()),
-					new UsernamePasswordCredentials(param.getId(), param.getPass()));
+			AuthScope scope = new AuthScope(remoteurl.getHost(),port);
+			client.getCredentialsProvider().setCredentials(scope, credential);
 		}
 		return client;
 	}

@@ -50,11 +50,6 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 
 		return httpclient;
 	}
-	public static void setupHttpClientAuthentication(DefaultHttpClient client, AuthenticationParam auth){
-		client.getCredentialsProvider().setCredentials(
-			new AuthScope(auth.getAddress(), auth.getPort()),
-			new UsernamePasswordCredentials(auth.getId(), auth.getPass()));
-	}
 
 	protected static DefaultHttpClient getHttpClient(RedmineConnection connection){
 		ClientParam clientparam = new ClientParam();
@@ -73,7 +68,9 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 			} else {
 				param.setPort(remoteurl.getPort());
 			}
-			setupHttpClientAuthentication(client, param);
+			client.getCredentialsProvider().setCredentials(
+					new AuthScope(param.getAddress(), param.getPort()),
+					new UsernamePasswordCredentials(param.getId(), param.getPass()));
 		}
 		return client;
 	}

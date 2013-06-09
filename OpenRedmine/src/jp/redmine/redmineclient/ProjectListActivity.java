@@ -197,6 +197,14 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 				this.onRefresh();
 				return true;
 			}
+			case R.id.menu_settings:
+			{
+				ConnectionIntent input = new ConnectionIntent(getIntent());
+				ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ConnectionActivity.class );
+				intent.setConnectionId(input.getConnectionId());
+				startActivity( intent.getIntent() );
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -5,6 +5,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -23,8 +24,14 @@ import android.text.TextUtils;
 
 class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHandler {
 	private RedmineConnection connection;
+	private ClientConnectionManager manager;
+	private HttpParams httpparams = new BasicHttpParams();
 	public SelectDataTaskRedmineConnectionHandler(RedmineConnection con){
+		HttpConnectionParams.setConnectionTimeout(httpparams, 120000);
+		HttpConnectionParams.setSoTimeout(httpparams, 120000);
 		connection = con;
+		manager = new ThreadSafeClientConnManager(httpparams
+				, getSchemeRegistry(connection.isPermitUnsafe(),connection.getCertKey()));
 	}
 
 	public static SchemeRegistry getSchemeRegistry(boolean isTrustAll, String certkey) {
@@ -39,14 +46,8 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 
 	}
 
-	protected static DefaultHttpClient getHttpClient(RedmineConnection connection){
-		HttpParams httpparams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpparams, 120000);
-		HttpConnectionParams.setSoTimeout(httpparams, 120000);
-		DefaultHttpClient client = new DefaultHttpClient(
-				new ThreadSafeClientConnManager(httpparams
-						, getSchemeRegistry(connection.isPermitUnsafe(),connection.getCertKey()))
-				, httpparams);
+	protected DefaultHttpClient getHttpClient(RedmineConnection connection){
+		DefaultHttpClient client = new DefaultHttpClient(manager, httpparams);
 		if(connection.isAuth()){
 			Uri remoteurl = Uri.parse(connection.getUrl());
 			Credentials credential = new UsernamePasswordCredentials(connection.getAuthId(), connection.getAuthPasswd());
@@ -63,6 +64,12 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 	@Override
 	protected DefaultHttpClient getHttpClientCore() {
 		return getHttpClient(connection);
+	}
+
+	@Override
+	public void close() {
+		manager.closeExpiredConnections();
+		super.close();
 	}
 
 	@Override

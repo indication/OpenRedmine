@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listConnectionList"
-    android:fastScrollEnabled="true"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-</ListView>
+<fragment
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/fragmentConnectionList"
+	android:name="jp.redmine.redmineclient.fragment.ConnectionList"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"/>

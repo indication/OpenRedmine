@@ -1,6 +1,6 @@
 package jp.redmine.redmineclient;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import jp.redmine.redmineclient.activity.helper.ActionActivityHelper;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
@@ -25,7 +25,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
+public class ProjectListActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>  {
 	public ProjectListActivity(){
 		super();
 	}
@@ -45,7 +45,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		cancelTask();
 		super.onDestroy();
 	}
@@ -135,14 +135,14 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		ConnectionIntent intent = new ConnectionIntent(getIntent());
-		int id = intent.getConnectionId();
+			ConnectionIntent intent = new ConnectionIntent(getIntent());
+			int id = intent.getConnectionId();
 		ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
 		RedmineConnection connection = mConnection.getItem(id);
-		mConnection.finalize();
+			mConnection.finalize();
 		task = new SelectDataTask(getHelper());
 		task.execute(connection);
-	}
+		}
 
 	private class SelectDataTask extends SelectProjectTask {
 		public SelectDataTask(DatabaseCacheHelper helper) {
@@ -203,7 +203,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 				intent.setConnectionId(input.getConnectionId());
 				startActivity( intent.getIntent() );
 				return true;
-			}
+		}
 		}
 		return super.onOptionsItemSelected(item);
 	}

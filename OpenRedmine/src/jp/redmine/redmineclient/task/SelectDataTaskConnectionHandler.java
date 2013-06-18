@@ -17,7 +17,6 @@ abstract class SelectDataTaskConnectionHandler {
 	public void close(){
 		if(client == null)
 			return;
-		client.getConnectionManager().shutdown();
 		client = null;
 	}
 

@@ -36,13 +36,11 @@ import jp.redmine.redmineclient.url.RemoteUrlTrackers;
 import jp.redmine.redmineclient.url.RemoteUrlUsers;
 import jp.redmine.redmineclient.url.RemoteUrlEnumerations.EnumerationType;
 
-public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integer> {
+public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 
 	protected DatabaseCacheHelper helper;
-	protected RedmineConnection connection;
-	public SelectProjectTask(DatabaseCacheHelper helper,RedmineConnection con){
+	public SelectProjectTask(DatabaseCacheHelper helper){
 		this.helper = helper;
-		this.connection = con;
 	}
 
 
@@ -50,36 +48,38 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 	}
 
 	@Override
-	protected List<RedmineProject> doInBackground(Integer... params) {
-		int limit = 20;
-		int offset = 0;
-		int count = 0;
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
-		fetchStatus(client);
-		fetchUsers(client);
-		fetchTracker(client);
-		fetchPriority(client);
-		fetchTimeEntryActivity(client);
-		do {
-			List<RedmineProject> projects = fetchProject(client,offset,limit);
-			count = projects.size();
-			//TODO
-			publishProgress(0, 0);
-			if(offset != 0){
-				//sleep for server
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					publishError(e);
+	protected Void doInBackground(RedmineConnection... params) {
+		for(RedmineConnection connection : params ){
+			int limit = 20;
+			int offset = 0;
+			int count = 0;
+			SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+			fetchStatus(connection,client);
+			fetchUsers(connection,client);
+			fetchTracker(connection,client);
+			fetchPriority(connection,client);
+			fetchTimeEntryActivity(connection,client);
+			do {
+				List<RedmineProject> projects = fetchProject(connection,client,offset,limit);
+				count = projects.size();
+				//TODO
+				publishProgress(0, 0);
+				if(offset != 0){
+					//sleep for server
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						publishError(e);
+					}
 				}
-			}
-			offset += limit;
-		} while(count >= limit);
-		client.close();
+				offset += limit;
+			} while(count >= limit);
+			client.close();
+		}
 		return null;
 	}
 
-	protected List<RedmineProject> fetchProject(SelectDataTaskConnectionHandler client, int offset, int limit){
+	protected List<RedmineProject> fetchProject(final RedmineConnection connection, SelectDataTaskConnectionHandler client, int offset, int limit){
 		final RedmineProjectModel model =
 			new RedmineProjectModel(helper);
 		RemoteUrlProjects url = new RemoteUrlProjects();
@@ -104,7 +104,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 		});
 		return projects;
 	}
-	protected void fetchStatus(SelectDataTaskConnectionHandler client){
+	protected void fetchStatus(final RedmineConnection connection, SelectDataTaskConnectionHandler client){
 		final RedmineStatusModel model = new RedmineStatusModel(helper);
 		RemoteUrlStatus url = new RemoteUrlStatus();
 
@@ -123,7 +123,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 			}
 		});
 	}
-	protected void fetchTracker(SelectDataTaskConnectionHandler client){
+	protected void fetchTracker(final RedmineConnection connection, SelectDataTaskConnectionHandler client){
 		final RedmineTrackerModel model = new RedmineTrackerModel(helper);
 		RemoteUrlTrackers url = new RemoteUrlTrackers();
 
@@ -142,7 +142,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 			}
 		});
 	}
-	protected void fetchPriority(SelectDataTaskConnectionHandler client){
+	protected void fetchPriority(final RedmineConnection connection, SelectDataTaskConnectionHandler client){
 		final RedminePriorityModel model = new RedminePriorityModel(helper);
 		RemoteUrlEnumerations url = new RemoteUrlEnumerations();
 		url.setType(EnumerationType.IssuePriorities);
@@ -162,7 +162,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 			}
 		});
 	}
-	protected void fetchTimeEntryActivity(SelectDataTaskConnectionHandler client){
+	protected void fetchTimeEntryActivity(final RedmineConnection connection, SelectDataTaskConnectionHandler client){
 		final RedmineTimeActivityModel model = new RedmineTimeActivityModel(helper);
 		RemoteUrlEnumerations url = new RemoteUrlEnumerations();
 		url.setType(EnumerationType.TimeEntryActivities);
@@ -182,7 +182,7 @@ public class SelectProjectTask extends SelectDataTask<List<RedmineProject>,Integ
 			}
 		});
 	}
-	protected void fetchUsers(SelectDataTaskConnectionHandler client){
+	protected void fetchUsers(final RedmineConnection connection, SelectDataTaskConnectionHandler client){
 		final RedmineUserModel model = new RedmineUserModel(helper);
 		RemoteUrlUsers url = new RemoteUrlUsers();
 

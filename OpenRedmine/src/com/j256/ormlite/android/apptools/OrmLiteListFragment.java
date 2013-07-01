@@ -57,7 +57,7 @@ public abstract class OrmLiteListFragment<H extends OrmLiteSqliteOpenHelper> ext
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		if (helper == null) {
-			helper = getHelperInternal(this.getActivity().getApplicationContext());
+			helper = getHelperInternal(this.getActivity());
 			created = true;
 		}
 	}

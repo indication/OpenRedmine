@@ -56,7 +56,7 @@ public abstract class OrmLiteFragmentActivity<H extends OrmLiteSqliteOpenHelper>
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		if (helper == null) {
-			helper = getHelperInternal(getApplicationContext());
+			helper = getHelperInternal(this);
 			created = true;
 		}
 		super.onCreate(savedInstanceState);

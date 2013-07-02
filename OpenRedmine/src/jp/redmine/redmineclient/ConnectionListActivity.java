@@ -23,7 +23,7 @@ public class ConnectionListActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.connectionlist);
+		setContentView(R.layout.fragment_connection);
 	}
 
 

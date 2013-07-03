@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+v2.5
+===========
+- Show comment area always
+
 v2.4
 ===========
 - Fix sync issues (loop forever)

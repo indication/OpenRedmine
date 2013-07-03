@@ -1,13 +1,12 @@
 package jp.redmine.redmineclient;
 
-import java.util.List;
-
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
 import jp.redmine.redmineclient.activity.helper.ActionActivityHelper;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineBaseAdapterListFormHelper;
 import jp.redmine.redmineclient.form.RedmineIssueJumpForm;
@@ -15,7 +14,6 @@ import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectProjectTask;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.view.LayoutInflater;
@@ -137,19 +135,20 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		task = new SelectDataTask(this);
-		task.execute();
+		ConnectionIntent intent = new ConnectionIntent(getIntent());
+		int id = intent.getConnectionId();
+		ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+		RedmineConnection connection = mConnection.getItem(id);
+		mConnection.finalize();
+		task = new SelectDataTask(getHelper());
+		task.execute(connection);
 	}
 
 	private class SelectDataTask extends SelectProjectTask {
-		public SelectDataTask(final Context tex){
-			helper = getHelper();
-			ConnectionIntent intent = new ConnectionIntent(getIntent());
-			int id = intent.getConnectionId();
-			ConnectionModel mConnection = new ConnectionModel(tex);
-			connection = mConnection.getItem(id);
-			mConnection.finalize();
+		public SelectDataTask(DatabaseCacheHelper helper) {
+			super(helper);
 		}
+
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
@@ -160,7 +159,7 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 
 		// can use UI thread here
 		@Override
-		protected void onPostExecute(List<RedmineProject> b) {
+		protected void onPostExecute(Void b) {
 			formList.setFooterViewVisible(false);
 			formList.refresh(false);
 			if(menu_refresh != null)
@@ -195,6 +194,14 @@ public class ProjectListActivity extends OrmLiteBaseActivity<DatabaseCacheHelper
 			case R.id.menu_refresh:
 			{
 				this.onRefresh();
+				return true;
+			}
+			case R.id.menu_settings:
+			{
+				ConnectionIntent input = new ConnectionIntent(getIntent());
+				ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ConnectionActivity.class );
+				intent.setConnectionId(input.getConnectionId());
+				startActivity( intent.getIntent() );
 				return true;
 			}
 		}

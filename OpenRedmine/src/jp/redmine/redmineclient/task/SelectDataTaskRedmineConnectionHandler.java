@@ -1,40 +1,62 @@
 package jp.redmine.redmineclient.task;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.external.lib.AuthenticationParam;
-import jp.redmine.redmineclient.external.lib.ClientParam;
-import jp.redmine.redmineclient.external.lib.ConnectionHelper;
 
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.scheme.SocketFactory;
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.AbstractHttpMessage;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.transdroid.daemon.util.FakeSocketFactory;
 
 import android.net.Uri;
 import android.text.TextUtils;
 
 class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHandler {
 	private RedmineConnection connection;
+	private ClientConnectionManager manager;
+	private HttpParams httpparams = new BasicHttpParams();
 	public SelectDataTaskRedmineConnectionHandler(RedmineConnection con){
+		HttpConnectionParams.setConnectionTimeout(httpparams, 120000);
+		HttpConnectionParams.setSoTimeout(httpparams, 120000);
 		connection = con;
+		manager = new ThreadSafeClientConnManager(httpparams
+				, getSchemeRegistry(connection.isPermitUnsafe(),connection.getCertKey()));
 	}
 
-	protected static DefaultHttpClient getHttpClient(RedmineConnection connection){
-		ClientParam clientparam = new ClientParam();
-		clientparam.setSLLTrustAll(connection.isPermitUnsafe());
-		clientparam.setCertKey(connection.getCertKey());
-		clientparam.setTimeout(120000);
-		DefaultHttpClient client = ConnectionHelper.createHttpClient(clientparam);
+	public static SchemeRegistry getSchemeRegistry(boolean isTrustAll, String certkey) {
+		SchemeRegistry registry = new SchemeRegistry();
+		registry.register(new Scheme("http", new PlainSocketFactory(), 80));
+		SocketFactory https_socket =
+				isTrustAll					? new FakeSocketFactory()
+			: !TextUtils.isEmpty(certkey)	? new FakeSocketFactory(certkey)
+			: SSLSocketFactory.getSocketFactory();
+		registry.register(new Scheme("https", https_socket, 443));
+		return registry;
+
+	}
+
+	protected DefaultHttpClient getHttpClient(RedmineConnection connection){
+		DefaultHttpClient client = new DefaultHttpClient(manager, httpparams);
 		if(connection.isAuth()){
 			Uri remoteurl = Uri.parse(connection.getUrl());
-			AuthenticationParam param = new AuthenticationParam();
-			param.setId(connection.getAuthId());
-			param.setPass(connection.getAuthPasswd());
-			param.setAddress(remoteurl.getHost());
-			if(remoteurl.getPort() <= 0){
-				param.setPort("https".equals(remoteurl.getScheme()) ? 443: 80);
-			} else {
-				param.setPort(remoteurl.getPort());
+			Credentials credential = new UsernamePasswordCredentials(connection.getAuthId(), connection.getAuthPasswd());
+			int port = remoteurl.getPort();
+			if(port <= 0){
+				port = "https".equals(remoteurl.getScheme()) ? 443: 80;
 			}
-			ConnectionHelper.setupHttpClientAuthentication(client, param);
+			AuthScope scope = new AuthScope(remoteurl.getHost(),port);
+			client.getCredentialsProvider().setCredentials(scope, credential);
 		}
 		return client;
 	}
@@ -42,6 +64,12 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 	@Override
 	protected DefaultHttpClient getHttpClientCore() {
 		return getHttpClient(connection);
+	}
+
+	@Override
+	public void close() {
+		manager.closeExpiredConnections();
+		super.close();
 	}
 
 	@Override

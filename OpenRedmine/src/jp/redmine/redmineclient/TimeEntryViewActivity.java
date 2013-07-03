@@ -47,7 +47,7 @@ public class TimeEntryViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.issueview);
+		setContentView(R.layout.timeentrylist);
 
 		formList = new RedmineBaseAdapterListFormHelper<RedmineTimeEntryListAdapter>();
 		formList.setList((ListView)findViewById(R.id.list));

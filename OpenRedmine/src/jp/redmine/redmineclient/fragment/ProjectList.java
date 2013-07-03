@@ -51,6 +51,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		mFooter = getActivity().getLayoutInflater().inflate(R.layout.listview_footer,null);
 		getListView().addFooterView(mFooter);
+		getListView().setFastScrollEnabled(true);
 
 		setHasOptionsMenu(true);
 	}

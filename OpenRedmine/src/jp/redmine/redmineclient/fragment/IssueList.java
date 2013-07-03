@@ -70,6 +70,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		mFooter = getActivity().getLayoutInflater().inflate(R.layout.listview_footer,null);
 		getListView().addFooterView(mFooter);
+		getListView().setFastScrollEnabled(true);
 
 		getListView().setOnScrollListener(new OnScrollListener() {
 			@Override

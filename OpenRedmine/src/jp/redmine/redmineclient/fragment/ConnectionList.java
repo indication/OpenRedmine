@@ -40,6 +40,7 @@ public class ConnectionList extends ListFragment {
 		adapter = new ConnectionListAdapter(helperStore);
 		setListAdapter(adapter);
 
+		getListView().setFastScrollEnabled(true);
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override

@@ -44,12 +44,12 @@
 		    android:orientation="horizontal"
 		    android:visibility="gone" />
     </LinearLayout>
-	<ListView
-	    android:id="@+id/list"
+	<fragment
+		android:id="@+id/fragmentIssueView"
+		android:name="jp.redmine.redmineclient.fragment.IssueView"
 		android:layout_width="fill_parent"
-		android:fastScrollEnabled="true"
 		android:layout_height="0dp"
-		android:layout_weight="1" />
+		android:layout_weight="1"/>
 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"

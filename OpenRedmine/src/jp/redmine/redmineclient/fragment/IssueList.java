@@ -27,10 +27,12 @@ import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -65,11 +67,11 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		getListView().addFooterView(mFooter);
+
 		adapter = new RedmineIssueListAdapter(getHelper());
 		setListAdapter(adapter);
 
-		mFooter = getActivity().getLayoutInflater().inflate(R.layout.listview_footer,null);
-		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
 
 		getListView().setOnScrollListener(new OnScrollListener() {
@@ -112,6 +114,14 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		});
 
 		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		mFooter = inflater.inflate(R.layout.listview_footer,null);
+		mFooter.setVisibility(View.GONE);
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override

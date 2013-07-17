@@ -9,7 +9,9 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.intent.ConnectionIntent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 public class ConnectionList extends ListFragment {
 	private DatabaseHelper helperStore;
 	private ConnectionListAdapter adapter;
+	private View mFooter;
 
 	public ConnectionList(){
 		super();
@@ -35,12 +38,14 @@ public class ConnectionList extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		getListView().addFooterView(mFooter);
+		getListView().setFastScrollEnabled(true);
+
 		helperStore = new DatabaseHelper(getActivity());
 
 		adapter = new ConnectionListAdapter(helperStore);
 		setListAdapter(adapter);
 
-		getListView().setFastScrollEnabled(true);
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
@@ -54,7 +59,6 @@ public class ConnectionList extends ListFragment {
 			}
 		});
 
-		View mFooter = getActivity().getLayoutInflater().inflate(R.layout.listview_add,null);
 		mFooter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -63,9 +67,14 @@ public class ConnectionList extends ListFragment {
 				startActivity( intent.getIntent() );
 			}
 		});
-		getListView().addFooterView(mFooter);
 	}
 
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		mFooter = inflater.inflate(R.layout.listview_add,null);
+		return super.onCreateView(inflater, container, savedInstanceState);
+	}
 	@Override
 	public void onStart() {
 		super.onStart();

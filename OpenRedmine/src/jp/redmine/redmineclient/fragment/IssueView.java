@@ -57,13 +57,13 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().addHeaderView(mHeader);
 		getListView().addFooterView(mFooter);
-		getListView().setFastScrollEnabled(true);
-
 
 		ActionActivityHelper actionhelper = new ActionActivityHelper(getActivity());
 
 		adapter = new RedmineJournalListAdapter(getHelper(),actionhelper);
 		setListAdapter(adapter);
+
+		getListView().setFastScrollEnabled(true);
 
 		formDetail = new RedmineIssueViewDetailForm(mHeader);
 		formDetail.setupWebView(actionhelper);
@@ -88,6 +88,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mHeader = inflater.inflate(R.layout.issueviewdetail,null);
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
+		mFooter.setVisibility(View.GONE);
 		View mFragment = super.onCreateView(inflater, container, savedInstanceState);
 		return mFragment;
 	}

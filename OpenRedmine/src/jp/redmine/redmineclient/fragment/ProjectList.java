@@ -15,10 +15,12 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.SelectProjectTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
@@ -46,14 +48,22 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		getListView().addFooterView(mFooter);
+
 		adapter = new RedmineProjectListAdapter(getHelper());
 		setListAdapter(adapter);
 
-		mFooter = getActivity().getLayoutInflater().inflate(R.layout.listview_footer,null);
-		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
 
 		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		mFooter = inflater.inflate(R.layout.listview_footer,null);
+		mFooter.setVisibility(View.GONE);
+		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override

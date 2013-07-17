@@ -7,14 +7,14 @@ import jp.redmine.redmineclient.intent.ConnectionIntent;
 import jp.redmine.redmineclient.intent.ConnectionNaviResultIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class ConnectionActivity extends Activity {
+public class ConnectionActivity extends FragmentActivity {
 	public ConnectionActivity(){
 		super();
 	}

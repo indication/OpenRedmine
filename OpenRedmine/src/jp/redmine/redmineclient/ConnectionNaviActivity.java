@@ -4,13 +4,13 @@ import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.form.RedmineNavigationForm;
 import jp.redmine.redmineclient.intent.ConnectionNaviResultIntent;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class ConnectionNaviActivity extends Activity {
+public class ConnectionNaviActivity extends FragmentActivity {
 	public ConnectionNaviActivity(){
 		super();
 	}

@@ -44,7 +44,7 @@ public class ConnectionListActivity extends FragmentActivity {
 		{
 			case R.id.menu_access_addnew:
 			{
-				ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ProjectListActivity.class );
+				ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ConnectionActivity.class );
 				intent.setConnectionId(-1);
 				startActivity( intent.getIntent() );
 				return true;

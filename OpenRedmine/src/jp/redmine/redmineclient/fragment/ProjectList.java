@@ -2,8 +2,6 @@ package jp.redmine.redmineclient.fragment;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
-import jp.redmine.redmineclient.ConnectionActivity;
-import jp.redmine.redmineclient.IssueListActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -13,6 +11,7 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.view.LayoutInflater;
@@ -28,13 +27,43 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
+	private OnArticleSelectedListener mListener;
 
+	public interface OnArticleSelectedListener {
+		public void onArticleSelected(int connectionid, long projectid);
+		public void onArticleEditSelected(int connectionid);
+		//public void onArticleAddSelected();
+	}
 	public ProjectList(){
 		super();
 	}
 
 	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if(activity instanceof OnArticleSelectedListener){
+			mListener = (OnArticleSelectedListener)activity;
+		} else {
+			//setup empty events
+			mListener = new OnArticleSelectedListener() {
+
+				@Override
+				public void onArticleSelected(int connectionid, long projectid) {
+
+				}
+
+				@Override
+				public void onArticleEditSelected(int connectionid) {
+
+				}
+			};
+		}
+
+	}
+
+	@Override
 	public void onDestroy() {
+		mListener = null;
 		cancelTask();
 		super.onDestroy();
 	}
@@ -85,15 +114,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		Object item =  listView.getItemAtPosition(position);
 		if(item == null || !(item instanceof RedmineProject))
 			return;
-		onItemSelect((RedmineProject)item);
-	}
-
-	protected void onItemSelect(RedmineProject item) {
-		ProjectArgument intent = new ProjectArgument();
-		intent.setIntent( getActivity().getApplicationContext(), IssueListActivity.class );
-		intent.setConnectionId(item.getConnectionId());
-		intent.setProjectId(item.getId());
-		startActivity( intent.getIntent() );
+		RedmineProject project = (RedmineProject)item;
+		mListener.onArticleSelected(project.getConnectionId(), project.getId());
 	}
 
 	protected void onRefresh(){
@@ -102,7 +124,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		}
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setIntent(getActivity().getIntent());
-			int id = intent.getConnectionId();
+		int id = intent.getConnectionId();
 		ConnectionModel mConnection = new ConnectionModel(getActivity());
 		RedmineConnection connection = mConnection.getItem(id);
 			mConnection.finalize();
@@ -164,10 +186,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			{
 				ConnectionArgument input = new ConnectionArgument();
 				input.setIntent(getActivity().getIntent());
-				ConnectionArgument intent = new ConnectionArgument();
-				intent.setIntent( getActivity().getApplicationContext(), ConnectionActivity.class );
-				intent.setConnectionId(input.getConnectionId());
-				startActivity( intent.getIntent() );
+				mListener.onArticleEditSelected(input.getConnectionId());
 				return true;
 			}
 		}

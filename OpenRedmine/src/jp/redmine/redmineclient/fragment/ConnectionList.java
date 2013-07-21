@@ -1,12 +1,10 @@
 package jp.redmine.redmineclient.fragment;
 
-import jp.redmine.redmineclient.ConnectionActivity;
-import jp.redmine.redmineclient.ProjectListActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.param.ConnectionArgument;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -21,9 +19,52 @@ public class ConnectionList extends ListFragment {
 	private DatabaseHelper helperStore;
 	private ConnectionListAdapter adapter;
 	private View mFooter;
+	private OnArticleSelectedListener mListener;
+	public interface OnArticleSelectedListener {
+		public void onArticleSelected(int connectionid);
+		public void onArticleEditSelected(int connectionid);
+		public void onArticleAddSelected();
+	}
 
 	public ConnectionList(){
 		super();
+	}
+
+	static public ConnectionList newInstance(){
+		return new ConnectionList();
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if(activity instanceof OnArticleSelectedListener){
+			mListener = (OnArticleSelectedListener)activity;
+		} else {
+			//setup empty events
+			mListener = new OnArticleSelectedListener() {
+
+				@Override
+				public void onArticleSelected(int connectionid) {
+
+				}
+
+				@Override
+				public void onArticleEditSelected(int connectionid) {
+
+				}
+
+				@Override
+				public void onArticleAddSelected() {
+
+				}
+			};
+		}
+
+	}
+	@Override
+	public void onDestroy() {
+		mListener = null;
+		super.onDestroy();
 	}
 
 	@Override
@@ -52,21 +93,15 @@ public class ConnectionList extends ListFragment {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				ConnectionArgument intent = new ConnectionArgument();
-				intent.setIntent( getActivity(), ConnectionActivity.class );
-				intent.setConnectionId(item.getId());
-				startActivity( intent.getIntent() );
-				return false;
+				mListener.onArticleEditSelected(item.getId());
+				return true;
 			}
 		});
 
 		mFooter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ConnectionArgument intent = new ConnectionArgument();
-				intent.setIntent( getActivity().getApplicationContext(), ProjectListActivity.class );
-				intent.setConnectionId(-1);
-				startActivity( intent.getIntent() );
+				mListener.onArticleAddSelected();
 			}
 		});
 	}
@@ -91,10 +126,7 @@ public class ConnectionList extends ListFragment {
 		super.onListItemClick(parent, v, position, id);
 		ListView listView = (ListView) parent;
 		RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-		ConnectionArgument intent = new ConnectionArgument();
-		intent.setIntent( getActivity().getApplicationContext(), ProjectListActivity.class );
-		intent.setConnectionId(item.getId());
-		startActivity( intent.getIntent() );
+		mListener.onArticleSelected(item.getId());
 	}
 
 

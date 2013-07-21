@@ -72,7 +72,7 @@ public class ConnectionList extends ListFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mFooter = inflater.inflate(R.layout.listview_add,null);
+		mFooter = inflater.inflate(R.layout.listview_add,container, false);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 	@Override

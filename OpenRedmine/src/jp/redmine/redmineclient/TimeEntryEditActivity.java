@@ -10,8 +10,8 @@ import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
-import jp.redmine.redmineclient.intent.TimeEntryIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.TimeEntryArgument;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -51,7 +51,8 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 	}
 
 	protected void onRefresh(boolean isFetch){
-		TimeEntryIntent intent = new TimeEntryIntent(getIntent());
+		TimeEntryArgument intent = new TimeEntryArgument();
+		intent.setIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 
 		form.setupParameter(connectionid, 0);
@@ -89,7 +90,8 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			{
 				if(!form.Validate())
 					return true;
-				TimeEntryIntent intent = new TimeEntryIntent(getIntent());
+				TimeEntryArgument intent = new TimeEntryArgument();
+				intent.setIntent(getIntent());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
 				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());

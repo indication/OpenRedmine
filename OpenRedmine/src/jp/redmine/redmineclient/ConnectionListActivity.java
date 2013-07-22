@@ -4,7 +4,7 @@ import java.io.File;
 
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.intent.ConnectionIntent;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -44,7 +44,8 @@ public class ConnectionListActivity extends FragmentActivity {
 		{
 			case R.id.menu_access_addnew:
 			{
-				ConnectionIntent intent = new ConnectionIntent( getApplicationContext(), ConnectionActivity.class );
+				ConnectionArgument intent = new ConnectionArgument();
+				intent.setIntent( getApplicationContext(), ConnectionActivity.class );
 				intent.setConnectionId(-1);
 				startActivity( intent.getIntent() );
 				return true;

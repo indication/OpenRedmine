@@ -12,8 +12,8 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.RedmineIssueCommentForm;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
-import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalPost;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -44,7 +44,8 @@ public class IssueViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelp
 			public void onClick(View v) {
 				if(!formComment.Validate())
 					return;
-				IssueIntent intent = new IssueIntent(getIntent());
+				IssueArgument intent = new IssueArgument();
+				intent.setIntent(getIntent());
 
 				RedmineConnection connection = null;
 				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
@@ -96,7 +97,8 @@ public class IssueViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelp
 	@Override
 	protected void onStart() {
 		super.onStart();
-		IssueIntent intent = new IssueIntent(getIntent());
+		IssueArgument intent = new IssueArgument();
+		intent.setIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 
 		RedmineIssueModel model = new RedmineIssueModel(getHelper());

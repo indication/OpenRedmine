@@ -15,9 +15,9 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.intent.IssueIntent;
-import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.IssueArgument;
+import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
 import android.app.Activity;
@@ -104,7 +104,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 					return false;
 				}
 				RedmineIssue item = (RedmineIssue) listitem;
-				IssueIntent intent = new IssueIntent(getActivity(), IssueEditActivity.class );
+				IssueArgument intent = new IssueArgument();
+				intent.setIntent(getActivity(), IssueEditActivity.class );
 				intent.setConnectionId(item.getConnectionId());
 				intent.setProjectId(item.getProject().getId());
 				intent.setIssueId(item.getIssueId());
@@ -128,7 +129,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onStart() {
 		super.onStart();
 		if(adapter != null){
-			ProjectIntent intent = new ProjectIntent( getActivity().getIntent() );
+			ProjectArgument intent = new ProjectArgument();
+			intent.setIntent( getActivity().getIntent() );
 			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
@@ -148,7 +150,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		}
 		RedmineIssue item = (RedmineIssue) listitem;
-		IssueIntent intent = new IssueIntent(getActivity(), IssueViewActivity.class );
+		IssueArgument intent = new IssueArgument();
+		intent.setIntent(getActivity(), IssueViewActivity.class );
 		intent.setConnectionId(item.getConnectionId());
 		intent.setProjectId(item.getProject().getId());
 		intent.setIssueId(item.getIssueId());
@@ -156,7 +159,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	protected void onItemSelect(RedmineProject item) {
-		ProjectIntent intent = new ProjectIntent( getActivity().getApplicationContext(), IssueListActivity.class );
+		ProjectArgument intent = new ProjectArgument();
+		intent.setIntent( getActivity().getApplicationContext(), IssueListActivity.class );
 		intent.setConnectionId(item.getConnectionId());
 		intent.setProjectId(item.getId());
 		startActivity( intent.getIntent() );
@@ -172,7 +176,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			lastPos = -1; //reset
 		}
 
-		ProjectIntent intent = new ProjectIntent(getActivity().getIntent());
+		ProjectArgument intent = new ProjectArgument();
+		intent.setIntent(getActivity().getIntent());
 		DatabaseCacheHelper helper = getHelper();
 		RedmineConnection connection = null;
 		RedmineProject project = null;
@@ -248,8 +253,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 			case R.id.menu_issues_filter:
 			{
-				ProjectIntent intent = new ProjectIntent( getActivity().getIntent() );
-				ProjectIntent send = new ProjectIntent( getActivity(), FilterViewActivity.class );
+				ProjectArgument intent = new ProjectArgument();
+				intent.setIntent( getActivity().getIntent() );
+				ProjectArgument send = new ProjectArgument();
+				send.setIntent( getActivity(), FilterViewActivity.class );
 				send.setConnectionId(intent.getConnectionId());
 				send.setProjectId(intent.getProjectId());
 				startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
@@ -257,8 +264,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 			case R.id.menu_access_addnew:
 			{
-				ProjectIntent intent = new ProjectIntent( getActivity().getIntent() );
-				ProjectIntent send = new ProjectIntent( getActivity(), IssueEditActivity.class );
+				ProjectArgument intent = new ProjectArgument();
+				intent.setIntent( getActivity().getIntent() );
+				ProjectArgument send = new ProjectArgument();
+				send.setIntent( getActivity(), IssueEditActivity.class );
 				send.setConnectionId(intent.getConnectionId());
 				send.setProjectId(intent.getProjectId());
 				startActivityForResult(send.getIntent(), ACTIVITY_EDIT);

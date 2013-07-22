@@ -9,9 +9,9 @@ import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.intent.ConnectionIntent;
-import jp.redmine.redmineclient.intent.ProjectIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
@@ -70,7 +70,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onStart() {
 		super.onStart();
 		if(adapter != null){
-			ConnectionIntent intent = new ConnectionIntent(getActivity().getIntent());
+			ConnectionArgument intent = new ConnectionArgument();
+			intent.setIntent(getActivity().getIntent());
 			adapter.setupParameter(intent.getConnectionId());
 			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
@@ -88,7 +89,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	protected void onItemSelect(RedmineProject item) {
-		ProjectIntent intent = new ProjectIntent( getActivity().getApplicationContext(), IssueListActivity.class );
+		ProjectArgument intent = new ProjectArgument();
+		intent.setIntent( getActivity().getApplicationContext(), IssueListActivity.class );
 		intent.setConnectionId(item.getConnectionId());
 		intent.setProjectId(item.getId());
 		startActivity( intent.getIntent() );
@@ -98,7 +100,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-			ConnectionIntent intent = new ConnectionIntent(getActivity().getIntent());
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setIntent(getActivity().getIntent());
 			int id = intent.getConnectionId();
 		ConnectionModel mConnection = new ConnectionModel(getActivity());
 		RedmineConnection connection = mConnection.getItem(id);
@@ -159,8 +162,10 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 			case R.id.menu_settings:
 			{
-				ConnectionIntent input = new ConnectionIntent(getActivity().getIntent());
-				ConnectionIntent intent = new ConnectionIntent( getActivity().getApplicationContext(), ConnectionActivity.class );
+				ConnectionArgument input = new ConnectionArgument();
+				input.setIntent(getActivity().getIntent());
+				ConnectionArgument intent = new ConnectionArgument();
+				intent.setIntent( getActivity().getApplicationContext(), ConnectionActivity.class );
 				intent.setConnectionId(input.getConnectionId());
 				startActivity( intent.getIntent() );
 				return true;

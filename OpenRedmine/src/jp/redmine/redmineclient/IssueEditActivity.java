@@ -12,8 +12,8 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineIssueEditForm;
-import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssuePost;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -58,7 +58,8 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 	}
 
 	protected void onRefresh(boolean isFetch) throws SQLException{
-		IssueIntent intent = new IssueIntent(getIntent());
+		IssueArgument intent = new IssueArgument();
+		intent.setIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 		long projectid = 0;
 
@@ -96,7 +97,8 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			{
 				if(!form.Validate())
 					return true;
-				IssueIntent intent = new IssueIntent(getIntent());
+				IssueArgument intent = new IssueArgument();
+				intent.setIntent(getIntent());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
 				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());

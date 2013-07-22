@@ -15,8 +15,8 @@ import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
-import jp.redmine.redmineclient.intent.IssueIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
@@ -72,8 +72,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 			@Override
 			public void onClick(View v) {
-				IssueIntent baseintent = new IssueIntent(getActivity().getIntent());
-				IssueIntent intent = new IssueIntent(getActivity(), TimeEntryViewActivity.class );
+				IssueArgument baseintent = new IssueArgument();
+				baseintent.setIntent(getActivity().getIntent());
+				IssueArgument intent = new IssueArgument();
+				intent.setIntent(getActivity(), TimeEntryViewActivity.class );
 				intent.setConnectionId(baseintent.getConnectionId());
 				intent.setIssueId(baseintent.getIssueId());
 				startActivity( intent.getIntent() );
@@ -100,7 +102,8 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	protected void onRefresh(boolean isFetch){
-		IssueIntent intent = new IssueIntent(getActivity().getIntent());
+		IssueArgument intent = new IssueArgument();
+		intent.setIntent(getActivity().getIntent());
 		int connectionid = intent.getConnectionId();
 
 		RedmineIssueModel model = new RedmineIssueModel(getHelper());
@@ -141,7 +144,8 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	protected void onFetchRemote(){
 		if(task != null && task.getStatus() == Status.RUNNING)
 			return;
-		IssueIntent intent = new IssueIntent(getActivity().getIntent());
+		IssueArgument intent = new IssueArgument();
+		intent.setIntent(getActivity().getIntent());
 		task = new SelectDataTask();
 		task.execute(intent.getIssueId());
 	}
@@ -150,7 +154,8 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		public SelectDataTask() {
 			super();
 			helper = getHelper();
-			IssueIntent intent = new IssueIntent(getActivity().getIntent());
+			IssueArgument intent = new IssueArgument();
+			intent.setIntent(getActivity().getIntent());
 			int connectionid = intent.getConnectionId();
 			ConnectionModel mConnection = new ConnectionModel(getActivity());
 			connection = mConnection.getItem(connectionid);
@@ -197,8 +202,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 			case R.id.menu_edit:
 			{
-				IssueIntent baseintent = new IssueIntent(getActivity().getIntent());
-				IssueIntent intent = new IssueIntent(getActivity(), IssueEditActivity.class );
+				IssueArgument baseintent = new IssueArgument();
+				baseintent.setIntent(getActivity().getIntent());
+				IssueArgument intent = new IssueArgument();
+				intent.setIntent(getActivity(), IssueEditActivity.class );
 				intent.setConnectionId(baseintent.getConnectionId());
 				intent.setProjectId(baseintent.getProjectId());
 				intent.setIssueId(baseintent.getIssueId());

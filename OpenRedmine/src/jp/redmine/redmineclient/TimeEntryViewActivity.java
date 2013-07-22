@@ -9,7 +9,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
-import jp.redmine.redmineclient.intent.IssueIntent;
+import jp.redmine.redmineclient.param.IssueArgument;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -36,7 +36,8 @@ public class TimeEntryViewActivity extends OrmLiteFragmentActivity<DatabaseCache
 	}
 
 	protected void onRefresh(boolean isFetch){
-		IssueIntent intent = new IssueIntent(getIntent());
+		IssueArgument intent = new IssueArgument();
+		intent.setIntent(getIntent());
 		int connectionid = intent.getConnectionId();
 
 		RedmineIssueModel model = new RedmineIssueModel(getHelper());

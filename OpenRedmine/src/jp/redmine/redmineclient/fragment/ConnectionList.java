@@ -6,7 +6,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.intent.ConnectionIntent;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -52,7 +52,8 @@ public class ConnectionList extends ListFragment {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				ConnectionIntent intent = new ConnectionIntent( getActivity(), ConnectionActivity.class );
+				ConnectionArgument intent = new ConnectionArgument();
+				intent.setIntent( getActivity(), ConnectionActivity.class );
 				intent.setConnectionId(item.getId());
 				startActivity( intent.getIntent() );
 				return false;
@@ -62,7 +63,8 @@ public class ConnectionList extends ListFragment {
 		mFooter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				ConnectionIntent intent = new ConnectionIntent( getActivity().getApplicationContext(), ProjectListActivity.class );
+				ConnectionArgument intent = new ConnectionArgument();
+				intent.setIntent( getActivity().getApplicationContext(), ProjectListActivity.class );
 				intent.setConnectionId(-1);
 				startActivity( intent.getIntent() );
 			}
@@ -89,7 +91,8 @@ public class ConnectionList extends ListFragment {
 		super.onListItemClick(parent, v, position, id);
 		ListView listView = (ListView) parent;
 		RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-		ConnectionIntent intent = new ConnectionIntent( getActivity().getApplicationContext(), ProjectListActivity.class );
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setIntent( getActivity().getApplicationContext(), ProjectListActivity.class );
 		intent.setConnectionId(item.getId());
 		startActivity( intent.getIntent() );
 	}

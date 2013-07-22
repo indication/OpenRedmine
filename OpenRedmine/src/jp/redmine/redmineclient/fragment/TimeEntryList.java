@@ -7,8 +7,8 @@ import jp.redmine.redmineclient.TimeEntryEditActivity;
 import jp.redmine.redmineclient.adapter.RedmineTimeEntryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.intent.IssueIntent;
-import jp.redmine.redmineclient.intent.TimeEntryIntent;
+import jp.redmine.redmineclient.param.IssueArgument;
+import jp.redmine.redmineclient.param.TimeEntryArgument;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -69,7 +69,8 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	protected void onItemSelect(RedmineTimeEntry entry) {
-		TimeEntryIntent send = new TimeEntryIntent( getActivity().getApplicationContext(), TimeEntryEditActivity.class );
+		TimeEntryArgument send = new TimeEntryArgument();
+		send.setIntent( getActivity().getApplicationContext(), TimeEntryEditActivity.class );
 		send.setConnectionId(entry.getConnectionId());
 		send.setIssueId(entry.getIssueId());
 		send.setTimeEntryId(entry.getTimeentryId());
@@ -77,7 +78,8 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	protected void onRefresh(boolean isFetch){
-		IssueIntent intent = new IssueIntent(getActivity().getIntent());
+		IssueArgument intent = new IssueArgument();
+		intent.setIntent(getActivity().getIntent());
 		int connectionid = intent.getConnectionId();
 
 		adapter.setupParameter(connectionid,intent.getIssueId());
@@ -103,8 +105,10 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 			case R.id.menu_access_addnew:
 			{
-				IssueIntent intent = new IssueIntent( getActivity().getIntent() );
-				TimeEntryIntent send = new TimeEntryIntent( getActivity().getApplicationContext(), TimeEntryEditActivity.class );
+				IssueArgument intent = new IssueArgument();
+				intent.setIntent( getActivity().getIntent() );
+				TimeEntryArgument send = new TimeEntryArgument();
+				send.setIntent( getActivity().getApplicationContext(), TimeEntryEditActivity.class );
 				send.setConnectionId(intent.getConnectionId());
 				send.setIssueId(intent.getIssueId());
 				startActivityForResult(send.getIntent(),FORM_TIMEENTRY);

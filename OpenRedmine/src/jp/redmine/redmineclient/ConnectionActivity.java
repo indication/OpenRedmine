@@ -3,9 +3,9 @@ package jp.redmine.redmineclient;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
-import jp.redmine.redmineclient.intent.ConnectionIntent;
-import jp.redmine.redmineclient.intent.ConnectionNaviResultIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,7 +55,8 @@ public class ConnectionActivity extends FragmentActivity {
 				String url = form.getUrl();
 				if("".equals(url))
 					return;
-				ConnectionNaviResultIntent load = new ConnectionNaviResultIntent( getApplicationContext(), ConnectionNaviActivity.class );
+				ConnectionNaviResultArgument load = new ConnectionNaviResultArgument();
+				load.setIntent(getApplicationContext(), ConnectionNaviActivity.class );
 				load.setUrl(url);
 				load.setAuthID(form.getAuthID());
 				load.setAuthPassword(form.getAuthPassword());
@@ -70,7 +71,8 @@ public class ConnectionActivity extends FragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		ConnectionIntent intent = new ConnectionIntent(getIntent());
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setIntent(getIntent());
 		idEditing = intent.getConnectionId();
 		loadData();
 	}
@@ -112,7 +114,8 @@ public class ConnectionActivity extends FragmentActivity {
 		case ACTIVITY_SUB:
 			if(resultCode !=RESULT_OK )
 				break;
-			ConnectionNaviResultIntent intent = new ConnectionNaviResultIntent(data);
+			ConnectionNaviResultArgument intent = new ConnectionNaviResultArgument();
+			intent.setIntent(data);
 			form.setAuthentication(intent.getAuthID(), intent.getAuthPassword());
 			form.setUnsafeConnection(intent.isUnsafeSSL());
 			form.setToken(intent.getToken());

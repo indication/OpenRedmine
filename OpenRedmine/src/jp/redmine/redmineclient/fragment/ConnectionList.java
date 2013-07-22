@@ -21,9 +21,9 @@ public class ConnectionList extends ListFragment {
 	private View mFooter;
 	private OnArticleSelectedListener mListener;
 	public interface OnArticleSelectedListener {
-		public void onArticleSelected(int connectionid);
-		public void onArticleEditSelected(int connectionid);
-		public void onArticleAddSelected();
+		public void onConnectionSelected(int connectionid);
+		public void onConnectionEdit(int connectionid);
+		public void onConnectionAdd();
 	}
 
 	public ConnectionList(){
@@ -42,20 +42,14 @@ public class ConnectionList extends ListFragment {
 		} else {
 			//setup empty events
 			mListener = new OnArticleSelectedListener() {
-
 				@Override
-				public void onArticleSelected(int connectionid) {
-
+				public void onConnectionSelected(int connectionid) {
 				}
-
 				@Override
-				public void onArticleEditSelected(int connectionid) {
-
+				public void onConnectionEdit(int connectionid) {
 				}
-
 				@Override
-				public void onArticleAddSelected() {
-
+				public void onConnectionAdd() {
 				}
 			};
 		}
@@ -93,7 +87,7 @@ public class ConnectionList extends ListFragment {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				ListView listView = (ListView) parent;
 				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				mListener.onArticleEditSelected(item.getId());
+				mListener.onConnectionEdit(item.getId());
 				return true;
 			}
 		});
@@ -101,7 +95,7 @@ public class ConnectionList extends ListFragment {
 		mFooter.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				mListener.onArticleAddSelected();
+				mListener.onConnectionAdd();
 			}
 		});
 	}
@@ -126,7 +120,7 @@ public class ConnectionList extends ListFragment {
 		super.onListItemClick(parent, v, position, id);
 		ListView listView = (ListView) parent;
 		RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-		mListener.onArticleSelected(item.getId());
+		mListener.onConnectionSelected(item.getId());
 	}
 
 

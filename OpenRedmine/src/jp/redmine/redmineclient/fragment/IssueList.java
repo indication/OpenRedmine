@@ -6,7 +6,6 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.FilterViewActivity;
 import jp.redmine.redmineclient.IssueEditActivity;
-import jp.redmine.redmineclient.IssueListActivity;
 import jp.redmine.redmineclient.IssueViewActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
@@ -160,14 +159,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		intent.setConnectionId(item.getConnectionId());
 		intent.setProjectId(item.getProject().getId());
 		intent.setIssueId(item.getIssueId());
-		startActivity( intent.getIntent() );
-	}
-
-	protected void onItemSelect(RedmineProject item) {
-		ProjectArgument intent = new ProjectArgument();
-		intent.setIntent( getActivity().getApplicationContext(), IssueListActivity.class );
-		intent.setConnectionId(item.getConnectionId());
-		intent.setProjectId(item.getId());
 		startActivity( intent.getIntent() );
 	}
 

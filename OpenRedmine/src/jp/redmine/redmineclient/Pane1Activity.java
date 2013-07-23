@@ -2,12 +2,17 @@ package jp.redmine.redmineclient;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
+import jp.redmine.redmineclient.activity.handler.ConnectionListHandler;
+import jp.redmine.redmineclient.activity.handler.ProjectListHandler;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.ConnectionList;
+import jp.redmine.redmineclient.fragment.ProjectList;
 import android.os.Bundle;
 
-public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>  {
+public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
+	implements ActivityInterface {
 	public Pane1Activity(){
 		super();
 	}
@@ -28,5 +33,14 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper> 
 	@Override
 	protected void onStart() {
 		super.onStart();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getHandler(Class<T> cls){
+		if(cls.equals(ConnectionList.OnArticleSelectedListener.class))
+			return (T) new ConnectionListHandler(getSupportFragmentManager());
+		if(cls.equals(ProjectList.OnArticleSelectedListener.class))
+			return (T) new ProjectListHandler(getSupportFragmentManager());
+		return null;
 	}
 }

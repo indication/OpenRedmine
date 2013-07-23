@@ -51,6 +51,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super();
 	}
 
+	static public IssueList newInstance(){
+		return new IssueList();
+	}
+
 	@Override
 	public void onDestroy() {
 		cancelTask();
@@ -134,7 +138,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onStart();
 		if(adapter != null){
 			ProjectArgument intent = new ProjectArgument();
-			intent.setIntent( getActivity().getIntent() );
+			intent.setArgument( getArguments() );
 			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
@@ -173,7 +177,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		}
 
 		ProjectArgument intent = new ProjectArgument();
-		intent.setIntent(getActivity().getIntent());
+		intent.setArgument(getArguments());
 		DatabaseCacheHelper helper = getHelper();
 		RedmineConnection connection = null;
 		RedmineProject project = null;
@@ -250,7 +254,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			case R.id.menu_issues_filter:
 			{
 				ProjectArgument intent = new ProjectArgument();
-				intent.setIntent( getActivity().getIntent() );
+				intent.setArgument( getArguments() );
 				ProjectArgument send = new ProjectArgument();
 				send.setIntent( getActivity(), FilterViewActivity.class );
 				send.setConnectionId(intent.getConnectionId());
@@ -261,7 +265,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			case R.id.menu_access_addnew:
 			{
 				ProjectArgument intent = new ProjectArgument();
-				intent.setIntent( getActivity().getIntent() );
+				intent.setArgument( getArguments() );
 				ProjectArgument send = new ProjectArgument();
 				send.setIntent( getActivity(), IssueEditActivity.class );
 				send.setConnectionId(intent.getConnectionId());

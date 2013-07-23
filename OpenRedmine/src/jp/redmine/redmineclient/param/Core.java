@@ -10,6 +10,9 @@ abstract class Core {
 	public Bundle getArgument(){
 		return this.bundle;
 	}
+	public void setArgument(){
+		this.bundle = new Bundle();
+	}
 	public void setArgument(Bundle bundle){
 		this.bundle = bundle;
 	}

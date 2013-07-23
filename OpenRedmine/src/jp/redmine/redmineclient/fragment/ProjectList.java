@@ -9,7 +9,6 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
-import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
 import android.app.Activity;
 import android.os.Bundle;
@@ -38,12 +37,17 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super();
 	}
 
+	static public ProjectList newInstance(){
+		return new ProjectList();
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof OnArticleSelectedListener){
-			mListener = (OnArticleSelectedListener)activity;
-		} else {
+		if(activity instanceof ActivityInterface){
+			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+		}
+		if(mListener == null) {
 			//setup empty events
 			mListener = new OnArticleSelectedListener() {
 
@@ -104,7 +108,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onStart();
 		if(adapter != null){
 			ConnectionArgument intent = new ConnectionArgument();
-			intent.setIntent(getActivity().getIntent());
+			intent.setArgument(getArguments());
 			adapter.setupParameter(intent.getConnectionId());
 			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
@@ -127,7 +131,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		}
 		ConnectionArgument intent = new ConnectionArgument();
-		intent.setIntent(getActivity().getIntent());
+		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		ConnectionModel mConnection = new ConnectionModel(getActivity());
 		RedmineConnection connection = mConnection.getItem(id);
@@ -189,7 +193,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			case R.id.menu_settings:
 			{
 				ConnectionArgument input = new ConnectionArgument();
-				input.setIntent(getActivity().getIntent());
+				input.setArgument(getArguments());
 				mListener.onArticleEditSelected(input.getConnectionId());
 				return true;
 			}

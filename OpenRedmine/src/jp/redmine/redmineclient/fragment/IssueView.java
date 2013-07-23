@@ -88,8 +88,8 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mHeader = inflater.inflate(R.layout.issueviewdetail,container, false);
-		mFooter = inflater.inflate(R.layout.listview_footer,container, false);
+		mHeader = inflater.inflate(R.layout.issueviewdetail,null);
+		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		View mFragment = super.onCreateView(inflater, container, savedInstanceState);
 		return mFragment;

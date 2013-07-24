@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.entity;
 
 import java.util.Date;
+import java.util.TimeZone;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,19 +19,21 @@ public class TypeConverter {
 	public static final String FORMAT_DATETIME = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ";
 	public static final String FORMAT_DATE = "yyyy-MM-dd";
 	public static Date parseDate(String datetime){
-		return parseDateTimeFormat(datetime,FORMAT_DATE);
+		return parseDateTimeFormat(datetime,FORMAT_DATE, false);
 	}
 	public static Date parseDateTime(String datetime){
 		if (TextUtils.isEmpty(datetime))
 			return null;
 		if (datetime.endsWith("Z"))
-			return parseDateTimeFormat(datetime,FORMAT_DATETIMEZ);
+			return parseDateTimeFormat(datetime,FORMAT_DATETIMEZ, true);
 		else
-			return parseDateTimeFormat(datetime,FORMAT_DATETIME);
+			return parseDateTimeFormat(datetime,FORMAT_DATETIME, false);
 	}
 	@SuppressLint("SimpleDateFormat")
-	public static Date parseDateTimeFormat(String datetime,String formatstr){
+	public static Date parseDateTimeFormat(String datetime,String formatstr, boolean isSetupUtcTimezone){
 		SimpleDateFormat format = new SimpleDateFormat(formatstr);
+		if(isSetupUtcTimezone)
+			format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		if(TextUtils.isEmpty(datetime)) return null;
 		Date item = null;
 		try {

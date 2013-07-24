@@ -40,7 +40,10 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		setListAdapter(adapter);
 
 		getListView().setFastScrollEnabled(true);
-
+	}
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
 

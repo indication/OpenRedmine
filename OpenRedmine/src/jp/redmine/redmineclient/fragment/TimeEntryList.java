@@ -35,6 +35,11 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	@Override
+	public void onDestroyView() {
+		setListAdapter(null);
+		super.onDestroyView();
+	}
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 

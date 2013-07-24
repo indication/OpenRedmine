@@ -66,10 +66,11 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	@Override
-	public void onDestroy() {
+	public void onDestroyView() {
 		mListener = null;
 		cancelTask();
-		super.onDestroy();
+		setListAdapter(null);
+		super.onDestroyView();
 	}
 	protected void cancelTask(){
 		// cleanup task

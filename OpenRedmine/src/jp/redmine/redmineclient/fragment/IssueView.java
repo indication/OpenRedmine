@@ -46,9 +46,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	@Override
-	public void onDestroy() {
+	public void onDestroyView() {
 		cancelTask();
-		super.onDestroy();
+		setListAdapter(null);
+		super.onDestroyView();
 	}
 	protected void cancelTask(){
 		// cleanup task

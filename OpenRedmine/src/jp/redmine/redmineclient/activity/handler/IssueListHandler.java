@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
+import jp.redmine.redmineclient.fragment.IssueComment;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.IssueTitle;
 import jp.redmine.redmineclient.fragment.IssueView;
@@ -27,6 +28,7 @@ public class IssueListHandler extends Core
 		FragmentTransaction tran = manager.beginTransaction();
 		tran.replace(R.id.fragmentOne, IssueView.newInstance(arg));
 		tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
+		tran.replace(R.id.fragmentOneFooter, IssueComment.newInstance(arg));
 		tran.addToBackStack(null);
 		tran.commit();
 	}

@@ -3,7 +3,6 @@ package jp.redmine.redmineclient.form;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.helper.FormHelper;
-import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -16,13 +15,13 @@ public class RedmineIssueViewForm extends FormHelper {
 	public LinearLayout layoutTitleContent;
 	public ViewGroup layoutTitle1;
 	public ViewGroup layoutTitle2;
-	public RedmineIssueViewForm(Activity activity){
+	public RedmineIssueViewForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
 	}
 
 
-	public void setup(Activity view){
+	public void setup(View view){
 		textIssueId = (TextView)view.findViewById(R.id.textIssueId);
 		textSubject = (TextView)view.findViewById(R.id.textSubject);
 		layoutTitleContent = (LinearLayout)view.findViewById(R.id.layoutTitleContent);

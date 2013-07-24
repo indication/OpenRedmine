@@ -30,6 +30,10 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super();
 	}
 
+	public static TimeEntryList newInstance() {
+		return new TimeEntryList();
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -82,7 +86,7 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	protected void onRefresh(boolean isFetch){
 		IssueArgument intent = new IssueArgument();
-		intent.setIntent(getActivity().getIntent());
+		intent.setArgument(getArguments());
 		int connectionid = intent.getConnectionId();
 
 		adapter.setupParameter(connectionid,intent.getIssueId());
@@ -109,7 +113,7 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			case R.id.menu_access_addnew:
 			{
 				IssueArgument intent = new IssueArgument();
-				intent.setIntent( getActivity().getIntent() );
+				intent.setArgument(getArguments());
 				TimeEntryArgument send = new TimeEntryArgument();
 				send.setIntent( getActivity().getApplicationContext(), TimeEntryEditActivity.class );
 				send.setConnectionId(intent.getConnectionId());

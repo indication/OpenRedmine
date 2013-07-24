@@ -34,7 +34,6 @@
         <activity android:name=".ConnectionNaviActivity"></activity>
         <activity android:name=".IssueEditActivity"></activity>
         <activity android:name=".FilterViewActivity"></activity>
-        <activity android:name=".TimeEntryViewActivity"></activity>
         <activity android:name=".TimeEntryEditActivity"></activity>
     </application>
 

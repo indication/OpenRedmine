@@ -8,16 +8,17 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 import jp.redmine.redmineclient.IssueEditActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.TimeEntryViewActivity;
-import jp.redmine.redmineclient.activity.helper.ActionActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineJournalListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
+import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.util.Log;
@@ -35,9 +36,14 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private RedmineIssueViewDetailForm formDetail;
 	private View mHeader;
 	private View mFooter;
+	private IntentAction mActionListener;
 
 	public IssueView(){
 		super();
+	}
+
+	public static IssueView newInstance() {
+		return new IssueView();
 	}
 
 	@Override
@@ -51,6 +57,28 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			task.cancel(true);
 		}
 	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if(activity instanceof ActivityInterface){
+			mActionListener = ((ActivityInterface)activity).getHandler(IntentAction.class);
+		}
+		if(mActionListener == null) {
+			//setup empty events
+			mActionListener = new IntentAction() {
+				@Override
+				public void issue(int connection, int issueid) {
+				}
+
+				@Override
+				public boolean url(String url) {
+					return false;
+				}
+			};
+		}
+
+	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -58,22 +86,20 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().addHeaderView(mHeader);
 		getListView().addFooterView(mFooter);
 
-		ActionActivityHelper actionhelper = new ActionActivityHelper(getActivity());
-
-		adapter = new RedmineJournalListAdapter(getHelper(),actionhelper);
+		adapter = new RedmineJournalListAdapter(getHelper(),mActionListener);
 		setListAdapter(adapter);
 
 		getListView().setFastScrollEnabled(true);
 
 		formDetail = new RedmineIssueViewDetailForm(mHeader);
-		formDetail.setupWebView(actionhelper);
+		formDetail.setupWebView(mActionListener);
 
 		formDetail.linearTimeEntry.setOnClickListener(new android.view.View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				IssueArgument baseintent = new IssueArgument();
-				baseintent.setIntent(getActivity().getIntent());
+				baseintent.setArgument(getArguments());
 				IssueArgument intent = new IssueArgument();
 				intent.setIntent(getActivity(), TimeEntryViewActivity.class );
 				intent.setConnectionId(baseintent.getConnectionId());
@@ -107,7 +133,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	protected void onRefresh(boolean isFetch){
 		IssueArgument intent = new IssueArgument();
-		intent.setIntent(getActivity().getIntent());
+		intent.setArgument(getArguments());
 		int connectionid = intent.getConnectionId();
 
 		RedmineIssueModel model = new RedmineIssueModel(getHelper());
@@ -149,7 +175,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING)
 			return;
 		IssueArgument intent = new IssueArgument();
-		intent.setIntent(getActivity().getIntent());
+		intent.setArgument(getArguments());
 		task = new SelectDataTask();
 		task.execute(intent.getIssueId());
 	}
@@ -159,7 +185,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			super();
 			helper = getHelper();
 			IssueArgument intent = new IssueArgument();
-			intent.setIntent(getActivity().getIntent());
+			intent.setArgument(getArguments());
 			int connectionid = intent.getConnectionId();
 			ConnectionModel mConnection = new ConnectionModel(getActivity());
 			connection = mConnection.getItem(connectionid);
@@ -207,7 +233,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			case R.id.menu_edit:
 			{
 				IssueArgument baseintent = new IssueArgument();
-				baseintent.setIntent(getActivity().getIntent());
+				baseintent.setArgument(getArguments());
 				IssueArgument intent = new IssueArgument();
 				intent.setIntent(getActivity(), IssueEditActivity.class );
 				intent.setConnectionId(baseintent.getConnectionId());

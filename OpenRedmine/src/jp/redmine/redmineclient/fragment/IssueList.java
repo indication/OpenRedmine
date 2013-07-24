@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.FilterViewActivity;
-import jp.redmine.redmineclient.IssueEditActivity;
-import jp.redmine.redmineclient.IssueViewActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -15,7 +13,6 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.model.ConnectionModel;
-import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
@@ -40,13 +37,45 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final int ACTIVITY_FILTER = 2001;
-	private static final int ACTIVITY_EDIT = 2010;
 	private RedmineIssueListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private long lastPos = -1;
 
+	private OnArticleSelectedListener mListener;
+
+	public interface OnArticleSelectedListener {
+		public void onIssueSelected(int connectionid, long projectid, int issueid);
+		public void onIssueEdit(int connectionid, long projectid, int issueid);
+		public void onIssueAdd(int connectionid, long projectid);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if(activity instanceof ActivityInterface){
+			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+		}
+		if(mListener == null) {
+			//setup empty events
+			mListener = new OnArticleSelectedListener() {
+
+				@Override
+				public void onIssueSelected(int connectionid, long projectid, int issueid) {
+				}
+
+				@Override
+				public void onIssueEdit(int connectionid, long projectid, int issueid) {
+				}
+
+				@Override
+				public void onIssueAdd(int connectionid, long projectid) {
+				}
+			};
+		}
+
+	}
 	public IssueList(){
 		super();
 	}
@@ -107,12 +136,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 					return false;
 				}
 				RedmineIssue item = (RedmineIssue) listitem;
-				IssueArgument intent = new IssueArgument();
-				intent.setIntent(getActivity(), IssueEditActivity.class );
-				intent.setConnectionId(item.getConnectionId());
-				intent.setProjectId(item.getProject().getId());
-				intent.setIssueId(item.getIssueId());
-				startActivity( intent.getIntent() );
+				mListener.onIssueEdit(item.getConnectionId(), item.getProject().getId(), item.getIssueId());
 				return true;
 			}
 		});
@@ -158,12 +182,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		}
 		RedmineIssue item = (RedmineIssue) listitem;
-		IssueArgument intent = new IssueArgument();
-		intent.setIntent(getActivity(), IssueViewActivity.class );
-		intent.setConnectionId(item.getConnectionId());
-		intent.setProjectId(item.getProject().getId());
-		intent.setIssueId(item.getIssueId());
-		startActivity( intent.getIntent() );
+		mListener.onIssueSelected(item.getConnectionId(), item.getProject().getId(), item.getIssueId());
 	}
 
 	protected void onRefresh(boolean isFlush){
@@ -266,11 +285,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			{
 				ProjectArgument intent = new ProjectArgument();
 				intent.setArgument( getArguments() );
-				ProjectArgument send = new ProjectArgument();
-				send.setIntent( getActivity(), IssueEditActivity.class );
-				send.setConnectionId(intent.getConnectionId());
-				send.setProjectId(intent.getProjectId());
-				startActivityForResult(send.getIntent(), ACTIVITY_EDIT);
+				mListener.onIssueAdd(intent.getConnectionId(), intent.getProjectId());
 				return true;
 			}
 

@@ -30,8 +30,10 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super();
 	}
 
-	public static TimeEntryList newInstance() {
-		return new TimeEntryList();
+	static public TimeEntryList newInstance(IssueArgument intent){
+		TimeEntryList instance = new TimeEntryList();
+		instance.setArguments(intent.getArgument());
+		return instance;
 	}
 
 	@Override

@@ -21,9 +21,7 @@ public class ConnectionListHandler extends Core implements ConnectionList.OnArti
 		arg.setConnectionId(connectionid);
 
 		FragmentTransaction tran = manager.beginTransaction();
-		ProjectList fragment = ProjectList.newInstance();
-		fragment.setArguments(arg.getArgument());
-		tran.replace(R.id.fragmentOne, fragment);
+		tran.replace(R.id.fragmentOne, ProjectList.newInstance(arg));
 		tran.addToBackStack(null);
 		tran.commit();
 	}

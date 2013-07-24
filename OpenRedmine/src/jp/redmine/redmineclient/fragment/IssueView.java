@@ -41,8 +41,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super();
 	}
 
-	public static IssueView newInstance() {
-		return new IssueView();
+	static public IssueView newInstance(IssueArgument intent){
+		IssueView instance = new IssueView();
+		instance.setArguments(intent.getArgument());
+		return instance;
 	}
 
 	@Override

@@ -37,8 +37,10 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super();
 	}
 
-	static public ProjectList newInstance(){
-		return new ProjectList();
+	static public ProjectList newInstance(ConnectionArgument intent){
+		ProjectList instance = new ProjectList();
+		instance.setArguments(intent.getArgument());
+		return instance;
 	}
 
 	@Override

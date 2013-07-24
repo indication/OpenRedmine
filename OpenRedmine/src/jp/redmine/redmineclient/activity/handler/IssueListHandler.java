@@ -24,9 +24,7 @@ public class IssueListHandler extends Core
 		arg.setIssueId(issueid);
 
 		FragmentTransaction tran = manager.beginTransaction();
-		IssueView fragment = IssueView.newInstance();
-		fragment.setArguments(arg.getArgument());
-		tran.replace(R.id.fragmentOne, fragment);
+		tran.replace(R.id.fragmentOne, IssueView.newInstance(arg));
 		tran.addToBackStack(null);
 		tran.commit();
 	}

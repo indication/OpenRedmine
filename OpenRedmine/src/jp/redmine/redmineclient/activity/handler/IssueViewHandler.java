@@ -23,9 +23,7 @@ public class IssueViewHandler extends Core
 		arg.setIssueId(issueid);
 
 		FragmentTransaction tran = manager.beginTransaction();
-		TimeEntryList fragment = TimeEntryList.newInstance();
-		fragment.setArguments(arg.getArgument());
-		tran.replace(R.id.fragmentOne, fragment);
+		tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
 		tran.addToBackStack(null);
 		tran.commit();
 	}

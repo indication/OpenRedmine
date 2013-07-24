@@ -5,9 +5,7 @@ import java.sql.SQLException;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
-import jp.redmine.redmineclient.IssueEditActivity;
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.TimeEntryViewActivity;
 import jp.redmine.redmineclient.adapter.RedmineJournalListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -37,6 +35,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private View mHeader;
 	private View mFooter;
 	private IntentAction mActionListener;
+	private OnArticleSelectedListener mListener;
 
 	public IssueView(){
 		super();
@@ -58,11 +57,18 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		}
 	}
 
+	public interface OnArticleSelectedListener {
+		public void onTimeEntrySelected(int connectionid, int issueid);
+		public void onIssueEdit(int connectionid, int issueid);
+		public void onIssueRefreshed(int connectionid, int issueid);
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
 			mActionListener = ((ActivityInterface)activity).getHandler(IntentAction.class);
+			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
 		}
 		if(mActionListener == null) {
 			//setup empty events
@@ -74,6 +80,23 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 				@Override
 				public boolean url(String url) {
 					return false;
+				}
+			};
+		}
+		if(mListener == null){
+			//setup empty events
+			mListener = new OnArticleSelectedListener() {
+
+				@Override
+				public void onTimeEntrySelected(int connectionid, int issueid) {
+				}
+
+				@Override
+				public void onIssueEdit(int connectionid, int issueid) {
+				}
+
+				@Override
+				public void onIssueRefreshed(int connectionid, int issueid) {
 				}
 			};
 		}
@@ -100,11 +123,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			public void onClick(View v) {
 				IssueArgument baseintent = new IssueArgument();
 				baseintent.setArgument(getArguments());
-				IssueArgument intent = new IssueArgument();
-				intent.setIntent(getActivity(), TimeEntryViewActivity.class );
-				intent.setConnectionId(baseintent.getConnectionId());
-				intent.setIssueId(baseintent.getIssueId());
-				startActivity( intent.getIntent() );
+				mListener.onTimeEntrySelected(baseintent.getConnectionId(), baseintent.getIssueId());
 			}
 		});
 
@@ -206,6 +225,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			onRefresh(false);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
+
+			IssueArgument intent = new IssueArgument();
+			intent.setArgument(getArguments());
+			mListener.onIssueRefreshed(intent.getConnectionId(), intent.getIssueId());
 		}
 
 
@@ -234,12 +257,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			{
 				IssueArgument baseintent = new IssueArgument();
 				baseintent.setArgument(getArguments());
-				IssueArgument intent = new IssueArgument();
-				intent.setIntent(getActivity(), IssueEditActivity.class );
-				intent.setConnectionId(baseintent.getConnectionId());
-				intent.setProjectId(baseintent.getProjectId());
-				intent.setIssueId(baseintent.getIssueId());
-				startActivity( intent.getIntent() );
+				mListener.onIssueEdit(baseintent.getConnectionId(), baseintent.getIssueId());
 				return true;
 			}
 		}

@@ -49,15 +49,20 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	@Override
 	public void onDestroyView() {
-		cancelTask();
+		cancelTask(true);
 		setListAdapter(null);
 		super.onDestroyView();
 	}
-	protected void cancelTask(){
+	protected void cancelTask(boolean isForce){
 		// cleanup task
 		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(true);
+			task.cancel(isForce);
 		}
+	}
+	@Override
+	public void onPause() {
+		cancelTask(false);
+		super.onPause();
 	}
 
 	public interface OnArticleSelectedListener {
@@ -224,17 +229,24 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(Void v) {
-			mFooter.setVisibility(View.GONE);
 			onRefresh(false);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
+			onStopped();
 
 			IssueArgument intent = new IssueArgument();
 			intent.setArgument(getArguments());
 			mListener.onIssueRefreshed(intent.getConnectionId(), intent.getIssueId());
 		}
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			onStopped();
+		}
 
-
+		protected void onStopped(){
+			mFooter.setVisibility(View.GONE);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(true);
+		}
 	}
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)

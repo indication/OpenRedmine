@@ -114,6 +114,10 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			adapter.setupParameter(intent.getConnectionId());
 			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
+
+			if(adapter.getCount() < 1){
+				onRefresh();
+			}
 		}
 	}
 
@@ -140,7 +144,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			mConnection.finalize();
 		task = new SelectDataTask(getHelper());
 		task.execute(connection);
-		}
+	}
 
 	private class SelectDataTask extends SelectProjectTask {
 		public SelectDataTask(DatabaseCacheHelper helper) {

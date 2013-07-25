@@ -118,6 +118,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		form.getValue(con);
 		modelConnection.updateItem(idEditing, con);
 		Toast.makeText(getActivity(),"Has been saved.", Toast.LENGTH_SHORT).show();
+		getFragmentManager().popBackStack();
 	}
 
 	@Override

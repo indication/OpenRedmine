@@ -117,7 +117,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		RedmineConnection con = new RedmineConnection();
 		form.getValue(con);
 		modelConnection.updateItem(idEditing, con);
-		Toast.makeText(getActivity(),"Has been saved.", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getActivity(),R.string.has_been_saved, Toast.LENGTH_SHORT).show();
 		getFragmentManager().popBackStack();
 	}
 

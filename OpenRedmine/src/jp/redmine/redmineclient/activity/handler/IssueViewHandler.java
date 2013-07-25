@@ -4,6 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
+import jp.redmine.redmineclient.fragment.IssueEdit;
 import jp.redmine.redmineclient.fragment.IssueTitle;
 import jp.redmine.redmineclient.fragment.IssueView;
 import jp.redmine.redmineclient.fragment.TimeEntryList;
@@ -46,10 +47,29 @@ public class IssueViewHandler extends Core
 
 	@Override
 	public void onIssueEdit(int connectionid, int issueid) {
+		IssueArgument arg = new IssueArgument();
+		arg.setArgument();
+		arg.setConnectionId(connectionid);
+		arg.setIssueId(issueid);
+
+		FragmentTransaction tran = manager.beginTransaction();
+		tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
+		tran.addToBackStack(null);
+		tran.commit();
 	}
 
 	@Override
-	public void onIssueAdd(int connectionId, long projectId) {
+	public void onIssueAdd(int connectionid, long projectId) {
+		IssueArgument arg = new IssueArgument();
+		arg.setArgument();
+		arg.setConnectionId(connectionid);
+		arg.setProjectId(projectId);
+		arg.setIssueId(-1);
+
+		FragmentTransaction tran = manager.beginTransaction();
+		tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
+		tran.addToBackStack(null);
+		tran.commit();
 	}
 
 	@Override

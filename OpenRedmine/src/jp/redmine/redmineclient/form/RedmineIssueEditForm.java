@@ -26,7 +26,6 @@ import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
@@ -75,13 +74,13 @@ public class RedmineIssueEditForm extends FormHelper {
 	protected RedmineFilterListAdapter adapterPriority;
 	protected RedmineFilterListAdapter adapterUser;
 	protected RedmineFilterListAdapter adapterVersion;
-	public RedmineIssueEditForm(Activity activity){
+	public RedmineIssueEditForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
 	}
 
 
-	public void setup(Activity view){
+	public void setup(View view){
 		spinnerStatus = (Spinner)view.findViewById(R.id.spinnerStatus);
 		spinnerTracker = (Spinner)view.findViewById(R.id.spinnerTracker);
 		spinnerCategory = (Spinner)view.findViewById(R.id.spinnerCategory);

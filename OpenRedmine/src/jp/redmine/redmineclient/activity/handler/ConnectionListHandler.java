@@ -1,8 +1,10 @@
 package jp.redmine.redmineclient.activity.handler;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.fragment.ConnectionEdit;
 import jp.redmine.redmineclient.fragment.ConnectionList;
 import jp.redmine.redmineclient.fragment.IssueJump;
 import jp.redmine.redmineclient.fragment.ProjectList;
@@ -31,11 +33,22 @@ public class ConnectionListHandler extends Core implements ConnectionList.OnArti
 	@Override
 	public void onConnectionEdit(int connectionid) {
 
+		ConnectionArgument arg = new ConnectionArgument();
+		arg.setArgument();
+		arg.setConnectionId(connectionid);
+
+		FragmentTransaction tran = manager.beginTransaction();
+		tran.replace(R.id.fragmentOne, ConnectionEdit.newInstance(arg));
+		Fragment fragment = manager.findFragmentById(R.id.fragmentOneHeader);
+		if(fragment != null)
+			tran.remove(fragment);
+		tran.addToBackStack(null);
+		tran.commit();
 	}
 
 	@Override
 	public void onConnectionAdd() {
-
+		onConnectionEdit(-1);
 	}
 
 }

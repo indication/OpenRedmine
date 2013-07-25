@@ -67,8 +67,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	public interface OnArticleSelectedListener {
 		public void onTimeEntrySelected(int connectionid, int issueid);
+		public void onIssueSelected(int connectionid, int issueid);
 		public void onIssueEdit(int connectionid, int issueid);
 		public void onIssueRefreshed(int connectionid, int issueid);
+		public void onIssueAdd(int connectionId, long projectId);
 	}
 
 	@Override
@@ -96,16 +98,15 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			mListener = new OnArticleSelectedListener() {
 
 				@Override
-				public void onTimeEntrySelected(int connectionid, int issueid) {
-				}
-
+				public void onTimeEntrySelected(int connectionid, int issueid) {}
 				@Override
-				public void onIssueEdit(int connectionid, int issueid) {
-				}
-
+				public void onIssueSelected(int connectionid, int issueid) {}
 				@Override
-				public void onIssueRefreshed(int connectionid, int issueid) {
-				}
+				public void onIssueEdit(int connectionid, int issueid) {}
+				@Override
+				public void onIssueRefreshed(int connectionid, int issueid) {}
+				@Override
+				public void onIssueAdd(int connectionId, long projectId) {}
 			};
 		}
 

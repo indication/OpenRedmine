@@ -43,35 +43,27 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private View mFooter;
 	private long lastPos = -1;
 
-	private OnArticleSelectedListener mListener;
-
-	public interface OnArticleSelectedListener {
-		public void onIssueSelected(int connectionid, long projectid, int issueid);
-		public void onIssueEdit(int connectionid, long projectid, int issueid);
-		public void onIssueAdd(int connectionid, long projectid);
-	}
+	private IssueView.OnArticleSelectedListener mListener;
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			mListener = ((ActivityInterface)activity).getHandler( IssueView.OnArticleSelectedListener.class);
 		}
 		if(mListener == null) {
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-
+			mListener = new  IssueView.OnArticleSelectedListener() {
 				@Override
-				public void onIssueSelected(int connectionid, long projectid, int issueid) {
-				}
-
+				public void onTimeEntrySelected(int connectionid, int issueid) {}
 				@Override
-				public void onIssueEdit(int connectionid, long projectid, int issueid) {
-				}
-
+				public void onIssueSelected(int connectionid, int issueid) {}
 				@Override
-				public void onIssueAdd(int connectionid, long projectid) {
-				}
+				public void onIssueEdit(int connectionid, int issueid) {}
+				@Override
+				public void onIssueRefreshed(int connectionid, int issueid) {}
+				@Override
+				public void onIssueAdd(int connectionId, long projectId) {}
 			};
 		}
 
@@ -137,7 +129,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 					return false;
 				}
 				RedmineIssue item = (RedmineIssue) listitem;
-				mListener.onIssueEdit(item.getConnectionId(), item.getProject().getId(), item.getIssueId());
+				mListener.onIssueEdit(item.getConnectionId(), item.getIssueId());
 				return true;
 			}
 		});
@@ -183,7 +175,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		}
 		RedmineIssue item = (RedmineIssue) listitem;
-		mListener.onIssueSelected(item.getConnectionId(), item.getProject().getId(), item.getIssueId());
+		mListener.onIssueSelected(item.getConnectionId(), item.getIssueId());
 	}
 
 	protected void onRefresh(boolean isFlush){

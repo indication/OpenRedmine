@@ -3,7 +3,6 @@ package jp.redmine.redmineclient;
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import jp.redmine.redmineclient.activity.handler.ConnectionListHandler;
-import jp.redmine.redmineclient.activity.handler.IssueListHandler;
 import jp.redmine.redmineclient.activity.handler.IssueViewHandler;
 import jp.redmine.redmineclient.activity.handler.ProjectListHandler;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
@@ -11,7 +10,6 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.ConnectionList;
-import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.IssueView;
 import jp.redmine.redmineclient.fragment.ProjectList;
 import android.os.Bundle;
@@ -46,10 +44,8 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 			return (T) new ConnectionListHandler(getSupportFragmentManager());
 		if(cls.equals(ProjectList.OnArticleSelectedListener.class))
 			return (T) new ProjectListHandler(getSupportFragmentManager());
-		if(cls.equals(IssueList.OnArticleSelectedListener.class))
-			return (T) new IssueListHandler(getSupportFragmentManager());
 		if(cls.equals(IntentAction.class))
-			return (T) new IssueListHandler(getSupportFragmentManager());
+			return (T) new IssueViewHandler(getSupportFragmentManager());
 		if(cls.equals(IssueView.OnArticleSelectedListener.class))
 			return (T) new IssueViewHandler(getSupportFragmentManager());
 		return null;

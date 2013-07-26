@@ -35,6 +35,8 @@ public class ParserUser extends BaseParserInternal<RedmineConnection,RedmineUser
 			item.setFirstname(getNextText());
 		} else if("lastname".equalsIgnoreCase(xml.getName())){
 			item.setLastname(getNextText());
+		} else if("mail".equalsIgnoreCase(xml.getName())){
+			item.setMail(getNextText());
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("last_login_on".equalsIgnoreCase(xml.getName())){

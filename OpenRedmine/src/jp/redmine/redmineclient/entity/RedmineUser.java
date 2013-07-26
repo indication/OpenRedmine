@@ -11,6 +11,11 @@ public class RedmineUser implements IMasterRecord {
 	public final static String CONNECTION = "connection_id";
 	public final static String USER_ID = "user_id";
 	public final static String NAME = "name";
+	public final static int STATUS_ANONYMOUS		= 0;
+	public final static int STATUS_ACTIVE			= 1;
+	public final static int STATUS_REGISTERED		= 2;
+	public final static int STATUS_LOCKED			= 3;
+
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -28,6 +33,8 @@ public class RedmineUser implements IMasterRecord {
     private Date created;
     @DatabaseField
     private Date modified;
+    @DatabaseField
+    private boolean is_current;
     private String firstname;
     private String lastname;
 
@@ -181,6 +188,22 @@ public class RedmineUser implements IMasterRecord {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+
+	/**
+	 * @return is_current
+	 */
+	public boolean isCurrent() {
+		return is_current;
+	}
+
+
+	/**
+	 * @param is_current セットする is_current
+	 */
+	public void setIsCurrent(boolean is_current) {
+		this.is_current = is_current;
+	}
+
 
 	@Override
 	public void setRemoteId(Long id) {

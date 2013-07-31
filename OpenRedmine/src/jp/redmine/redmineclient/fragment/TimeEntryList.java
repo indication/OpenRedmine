@@ -3,14 +3,11 @@ package jp.redmine.redmineclient.fragment;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.TimeEntryEditActivity;
 import jp.redmine.redmineclient.adapter.RedmineTimeEntryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.param.IssueArgument;
-import jp.redmine.redmineclient.param.TimeEntryArgument;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,9 +20,14 @@ import android.widget.ListView;
 public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private RedmineTimeEntryListAdapter adapter;
 	private View mFooter;
+	private OnArticleSelectedListener mListener;
 
-	private final int FORM_TIMEENTRY = 1;
-
+	public interface OnArticleSelectedListener {
+		public void onTimeEntryList(int connectionid, int issueid);
+		public void onTimeEntrySelected(int connectionid, int issueid, int timeentryid);
+		public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid);
+		public void onTimeEntryAdd(int connectionid, int issueid);
+	}
 	public TimeEntryList(){
 		super();
 	}
@@ -36,6 +38,31 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		return instance;
 	}
 
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if(activity instanceof ActivityInterface){
+			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+		}
+		if(mListener == null){
+			//setup empty events
+			mListener = new OnArticleSelectedListener() {
+
+				@Override
+				public void onTimeEntryList(int connectionid, int issueid) {}
+
+				@Override
+				public void onTimeEntrySelected(int connectionid, int issueid, int timeentryid) {}
+
+				@Override
+				public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid) {}
+
+				@Override
+				public void onTimeEntryAdd(int connectionid, int issueid) {}
+			};
+		}
+
+	}
 	@Override
 	public void onDestroyView() {
 		setListAdapter(null);
@@ -79,16 +106,8 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		Object item =  listView.getItemAtPosition(position);
 		if(item == null || !(item instanceof RedmineTimeEntry))
 			return;
-		onItemSelect((RedmineTimeEntry)item);
-	}
-
-	protected void onItemSelect(RedmineTimeEntry entry) {
-		TimeEntryArgument send = new TimeEntryArgument();
-		send.setIntent( getActivity().getApplicationContext(), TimeEntryEditActivity.class );
-		send.setConnectionId(entry.getConnectionId());
-		send.setIssueId(entry.getIssueId());
-		send.setTimeEntryId(entry.getTimeentryId());
-		startActivity(send.getIntent());
+		RedmineTimeEntry entry = (RedmineTimeEntry)item;
+		mListener.onTimeEntrySelected(entry.getConnectionId(), entry.getIssueId(), entry.getTimeentryId());
 	}
 
 	protected void onRefresh(boolean isFetch){
@@ -121,27 +140,10 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			{
 				IssueArgument intent = new IssueArgument();
 				intent.setArgument(getArguments());
-				TimeEntryArgument send = new TimeEntryArgument();
-				send.setIntent( getActivity().getApplicationContext(), TimeEntryEditActivity.class );
-				send.setConnectionId(intent.getConnectionId());
-				send.setIssueId(intent.getIssueId());
-				startActivityForResult(send.getIntent(),FORM_TIMEENTRY);
+				mListener.onTimeEntryAdd(intent.getConnectionId(), intent.getIssueId());
 				return true;
 			}
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch(requestCode){
-		case FORM_TIMEENTRY:
-			if(resultCode != Activity.RESULT_OK )
-				break;
-			getActivity().finish();
-			break;
-		default:
-			break;
-		}
 	}
 }

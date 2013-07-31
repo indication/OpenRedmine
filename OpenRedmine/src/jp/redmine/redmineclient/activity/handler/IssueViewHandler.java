@@ -1,10 +1,10 @@
 package jp.redmine.redmineclient.activity.handler;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
+import jp.redmine.redmineclient.fragment.Empty;
 import jp.redmine.redmineclient.fragment.IssueComment;
 import jp.redmine.redmineclient.fragment.IssueEdit;
 import jp.redmine.redmineclient.fragment.IssueTitle;
@@ -29,9 +29,7 @@ public class IssueViewHandler extends Core
 
 		FragmentTransaction tran = manager.beginTransaction();
 		tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
-		Fragment fragment = manager.findFragmentById(R.id.fragmentOneFooter);
-		if(fragment != null)
-			tran.remove(fragment);
+		tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
 		tran.addToBackStack(null);
 		tran.commit();
 	}
@@ -61,9 +59,7 @@ public class IssueViewHandler extends Core
 
 		FragmentTransaction tran = manager.beginTransaction();
 		tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
-		Fragment fragment = manager.findFragmentById(R.id.fragmentOneFooter);
-		if(fragment != null)
-			tran.remove(fragment);
+		tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
 		tran.addToBackStack(null);
 		tran.commit();
 	}

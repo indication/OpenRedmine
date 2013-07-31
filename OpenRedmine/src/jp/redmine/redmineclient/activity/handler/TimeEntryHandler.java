@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.activity.handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.fragment.Empty;
 import jp.redmine.redmineclient.fragment.TimeEntryEdit;
 import jp.redmine.redmineclient.fragment.TimeEntryList;
 import jp.redmine.redmineclient.param.IssueArgument;
@@ -23,7 +24,9 @@ public class TimeEntryHandler extends Core implements TimeEntryList.OnArticleSel
 		arg.setIssueId(issueid);
 
 		FragmentTransaction tran = manager.beginTransaction();
-		tran.add(R.id.fragmentOne, TimeEntryList.newInstance(arg));
+		tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
+		tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
+		tran.addToBackStack(null);
 		tran.commit();
 
 	}
@@ -44,7 +47,8 @@ public class TimeEntryHandler extends Core implements TimeEntryList.OnArticleSel
 		arg.setTimeEntryId(timeentryid);
 
 		FragmentTransaction tran = manager.beginTransaction();
-		tran.add(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
+		tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
+		tran.addToBackStack(null);
 		tran.commit();
 	}
 
@@ -57,7 +61,8 @@ public class TimeEntryHandler extends Core implements TimeEntryList.OnArticleSel
 		arg.setIssueId(issueid);
 
 		FragmentTransaction tran = manager.beginTransaction();
-		tran.add(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
+		tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
+		tran.addToBackStack(null);
 		tran.commit();
 	}
 

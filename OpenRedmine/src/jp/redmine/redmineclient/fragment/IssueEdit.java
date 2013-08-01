@@ -88,7 +88,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 			mListener = new OnArticleSelectedListener() {
 
 				@Override
-				public void onTimeEntrySelected(int connectionid, int issueid) {}
+				public void onIssueList(int connectionId, long projectId) {}
 				@Override
 				public void onIssueSelected(int connectionid, int issueid) {}
 				@Override

@@ -36,6 +36,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private View mFooter;
 	private IntentAction mActionListener;
 	private OnArticleSelectedListener mListener;
+	private TimeEntryList.OnArticleSelectedListener mTimeEntryListener;
 
 	public IssueView(){
 		super();
@@ -66,7 +67,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	public interface OnArticleSelectedListener {
-		public void onTimeEntrySelected(int connectionid, int issueid);
+		public void onIssueList(int connectionid, long projectid);
 		public void onIssueSelected(int connectionid, int issueid);
 		public void onIssueEdit(int connectionid, int issueid);
 		public void onIssueRefreshed(int connectionid, int issueid);
@@ -77,8 +78,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			mActionListener = ((ActivityInterface)activity).getHandler(IntentAction.class);
-			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			ActivityInterface aif = (ActivityInterface)activity;
+			mActionListener = aif.getHandler(IntentAction.class);
+			mListener = aif.getHandler(OnArticleSelectedListener.class);
+			mTimeEntryListener = aif.getHandler(TimeEntryList.OnArticleSelectedListener.class);
 		}
 		if(mActionListener == null) {
 			//setup empty events
@@ -98,7 +101,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			mListener = new OnArticleSelectedListener() {
 
 				@Override
-				public void onTimeEntrySelected(int connectionid, int issueid) {}
+				public void onIssueList(int connectionId, long projectId) {}
 				@Override
 				public void onIssueSelected(int connectionid, int issueid) {}
 				@Override
@@ -107,6 +110,20 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 				public void onIssueRefreshed(int connectionid, int issueid) {}
 				@Override
 				public void onIssueAdd(int connectionId, long projectId) {}
+			};
+		}
+		if(mTimeEntryListener == null){
+			//setup empty events
+			mTimeEntryListener = new TimeEntryList.OnArticleSelectedListener() {
+
+				@Override
+				public void onTimeEntrySelected(int connectionid, int issueid, int timeentryid) {}
+				@Override
+				public void onTimeEntryList(int connectionid, int issueid) {}
+				@Override
+				public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid) {}
+				@Override
+				public void onTimeEntryAdd(int connectionid, int issueid) {}
 			};
 		}
 
@@ -132,7 +149,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			public void onClick(View v) {
 				IssueArgument baseintent = new IssueArgument();
 				baseintent.setArgument(getArguments());
-				mListener.onTimeEntrySelected(baseintent.getConnectionId(), baseintent.getIssueId());
+				mTimeEntryListener.onTimeEntryList(baseintent.getConnectionId(), baseintent.getIssueId());
 			}
 		});
 		onRefresh(true);

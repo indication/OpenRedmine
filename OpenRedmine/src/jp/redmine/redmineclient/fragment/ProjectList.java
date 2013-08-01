@@ -7,6 +7,7 @@ import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.fragment.IssueView.OnArticleSelectedListener;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
@@ -27,12 +28,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private OnArticleSelectedListener mListener;
+	private ConnectionList.OnArticleSelectedListener mConnectionListener;
 
-	public interface OnArticleSelectedListener {
-		public void onArticleSelected(int connectionid, long projectid);
-		public void onArticleEditSelected(int connectionid);
-		//public void onArticleAddSelected();
-	}
 	public ProjectList(){
 		super();
 	}
@@ -47,21 +44,34 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			ActivityInterface aif = (ActivityInterface)activity;
+			mListener = aif.getHandler(OnArticleSelectedListener.class);
+			mConnectionListener = aif.getHandler(ConnectionList.OnArticleSelectedListener.class);
 		}
 		if(mListener == null) {
 			//setup empty events
 			mListener = new OnArticleSelectedListener() {
-
 				@Override
-				public void onArticleSelected(int connectionid, long projectid) {
-
-				}
-
+				public void onIssueList(int connectionId, long projectId) {}
 				@Override
-				public void onArticleEditSelected(int connectionid) {
-
-				}
+				public void onIssueSelected(int connectionid, int issueid) {}
+				@Override
+				public void onIssueEdit(int connectionid, int issueid) {}
+				@Override
+				public void onIssueRefreshed(int connectionid, int issueid) {}
+				@Override
+				public void onIssueAdd(int connectionId, long projectId) {}
+			};
+		}
+		if(mConnectionListener == null) {
+			//setup empty events
+			mConnectionListener = new ConnectionList.OnArticleSelectedListener() {
+				@Override
+				public void onConnectionSelected(int connectionid) {}
+				@Override
+				public void onConnectionEdit(int connectionid) {}
+				@Override
+				public void onConnectionAdd() {}
 			};
 		}
 
@@ -122,7 +132,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(item == null || !(item instanceof RedmineProject))
 			return;
 		RedmineProject project = (RedmineProject)item;
-		mListener.onArticleSelected(project.getConnectionId(), project.getId());
+		mListener.onIssueList(project.getConnectionId(), project.getId());
 	}
 
 	protected void onRefresh(){
@@ -193,7 +203,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			{
 				ConnectionArgument input = new ConnectionArgument();
 				input.setArgument(getArguments());
-				mListener.onArticleEditSelected(input.getConnectionId());
+				mConnectionListener.onConnectionEdit(input.getConnectionId());
 				return true;
 			}
 		}

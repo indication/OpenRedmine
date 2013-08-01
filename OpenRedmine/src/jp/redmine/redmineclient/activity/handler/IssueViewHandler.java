@@ -7,10 +7,11 @@ import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.fragment.Empty;
 import jp.redmine.redmineclient.fragment.IssueComment;
 import jp.redmine.redmineclient.fragment.IssueEdit;
+import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.IssueTitle;
 import jp.redmine.redmineclient.fragment.IssueView;
-import jp.redmine.redmineclient.fragment.TimeEntryList;
 import jp.redmine.redmineclient.param.IssueArgument;
+import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class IssueViewHandler extends Core
 	implements IssueView.OnArticleSelectedListener, IntentAction {
@@ -19,21 +20,20 @@ public class IssueViewHandler extends Core
 		super(manager);
 	}
 
-
 	@Override
-	public void onTimeEntrySelected(int connectionid, int issueid) {
-		IssueArgument arg = new IssueArgument();
+	public void onIssueList(int connectionid, long projectid) {
+		ProjectArgument arg = new ProjectArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
-		arg.setIssueId(issueid);
+		arg.setProjectId(projectid);
 
 		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
-		tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
+		IssueList fragment = IssueList.newInstance();
+		fragment.setArguments(arg.getArgument());
+		tran.replace(R.id.fragmentOne, fragment);
 		tran.addToBackStack(null);
 		tran.commit();
 	}
-
 
 	@Override
 	public void onIssueSelected(int connectionid, int issueid) {

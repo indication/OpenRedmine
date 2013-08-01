@@ -55,7 +55,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			//setup empty events
 			mListener = new  IssueView.OnArticleSelectedListener() {
 				@Override
-				public void onTimeEntrySelected(int connectionid, int issueid) {}
+				public void onIssueList(int connectionId, long projectId) {}
 				@Override
 				public void onIssueSelected(int connectionid, int issueid) {}
 				@Override

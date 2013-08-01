@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.activity.handler;
 
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.fragment.Empty;
@@ -11,23 +10,25 @@ import jp.redmine.redmineclient.param.TimeEntryArgument;
 
 public class TimeEntryHandler extends Core implements TimeEntryList.OnArticleSelectedListener {
 
-	public TimeEntryHandler(FragmentManager manager) {
+	public TimeEntryHandler(ActivityRegistry manager) {
 		super(manager);
 	}
 
 
 	@Override
 	public void onTimeEntryList(int connectionid, int issueid) {
-		IssueArgument arg = new IssueArgument();
+		final IssueArgument arg = new IssueArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setIssueId(issueid);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
-		tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
-		tran.addToBackStack(null);
-		tran.commit();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
+				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
+			}
+		}, null);
 
 	}
 
@@ -40,30 +41,34 @@ public class TimeEntryHandler extends Core implements TimeEntryList.OnArticleSel
 
 	@Override
 	public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid) {
-		TimeEntryArgument arg = new TimeEntryArgument();
+		final TimeEntryArgument arg = new TimeEntryArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setIssueId(issueid);
 		arg.setTimeEntryId(timeentryid);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
-		tran.addToBackStack(null);
-		tran.commit();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
+			}
+		}, null);
 	}
 
 
 	@Override
 	public void onTimeEntryAdd(int connectionid, int issueid) {
-		TimeEntryArgument arg = new TimeEntryArgument();
+		final TimeEntryArgument arg = new TimeEntryArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setIssueId(issueid);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
-		tran.addToBackStack(null);
-		tran.commit();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
+			}
+		}, null);
 	}
 
 }

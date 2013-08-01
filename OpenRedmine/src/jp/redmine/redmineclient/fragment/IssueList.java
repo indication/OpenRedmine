@@ -72,8 +72,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super();
 	}
 
-	static public IssueList newInstance(){
-		return new IssueList();
+	static public IssueList newInstance(ProjectArgument arg){
+		IssueList fragment = new IssueList();
+		fragment.setArguments(arg.getArgument());
+		return fragment;
 	}
 
 	@Override

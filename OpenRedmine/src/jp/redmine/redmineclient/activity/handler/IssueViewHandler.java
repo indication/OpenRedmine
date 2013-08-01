@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.activity.handler;
 
-import android.support.v4.app.FragmentManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
@@ -16,80 +17,89 @@ import jp.redmine.redmineclient.param.ProjectArgument;
 public class IssueViewHandler extends Core
 	implements IssueView.OnArticleSelectedListener, IntentAction {
 
-	public IssueViewHandler(FragmentManager manager) {
+	public IssueViewHandler(ActivityRegistry manager) {
 		super(manager);
 	}
 
 	@Override
 	public void onIssueList(int connectionid, long projectid) {
-		ProjectArgument arg = new ProjectArgument();
+		final ProjectArgument arg = new ProjectArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setProjectId(projectid);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		IssueList fragment = IssueList.newInstance();
-		fragment.setArguments(arg.getArgument());
-		tran.replace(R.id.fragmentOne, fragment);
-		tran.addToBackStack(null);
-		tran.commit();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, IssueList.newInstance(arg));
+			}
+		}, null);
 	}
 
 	@Override
 	public void onIssueSelected(int connectionid, int issueid) {
-		IssueArgument arg = new IssueArgument();
+		final IssueArgument arg = new IssueArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setIssueId(issueid);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOne, IssueView.newInstance(arg));
-		tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
-		tran.replace(R.id.fragmentOneFooter, IssueComment.newInstance(arg));
-		tran.addToBackStack(null);
-		tran.commit();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, IssueView.newInstance(arg));
+				tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
+				tran.replace(R.id.fragmentOneFooter, IssueComment.newInstance(arg));
+			}
+		}, null);
 	}
 
 	@Override
 	public void onIssueEdit(int connectionid, int issueid) {
-		IssueArgument arg = new IssueArgument();
+		final IssueArgument arg = new IssueArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setIssueId(issueid);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
-		tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
-		tran.addToBackStack(null);
-		tran.commit();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
+				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
+			}
+		}, null);
 	}
 
 	@Override
 	public void onIssueAdd(int connectionid, long projectId) {
-		IssueArgument arg = new IssueArgument();
+		final IssueArgument arg = new IssueArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setProjectId(projectId);
 		arg.setIssueId(-1);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
-		tran.addToBackStack(null);
-		tran.commit();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
+			}
+		}, null);
 	}
 
 	@Override
 	public void onIssueRefreshed(int connectionid, int issueid) {
-		IssueArgument arg = new IssueArgument();
+		final IssueArgument arg = new IssueArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setIssueId(issueid);
 
-		FragmentTransaction tran = manager.beginTransaction();
-		tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
-		tran.addToBackStack(null);
-		tran.commit();
-		manager.popBackStack();
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
+			}
+		}, null);
+
+		manager.getFragment().popBackStack();
 	}
 
 	@Override
@@ -99,8 +109,9 @@ public class IssueViewHandler extends Core
 
 	@Override
 	public boolean url(String url) {
-
-		return false;
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		manager.kickActivity(intent);
+		return true;
 	}
 
 }

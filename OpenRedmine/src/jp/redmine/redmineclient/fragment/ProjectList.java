@@ -84,11 +84,20 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onActivityCreated(savedInstanceState);
 
 		getListView().addFooterView(mFooter);
+		getListView().setFastScrollEnabled(true);
 
 		adapter = new RedmineProjectListAdapter(getHelper());
-		setListAdapter(adapter);
 
-		getListView().setFastScrollEnabled(true);
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setArgument(getArguments());
+		adapter.setupParameter(intent.getConnectionId());
+		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
+
+		setListAdapter(adapter);
+		if(adapter.getCount() < 1){
+			onRefresh();
+		}
 	}
 
 	@Override
@@ -103,22 +112,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		if(adapter != null){
-			ConnectionArgument intent = new ConnectionArgument();
-			intent.setArgument(getArguments());
-			adapter.setupParameter(intent.getConnectionId());
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
-
-			if(adapter.getCount() < 1){
-				onRefresh();
-			}
-		}
 	}
 
 	@Override

@@ -135,6 +135,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 				mListener.onTimeEntrySelected(baseintent.getConnectionId(), baseintent.getIssueId());
 			}
 		});
+		onRefresh(true);
 
 	}
 	@Override
@@ -151,12 +152,6 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		mFooter.setVisibility(View.GONE);
 		View mFragment = super.onCreateView(inflater, container, savedInstanceState);
 		return mFragment;
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		onRefresh(true);
 	}
 
 	protected void onRefresh(boolean isFetch){

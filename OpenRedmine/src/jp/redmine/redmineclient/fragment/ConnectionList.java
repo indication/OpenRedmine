@@ -88,9 +88,6 @@ public class ConnectionList extends ListFragment {
 
 		helperStore = new DatabaseHelper(getActivity());
 
-		adapter = new ConnectionListAdapter(helperStore);
-		setListAdapter(adapter);
-
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
@@ -109,6 +106,10 @@ public class ConnectionList extends ListFragment {
 			}
 		});
 
+		adapter = new ConnectionListAdapter(helperStore);
+		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
+		setListAdapter(adapter);
 	}
 
 	@Override
@@ -122,14 +123,6 @@ public class ConnectionList extends ListFragment {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_add,null);
 		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-	@Override
-	public void onStart() {
-		super.onStart();
-		if(adapter != null){
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
-		}
 	}
 
 	@Override

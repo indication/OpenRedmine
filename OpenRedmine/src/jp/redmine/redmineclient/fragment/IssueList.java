@@ -94,9 +94,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().addFooterView(mFooter);
 
-		adapter = new RedmineIssueListAdapter(getHelper());
-		setListAdapter(adapter);
-
 		getListView().setFastScrollEnabled(true);
 
 		getListView().setOnScrollListener(new OnScrollListener() {
@@ -134,6 +131,16 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 		});
 
+		adapter = new RedmineIssueListAdapter(getHelper());
+		ProjectArgument intent = new ProjectArgument();
+		intent.setArgument( getArguments() );
+		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
+		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
+		if(adapter.getCount() < 1){
+			this.onRefresh(true);
+		}
+		setListAdapter(adapter);
 	}
 
 	@Override
@@ -148,21 +155,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		if(adapter != null){
-			ProjectArgument intent = new ProjectArgument();
-			intent.setArgument( getArguments() );
-			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
-			if(adapter.getCount() < 1){
-				this.onRefresh(true);
-			}
-		}
 	}
 
 	@Override
@@ -182,8 +174,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		adapter.notifyDataSetInvalidated();
-		adapter.notifyDataSetChanged();
+		if(adapter != null){
+			adapter.notifyDataSetInvalidated();
+			adapter.notifyDataSetChanged();
+		}
 		if(lastPos != getListView().getChildCount()){
 			lastPos = -1; //reset
 		}

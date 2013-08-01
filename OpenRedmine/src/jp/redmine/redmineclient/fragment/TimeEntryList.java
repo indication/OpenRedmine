@@ -78,6 +78,7 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		setListAdapter(adapter);
 
 		getListView().setFastScrollEnabled(true);
+		onRefresh(true);
 	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,12 +92,6 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		onRefresh(true);
 	}
 
 	@Override

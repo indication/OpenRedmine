@@ -30,15 +30,15 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.fragment_one);
 
-
+		/**
+		 * Add fragment on first view only
+		 * On rotate, this method would be called with savedInstanceState.
+		 */
+		if(savedInstanceState != null)
+			return;
 		getSupportFragmentManager().beginTransaction()
-			.add(R.id.fragmentOne, ConnectionList.newInstance())
+			.replace(R.id.fragmentOne, ConnectionList.newInstance())
 			.commit();
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
 	}
 
 	@SuppressWarnings("unchecked")

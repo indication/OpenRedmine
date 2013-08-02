@@ -65,14 +65,10 @@ public class ConnectionList extends ListFragment {
 		}
 
 	}
-	@Override
-	public void onDestroy() {
-		mListener = null;
-		super.onDestroy();
-	}
 
 	@Override
 	public void onDestroyView() {
+		setListAdapter(null);
 		super.onDestroyView();
 		if(helperStore != null){
 			helperStore.close();

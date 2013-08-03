@@ -7,6 +7,7 @@ import android.net.Uri;
 
 public class RemoteUrlUsers extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
+	private boolean isCurrent = false;
 
 	@Override
 	public versions getMinVersion(){
@@ -16,12 +17,19 @@ public class RemoteUrlUsers extends RemoteUrl {
 		params.put("id", Integer.toString(id));
 	}
 	public void filterCurrentUser(){
-		params.put("id", "current");
+		filterCurrentUser(true);
+	}
+	public void filterCurrentUser(boolean current){
+		isCurrent = current;
 	}
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("users." + getExtention());
+		StringBuilder sb = new StringBuilder();
+		sb.append(isCurrent ? "users/current" : "users");
+		sb.append(".");
+		sb.append(getExtention());
+		url.appendEncodedPath(sb.toString());
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){
 				url.appendQueryParameter(data.getKey(), data.getValue());

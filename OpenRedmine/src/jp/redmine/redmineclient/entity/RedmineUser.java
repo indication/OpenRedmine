@@ -11,6 +11,7 @@ public class RedmineUser implements IMasterRecord {
 	public final static String CONNECTION = "connection_id";
 	public final static String USER_ID = "user_id";
 	public final static String NAME = "name";
+	public final static String IS_CURRENT = "is_current";
 	public final static int STATUS_ANONYMOUS		= 0;
 	public final static int STATUS_ACTIVE			= 1;
 	public final static int STATUS_REGISTERED		= 2;

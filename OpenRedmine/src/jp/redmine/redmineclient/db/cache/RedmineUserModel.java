@@ -77,6 +77,25 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 		int count = dao.deleteById(id);
 		return count;
 	}
+
+	protected void clearCurrentUser(int connection_id) throws SQLException{
+		UpdateBuilder<RedmineUser,Integer> builder = dao.updateBuilder();
+		builder.updateColumnValue(RedmineUser.IS_CURRENT, false);
+		builder.setWhere(builder.where()
+				.eq(RedmineUser.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineUser.IS_CURRENT, true));
+		builder.update();
+	}
+	public RedmineUser refreshCurrentUser(RedmineConnection info,RedmineUser data) throws SQLException{
+		return refreshCurrentUser(info.getId(),data);
+	}
+	public RedmineUser refreshCurrentUser(int connection_id, RedmineUser data) throws SQLException{
+		clearCurrentUser(connection_id);
+		data.setIsCurrent(true);
+		return refreshItem(connection_id, data, true);
+	}
+
 	public void refreshItem(RedmineIssue data) throws SQLException{
 		RedmineUser item;
 		item = refreshItem(data.getConnectionId(),data.getAssigned(),false);

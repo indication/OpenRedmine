@@ -11,7 +11,7 @@ import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineIssueFilter;
-import jp.redmine.redmineclient.intent.ProjectIntent;
+import jp.redmine.redmineclient.param.ProjectArgument;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +42,8 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 
 	@Override
 	protected void onStart() {
-		ProjectIntent intent = new ProjectIntent(getIntent());
+		ProjectArgument intent = new ProjectArgument();
+		intent.setIntent(getIntent());
 		final int connectionid = intent.getConnectionId();
 		final long projectid = intent.getProjectId();
 		form.setupEvents();

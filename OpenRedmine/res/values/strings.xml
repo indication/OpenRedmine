@@ -106,6 +106,7 @@ After the setting, list up the connection.]]></string>
 	<string name="remote_5xx">Something wrong with server. Please check access by browser.</string>
 	<string name="remote_600">A problem was occurred on this application</string>
 	<string name="remote_saved">Has been saved to remote</string>
+	<string name="has_been_saved">Has been saved</string>
 	<string name="input_error_invalid_decimal">Input valid number.</string>
 	<string name="input_error_select">Select %1$s</string>
 	<string name="warning_experimental_feature">This is EXPERIMANTAL. This feature may affect bad to your redmine.</string>

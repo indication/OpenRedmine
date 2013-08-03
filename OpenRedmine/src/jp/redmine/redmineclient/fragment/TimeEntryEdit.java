@@ -1,57 +1,88 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
-import jp.redmine.redmineclient.intent.TimeEntryIntent;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.param.TimeEntryArgument;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
-	public TimeEntryEditActivity(){
-		super();
-	}
+public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private RedmineTimeentryEditForm form;
-
 	private ProgressDialog dialog;
 
-	/** Called when the activity is first created. */
+	public TimeEntryEdit(){
+		super();
+	}
+
+
+	static public TimeEntryEdit newInstance(ConnectionArgument intent){
+		TimeEntryEdit instance = new TimeEntryEdit();
+		instance.setArguments(intent.getArgument());
+		return instance;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.timeentryedit, container, false);
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		form = new RedmineTimeentryEditForm(getView());
+		form.setupDatabase(getHelper());
+
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.timeentryedit);
+		setHasOptionsMenu(true);
+	}
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if(activity instanceof ActivityInterface){
+			//mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+		}
 
-		form = new RedmineTimeentryEditForm(this);
-		form.setupDatabase(getHelper());
-
-
-		dialog = new ProgressDialog(this);
+		dialog = new ProgressDialog(activity);
 		dialog.setMessage(getString(R.string.menu_settings_uploading));
+
 	}
 
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
 		onRefresh(true);
 	}
 
+
 	protected void onRefresh(boolean isFetch){
-		TimeEntryIntent intent = new TimeEntryIntent(getIntent());
+		TimeEntryArgument intent = new TimeEntryArgument();
+		intent.setArgument(getArguments());
 		int connectionid = intent.getConnectionId();
 
 		form.setupParameter(connectionid, 0);
@@ -68,18 +99,12 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 		}
 		form.setValue(timeentry);
 	}
+
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		super.onCreateOptionsMenu( menu );
-
-		MenuInflater inflater = getMenuInflater();
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate( R.menu.edit, menu );
-		//if(task != null && task.getStatus() == Status.RUNNING)
-		//	menu_refresh.setEnabled(false);
-		return true;
 	}
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -89,10 +114,11 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			{
 				if(!form.Validate())
 					return true;
-				TimeEntryIntent intent = new TimeEntryIntent(getIntent());
+				TimeEntryArgument intent = new TimeEntryArgument();
+				intent.setArgument(getArguments());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
-				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+				ConnectionModel mConnection = new ConnectionModel(getActivity());
 				connection = mConnection.getItem(connectionid);
 				mConnection.finalize();
 
@@ -112,13 +138,13 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 					@Override
 					protected void onError(Exception lasterror) {
 						isSuccess = false;
-						ActivityHelper.toastRemoteError(getApplicationContext(), ActivityHelper.ERROR_APP);
+						ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
 						super.onError(lasterror);
 					}
 					@Override
 					protected void onErrorRequest(int statuscode) {
 						isSuccess = false;
-						ActivityHelper.toastRemoteError(getApplicationContext(), statuscode);
+						ActivityHelper.toastRemoteError(getActivity(), statuscode);
 						super.onErrorRequest(statuscode);
 					}
 					@Override
@@ -132,9 +158,8 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 						if (dialog.isShowing())
 							dialog.dismiss();
 						if(isSuccess){
-							Toast.makeText(getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							setResult(RESULT_OK);
-							finish();
+							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							getFragmentManager().popBackStack();
 						}
 					}
 				};
@@ -151,13 +176,11 @@ public class TimeEntryEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelp
 			}
 			case R.id.menu_cancel:
 			{
-				this.finish();
+				getFragmentManager().popBackStack();
 				return true;
 			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 }

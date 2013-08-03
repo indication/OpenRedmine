@@ -5,7 +5,6 @@ import com.andreabaccega.widget.FormEditText;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.helper.FormHelper;
-import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class RedmineConnectionActivityForm extends FormHelper {
-	private Activity activity;
 	public FormEditText editName;
 	public FormEditText editUrl;
 	public FormEditText editToken;
@@ -33,14 +31,13 @@ public class RedmineConnectionActivityForm extends FormHelper {
 	public Button buttonUrl2;
 	public Button buttonUrl3;
 	public Button buttonUrl4;
-	public RedmineConnectionActivityForm(Activity activity){
-		this.activity = activity;
-		this.setup();
+	public RedmineConnectionActivityForm(View activity){
+		this.setup(activity);
 		this.setupDefaults();
 	}
 
 
-	public void setup(){
+	public void setup(View activity){
 		editName = (FormEditText)activity.findViewById(R.id.editName);
 		editUrl = (FormEditText)activity.findViewById(R.id.editURL);
 		editToken = (FormEditText)activity.findViewById(R.id.editToken);

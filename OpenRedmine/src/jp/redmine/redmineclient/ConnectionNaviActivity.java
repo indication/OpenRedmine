@@ -2,15 +2,15 @@ package jp.redmine.redmineclient;
 
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.form.RedmineNavigationForm;
-import jp.redmine.redmineclient.intent.ConnectionNaviResultIntent;
+import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class ConnectionNaviActivity extends Activity {
+public class ConnectionNaviActivity extends FragmentActivity {
 	public ConnectionNaviActivity(){
 		super();
 	}
@@ -44,7 +44,8 @@ public class ConnectionNaviActivity extends Activity {
 			public void onClick(View v) {
 				if(!form.Validate())
 					return;
-				ConnectionNaviResultIntent intent = new ConnectionNaviResultIntent(new Intent());
+				ConnectionNaviResultArgument intent = new ConnectionNaviResultArgument();
+				intent.setIntent(new Intent());
 				intent.setAuthID(form.getAuthID());
 				intent.setAuthPassword(form.getAuthPassword());
 				intent.setUnsafeSSL(form.isUnsafeSLL());
@@ -60,7 +61,8 @@ public class ConnectionNaviActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 
-		ConnectionNaviResultIntent intent = new ConnectionNaviResultIntent(getIntent());
+		ConnectionNaviResultArgument intent = new ConnectionNaviResultArgument();
+		intent.setIntent(getIntent());
 		form.setDefaultAuthentication(intent.getAuthID(),intent.getAuthPassword());
 		form.setUnsafeSSL(intent.isUnsafeSSL());
 		form.setApiKey(intent.getToken());

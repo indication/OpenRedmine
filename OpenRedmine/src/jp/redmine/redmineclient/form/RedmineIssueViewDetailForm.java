@@ -90,15 +90,16 @@ public class RedmineIssueViewDetailForm extends FormHelper {
 		textPriority.setText(pr == null ? "" : pr.getName());
 	}
 
-	public void setProgress(short progress,short donerate){
+	public void setProgress(Short progress,Short donerate){
 		progressBar.setMax(100);
-		progressBar.setProgress(progress);
-		progressBar.setSecondaryProgress(donerate);
+		progressBar.setProgress(progress == null ? 0 : progress);
+		progressBar.setSecondaryProgress(donerate == null ? 0 : donerate);
 		textProgress.setText(textProgress.getContext().getString(R.string.format_progress,donerate));
 	}
 
 	public void setValue(RedmineIssue rd){
-		webViewHelper.setContent(rd.getConnectionId(), rd.getDescription());
+		if(rd.getConnectionId() != null)
+			webViewHelper.setContent(rd.getConnectionId(), rd.getDescription());
 		setDate(textDateFrom,rd.getDateStart());
 		setDate(textDateTo,rd.getDateDue());
 		setTracker(rd.getTracker());

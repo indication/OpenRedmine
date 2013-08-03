@@ -21,7 +21,7 @@ public class SplashActivity extends Activity{
 		hdl.postDelayed(new Runnable() {
 
 			public void run() {
-				Intent i = new Intent(getApplication(), ConnectionListActivity.class);
+				Intent i = new Intent(getApplication(), Pane1Activity.class);
 				startActivity(i);
 				SplashActivity.this.finish();
 			}

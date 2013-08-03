@@ -1,9 +1,10 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -12,43 +13,63 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineIssueEditForm;
-import jp.redmine.redmineclient.intent.IssueIntent;
+import jp.redmine.redmineclient.fragment.IssueView.OnArticleSelectedListener;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssuePost;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
-	private static final String TAG = "IssueEditActivity";
-	public IssueEditActivity(){
+public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
+	private static final String TAG = "IssueEdit";
+
+	private RedmineIssueEditForm form;
+	private ProgressDialog dialog;
+	private OnArticleSelectedListener mListener;
+
+	public IssueEdit(){
 		super();
 	}
-	private RedmineIssueEditForm form;
 
-	private ProgressDialog dialog;
 
-	/** Called when the activity is first created. */
+	static public IssueEdit newInstance(IssueArgument intent){
+		IssueEdit instance = new IssueEdit();
+		instance.setArguments(intent.getArgument());
+		return instance;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.issuedetailedit);
-
-		form = new RedmineIssueEditForm(this);
-		form.setupDatabase(getHelper());
-
-
-		dialog = new ProgressDialog(this);
-		dialog.setMessage(getString(R.string.menu_settings_uploading));
+		setHasOptionsMenu(true);
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.issuedetailedit, container, false);
 	}
 
 	@Override
-	protected void onStart() {
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		form = new RedmineIssueEditForm(getView());
+		form.setupDatabase(getHelper());
+
+
+		dialog = new ProgressDialog(getActivity());
+		dialog.setMessage(getString(R.string.menu_settings_uploading));
+	}
+	@Override
+	public void onStart() {
 		super.onStart();
 		try {
 			onRefresh(true);
@@ -56,9 +77,34 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			Log.e(TAG,"onStart",e);
 		}
 	}
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if(activity instanceof ActivityInterface){
+			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+		}
+		if(mListener == null) {
+			//setup empty events
+			mListener = new OnArticleSelectedListener() {
+
+				@Override
+				public void onIssueList(int connectionId, long projectId) {}
+				@Override
+				public void onIssueSelected(int connectionid, int issueid) {}
+				@Override
+				public void onIssueEdit(int connectionid, int issueid) {}
+				@Override
+				public void onIssueRefreshed(int connectionid, int issueid) {}
+				@Override
+				public void onIssueAdd(int connectionId, long projectId) {}
+			};
+		}
+
+	}
 
 	protected void onRefresh(boolean isFetch) throws SQLException{
-		IssueIntent intent = new IssueIntent(getIntent());
+		IssueArgument intent = new IssueArgument();
+		intent.setArgument(getArguments());
 		int connectionid = intent.getConnectionId();
 		long projectid = 0;
 
@@ -75,16 +121,11 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 		form.setupParameter(connectionid, projectid);
 		form.setValue(issue);
 	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		super.onCreateOptionsMenu( menu );
 
-		MenuInflater inflater = getMenuInflater();
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate( R.menu.edit, menu );
-		//if(task != null && task.getStatus() == Status.RUNNING)
-		//	menu_refresh.setEnabled(false);
-		return true;
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -96,10 +137,11 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			{
 				if(!form.Validate())
 					return true;
-				IssueIntent intent = new IssueIntent(getIntent());
+				IssueArgument intent = new IssueArgument();
+				intent.setArgument(getArguments());
 				int connectionid = intent.getConnectionId();
 				RedmineConnection connection = null;
-				ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+				ConnectionModel mConnection = new ConnectionModel(getActivity());
 				connection = mConnection.getItem(connectionid);
 				mConnection.finalize();
 
@@ -129,13 +171,13 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 					@Override
 					protected void onError(Exception lasterror) {
 						isSuccess = false;
-						ActivityHelper.toastRemoteError(getApplicationContext(), ActivityHelper.ERROR_APP);
+						ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
 						super.onError(lasterror);
 					}
 					@Override
 					protected void onErrorRequest(int statuscode) {
 						isSuccess = false;
-						ActivityHelper.toastRemoteError(getApplicationContext(), statuscode);
+						ActivityHelper.toastRemoteError(getActivity(), statuscode);
 						super.onErrorRequest(statuscode);
 					}
 					@Override
@@ -149,9 +191,8 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 						if (dialog.isShowing())
 							dialog.dismiss();
 						if(isSuccess){
-							Toast.makeText(getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							setResult(RESULT_OK);
-							finish();
+							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							getFragmentManager().popBackStack();
 						}
 					}
 				};
@@ -166,13 +207,11 @@ public class IssueEditActivity extends OrmLiteBaseActivity<DatabaseCacheHelper> 
 			}
 			case R.id.menu_cancel:
 			{
-				this.finish();
+				getFragmentManager().popBackStack();
 				return true;
 			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
-
 
 }

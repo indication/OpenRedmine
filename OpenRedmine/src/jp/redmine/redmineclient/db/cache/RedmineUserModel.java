@@ -78,6 +78,16 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 		return count;
 	}
 
+	public RedmineUser fetchCurrentUser(int connection) throws SQLException{
+		PreparedQuery<RedmineUser> query = dao.queryBuilder().where()
+		.eq(RedmineUser.CONNECTION, connection)
+		.and()
+		.eq(RedmineUser.IS_CURRENT, true)
+		.prepare();
+		RedmineUser item = dao.queryForFirst(query);
+		return item;
+	}
+
 	protected void clearCurrentUser(int connection_id) throws SQLException{
 		UpdateBuilder<RedmineUser,Integer> builder = dao.updateBuilder();
 		builder.updateColumnValue(RedmineUser.IS_CURRENT, false);

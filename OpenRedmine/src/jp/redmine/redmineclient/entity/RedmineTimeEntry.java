@@ -10,7 +10,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineTimeEntry implements IPostingRecord {
+public class RedmineTimeEntry implements IPostingRecord, IUserRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String TIMEENTRY_ID = "timeentry_id";

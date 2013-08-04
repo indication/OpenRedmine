@@ -75,10 +75,7 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 					data.getActivity().setConnectionId(con.getId());
 					mActivity.refreshItem(data);
 				}
-				if(data.getUser() != null){
-					data.getUser().setConnectionId(con.getId());
-					data.setUser(mUser.refreshItem(con.getId(), data.getUser()));
-				}
+				mUser.refreshItem(data);
 				model.refreshItem(con,data);
 			}
 		});

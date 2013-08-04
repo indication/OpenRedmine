@@ -17,7 +17,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineJournal implements IPostingRecord {
+public class RedmineJournal implements IPostingRecord,IUserRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String JOURNAL_ID = "journal_id";

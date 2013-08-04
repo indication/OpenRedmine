@@ -1,6 +1,9 @@
 package jp.redmine.redmineclient.entity;
 
 import java.util.Date;
+import java.util.regex.Pattern;
+
+import android.text.TextUtils;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -11,6 +14,13 @@ public class RedmineUser implements IMasterRecord {
 	public final static String CONNECTION = "connection_id";
 	public final static String USER_ID = "user_id";
 	public final static String NAME = "name";
+	public final static String IS_CURRENT = "is_current";
+	public final static int STATUS_ANONYMOUS		= 0;
+	public final static int STATUS_ACTIVE			= 1;
+	public final static int STATUS_REGISTERED		= 2;
+	public final static int STATUS_LOCKED			= 3;
+	private static final Pattern regexLastFirst = Pattern.compile("[A-Za-z0-9]");
+
 
     @DatabaseField(generatedId = true)
     private Long id;
@@ -28,9 +38,22 @@ public class RedmineUser implements IMasterRecord {
     private Date created;
     @DatabaseField
     private Date modified;
+    @DatabaseField
+    private boolean is_current;
     private String firstname;
     private String lastname;
 
+    public void setupNameFromSeparated(){
+    	if(TextUtils.isEmpty(firstname) || TextUtils.isEmpty(lastname))
+    		return;
+    	boolean isMatch = regexLastFirst.matcher(firstname).matches()
+    					|| regexLastFirst.matcher(lastname).matches();
+    	if(isMatch){
+    		setName(firstname + " " + lastname);
+    	} else {
+    		setName(lastname + " " + firstname);
+    	}
+    }
 
     @Override
     public String toString(){
@@ -181,6 +204,22 @@ public class RedmineUser implements IMasterRecord {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+
+	/**
+	 * @return is_current
+	 */
+	public boolean isCurrent() {
+		return is_current;
+	}
+
+
+	/**
+	 * @param is_current セットする is_current
+	 */
+	public void setIsCurrent(boolean is_current) {
+		this.is_current = is_current;
+	}
+
 
 	@Override
 	public void setRemoteId(Long id) {

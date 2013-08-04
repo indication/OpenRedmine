@@ -9,10 +9,11 @@ import android.util.Log;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.UpdateBuilder;
 
+import jp.redmine.redmineclient.entity.IUserRecord;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineUser;
 
 
@@ -76,23 +77,52 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 		int count = dao.deleteById(id);
 		return count;
 	}
+
+	public RedmineUser fetchCurrentUser(int connection) throws SQLException{
+		PreparedQuery<RedmineUser> query = dao.queryBuilder().where()
+		.eq(RedmineUser.CONNECTION, connection)
+		.and()
+		.eq(RedmineUser.IS_CURRENT, true)
+		.prepare();
+		RedmineUser item = dao.queryForFirst(query);
+		return item;
+	}
+
+	protected void clearCurrentUser(int connection_id) throws SQLException{
+		UpdateBuilder<RedmineUser,Integer> builder = dao.updateBuilder();
+		builder.updateColumnValue(RedmineUser.IS_CURRENT, false);
+		builder.setWhere(builder.where()
+				.eq(RedmineUser.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineUser.IS_CURRENT, true));
+		builder.update();
+	}
+	public RedmineUser refreshCurrentUser(RedmineConnection info,RedmineUser data) throws SQLException{
+		return refreshCurrentUser(info.getId(),data);
+	}
+	public RedmineUser refreshCurrentUser(int connection_id, RedmineUser data) throws SQLException{
+		clearCurrentUser(connection_id);
+		data.setIsCurrent(true);
+		return refreshItem(connection_id, data, true);
+	}
+
 	public void refreshItem(RedmineIssue data) throws SQLException{
 		RedmineUser item;
-		item = refreshItem(data.getConnectionId(),data.getAssigned());
+		item = refreshItem(data.getConnectionId(),data.getAssigned(),false);
 		data.setAssigned(item);
-		item = refreshItem(data.getConnectionId(),data.getAuthor());
+		item = refreshItem(data.getConnectionId(),data.getAuthor(),false);
 		data.setAuthor(item);
 	}
-	public void refreshItem(RedmineJournal data) throws SQLException{
+	public void refreshItem(IUserRecord data) throws SQLException{
 		RedmineUser item;
-		item = refreshItem(data.getConnectionId(),data.getUser());
+		item = refreshItem(data.getConnectionId(),data.getUser(),false);
 		data.setUser(item);
 	}
 
 	public RedmineUser refreshItem(RedmineConnection info,RedmineUser data) throws SQLException{
-		return refreshItem(info.getId(),data);
+		return refreshItem(info.getId(),data,false);
 	}
-	public RedmineUser refreshItem(int connection_id,RedmineUser data) throws SQLException{
+	public RedmineUser refreshItem(int connection_id,RedmineUser data,boolean isForce) throws SQLException{
 		if(data == null)
 			return null;
 		RedmineUser project = this.fetchById(connection_id, data.getUserId());
@@ -109,7 +139,7 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 			if(data.getModified() == null){
 				data.setModified(new java.util.Date());
 			}
-			if(project.getModified().after(data.getModified())){
+			if(project.getModified().after(data.getModified()) || isForce){
 				this.update(data);
 			}
 		}

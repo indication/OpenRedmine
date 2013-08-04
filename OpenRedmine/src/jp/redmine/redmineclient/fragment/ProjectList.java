@@ -1,12 +1,17 @@
 package jp.redmine.redmineclient.fragment;
 
+import java.sql.SQLException;
+
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.form.StatusUserForm;
 import jp.redmine.redmineclient.fragment.IssueView.OnArticleSelectedListener;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
@@ -14,6 +19,7 @@ import jp.redmine.redmineclient.task.SelectProjectTask;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,9 +29,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
+	private static final String TAG = ProjectList.class.getSimpleName();
 	private RedmineProjectListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
+	private View mHeader;
 	private View mFooter;
 	private OnArticleSelectedListener mListener;
 	private ConnectionList.OnArticleSelectedListener mConnectionListener;
@@ -104,6 +112,20 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		adapter.notifyDataSetInvalidated();
 		adapter.notifyDataSetChanged();
 
+		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
+		RedmineUser user = null;
+		try {
+			user = mUserModel.fetchCurrentUser(intent.getConnectionId());
+		} catch (SQLException e) {
+			Log.e(TAG,"fetchCurrentUser", e);
+		}
+		if(user != null){
+			StatusUserForm formHeader = new StatusUserForm(mHeader);
+			formHeader.setValue(user);
+			getListView().addHeaderView(mHeader);
+
+		}
+
 		setListAdapter(adapter);
 		if(adapter.getCount() < 1){
 			onRefresh();
@@ -121,6 +143,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
+		mHeader = inflater.inflate(R.layout.status_user,null);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 

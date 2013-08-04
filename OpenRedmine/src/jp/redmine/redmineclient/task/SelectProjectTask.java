@@ -194,6 +194,7 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 				ParserUser parser = new ParserUser();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineUser>() {
 					public void onData(RedmineConnection con,RedmineUser data) throws SQLException {
+						data.setupNameFromSeparated();
 						model.refreshItem(con,data);
 					}
 				});
@@ -214,6 +215,7 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 				ParserUser parser = new ParserUser();
 				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineUser>() {
 					public void onData(RedmineConnection con,RedmineUser data) throws SQLException {
+						data.setupNameFromSeparated();
 						model.refreshCurrentUser(con,data);
 					}
 				});

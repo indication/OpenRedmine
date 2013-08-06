@@ -2,6 +2,13 @@ OpenRedmine
 ===========
 Release history
 
+v3.0
+===========
+- Support fragment (internal codes)
+- Fix timezone when fetch items
+- Fix issue view to align to center
+- Show current user on project list
+
 v2.5
 ===========
 - Show comment area always

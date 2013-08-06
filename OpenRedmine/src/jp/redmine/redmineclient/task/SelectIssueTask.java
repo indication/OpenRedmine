@@ -21,11 +21,17 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 	protected DatabaseCacheHelper helper;
 	protected Long project_id;
+	protected Integer filter_id;
 	protected RedmineConnection connection;
 	private boolean isFetchAll = false;
 	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,long proj){
 		this.helper = helper;
 		this.project_id = proj;
+		this.connection = con;
+	}
+	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,int filter){
+		this.helper = helper;
+		this.filter_id = filter;
 		this.connection = con;
 	}
 
@@ -37,11 +43,15 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 		RedmineFilter filter = null;
 		try {
-			RedmineProjectModel mProject = new RedmineProjectModel(helper);
-			RedmineProject project = mProject.fetchById(project_id);
-			filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
-			if(filter == null)
-				filter = mFilter.generateDefault(connection.getId(), project);
+			if(filter_id == null){
+				RedmineProjectModel mProject = new RedmineProjectModel(helper);
+				RedmineProject project = mProject.fetchById(project_id);
+				filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
+				if(filter == null)
+					filter = mFilter.generateDefault(connection.getId(), project);
+			} else {
+				filter = mFilter.fetchById(filter_id);
+			}
 		} catch (SQLException e) {
 			publishError(e);
 		}

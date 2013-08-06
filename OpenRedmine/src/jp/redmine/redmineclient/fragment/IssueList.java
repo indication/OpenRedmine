@@ -115,8 +115,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		} else {
 			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 		}
-		adapter.notifyDataSetInvalidated();
-		adapter.notifyDataSetChanged();
+		onRefreshList();
 		if(adapter.getCount() < 1){
 			this.onRefresh(true);
 		}

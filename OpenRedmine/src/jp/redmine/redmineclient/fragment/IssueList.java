@@ -98,6 +98,33 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
+		adapter = new RedmineIssueListAdapter(getHelper());
+		ProjectArgument intent = new ProjectArgument();
+		intent.setArgument( getArguments() );
+		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
+		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
+		if(adapter.getCount() < 1){
+			this.onRefresh(true);
+		}
+		setListAdapter(adapter);
+
+		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
+				ListView listView = (ListView) parent;
+				Object listitem = listView.getItemAtPosition(position);
+				if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
+				{
+					return false;
+				}
+				RedmineIssue item = (RedmineIssue) listitem;
+				mListener.onIssueEdit(item.getConnectionId(), item.getIssueId());
+				return true;
+			}
+		});
+
 		getListView().setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
@@ -116,33 +143,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 			}
 		});
-
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long arg3) {
-				ListView listView = (ListView) parent;
-				Object listitem = listView.getItemAtPosition(position);
-				if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
-				{
-					return false;
-				}
-				RedmineIssue item = (RedmineIssue) listitem;
-				mListener.onIssueEdit(item.getConnectionId(), item.getIssueId());
-				return true;
-			}
-		});
-
-		adapter = new RedmineIssueListAdapter(getHelper());
-		ProjectArgument intent = new ProjectArgument();
-		intent.setArgument( getArguments() );
-		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		adapter.notifyDataSetInvalidated();
-		adapter.notifyDataSetChanged();
-		if(adapter.getCount() < 1){
-			this.onRefresh(true);
-		}
-		setListAdapter(adapter);
 	}
 
 	@Override

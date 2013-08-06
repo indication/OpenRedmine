@@ -176,10 +176,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		if(adapter != null){
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
-		}
+		onRefreshList();
 		if(lastPos != getListView().getChildCount()){
 			lastPos = -1; //reset
 		}
@@ -208,6 +205,13 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			enumtask.execute();
 		}
 	}
+	protected void onRefreshList(){
+		if(adapter == null)
+			return;
+		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
+
+	}
 
 	private class SelectDataTask extends SelectIssueTask {
 		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, RedmineProject project) {
@@ -226,16 +230,14 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		@Override
 		protected void onPostExecute(Void b) {
 			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
+			onRefreshList();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 		}
 
 		@Override
 		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
+			onRefreshList();
 			super.onProgress(max, proc);
 		}
 	}

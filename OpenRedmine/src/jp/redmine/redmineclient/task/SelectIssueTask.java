@@ -46,7 +46,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	}
 	protected void updateFilter(RedmineFilterModel mFilter, RedmineFilter filter){
 		try {
-			mFilter.updateCurrent(filter);
+			mFilter.update(filter);
 		} catch (SQLException e) {
 			publishError(e);
 		}

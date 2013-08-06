@@ -32,11 +32,8 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	public SelectIssueTask() {
 	}
 
-	@Override
-	protected Void doInBackground(Integer... params) {
-		long limit = params[1];
-		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
-		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
+	protected RedmineFilter getFilter(RedmineFilterModel mFilter){
+
 		RedmineFilter filter = null;
 		try {
 			filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
@@ -45,6 +42,22 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 		}
 		if(filter == null)
 			filter = mFilter.generateDefault(connection.getId(), project);
+		return filter;
+	}
+	protected void updateFilter(RedmineFilterModel mFilter, RedmineFilter filter){
+		try {
+			mFilter.updateCurrent(filter);
+		} catch (SQLException e) {
+			publishError(e);
+		}
+
+	}
+	@Override
+	protected Void doInBackground(Integer... params) {
+		long limit = params[1];
+		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
+		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
+		RedmineFilter filter = getFilter(mFilter);
 
 		/*
 		Calendar cal = Calendar.getInstance();
@@ -104,9 +117,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 			fetched--;
 			filter.setFetched(fetched);
 			filter.setLast(new Date());
-			mFilter.updateCurrent(filter);
-		} catch (SQLException e) {
-			publishError(e);
+			updateFilter(mFilter,filter);
 		} catch (InterruptedException e) {
 			publishError(e);
 		} finally {

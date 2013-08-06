@@ -67,6 +67,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	public interface OnArticleSelectedListener {
+		public void onIssueFilterList(int connectionid, int filterid);
 		public void onIssueList(int connectionid, long projectid);
 		public void onIssueSelected(int connectionid, int issueid);
 		public void onIssueEdit(int connectionid, int issueid);
@@ -100,6 +101,8 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			//setup empty events
 			mListener = new OnArticleSelectedListener() {
 
+				@Override
+				public void onIssueFilterList(int connectionId, int filterid) {}
 				@Override
 				public void onIssueList(int connectionId, long projectId) {}
 				@Override

@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -19,12 +20,12 @@ import jp.redmine.redmineclient.url.RemoteUrlIssues;
 public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 	protected DatabaseCacheHelper helper;
-	protected RedmineProject project;
+	protected Long project_id;
 	protected RedmineConnection connection;
 	private boolean isFetchAll = false;
-	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,RedmineProject proj){
+	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,long proj){
 		this.helper = helper;
-		this.project = proj;
+		this.project_id = proj;
 		this.connection = con;
 	}
 
@@ -36,12 +37,14 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 		RedmineFilter filter = null;
 		try {
+			RedmineProjectModel mProject = new RedmineProjectModel(helper);
+			RedmineProject project = mProject.fetchById(project_id);
 			filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
+			if(filter == null)
+				filter = mFilter.generateDefault(connection.getId(), project);
 		} catch (SQLException e) {
 			publishError(e);
 		}
-		if(filter == null)
-			filter = mFilter.generateDefault(connection.getId(), project);
 		return filter;
 	}
 	protected void updateFilter(RedmineFilterModel mFilter, RedmineFilter filter){
@@ -58,6 +61,8 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
 		RedmineFilter filter = getFilter(mFilter);
+		if(filter == null)
+			return null;
 
 		/*
 		Calendar cal = Calendar.getInstance();

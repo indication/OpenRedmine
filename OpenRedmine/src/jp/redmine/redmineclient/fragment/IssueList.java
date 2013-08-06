@@ -36,6 +36,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
+	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
 	private RedmineIssueListAdapter adapter;
 	private SelectDataTask task;
@@ -184,23 +185,22 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		DatabaseCacheHelper helper = getHelper();
-		RedmineConnection connection = null;
-		RedmineProject project = null;
-		try {
-			ConnectionModel mConnection = new ConnectionModel(getActivity());
-			connection = mConnection.getItem(intent.getConnectionId());
-			mConnection.finalize();
-			RedmineProjectModel mProject = new RedmineProjectModel(helper);
-			project = mProject.fetchById(intent.getProjectId());
-		} catch (SQLException e) {
-			Log.e("IssueListActivity","SelectDataTask",e);
-		}
+		ConnectionModel mConnection = new ConnectionModel(getActivity());
+		RedmineConnection connection = mConnection.getItem(intent.getConnectionId());
+		mConnection.finalize();
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		task = new SelectDataTask(helper,connection,project);
+		task = new SelectDataTask(helper,connection,intent.getProjectId());
 		task.setFetchAll(sp.getBoolean("issue_get_all", false));
 		task.execute(0,10,isFlush ? 1 : 0);
 		if(isFlush){
+			RedmineProject project = null;
+			RedmineProjectModel mProject = new RedmineProjectModel(helper);
+			try {
+				project = mProject.fetchById(intent.getProjectId());
+			} catch (SQLException e) {
+				Log.e(TAG,"SelectDataTask",e);
+			}
 			SelectProjectEnumerationTask enumtask = new SelectProjectEnumerationTask(helper,connection,project);
 			enumtask.execute();
 		}
@@ -214,7 +214,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	private class SelectDataTask extends SelectIssueTask {
-		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, RedmineProject project) {
+		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, long project) {
 			super(helper,connection,project);
 		}
 

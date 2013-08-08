@@ -29,7 +29,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 		this.project_id = proj;
 		this.connection = con;
 	}
-	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,int filter){
+	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,Long proj,int filter){
 		this.helper = helper;
 		this.filter_id = filter;
 		this.connection = con;
@@ -38,6 +38,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 	public SelectIssueTask() {
 	}
+
 
 	protected RedmineFilter getFilter(RedmineFilterModel mFilter){
 

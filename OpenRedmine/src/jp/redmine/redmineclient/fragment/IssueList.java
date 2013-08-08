@@ -109,9 +109,11 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument( getArguments() );
 		if(intent.hasFilterId()){
-			adapter.setupParameter(intent.getConnectionId(),intent.getFilterId());
-			for(MenuItem item : menu_project_spec)
+			adapter.setupParameter(intent.getFilterId());
+			for(MenuItem item : menu_project_spec){
+				item.setEnabled(false);
 				item.setVisible(false);
+			}
 		} else {
 			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 		}
@@ -202,7 +204,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if(intent.hasFilterId())
-			task = new SelectDataTask(helper,connection,intent.getFilterId());
+			task = new SelectDataTask(helper,connection,null,intent.getFilterId());
 		else
 			task = new SelectDataTask(helper,connection,intent.getProjectId());
 
@@ -232,8 +234,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, long project) {
 			super(helper,connection,project);
 		}
-		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, int filter) {
-			super(helper,connection,filter);
+		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection,Long proj, int filter) {
+			super(helper,connection,proj,filter);
 		}
 
 		// can use UI thread here

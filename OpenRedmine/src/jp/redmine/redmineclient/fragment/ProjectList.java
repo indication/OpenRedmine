@@ -7,8 +7,11 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.form.StatusUserForm;
@@ -25,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
@@ -59,6 +63,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(mListener == null) {
 			//setup empty events
 			mListener = new OnArticleSelectedListener() {
+				@Override
+				public void onIssueFilterList(int connectionId, int filterid) {}
 				@Override
 				public void onIssueList(int connectionId, long projectId) {}
 				@Override
@@ -106,24 +112,43 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		adapter = new RedmineProjectListAdapter(getHelper());
 
-		ConnectionArgument intent = new ConnectionArgument();
+		final ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId());
 		adapter.notifyDataSetInvalidated();
 		adapter.notifyDataSetChanged();
 
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
-		RedmineUser user = null;
 		try {
-			user = mUserModel.fetchCurrentUser(intent.getConnectionId());
+			final RedmineUser user = mUserModel.fetchCurrentUser(intent.getConnectionId());
+			if(user != null){
+				StatusUserForm formHeader = new StatusUserForm(mHeader);
+				formHeader.setValue(user);
+				getListView().addHeaderView(mHeader);
+				mHeader.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						RedmineFilter filter = new RedmineFilter();
+						filter.setConnectionId(intent.getConnectionId());
+						filter.setAssigned(user);
+						filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
+						RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
+						try {
+							RedmineFilter target = mFilter.getSynonym(filter);
+							if(target == null){
+								mFilter.insert(filter);
+								target = mFilter.getSynonym(filter);
+							}
+							mListener.onIssueFilterList(target.getConnectionId(), target.getId());
+						} catch (SQLException e) {
+							Log.e(TAG,"onClickHeader", e);
+						}
+
+					}
+				});
+			}
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);
-		}
-		if(user != null){
-			StatusUserForm formHeader = new StatusUserForm(mHeader);
-			formHeader.setValue(user);
-			getListView().addHeaderView(mHeader);
-
 		}
 
 		setListAdapter(adapter);

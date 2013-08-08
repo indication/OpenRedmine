@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -19,12 +20,18 @@ import jp.redmine.redmineclient.url.RemoteUrlIssues;
 public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 	protected DatabaseCacheHelper helper;
-	protected RedmineProject project;
+	protected Long project_id;
+	protected Integer filter_id;
 	protected RedmineConnection connection;
 	private boolean isFetchAll = false;
-	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,RedmineProject proj){
+	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,long proj){
 		this.helper = helper;
-		this.project = proj;
+		this.project_id = proj;
+		this.connection = con;
+	}
+	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,Long proj,int filter){
+		this.helper = helper;
+		this.filter_id = filter;
 		this.connection = con;
 	}
 
@@ -32,19 +39,41 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	public SelectIssueTask() {
 	}
 
+
+	protected RedmineFilter getFilter(RedmineFilterModel mFilter){
+
+		RedmineFilter filter = null;
+		try {
+			if(filter_id == null){
+				RedmineProjectModel mProject = new RedmineProjectModel(helper);
+				RedmineProject project = mProject.fetchById(project_id);
+				filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
+				if(filter == null)
+					filter = mFilter.generateDefault(connection.getId(), project);
+			} else {
+				filter = mFilter.fetchById(filter_id);
+			}
+		} catch (SQLException e) {
+			publishError(e);
+		}
+		return filter;
+	}
+	protected void updateFilter(RedmineFilterModel mFilter, RedmineFilter filter){
+		try {
+			mFilter.update(filter);
+		} catch (SQLException e) {
+			publishError(e);
+		}
+
+	}
 	@Override
 	protected Void doInBackground(Integer... params) {
 		long limit = params[1];
 		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
-		RedmineFilter filter = null;
-		try {
-			filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
-		} catch (SQLException e) {
-			publishError(e);
-		}
+		RedmineFilter filter = getFilter(mFilter);
 		if(filter == null)
-			filter = mFilter.generateDefault(connection.getId(), project);
+			return null;
 
 		/*
 		Calendar cal = Calendar.getInstance();
@@ -104,9 +133,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 			fetched--;
 			filter.setFetched(fetched);
 			filter.setLast(new Date());
-			mFilter.updateCurrent(filter);
-		} catch (SQLException e) {
-			publishError(e);
+			updateFilter(mFilter,filter);
 		} catch (InterruptedException e) {
 			publishError(e);
 		} finally {

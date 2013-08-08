@@ -13,6 +13,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
@@ -36,6 +37,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
 public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
+	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
 	private RedmineIssueListAdapter adapter;
 	private SelectDataTask task;
@@ -54,6 +56,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(mListener == null) {
 			//setup empty events
 			mListener = new  IssueView.OnArticleSelectedListener() {
+				@Override
+				public void onIssueFilterList(int connectionId, int filterid) {}
 				@Override
 				public void onIssueList(int connectionId, long projectId) {}
 				@Override
@@ -99,11 +103,14 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().setFastScrollEnabled(true);
 
 		adapter = new RedmineIssueListAdapter(getHelper());
-		ProjectArgument intent = new ProjectArgument();
+		FilterArgument intent = new FilterArgument();
 		intent.setArgument( getArguments() );
-		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		adapter.notifyDataSetInvalidated();
-		adapter.notifyDataSetChanged();
+		if(intent.hasFilterId()){
+			adapter.setupParameter(intent.getFilterId());
+		} else {
+			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
+		}
+		onRefreshList();
 		if(adapter.getCount() < 1){
 			this.onRefresh(true);
 		}
@@ -176,42 +183,52 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		if(adapter != null){
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
-		}
+		onRefreshList();
 		if(lastPos != getListView().getChildCount()){
 			lastPos = -1; //reset
 		}
 
-		ProjectArgument intent = new ProjectArgument();
+		FilterArgument intent = new FilterArgument();
 		intent.setArgument(getArguments());
 		DatabaseCacheHelper helper = getHelper();
-		RedmineConnection connection = null;
-		RedmineProject project = null;
-		try {
-			ConnectionModel mConnection = new ConnectionModel(getActivity());
-			connection = mConnection.getItem(intent.getConnectionId());
-			mConnection.finalize();
-			RedmineProjectModel mProject = new RedmineProjectModel(helper);
-			project = mProject.fetchById(intent.getProjectId());
-		} catch (SQLException e) {
-			Log.e("IssueListActivity","SelectDataTask",e);
-		}
+		ConnectionModel mConnection = new ConnectionModel(getActivity());
+		RedmineConnection connection = mConnection.getItem(intent.getConnectionId());
+		mConnection.finalize();
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		task = new SelectDataTask(helper,connection,project);
+		if(intent.hasFilterId())
+			task = new SelectDataTask(helper,connection,null,intent.getFilterId());
+		else
+			task = new SelectDataTask(helper,connection,intent.getProjectId());
+
 		task.setFetchAll(sp.getBoolean("issue_get_all", false));
 		task.execute(0,10,isFlush ? 1 : 0);
-		if(isFlush){
+		if(isFlush && !intent.hasFilterId()){
+			RedmineProject project = null;
+			RedmineProjectModel mProject = new RedmineProjectModel(helper);
+			try {
+				project = mProject.fetchById(intent.getProjectId());
+			} catch (SQLException e) {
+				Log.e(TAG,"SelectDataTask",e);
+			}
 			SelectProjectEnumerationTask enumtask = new SelectProjectEnumerationTask(helper,connection,project);
 			enumtask.execute();
 		}
 	}
+	protected void onRefreshList(){
+		if(adapter == null)
+			return;
+		adapter.notifyDataSetInvalidated();
+		adapter.notifyDataSetChanged();
+
+	}
 
 	private class SelectDataTask extends SelectIssueTask {
-		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, RedmineProject project) {
+		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, long project) {
 			super(helper,connection,project);
+		}
+		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection,Long proj, int filter) {
+			super(helper,connection,proj,filter);
 		}
 
 		// can use UI thread here
@@ -226,23 +243,26 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		@Override
 		protected void onPostExecute(Void b) {
 			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
+			onRefreshList();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 		}
 
 		@Override
 		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
+			onRefreshList();
 			super.onProgress(max, proc);
 		}
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate( R.menu.issues, menu );
+		FilterArgument intent = new FilterArgument();
+		intent.setArgument( getArguments() );
+		if(!intent.hasFilterId()){
+			inflater.inflate( R.menu.issues, menu );
+		}
+		inflater.inflate( R.menu.refresh, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);

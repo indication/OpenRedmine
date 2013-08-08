@@ -86,8 +86,7 @@ public class RedmineFilterModel {
 		filter.setCurrent(true);
 		dao.createOrUpdate(filter);
 	}
-	public void updateSynonym(RedmineFilter filter) throws SQLException{
-		RedmineFilter target = filter;
+	public RedmineFilter getSynonym(RedmineFilter filter) throws SQLException{
 		Compare<IMasterRecord> compareMaster = new Compare<IMasterRecord>(){
 			@Override
 			public boolean isSameInner(IMasterRecord a, IMasterRecord b) {
@@ -121,9 +120,14 @@ public class RedmineFilterModel {
 				continue;
 
 
-			target = item;
-			break;
+			return item;
 		}
+		return null;
+	}
+	public void updateSynonym(RedmineFilter filter) throws SQLException{
+		RedmineFilter target = getSynonym(filter);
+		if(target == null)
+			target = filter;
 		updateCurrent(target);
 	}
 

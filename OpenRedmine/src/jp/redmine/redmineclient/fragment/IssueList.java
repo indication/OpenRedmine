@@ -1,8 +1,6 @@
 package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
@@ -44,7 +42,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private RedmineIssueListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
-	private List<MenuItem> menu_project_spec = new ArrayList<MenuItem>();
 	private View mFooter;
 	private long lastPos = -1;
 
@@ -110,10 +107,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		intent.setArgument( getArguments() );
 		if(intent.hasFilterId()){
 			adapter.setupParameter(intent.getFilterId());
-			for(MenuItem item : menu_project_spec){
-				item.setEnabled(false);
-				item.setVisible(false);
-			}
 		} else {
 			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 		}
@@ -264,10 +257,13 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate( R.menu.issues, menu );
+		FilterArgument intent = new FilterArgument();
+		intent.setArgument( getArguments() );
+		if(!intent.hasFilterId()){
+			inflater.inflate( R.menu.issues, menu );
+		}
+		inflater.inflate( R.menu.refresh, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
-		menu_project_spec.add(menu.findItem(R.id.menu_access_addnew));
-		menu_project_spec.add(menu.findItem(R.id.menu_issues_filter));
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
 		super.onCreateOptionsMenu(menu, inflater);

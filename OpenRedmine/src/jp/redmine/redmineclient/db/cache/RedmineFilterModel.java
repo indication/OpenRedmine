@@ -5,15 +5,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.util.Log;
-
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
-
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
 
 public class RedmineFilterModel {
@@ -169,6 +169,10 @@ public class RedmineFilterModel {
 	public int update(RedmineFilter item) throws SQLException{
 		int count = dao.update(item);
 		return count;
+	}
+	public int updateOrInsert(RedmineFilter item) throws SQLException{
+		CreateOrUpdateStatus count = dao.createOrUpdate(item);
+		return count.getNumLinesChanged();
 	}
 	public int delete(RedmineFilter item) throws SQLException{
 		int count = dao.delete(item);

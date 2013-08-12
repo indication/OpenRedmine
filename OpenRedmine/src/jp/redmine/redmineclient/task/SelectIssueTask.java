@@ -48,8 +48,10 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 				RedmineProjectModel mProject = new RedmineProjectModel(helper);
 				RedmineProject project = mProject.fetchById(project_id);
 				filter = mFilter.fetchByCurrent(connection.getId(), project.getId());
-				if(filter == null)
+				if(filter == null){
 					filter = mFilter.generateDefault(connection.getId(), project);
+					filter.setCurrent(true);
+				}
 			} else {
 				filter = mFilter.fetchById(filter_id);
 			}
@@ -60,7 +62,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	}
 	protected void updateFilter(RedmineFilterModel mFilter, RedmineFilter filter){
 		try {
-			mFilter.update(filter);
+			mFilter.updateOrInsert(filter);
 		} catch (SQLException e) {
 			publishError(e);
 		}
@@ -163,7 +165,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 
 	/**
-	 * @param isFetchAll セットする isFetchAll
+	 * @param isFetchAll セチE��する isFetchAll
 	 */
 	public void setFetchAll(boolean isFetchAll) {
 		this.isFetchAll = isFetchAll;

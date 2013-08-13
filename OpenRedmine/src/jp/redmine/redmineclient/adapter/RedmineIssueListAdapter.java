@@ -19,12 +19,16 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 	private RedmineFilter filter;
 	protected Integer connection_id;
 	protected Long project_id;
+	protected Integer filter_id;
 	@Override
 	public void notifyDataSetChanged() {
 		if(!isValidParameter())
 			return;
 		try {
-			filter = mFilter.fetchByCurrent(connection_id, project_id);
+			if(filter_id != null)
+				filter = mFilter.fetchById(filter_id);
+			else
+				filter = mFilter.fetchByCurrent(connection_id, project_id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -42,11 +46,16 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 		project_id = project;
 	}
 
+	public void setupParameter(int filter){
+		filter_id = filter;
+	}
+
 	public boolean isValidParameter(){
-		if(project_id == null || connection_id == null)
-			return false;
-		else
+		if(project_id != null && connection_id != null)
 			return true;
+		if(filter_id != null)
+			return true;
+		return false;
 	}
 
 	@Override

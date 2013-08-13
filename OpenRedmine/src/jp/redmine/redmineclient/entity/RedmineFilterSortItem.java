@@ -229,6 +229,11 @@ public class RedmineFilterSortItem implements IMasterRecord {
 	public static String getFilter(RedmineFilterSortItem item){
 		return item.isAscending() ? item.getRemoteKey() : item.getRemoteKey()+" desc";
 	}
+	public static String getFilter(String key, boolean isAscending){
+		RedmineFilterSortItem item = setupFilter(new RedmineFilterSortItem(),key);
+		item.setAscending(isAscending);
+		return getFilter(item);
+	}
 
 
 }

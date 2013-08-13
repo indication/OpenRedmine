@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 
@@ -47,6 +48,32 @@ public class RedmineConnectionModel {
 
 	public int create(RedmineConnection item) throws SQLException {
 		return dao.create(item);
+	}
+
+	public long countByProject(Integer connection_id, int projectid) throws SQLException {
+		QueryBuilder<RedmineConnection, ?> builder = dao.queryBuilder();
+		builder
+			.setCountOf(true)
+				;
+		return dao.countOf(builder.prepare());
+	}
+
+	public RedmineConnection fetchItemByProject(Integer connection_id, int projectid,long offset, long limit) throws SQLException {
+		QueryBuilder<RedmineConnection, Integer> builder = dao.queryBuilder();
+		setupLimit(builder,offset,limit);
+		builder.orderBy(RedmineConnection.ID, true);
+		RedmineConnection item = dao.queryForFirst(builder.prepare());
+		if(item == null)
+			item = new RedmineConnection();
+		return item;
+	}
+	protected void setupLimit(QueryBuilder<?,?> builder,Long startRow, Long maxRows) throws SQLException{
+		if(maxRows != null){
+			builder.limit(maxRows);
+		}
+		if(startRow != null && startRow != 0){
+			builder.offset(startRow);
+		}
 	}
 
 }

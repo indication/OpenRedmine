@@ -23,7 +23,7 @@ public class ParserUser extends BaseParserInternal<RedmineConnection,RedmineUser
 	@Override
 	protected void parseInternal(RedmineConnection con, RedmineUser item)
 			throws XmlPullParserException, IOException{
-		if(xml.getDepth() <= 2)
+		if(xml.getDepth() <= 1)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
@@ -35,6 +35,10 @@ public class ParserUser extends BaseParserInternal<RedmineConnection,RedmineUser
 			item.setFirstname(getNextText());
 		} else if("lastname".equalsIgnoreCase(xml.getName())){
 			item.setLastname(getNextText());
+		} else if("mail".equalsIgnoreCase(xml.getName())){
+			item.setMail(getNextText());
+		} else if("api_key".equalsIgnoreCase(xml.getName())){
+			//do nothing
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("last_login_on".equalsIgnoreCase(xml.getName())){

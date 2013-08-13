@@ -26,7 +26,7 @@ public class ParserTimeEntry extends BaseParserInternal<RedmineConnection,Redmin
 	@Override
 	protected void parseInternal(RedmineConnection con, RedmineTimeEntry item)
 			throws XmlPullParserException, IOException{
-		if(xml.getDepth() <= 2)
+		if(xml.getDepth() <= 1)
 			return;
 		if(equalsTagName("id")){
 			item.setTimeentryId(TypeConverter.parseInteger(getNextText()));

@@ -14,7 +14,6 @@ import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.text.TextUtils;
@@ -40,13 +39,13 @@ public class RedmineTimeentryEditForm extends FormHelper {
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
 	RedmineFilterListAdapter adapterActivity;
-	public RedmineTimeentryEditForm(Activity activity){
-		this.setup(activity);
+	public RedmineTimeentryEditForm(View view){
+		this.setup(view);
 		this.setupEvents();
 	}
 
 
-	public void setup(Activity view){
+	public void setup(View view){
 		spinnerActivity = (Spinner)view.findViewById(R.id.spinnerActivity);
 		textTime = (FormEditText)view.findViewById(R.id.textTime);
 		textDate = (FormEditText)view.findViewById(R.id.textDate);

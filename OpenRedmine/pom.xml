@@ -14,34 +14,33 @@
 	<url>https://github.com/indication/OpenRedmine</url>
   </scm>
   <build>
-	<pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>android-maven-plugin</artifactId>
-				<version>3.6.0</version>
-				<extensions>true</extensions>
-				<configuration>
-					<sdk>
-						<platform>16</platform>
-					</sdk>
-					<undeployBeforeDeploy>true</undeployBeforeDeploy>
-					<proguard>
-						<skip>false</skip>
-						<config>proguard-project.txt</config>
-					</proguard>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</pluginManagement>
+	<plugins>
+		<plugin>
+			<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+			<artifactId>android-maven-plugin</artifactId>
+			<version>3.6.1</version>
+			<extensions>true</extensions>
+			<configuration>
+				<sdk>
+					<platform>16</platform>
+				</sdk>
+				<undeployBeforeDeploy>true</undeployBeforeDeploy>
+				<proguard>
+					<skip>false</skip>
+					<config>proguard-project.txt</config>
+				</proguard>
+			</configuration>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.1</version>
+			<configuration>
+				<source>1.6</source>
+				<target>1.6</target>
+			</configuration>
+		</plugin>
+	</plugins>
   </build>
   <dependencies>
 	<dependency>

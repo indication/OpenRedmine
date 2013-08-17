@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.IMasterRecord;
@@ -70,5 +72,20 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 	protected Long getAttributeLong(String schema, String attr){
 		String id = xml.getAttributeValue(schema, attr);
 		return TextUtils.isEmpty(id) ? null : Long.parseLong(id);
+	}
+	
+	protected Integer getTextInteger() throws XmlPullParserException, IOException{
+		String work = getNextText();
+		return TextUtils.isEmpty(work) ? null : Integer.parseInt(work);
+	}
+	
+	protected Long getTextLong() throws XmlPullParserException, IOException{
+		String work = getNextText();
+		return TextUtils.isEmpty(work) ? null : Long.parseLong(work);
+	}
+	
+	protected BigDecimal getTextBigDecimal() throws XmlPullParserException, IOException{
+		String work = getNextText();
+		return TextUtils.isEmpty(work) ? null : new BigDecimal(work, MathContext.UNLIMITED);
 	}
 }

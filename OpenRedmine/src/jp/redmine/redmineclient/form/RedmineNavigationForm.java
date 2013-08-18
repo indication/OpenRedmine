@@ -14,6 +14,7 @@ import android.net.Uri.Builder;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebSettings.PluginState;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -89,6 +90,7 @@ public class RedmineNavigationForm extends FormHelper {
 		webView.setWebViewClient(webClient);
 		webView.setWebChromeClient(client);
 		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setPluginState(PluginState.OFF);
 
 	}
 

@@ -10,30 +10,31 @@ public class RemoteUrlIssue extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
 	private Integer issue_id;
 
-	public enum IssueOption{
-		None,
-		WithChangesets,
-		WithJournals,
-		WithChangesetsJournals,
+	public enum Includes{
+		Relations("relations"),
+		Attachments("attachments"),
+		Changesets("changesets"),
+		Journals("journals"),
+		Watchers("watchers"),
+		;
+		private String name;
+		Includes(String nm){
+			name = nm;
+		}
+		public String getName(){
+			return name;
+		}
 	}
 
-	public void setOption(IssueOption opt){
-		switch(opt){
-		case None:
-			if(params.containsKey("include")){
-				params.remove("include");
+	public void setInclude(Includes ... args){
+		StringBuilder sb = new StringBuilder();
+		for(Includes inc : args){
+			if(sb.length()>1){
+				sb.append(",");
 			}
-			break;
-		case WithJournals:
-			params.put("include","journals");
-			break;
-		case WithChangesets:
-			params.put("include","changesets");
-			break;
-		case WithChangesetsJournals:
-			params.put("include","journals,changesets");
-			break;
+			sb.append(inc.getName());
 		}
+		params.put("include", sb.length()>1 ? sb.toString() : null);
 	}
 
 	public void setIssueId(Integer id){

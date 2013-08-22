@@ -7,8 +7,6 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineTimeEntryListItemForm;
-
-import android.view.LayoutInflater;
 import android.view.View;
 
 public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeEntry> {
@@ -34,8 +32,8 @@ public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeE
 	}
 
 	@Override
-	protected View getItemView(LayoutInflater infalInflater) {
-		return infalInflater.inflate(R.layout.timeentryitem, null);
+	protected int getItemViewId() {
+		return R.layout.timeentryitem;
 	}
 
 	@Override

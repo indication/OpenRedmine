@@ -22,7 +22,6 @@ import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 
 public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal> {
@@ -238,8 +237,8 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	}
 
 	@Override
-	protected View getItemView(LayoutInflater infalInflater) {
-		return  infalInflater.inflate(R.layout.journalitem, null);
+	protected int getItemViewId() {
+		return R.layout.journalitem;
 	}
 
 	@Override

@@ -6,8 +6,6 @@ import jp.redmine.redmineclient.db.store.DatabaseHelper;
 import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionListItemForm;
-
-import android.view.LayoutInflater;
 import android.view.View;
 
 public class ConnectionListAdapter extends RedmineBaseAdapter<RedmineConnection> {
@@ -25,8 +23,8 @@ public class ConnectionListAdapter extends RedmineBaseAdapter<RedmineConnection>
 	}
 
 	@Override
-	protected View getItemView(LayoutInflater infalInflater) {
-		return infalInflater.inflate(android.R.layout.simple_list_item_1, null);
+	protected int getItemViewId() {
+		return android.R.layout.simple_list_item_1;
 	}
 
 	@Override

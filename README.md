@@ -76,6 +76,9 @@ Using Libraries
 - httpmime (Apache License, Version 2.0) - This module provides support for MIME multipart encoded entities
   http://hc.apache.org/httpcomponents-client-ga/httpmime/
 
+- StickyListHeaders (Apache License, Version 2.0) - section headers that stick to the top
+  https://github.com/emilsjolander/StickyListHeaders
+
 Using Icons
 ==========
 - redmine (by-sa/2.5)

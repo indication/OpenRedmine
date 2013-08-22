@@ -120,5 +120,10 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 	protected View getItemView(LayoutInflater infalInflater){
 		return infalInflater.inflate(getItemViewId(), null);
 	}
+	
+	@Override
+	public int getItemViewType(int pos) {
+		return getItemViewId();
+	}
 
 }

@@ -142,13 +142,12 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 		return adapterJournal.getCount();
 	}
 
-	/*
 	@Override
 	public int getItemViewType(int pos) {
 		AggrigateAdapter adapter = getInner(pos);
-		return adapter == null ? 0 : adapter.getItemViewType(pos);
+		return adapter == null ? android.R.layout.simple_list_item_1 : adapter.getItemViewType(pos);
 	}
-	*/
+	
 
 	@Override
 	public Object getItem(int pos) {

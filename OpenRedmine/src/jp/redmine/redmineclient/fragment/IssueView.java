@@ -1,24 +1,18 @@
 package jp.redmine.redmineclient.fragment;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 
-import com.j256.ormlite.android.apptools.OrmLiteListFragment;
-
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.adapter.RedmineJournalListAdapter;
+import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
-import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import android.app.Activity;
-import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,12 +21,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j256.ormlite.android.apptools.OrmLiteListFragment;
+
 public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
-	private RedmineJournalListAdapter adapter;
+	private final String TAG = IssueView.class.getSimpleName();
+	private RedmineIssueViewStickyListHeadersAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
-	private RedmineIssueViewDetailForm formDetail;
-	private View mHeader;
 	private View mFooter;
 	private IntentAction mActionListener;
 	private OnArticleSelectedListener mListener;
@@ -135,27 +130,16 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		getListView().addHeaderView(mHeader);
 		getListView().addFooterView(mFooter);
 
-		adapter = new RedmineJournalListAdapter(getHelper(),mActionListener);
+		adapter = new RedmineIssueViewStickyListHeadersAdapter(getHelper(),mActionListener);
+		
 		setListAdapter(adapter);
-
+		
 		getListView().setFastScrollEnabled(true);
 
-		formDetail = new RedmineIssueViewDetailForm(mHeader);
-		formDetail.setupWebView(mActionListener);
-
-		formDetail.linearTimeEntry.setOnClickListener(new android.view.View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				IssueArgument baseintent = new IssueArgument();
-				baseintent.setArgument(getArguments());
-				mTimeEntryListener.onTimeEntryList(baseintent.getConnectionId(), baseintent.getIssueId());
-			}
-		});
 		onRefresh(true);
+
 
 	}
 	@Override
@@ -167,50 +151,29 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mHeader = inflater.inflate(R.layout.issueviewdetail,null);
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		View mFragment = super.onCreateView(inflater, container, savedInstanceState);
-		return mFragment;
+		return inflater.inflate(R.layout.stickylistheaderslist, container, false);
 	}
 
 	protected void onRefresh(boolean isFetch){
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());
-		int connectionid = intent.getConnectionId();
-
-		RedmineIssueModel model = new RedmineIssueModel(getHelper());
-		RedmineIssue issue = new RedmineIssue();
-		Log.d("SelectDataTask","ParserIssue Start");
+		RedmineIssueModel mIssue = new RedmineIssueModel(getHelper());
+		Long issue_id = null;
 		try {
-			issue = model.fetchById(connectionid, intent.getIssueId());
+			issue_id = mIssue.getIdByIssue(intent.getConnectionId(),intent.getIssueId());
 		} catch (SQLException e) {
-			Log.e("SelectDataTask","ParserIssue",e);
+			Log.e(TAG,"onRefresh",e);
 		}
-
-		if(issue.getId() == null){
-			if(isFetch){
-				onFetchRemote();
-			}
-		} else {
-			RedmineTimeEntryModel mTimeEntry = new RedmineTimeEntryModel(getHelper());
-			BigDecimal hours = new BigDecimal(0);
-			try {
-				hours = mTimeEntry.sumByIssueId(connectionid, issue.getIssueId());
-			} catch (SQLException e) {
-				Log.e("SelectDataTask","ParserIssue",e);
-			}
-			formDetail.setValue(issue);
-			formDetail.setValueTimeEntry(hours);
-
-
-			adapter.setupParameter(connectionid,issue.getId());
+		if(issue_id != null){
+			adapter.setupParameter(intent.getConnectionId(),issue_id);
 			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
+		}
 
-			if(adapter.getCount() < 1 && isFetch){
-				onFetchRemote();
-			}
+		if(adapter.getJournalCount() < 1 && isFetch){
+			onFetchRemote();
 		}
 	}
 

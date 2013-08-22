@@ -78,6 +78,9 @@
 	<string name="ticket_activity">活動</string>
 	<string name="ticket_issue">チケット</string>
 	<string name="ticket_sort">ソート</string>
+	<string name="ticket_detail">詳細</string>
+	<string name="ticket_relations">関係</string>
+	<string name="ticket_journals">コメント</string>
 	<string name="ticket_project">プロジェクト</string>
 	<string name="ticket_description">説明</string>
 	<string name="ascending">昇順</string>

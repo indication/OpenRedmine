@@ -161,6 +161,17 @@ public class RedmineIssueModel {
 			item = new RedmineIssue();
 		return item;
 	}
+	
+	public Long getIdByIssue(int connection, int issueId) throws SQLException{
+		QueryBuilder<RedmineIssue, Integer> builder = builderByIssue(connection,issueId);
+
+		builder.selectRaw(RedmineIssue.ID);
+		GenericRawResults<String[]> result = builder.queryRaw();
+		String[] values = result.getFirstResult();
+		result.close();
+		return (values[0] != null) ? Long.parseLong(values[0]) : null;
+	}
+	
 	public RedmineIssue fetchById(int id) throws SQLException{
 		RedmineIssue item;
 		item = dao.queryForId(id);

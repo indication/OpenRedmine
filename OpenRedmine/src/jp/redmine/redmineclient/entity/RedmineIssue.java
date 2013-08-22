@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,6 +84,8 @@ public class RedmineIssue implements IPostingRecord {
     private Date additional_modified;
     @DatabaseField
     private Date closed;
+
+    private BigDecimal done_hours;
 
 	private List<RedmineJournal> journals;
 
@@ -422,6 +425,14 @@ public class RedmineIssue implements IPostingRecord {
 		return estimated_hours;
 	}
 
+
+	public BigDecimal getDoneHours() {
+		return done_hours;
+	}
+
+	public void setDoneHours(BigDecimal done_hours) {
+		this.done_hours = done_hours;
+	}
 
 	/**
 	 * @param is_private セットする is_private

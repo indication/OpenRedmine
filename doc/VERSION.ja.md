@@ -4,6 +4,9 @@ Release history
 
 Next Release
 ===========
+
+v3.1
+===========
 - 見出し表示をチケットに追加
 
 v3.0

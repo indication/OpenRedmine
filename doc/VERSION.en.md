@@ -4,6 +4,9 @@ Release history
 
 Next Release
 ===========
+
+v3.1
+===========
 - Add sticky view on issue
 
 v3.0

@@ -169,7 +169,7 @@ public class RedmineIssueModel {
 		GenericRawResults<String[]> result = builder.queryRaw();
 		String[] values = result.getFirstResult();
 		result.close();
-		return (values[0] != null) ? Long.parseLong(values[0]) : null;
+		return (values != null && values[0] != null) ? Long.parseLong(values[0]) : null;
 	}
 	
 	public RedmineIssue fetchById(int id) throws SQLException{

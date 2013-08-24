@@ -19,12 +19,18 @@ import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
+import jp.redmine.redmineclient.form.RedmineJournalListItemHeaderForm;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal> {
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
+
+public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal>  implements StickyListHeadersAdapter {
 	private final static String TAG = "RedmineJournalListAdapter";
 
 	private RedmineJournalModel mJournal;
@@ -289,6 +295,33 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 		} else {
 			return item.getId();
 		}
+	}
+
+	@Override
+	public View getHeaderView(int position, View convertView, ViewGroup parent) {
+		if (convertView != null && (
+				 convertView.getTag() == null
+				|| ! ( (Integer)(convertView.getTag()) != R.layout.journalitemheader)
+			)) {
+			convertView = null;
+		}
+		if (convertView == null) {
+			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = infalInflater.inflate(R.layout.journalitemheader, null);
+			convertView.setTag(R.layout.journalitemheader);
+		}
+		if(convertView != null){
+			RedmineJournal rec = getItemWithCache(position);
+			RedmineJournalListItemHeaderForm form = new RedmineJournalListItemHeaderForm(convertView);
+			form.setValue(rec);
+		}
+		return convertView;
+	}
+
+	@Override
+	public long getHeaderId(int position) {
+		return getItemId(position);
 	}
 
 

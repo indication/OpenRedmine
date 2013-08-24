@@ -131,7 +131,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 		if(adapter.adapter instanceof StickyListHeadersAdapter){
 			// To take a uniq id by plus resource id for the adapter
 			// Be careful with using ids on child adapter that use the lower bits of the id.
-			return (((StickyListHeadersAdapter) adapter.adapter).getHeaderId(adapter.getInnerPos(pos)) << 8) | adapter.res;
+			return	 ((long)((StickyListHeadersAdapter) adapter.adapter).getHeaderId(adapter.getInnerPos(pos))) | (((long)adapter.res) << Integer.SIZE) ;
 		}
 		return adapter == null ? 0 : adapter.res;
 	}

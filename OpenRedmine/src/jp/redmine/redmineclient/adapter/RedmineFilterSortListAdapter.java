@@ -5,7 +5,6 @@ import java.util.List;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,8 +13,8 @@ public class RedmineFilterSortListAdapter extends RedmineBaseAdapter<RedmineFilt
 	protected List<RedmineFilterSortItem> items = RedmineFilterSortItem.getFilters(true);
 
 	@Override
-	protected View getItemView(LayoutInflater infalInflater) {
-		return infalInflater.inflate(android.R.layout.simple_list_item_single_choice, null);
+	protected int getItemViewId() {
+		return android.R.layout.simple_list_item_single_choice;
 	}
 	@Override
 	protected void setupView(View view, RedmineFilterSortItem item) {

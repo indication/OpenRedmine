@@ -3,7 +3,6 @@ package jp.redmine.redmineclient.adapter;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.external.lib.LRUCache;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import android.widget.BaseAdapter;
 public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCache.IFetchObject<Integer> {
 	private static final String TAG = "RedmineBaseAdapter";
 	protected LRUCache<Integer,T> cache = new LRUCache<Integer,T>(20);
-	protected abstract View getItemView(LayoutInflater infalInflater);
+	protected abstract int getItemViewId();
 	protected abstract void setupView(View view,T data);
 	protected abstract int getDbCount() throws SQLException;
 	protected abstract T getDbItem(int position) throws SQLException;
@@ -95,10 +94,18 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		if (convertView != null) {
+			if( convertView.getTag() == null
+					|| !(convertView.getTag() instanceof Integer)
+					|| ((Integer)convertView.getTag()) != getItemViewId()){
+				convertView = null;
+			}
+		}
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = getItemView(infalInflater);
+			convertView.setTag(getItemViewId());
 		}
 		if(convertView != null){
 			T rec = getItemWithCache(position);
@@ -109,6 +116,14 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 			}
 		}
 		return convertView;
+	}
+	protected View getItemView(LayoutInflater infalInflater){
+		return infalInflater.inflate(getItemViewId(), null);
+	}
+	
+	@Override
+	public int getItemViewType(int pos) {
+		return getItemViewId();
 	}
 
 }

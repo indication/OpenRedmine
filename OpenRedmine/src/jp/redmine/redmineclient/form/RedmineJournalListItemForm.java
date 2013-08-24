@@ -15,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class RedmineJournalListItemForm extends FormHelper {
-	public TextView textUser;
-	public TextView textDate;
 	public WebView webView;
 	public LinearLayout formChanges;
 	public TextileHelper webViewHelper;
@@ -26,8 +24,6 @@ public class RedmineJournalListItemForm extends FormHelper {
 
 
 	public void setup(View view){
-		textUser = (TextView)view.findViewById(R.id.user);
-		textDate = (TextView)view.findViewById(R.id.date);
 		webView = (WebView)view.findViewById(R.id.webView);
 		formChanges = (LinearLayout)view.findViewById(R.id.formChanges);
 
@@ -41,8 +37,6 @@ public class RedmineJournalListItemForm extends FormHelper {
 
 	public void setValue(RedmineJournal jr){
 		webViewHelper.setContent(jr.getConnectionId(), jr.getNotes());
-		setUserName(textUser, jr.getUser());
-		setDateTime(textDate,jr.getCreated());
 		setChangesets(formChanges, jr.changes);
 	}
 

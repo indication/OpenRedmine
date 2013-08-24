@@ -6,8 +6,6 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineProjectListItemForm;
-
-import android.view.LayoutInflater;
 import android.view.View;
 
 public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject> {
@@ -30,8 +28,8 @@ public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject
 	}
 
 	@Override
-	protected View getItemView(LayoutInflater infalInflater) {
-		return infalInflater.inflate(android.R.layout.simple_list_item_1, null);
+	protected int getItemViewId() {
+		return android.R.layout.simple_list_item_1;
 	}
 
 	@Override

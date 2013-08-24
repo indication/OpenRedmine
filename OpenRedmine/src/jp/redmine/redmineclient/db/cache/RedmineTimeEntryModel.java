@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 
 public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
@@ -56,7 +57,7 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 		return item;
 	}
 
-	public BigDecimal sumByIssueId(int connection_id, int issue_id) throws SQLException{
+	public BigDecimal sumByIssueId(int connection_id, long issue_id) throws SQLException{
 		QueryBuilder<RedmineTimeEntry, ?> builder = dao.queryBuilder();
 		builder
 			.where()

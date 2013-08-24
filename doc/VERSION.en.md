@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+Next Release
+===========
+- Add sticky view on issue
+
 v3.0
 ===========
 - Support fragment (internal codes)

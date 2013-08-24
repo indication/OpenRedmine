@@ -2,6 +2,10 @@ OpenRedmine
 ===========
 Release history
 
+Next Release
+===========
+- 見出し表示をチケットに追加
+
 v3.0
 ===========
 - fragment対応 (内部コード)

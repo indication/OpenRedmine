@@ -8,6 +8,7 @@ Next Release
 v3.1
 ===========
 - Add sticky view on issue
+- Renewal issue list view
 
 v3.0
 ===========

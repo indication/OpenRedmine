@@ -73,6 +73,22 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 		String id = xml.getAttributeValue(schema, attr);
 		return TextUtils.isEmpty(id) ? null : Long.parseLong(id);
 	}
+
+	protected String getAttributeString(String attr){
+		return getAttributeString("",attr);
+	}
+	protected String getAttributeString(String schema, String attr){
+		String id = xml.getAttributeValue(schema, attr);
+		return TextUtils.isEmpty(id) ? null : id;
+	}
+
+	protected BigDecimal getAttributeBigDecimal(String attr){
+		return getAttributeBigDecimal("",attr);
+	}
+	protected BigDecimal getAttributeBigDecimal(String schema, String attr){
+		String id = xml.getAttributeValue(schema, attr);
+		return TextUtils.isEmpty(id) ? null : new BigDecimal(id, MathContext.UNLIMITED);
+	}
 	
 	protected Integer getTextInteger() throws XmlPullParserException, IOException{
 		String work = getNextText();

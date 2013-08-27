@@ -8,6 +8,7 @@ import java.util.List;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation.RelationType;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -25,7 +26,6 @@ import android.util.Log;
 public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIssue> {
 
 	private ParserJournals parserJournal = new ParserJournals();
-	private ParserIssueRelations parserRelation = new ParserIssueRelations();
 	@Override
 	protected String getProveTagName() {
 		return "issue";
@@ -92,7 +92,8 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			RedmineProjectVersion tk = new RedmineProjectVersion();
 			setMasterRecord(tk);
 			item.setVersion(tk);
-
+		} else if(equalsTagName("parent_issue_id")){
+			item.setParentId(getTextInteger());
 		} else if("start_date".equalsIgnoreCase(xml.getName())){
 			item.setDateStart(TypeConverter.parseDate(getNextText()));
 		} else if("due_date".equalsIgnoreCase(xml.getName())){
@@ -130,27 +131,19 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			parserJournal.unregisterDataCreation(handler);
 			item.setJournals(journals);
 
-
-		} else if(equalsTagName("relations")){
-			final List<RedmineIssueRelation> relations = new ArrayList<RedmineIssueRelation>();
-			parserRelation.setXml(xml);
-			DataCreationHandler<RedmineIssue, RedmineIssueRelation> handler =
-				new DataCreationHandler<RedmineIssue, RedmineIssueRelation>() {
-				@Override
-				public void onData(RedmineIssue info, RedmineIssueRelation data)
-						throws SQLException {
-					relations.add(data);
-				}
-			};
-
-			parserRelation.registerDataCreation(handler);
-			try {
-				parserRelation.parse(item);
-			} catch (SQLException e) {
-				Log.e("parserIssue","",e);
-			}
-			parserRelation.unregisterDataCreation(handler);
-			item.setRelations(relations);
+		} else if(equalsTagName("relation")){
+			if(item.getRelations() == null)
+				item.setRelations(new ArrayList<RedmineIssueRelation>());
+			//on issue.xml: relation tag following
+			//<relation issue_to_id="1" relation_type="relates" delay="" issue_id="2" id="1"/>
+			RedmineIssueRelation relation = new RedmineIssueRelation();
+			relation.setRelationId(getAttributeInteger("id"));
+			relation.setIssueId(getAttributeInteger("issue_id"));
+			relation.setIssueToId(getAttributeInteger("issue_to_id"));
+			relation.setDelay(getAttributeBigDecimal("delay"));
+			relation.setType(RelationType.getValueOf(getAttributeString("relation_type")));
+			item.getRelations().add(relation);
+			
 		} else if("closed_on".equalsIgnoreCase(xml.getName())){
 			item.setClosed(TypeConverter.parseDateTime(getNextText()));
 		} else if("created_on".equalsIgnoreCase(xml.getName())){

@@ -3,14 +3,17 @@ package jp.redmine.redmineclient.task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeActivityModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
@@ -20,8 +23,13 @@ import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import android.util.Log;
+
 public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 	private final static int LIMIT = 50;
+	private final static String TAG = SelectIssueJournalTask.class.getSimpleName();
 
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;
@@ -45,12 +53,32 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 
 	protected void doInBackgroundIssue(SelectDataTaskConnectionHandler client,Integer... params) {
 		final ParserIssue parser = new ParserIssue();
+		final List<Integer> listAdditionalIssue = new ArrayList<Integer>();
+		DataCreationHandler<RedmineConnection,RedmineIssue> relationHandler = new DataCreationHandler<RedmineConnection,RedmineIssue>() {
+			private RedmineIssueModel mRelation = new RedmineIssueModel(helper);
+			public void onData(RedmineConnection con,RedmineIssue data) throws SQLException {
+				if(data.getParentId() != 0){
+					if(mRelation.getIdByIssue(con.getId(), data.getParentId()) == null)
+						listAdditionalIssue.add(data.getParentId());
+				}
+				if(data.getRelations() == null)
+					return;
+				for(RedmineIssueRelation rel : data.getRelations()){
+					Log.d(TAG,"relation:" + String.valueOf(rel.getIssueId()) + "->" + String.valueOf(rel.getIssueToId()));
+					if(mRelation.getIdByIssue(con.getId(), rel.getIssueToId()) == null)
+						listAdditionalIssue.add(rel.getIssueToId());
+				}
+			}
+		};
+		IssueModelDataCreationHandler itemhandler = new IssueModelDataCreationHandler(helper);
+		parser.registerDataCreation(itemhandler);
+		parser.registerDataCreation(relationHandler);
+		
+		
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
-				IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
-				parser.registerDataCreation(handler);
 				helperSetupParserStream(stream, parser);
 				parser.parse(connection);
 			}
@@ -61,6 +89,14 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 			url.setIssueId(param);
 			fetchData(client,connection, url, handler);
 		}
+		//Add external issues
+		parser.unregisterDataCreation(relationHandler);
+		url.setInclude();
+		for(int param: listAdditionalIssue){
+			url.setIssueId(param);
+			fetchData(client,connection, url, handler);
+		}
+		
 	}
 
 	protected void doInBackgroundTimeEntry(SelectDataTaskConnectionHandler client,Integer... params) {

@@ -129,6 +129,14 @@ public class RedmineIssue implements IPostingRecord {
 			}
 		}
 	}
+	static public void setupRelations(RedmineIssue item){
+		if(item.getRelations() == null)
+			return;
+		for (RedmineIssueRelation data : item.getRelations()){
+			data.setConnectionId(item.getConnectionId());
+			data.setIssueId(item.getIssueId());
+		}
+	}
 
 	/**
 	 * @param id セットする id

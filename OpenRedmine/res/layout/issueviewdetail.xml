@@ -6,25 +6,39 @@
     android:orientation="vertical"
     android:padding="3dip" >
 
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal" >
+	<TextView
+		android:id="@+id/textPrivate"
+		style="@android:style/Widget.CompoundButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="3dip"
+		android:background="#cc0000"
+		android:text="@string/ticket_private" />
 
-	    <TextView
-	        android:id="@+id/textPrivate"
-	        style="@android:style/Widget.CompoundButton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="3dip"
-	        android:background="#cc0000"
-	        android:text="@string/ticket_private" />
-
-	</LinearLayout>
 
 	<TableLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" >
+
+		<TableRow
+			android:id="@+id/rowProject"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:text="@string/ticket_project" />
+
+			<TextView
+				android:id="@+id/textProject"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="3dip"
+				android:text="@string/ticket_project"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+		</TableRow>
 
 		<TableRow
 			android:layout_width="match_parent"
@@ -79,6 +93,7 @@
 		</TableRow>
 
 		<TableRow
+			android:id="@+id/rowAssigned"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" >
 
@@ -98,6 +113,7 @@
 		</TableRow>
 
 		<TableRow
+			android:id="@+id/rowCategory"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" >
 
@@ -154,6 +170,7 @@
 		</TableRow>
 
 		<TableRow
+			android:id="@+id/rowDate"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" >
 
@@ -195,6 +212,7 @@
 		</TableRow>
 
 		<TableRow
+			android:id="@+id/rowVersion"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" >
 
@@ -213,6 +231,7 @@
 		</TableRow>
 
 		<TableRow
+			android:id="@+id/rowTimeEntry"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" >
 
@@ -269,8 +288,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="3dip"
-				android:text="@string/ticket_created"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
+				android:text="@string/ticket_created" />
 		</TableRow>
 
 		<TableRow
@@ -288,8 +306,7 @@
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:layout_marginLeft="3dip"
-			    android:text="@string/ticket_modified_by"
-			    android:textAppearance="?android:attr/textAppearanceMedium" />
+			    android:text="@string/ticket_modified_by" />
 		</TableRow>
 	</TableLayout>
 

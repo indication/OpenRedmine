@@ -2,11 +2,6 @@ package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.entity.RedminePriority;
-import jp.redmine.redmineclient.entity.RedmineProjectCategory;
-import jp.redmine.redmineclient.entity.RedmineProjectVersion;
-import jp.redmine.redmineclient.entity.RedmineStatus;
-import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -51,28 +46,13 @@ public class RedmineIssueDetailBaseForm extends FormHelper {
 		setMasterName(textAssignedTo, rd.getAssigned());
 		setMasterName(textStatus, rd.getStatus());
 		setMasterName(textTracker, rd.getTracker());
-		setStatus(rd.getStatus());
-		setCategory(rd.getCategory());
-		setVersion(rd.getVersion());
+		setMasterName(textStatus,rd.getStatus());
+		setMasterName(textCategory,rd.getCategory());
+		setMasterName(textVersion,rd.getVersion());
 		setProgress(rd.getProgressRate(),rd.getDoneRate());
 
 	}
 
-	public void setTracker(RedmineTracker tk){
-		textTracker.setText(tk == null ? "" : tk.getName());
-	}
-	public void setCategory(RedmineProjectCategory ct){
-		textCategory.setText(ct == null ? "" : ct.getName());
-	}
-	public void setVersion(RedmineProjectVersion vr){
-		textVersion.setText(vr == null ? "" : vr.getName());
-	}
-	public void setStatus(RedmineStatus status){
-		textStatus.setText(status == null ? "" : status.getName());
-	}
-	public void setPriority(RedminePriority pr){
-		textPriority.setText(pr == null ? "" : pr.getName());
-	}
 	public void setProgress(Short progress,Short donerate){
 		progressBar.setMax(100);
 		progressBar.setProgress(progress == null ? 0 : progress);

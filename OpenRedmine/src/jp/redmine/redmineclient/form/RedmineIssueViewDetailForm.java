@@ -49,11 +49,9 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 		super.setValue(rd);
 		if(rd.getConnectionId() != null)
 			webViewHelper.setContent(rd.getConnectionId(), rd.getDescription());
-		setTracker(rd.getTracker());
 		setUserNameDateTime(textCreated,R.string.ticket_created_by,rd.getAuthor(),rd.getCreated());
 		setUserNameDateTime(textModified,R.string.ticket_modified_by,null,rd.getModified());
 		setUserName(textAssignedTo,rd.getAssigned());
-		setPriority(rd.getPriority());
 		setPrivate(rd.isPrivate());
 		setTime(textTimeEstimate,R.string.ticket_time_estimate,rd.getEstimatedHours());
 

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TextView textPrivate;
-	public TextView textAuthor;
+	public TextView textCreated;
 	public TextView textProgress;
 	public TextView textTimeEstimate;
 	public TextView textTimeEntry;
@@ -35,7 +35,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public void setup(View view){
 		super.setup(view);
 		textPrivate = (TextView)view.findViewById(R.id.textPrivate);
-		textAuthor = (TextView)view.findViewById(R.id.textAuthor);
+		textCreated = (TextView)view.findViewById(R.id.textCreated);
 		textProgress = (TextView)view.findViewById(R.id.textProgress);
 		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
 		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
@@ -50,7 +50,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 		if(rd.getConnectionId() != null)
 			webViewHelper.setContent(rd.getConnectionId(), rd.getDescription());
 		setTracker(rd.getTracker());
-		setUserNameDateTime(textAuthor,R.string.ticket_created_by,rd.getAuthor(),rd.getCreated());
+		setUserNameDateTime(textCreated,R.string.ticket_created_by,rd.getAuthor(),rd.getCreated());
 		setUserNameDateTime(textModified,R.string.ticket_modified_by,null,rd.getModified());
 		setUserName(textAssignedTo,rd.getAssigned());
 		setPriority(rd.getPriority());

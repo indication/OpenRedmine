@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -12,8 +13,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 
 public class RedmineIssueRelationModel {
-	@SuppressWarnings("unused")
-	private final static String TAG = "RedmineIssueRelationModel";
+	private final static String TAG = RedmineIssueRelationModel.class.getSimpleName();
 	protected Dao<RedmineIssueRelation, Long> dao;
 	public RedmineIssueRelationModel(DatabaseCacheHelper helper) {
 		try {
@@ -56,28 +56,33 @@ public class RedmineIssueRelationModel {
 	}
 
 	public long countByIssue(int connection_id, long issue_id) throws SQLException {
-		QueryBuilder<RedmineIssueRelation, ?> builder = dao.queryBuilder();
+		QueryBuilder<RedmineIssueRelation, Long> builder = dao.queryBuilder();
 		builder
 			.setCountOf(true)
 			.where()
-				.eq(RedmineIssueRelation.CONNECTION, connection_id)
+				.eq(RedmineIssueRelation.ISSUE_ID,	issue_id)
+				.or()
+				.eq(RedmineIssueRelation.ISSUE_TO_ID,	issue_id)
 				.and()
-				.eq(RedmineIssueRelation.ISSUE_ID, issue_id)
+				.eq(RedmineIssueRelation.CONNECTION, connection_id)
 				;
 		return dao.countOf(builder.prepare());
 	}
 
 	public RedmineIssueRelation fetchItemByIssue(int connection_id, long issue_id, long offset, long limit) throws SQLException {
-		QueryBuilder<RedmineIssueRelation, ?> builder = dao.queryBuilder();
+		QueryBuilder<RedmineIssueRelation, Long> builder = dao.queryBuilder();
 		builder
 			.limit(limit)
 			.offset(offset)
 			.orderBy(RedmineIssueRelation.RELATION_ID, true)
 			.where()
-				.eq(RedmineIssueRelation.CONNECTION, connection_id)
+				.eq(RedmineIssueRelation.ISSUE_ID,	issue_id)
+				.or()
+				.eq(RedmineIssueRelation.ISSUE_TO_ID,	issue_id)
 				.and()
-				.eq(RedmineIssueRelation.ISSUE_ID, issue_id)
+				.eq(RedmineIssueRelation.CONNECTION, connection_id)
 				;
+		Log.d(TAG,builder.prepareStatementString());
 		RedmineIssueRelation item = builder.queryForFirst();
 		if(item == null){
 			item = new RedmineIssueRelation();
@@ -121,9 +126,7 @@ public class RedmineIssueRelationModel {
 			if(data.getModified() == null){
 				data.setModified(new java.util.Date());
 			}
-			if(project.getModified().after(data.getModified())){
-				this.update(data);
-			}
+			this.update(data);
 		}
 		return data;
 	}

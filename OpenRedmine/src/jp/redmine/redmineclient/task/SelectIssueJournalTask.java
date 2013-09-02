@@ -65,8 +65,9 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 					return;
 				for(RedmineIssueRelation rel : data.getRelations()){
 					Log.d(TAG,"relation:" + String.valueOf(rel.getIssueId()) + "->" + String.valueOf(rel.getIssueToId()));
-					if(mRelation.getIdByIssue(con.getId(), rel.getIssueToId()) == null)
-						listAdditionalIssue.add(rel.getIssueToId());
+					int target_id = rel.getTargetIssueId(data.getIssueId());
+					if(mRelation.getIdByIssue(con.getId(), target_id) == null)
+						listAdditionalIssue.add(target_id);
 				}
 			}
 		};

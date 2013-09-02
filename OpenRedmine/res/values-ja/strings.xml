@@ -83,6 +83,16 @@
 	<string name="ticket_journals">コメント</string>
 	<string name="ticket_project">プロジェクト</string>
 	<string name="ticket_description">説明</string>
+
+	<string name="relation_none"></string>
+	<string name="relation_relates">Relate</string>
+	<string name="relation_duplicates">Duplicates</string>
+	<string name="relation_duplicated">Duplicated</string>
+	<string name="relation_blocks">Blocks</string>
+	<string name="relation_blocked">Blocked</string>
+	<string name="relation_precedes">%1$d days precedes</string>
+	<string name="relation_follows">%1$d days follows</string>
+
 	<string name="ascending">昇順</string>
 	<string name="descending">降順</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。

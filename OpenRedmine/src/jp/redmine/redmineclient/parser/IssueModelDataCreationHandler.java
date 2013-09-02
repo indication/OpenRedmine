@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient.parser;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
@@ -70,8 +72,15 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 	public void onDataRelation(RedmineIssue data) throws SQLException {
 		if(data.getRelations() == null)
 			return;
+		List<Integer> listRelations = new LinkedList<Integer>();
 		for (RedmineIssueRelation journal : data.getRelations()){
 			mRelation.refreshItem(journal);
+			listRelations.add(journal.getRelationId());
+		}
+		for(RedmineIssueRelation relation : mRelation.fetchByIssue(data.getConnectionId(), data.getIssueId(), null, null)){
+			if(!listRelations.contains(relation.getRelationId())){
+				mRelation.delete(relation);
+			}
 		}
 	}
 }

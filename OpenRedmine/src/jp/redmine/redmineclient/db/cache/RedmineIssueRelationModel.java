@@ -68,6 +68,27 @@ public class RedmineIssueRelationModel {
 				;
 		return dao.countOf(builder.prepare());
 	}
+	public List<RedmineIssueRelation> fetchByIssue(int connection_id, long issue_id, Long offset, Long limit) throws SQLException {
+		QueryBuilder<RedmineIssueRelation, Long> builder = dao.queryBuilder();
+		if(offset != null && limit != null)
+			builder
+				.limit(limit)
+				.offset(offset);
+		builder
+			.orderBy(RedmineIssueRelation.RELATION_ID, true)
+			.where()
+				.eq(RedmineIssueRelation.ISSUE_ID,	issue_id)
+				.or()
+				.eq(RedmineIssueRelation.ISSUE_TO_ID,	issue_id)
+				.and()
+				.eq(RedmineIssueRelation.CONNECTION, connection_id)
+				;
+		List<RedmineIssueRelation> item = builder.query();
+		if(item == null){
+			item = new ArrayList<RedmineIssueRelation>();
+		}
+		return item;
+	}
 
 	public RedmineIssueRelation fetchItemByIssue(int connection_id, long issue_id, long offset, long limit) throws SQLException {
 		QueryBuilder<RedmineIssueRelation, Long> builder = dao.queryBuilder();

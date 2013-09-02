@@ -33,12 +33,15 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 
 	private RedmineJournalListAdapter adapterJournal;
 	private RedmineIssueDetailAdapter adapterIssue;
+	private RedmineRelativeIssueListAdapter adapterRelation;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 	
 	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,IntentAction act){
 		adapterJournal = new RedmineJournalListAdapter(m, act);
 		adapterIssue = new RedmineIssueDetailAdapter(m, act);
+		adapterRelation = new RedmineRelativeIssueListAdapter(m, act);
 		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));
+		mapAdapters.add(new AggrigateAdapter(adapterRelation, R.string.ticket_relations));
 		mapAdapters.add(new AggrigateAdapter(adapterJournal, R.string.ticket_journals));
 	}
 
@@ -95,6 +98,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	}
 	public void setupParameter(int connection, long issue){
 		adapterIssue.setupParameter(connection, issue);
+		adapterRelation.setupParameter(connection, issue);
 		adapterJournal.setupParameter(connection, issue);
 	}
 

@@ -1,12 +1,16 @@
 package jp.redmine.redmineclient.adapter;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,25 +28,31 @@ import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
  * 		IssueDetailView
  * 	Relations
  * 		RelationsView
+ * 	Time Entries
+ * 		TimeEntryView
  * 	Journals
  * 		JournalListView
  */
 public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
-	@SuppressWarnings("unused")
 	private final static String TAG = "RedmineIssueViewStickyListHeadersAdapter";
 
 	private RedmineJournalListAdapter adapterJournal;
 	private RedmineIssueDetailAdapter adapterIssue;
 	private RedmineRelativeIssueListAdapter adapterRelation;
+	private RedmineTimeEntryListAdapter adapterTimeEntry;
+	private RedmineIssueModel mIssue;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 	
 	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,IntentAction act){
 		adapterJournal = new RedmineJournalListAdapter(m, act);
 		adapterIssue = new RedmineIssueDetailAdapter(m, act);
 		adapterRelation = new RedmineRelativeIssueListAdapter(m, act);
+		adapterTimeEntry = new RedmineTimeEntryListAdapter(m);
 		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));
 		mapAdapters.add(new AggrigateAdapter(adapterRelation, R.string.ticket_relations));
+		mapAdapters.add(new AggrigateAdapter(adapterTimeEntry, R.string.ticket_time));
 		mapAdapters.add(new AggrigateAdapter(adapterJournal, R.string.ticket_journals));
+		mIssue = new RedmineIssueModel(m);
 	}
 
 	protected class AggrigateAdapter {
@@ -98,8 +108,15 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	}
 	public void setupParameter(int connection, long issue){
 		adapterIssue.setupParameter(connection, issue);
-		adapterRelation.setupParameter(connection, issue);
 		adapterJournal.setupParameter(connection, issue);
+		try {
+			RedmineIssue is = mIssue.fetchById(issue);
+			int issue_id = is.getIssueId();
+			adapterRelation.setupParameter(connection, issue_id);
+			adapterTimeEntry.setupParameter(connection, issue_id);
+		} catch (SQLException e) {
+			Log.e(TAG,"setupParameter", e);
+		}
 	}
 
 	@Override

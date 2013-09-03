@@ -21,6 +21,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TextView textProgress;
 	public TextView textTimeEstimate;
 	public TextView textTimeEntry;
+	public TextView textCategory;
 	public TableRow rowCategory;
 	public TableRow rowDate;
 	public TableRow rowVersion;
@@ -49,6 +50,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 		textProgress = (TextView)view.findViewById(R.id.textProgress);
 		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
 		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
+		textCategory = (TextView)view.findViewById(R.id.textCategory);
 		rowCategory = (TableRow)view.findViewById(R.id.rowCategory);
 		rowDate = (TableRow)view.findViewById(R.id.rowDate);
 		rowVersion = (TableRow)view.findViewById(R.id.rowVersion);
@@ -70,6 +72,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 		setUserName(textAssignedTo,rd.getAssigned());
 		setPrivate(rd.isPrivate());
 		setTime(textTimeEstimate,R.string.ticket_time_estimate,rd.getEstimatedHours());
+		setMasterName(textCategory,rd.getCategory());
 		setVisible(rowCategory,rd.getCategory());
 		setVisible(rowVersion,rd.getVersion());
 		setVisible(rowAssigned,rd.getAssigned());

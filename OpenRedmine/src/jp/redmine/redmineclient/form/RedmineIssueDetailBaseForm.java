@@ -11,7 +11,6 @@ public class RedmineIssueDetailBaseForm extends FormHelper {
 	public TextView textStatus;
 	public TextView textAssignedTo;
 	public TextView textTracker;
-	public TextView textCategory;
 	public TextView textPriority;
 	public TextView textDateFrom;
 	public TextView textDateTo;
@@ -29,7 +28,6 @@ public class RedmineIssueDetailBaseForm extends FormHelper {
 		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
 		textTracker = (TextView)view.findViewById(R.id.textTracker);
 		textPriority = (TextView)view.findViewById(R.id.textPriority);
-		textCategory = (TextView)view.findViewById(R.id.textCategory);
 		textDateFrom = (TextView)view.findViewById(R.id.textDateFrom);
 		textDateTo = (TextView)view.findViewById(R.id.textDateTo);
 		textVersion = (TextView)view.findViewById(R.id.textVersion);
@@ -47,8 +45,8 @@ public class RedmineIssueDetailBaseForm extends FormHelper {
 		setMasterName(textStatus, rd.getStatus());
 		setMasterName(textTracker, rd.getTracker());
 		setMasterName(textStatus,rd.getStatus());
-		setMasterName(textCategory,rd.getCategory());
 		setMasterName(textVersion,rd.getVersion());
+		setMasterName(textPriority,rd.getPriority());
 		setProgress(rd.getProgressRate(),rd.getDoneRate());
 
 	}

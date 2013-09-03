@@ -67,12 +67,12 @@
                 tools:ignore="HardcodedText" />
 
 			<TextView
-			    android:id="@+id/textCategory"
+				android:id="@+id/textPriority"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:gravity="center_vertical"
 			    android:singleLine="true"
-			    android:text="Category"
+				android:text="Priority"
 			    tools:ignore="HardcodedText" />
 
         </LinearLayout>

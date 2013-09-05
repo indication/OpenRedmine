@@ -72,7 +72,7 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 		if(cache != null)
 			return cache;
 		RedmineIssue issue = mIssue.fetchById(issue_id.intValue());
-		issue.setDoneHours(mTimeEntry.sumByIssueId(connection_id, issue_id));
+		issue.setDoneHours(mTimeEntry.sumByIssueId(connection_id, issue.getIssueId()));
 		cache = issue;
 		return issue;
 	}

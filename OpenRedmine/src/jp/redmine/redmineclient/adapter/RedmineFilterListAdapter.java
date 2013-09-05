@@ -7,7 +7,6 @@ import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.entity.DummySelection;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -57,8 +56,8 @@ public class RedmineFilterListAdapter extends RedmineBaseAdapter<IMasterRecord> 
 	}
 
 	@Override
-	protected View getItemView(LayoutInflater infalInflater) {
-		return infalInflater.inflate(android.R.layout.simple_list_item_single_choice, null);
+	protected int getItemViewId() {
+		return android.R.layout.simple_list_item_single_choice;
 	}
 	@Override
 	protected void setupView(View view, IMasterRecord data) {

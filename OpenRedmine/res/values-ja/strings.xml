@@ -78,8 +78,21 @@
 	<string name="ticket_activity">活動</string>
 	<string name="ticket_issue">チケット</string>
 	<string name="ticket_sort">ソート</string>
+	<string name="ticket_detail">詳細</string>
+	<string name="ticket_relations">関係</string>
+	<string name="ticket_journals">コメント</string>
 	<string name="ticket_project">プロジェクト</string>
 	<string name="ticket_description">説明</string>
+
+	<string name="relation_none"></string>
+	<string name="relation_relates">Relate</string>
+	<string name="relation_duplicates">Duplicates</string>
+	<string name="relation_duplicated">Duplicated</string>
+	<string name="relation_blocks">Blocks</string>
+	<string name="relation_blocked">Blocked</string>
+	<string name="relation_precedes">%1$d days precedes</string>
+	<string name="relation_follows">%1$d days follows</string>
+
 	<string name="ascending">昇順</string>
 	<string name="descending">降順</string>
 	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
@@ -90,6 +103,7 @@
 	<string name="menu_setting_goto_redmine">取得</string>
 	<string name="menu_setting_message_accesstoken">ノート: アクセストークンを自動的に取得するには \"取得\"ボタンを押してください。</string>
 	<string name="menu_powered_by_icon">icons by</string>
+	<string name="menu_add_timeentry">時間を記録</string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">キャンセル</string>
 	<string name="menu_filter">フィルタ</string>

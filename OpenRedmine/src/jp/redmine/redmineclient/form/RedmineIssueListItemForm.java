@@ -2,44 +2,38 @@ package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class RedmineIssueListItemForm extends FormHelper {
+public class RedmineIssueListItemForm extends RedmineIssueDetailBaseForm {
 	public TextView textSubject;
-	public TextView textStatus;
 	public TextView textTicketid;
 	public TextView textDescription;
-	public TextView textBottomtext;
-	public TextView textTracker;
-	public ProgressBar progressBar;
 	public RedmineIssueListItemForm(View activity){
-		this.setup(activity);
+		super(activity);
 	}
 
-
+	@Override
 	public void setup(View view){
-		textSubject = (TextView)view.findViewById(R.id.subject);
-		textStatus = (TextView)view.findViewById(R.id.status);
-		textTicketid = (TextView)view.findViewById(R.id.ticketid);
+		super.setup(view);
+		textSubject = (TextView)view.findViewById(R.id.textSubject);
+		textTicketid = (TextView)view.findViewById(R.id.textTicketid);
 		textDescription = (TextView)view.findViewById(R.id.description);
-		textBottomtext = (TextView)view.findViewById(R.id.bottomtext);
-		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
-		textTracker = (TextView)view.findViewById(R.id.textTracker);
 	}
 
-
+	@Override
 	public void setValue(RedmineIssue rd){
+		super.setValue(rd);
 		textSubject.setText(rd.getSubject());
 		textTicketid.setText("#"+rd.getIssueId().toString());
-		textDescription.setText(cutoffString(rd.getDescription(),4));
-		progressBar.setMax(100);
-		progressBar.setProgress(rd.getProgressRate());
-		setMasterName(textBottomtext, rd.getAuthor());
-		setMasterName(textStatus, rd.getStatus());
-		setMasterName(textTracker, rd.getTracker());
+		textDescription.setText(rd.getDescription());
+
+		boolean isEnabled = true;
+		if(rd.getStatus() != null && rd.getStatus().isIs_close()){
+			isEnabled = false;
+		}
+		performSetEnabled((ViewGroup)(textSubject.getParent()), isEnabled);
 
 	}
 

@@ -5,12 +5,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.util.Log;
-
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation.RelationType;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -20,6 +18,10 @@ import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import android.util.Log;
 
 public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIssue> {
 
@@ -90,7 +92,8 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			RedmineProjectVersion tk = new RedmineProjectVersion();
 			setMasterRecord(tk);
 			item.setVersion(tk);
-
+		} else if(equalsTagName("parent_issue_id")){
+			item.setParentId(getTextInteger());
 		} else if("start_date".equalsIgnoreCase(xml.getName())){
 			item.setDateStart(TypeConverter.parseDate(getNextText()));
 		} else if("due_date".equalsIgnoreCase(xml.getName())){
@@ -128,6 +131,19 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			parserJournal.unregisterDataCreation(handler);
 			item.setJournals(journals);
 
+		} else if(equalsTagName("relation")){
+			if(item.getRelations() == null)
+				item.setRelations(new ArrayList<RedmineIssueRelation>());
+			//on issue.xml: relation tag following
+			//<relation issue_to_id="1" relation_type="relates" delay="" issue_id="2" id="1"/>
+			RedmineIssueRelation relation = new RedmineIssueRelation();
+			relation.setRelationId(getAttributeInteger("id"));
+			relation.setIssueId(getAttributeInteger("issue_id"));
+			relation.setIssueToId(getAttributeInteger("issue_to_id"));
+			relation.setDelay(getAttributeBigDecimal("delay"));
+			relation.setType(RelationType.getValueOf(getAttributeString("relation_type")));
+			item.getRelations().add(relation);
+			
 		} else if("closed_on".equalsIgnoreCase(xml.getName())){
 			item.setClosed(TypeConverter.parseDateTime(getNextText()));
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
@@ -136,7 +152,6 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
 		// TODO attachments
-		// TODO relations
 		// TODO changesets
 		// TODO watchers
 

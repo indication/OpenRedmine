@@ -9,8 +9,6 @@ import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
-
-import android.view.LayoutInflater;
 import android.view.View;
 
 public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
@@ -59,8 +57,8 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 	}
 
 	@Override
-	protected View getItemView(LayoutInflater infalInflater) {
-		return infalInflater.inflate(R.layout.issueitem, null);
+	protected int getItemViewId() {
+		return R.layout.issueitem;
 	}
 
 	@Override

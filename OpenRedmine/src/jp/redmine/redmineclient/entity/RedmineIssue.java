@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +85,10 @@ public class RedmineIssue implements IPostingRecord {
     @DatabaseField
     private Date closed;
 
+    private BigDecimal done_hours;
+
 	private List<RedmineJournal> journals;
+	private List<RedmineIssueRelation> relations;
 
 	static public void setupConnectionId(RedmineIssue item){
 		if(item.getConnectionId() == null)
@@ -123,6 +127,13 @@ public class RedmineIssue implements IPostingRecord {
 			if(data.getUser() != null){
 				data.getUser().setConnectionId(item.getConnectionId());
 			}
+		}
+	}
+	static public void setupRelations(RedmineIssue item){
+		if(item.getRelations() == null)
+			return;
+		for (RedmineIssueRelation data : item.getRelations()){
+			data.setConnectionId(item.getConnectionId());
 		}
 	}
 
@@ -423,6 +434,14 @@ public class RedmineIssue implements IPostingRecord {
 	}
 
 
+	public BigDecimal getDoneHours() {
+		return done_hours;
+	}
+
+	public void setDoneHours(BigDecimal done_hours) {
+		this.done_hours = done_hours;
+	}
+
 	/**
 	 * @param is_private セットする is_private
 	 */
@@ -487,6 +506,14 @@ public class RedmineIssue implements IPostingRecord {
 	 */
 	public void setJournals(List<RedmineJournal> journals) {
 		this.journals = journals;
+	}
+
+	public List<RedmineIssueRelation> getRelations() {
+		return relations;
+	}
+
+	public void setRelations(List<RedmineIssueRelation> relations) {
+		this.relations = relations;
 	}
 
 	/**

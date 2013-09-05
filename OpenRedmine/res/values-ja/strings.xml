@@ -75,6 +75,12 @@
 
 ]]></string>
 	<string name="app_name">OpenRedmine</string>
+	<string name="product">製品</string>
+	<string name="production">製作</string>
+	<string name="app_production">やはり俺のレッドマインはまちがっている。</string>
+	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
+
+ ]]></string>
 	<string name="menu_settings">設定</string>
 	<string name="menu_access_to">接続</string>
 	<string name="menu_setting_label_accessurl">Redmine URL</string>
@@ -168,10 +174,6 @@
 
 	<string name="ascending">昇順</string>
 	<string name="descending">降順</string>
-	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
-
-次に、リンクするRedmineを設定してください。
-設定が完了したら、一覧に接続先が表示されるようになります。 ]]></string>
 	<string name="menu_button_next">次へ</string>
 	<string name="menu_setting_goto_redmine">取得</string>
 	<string name="menu_setting_message_accesstoken">ノート: アクセストークンを自動的に取得するには \"取得\"ボタンを押してください。</string>

@@ -8,10 +8,16 @@ import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
+import jp.redmine.redmineclient.form.RedmineJournalListItemHeaderForm;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> {
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
+
+public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> implements StickyListHeadersAdapter {
 	private RedmineIssueModel mIssue;
 	private RedmineTimeEntryModel mTimeEntry;
 	protected Integer connection_id;
@@ -66,7 +72,7 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 		if(cache != null)
 			return cache;
 		RedmineIssue issue = mIssue.fetchById(issue_id.intValue());
-		issue.setDoneHours(mTimeEntry.sumByIssueId(connection_id, issue_id));
+		issue.setDoneHours(mTimeEntry.sumByIssueId(connection_id, issue.getIssueId()));
 		cache = issue;
 		return issue;
 	}
@@ -80,5 +86,31 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 		}
 	}
 
+	@Override
+	public View getHeaderView(int position, View convertView, ViewGroup parent) {
+		if (convertView != null && (
+				 convertView.getTag() == null
+				|| ! ( (Integer)(convertView.getTag()) != R.layout.journalitemheader)
+			)) {
+			convertView = null;
+		}
+		if (convertView == null) {
+			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = infalInflater.inflate(R.layout.journalitemheader, null);
+			convertView.setTag(R.layout.journalitemheader);
+		}
+		if(convertView != null){
+			RedmineIssue rec = getItemWithCache(position);
+			RedmineJournalListItemHeaderForm form = new RedmineJournalListItemHeaderForm(convertView);
+			form.setValue(rec);
+		}
+		return convertView;
+	}
+
+	@Override
+	public long getHeaderId(int position) {
+		return getItemId(position);
+	}
 
 }

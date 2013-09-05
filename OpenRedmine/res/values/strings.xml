@@ -83,7 +83,17 @@
 	<string name="ticket_detail">Detail</string>
 	<string name="ticket_relations">Relations</string>
 	<string name="ticket_journals">Journals</string>
-	<string name="ascending">ascending</string>
+
+	<string name="relation_none"></string>
+	<string name="relation_relates">Relate</string>
+	<string name="relation_duplicates">Duplicates</string>
+	<string name="relation_duplicated">Duplicated</string>
+	<string name="relation_blocks">Blocks</string>
+	<string name="relation_blocked">Blocked</string>
+	<string name="relation_precedes">%1$d days precedes</string>
+	<string name="relation_follows">%1$d days follows</string>
+
+		<string name="ascending">ascending</string>
 	<string name="descending">descending</string>
 	<string name="message_first_time"><![CDATA[Thank you for downloading.
 
@@ -93,6 +103,7 @@ After the setting, list up the connection.]]></string>
 	<string name="menu_setting_goto_redmine">Get token</string>
 	<string name="menu_setting_message_accesstoken">NOTE: To get AccessToken, press \"Get token\" button.</string>
 	<string name="menu_powered_by_icon">icons by</string>
+	<string name="menu_add_timeentry">Record Time</string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">Cancel</string>
 	<string name="menu_filter">Filter</string>

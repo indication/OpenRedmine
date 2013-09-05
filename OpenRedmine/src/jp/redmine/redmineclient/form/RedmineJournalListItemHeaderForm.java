@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.form;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
@@ -21,6 +22,10 @@ public class RedmineJournalListItemHeaderForm extends FormHelper {
 	}
 	public void setValue(RedmineJournal jr){
 		setUserName(textUser, jr.getUser());
+		setDateTime(textDate,jr.getCreated());
+	}
+	public void setValue(RedmineIssue jr){
+		setUserName(textUser, jr.getAuthor());
 		setDateTime(textDate,jr.getCreated());
 	}
 

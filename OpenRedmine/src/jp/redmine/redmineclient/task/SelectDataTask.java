@@ -14,6 +14,13 @@ import java.util.zip.InflaterInputStream;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import jp.redmine.redmineclient.BuildConfig;
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.parser.BaseParser;
+import jp.redmine.redmineclient.url.RemoteUrl;
+import jp.redmine.redmineclient.url.RemoteUrl.requests;
+import jp.redmine.redmineclient.url.RemoteUrl.versions;
+
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -34,12 +41,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.ArrayAdapter;
-import jp.redmine.redmineclient.BuildConfig;
-import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.parser.BaseParser;
-import jp.redmine.redmineclient.url.RemoteUrl;
-import jp.redmine.redmineclient.url.RemoteUrl.requests;
-import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	public final String CHARSET = "UTF-8";
@@ -158,20 +159,17 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 			switch(type){
 			case get:
 				HttpGet get = new HttpGet(uri);
-				Log.i("requestGet", "Url: " + get.getURI().toASCIIString());
 				msg = get;
 				break;
 			case delete:
 				break;
 			case post:
 				HttpPost post = new HttpPost(new URI(remoteurl.toString()));
-				Log.i("requestPost", "Url: " + post.getURI().toASCIIString());
 				post.setEntity(puthandler.getContent());
 				msg = post;
 				break;
 			case put:
 				HttpPut put = new HttpPut(new URI(remoteurl.toString()));
-				Log.i("requestPut", "Url: " + put.getURI().toASCIIString());
 				put.setEntity(puthandler.getContent());
 				msg = put;
 				break;
@@ -182,8 +180,35 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 			connectionhandler.setupOnMessage(msg);
 			msg.setHeader("Accept-Encoding", "gzip, deflate");
 			if(BuildConfig.DEBUG){
+				Log.i("request", "Url: " + msg.getURI().toASCIIString());
 				for(Header h : msg.getAllHeaders())
-					Log.d("request header", h.toString());
+					Log.d("request", "Header:" + h.toString());
+				if(type == RemoteType.get && false){
+					client.execute(msg, new ResponseHandler<Boolean>() {
+
+						@Override
+						public Boolean handleResponse(HttpResponse response)
+								throws ClientProtocolException, IOException {
+							int status = response.getStatusLine().getStatusCode();
+							InputStream stream = response.getEntity().getContent();
+							if (isGZipHttpResponse(response)) {
+								stream =  new GZIPInputStream(stream);
+							} else if(isDeflateHttpResponse(response)){
+								stream =  new InflaterInputStream(stream);
+							}
+							Log.d("requestDebug", "Status: " + String.valueOf(status));
+							BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+						    String str;
+					    	Log.d("requestDebug", ">>Dump start>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+						    while((str = reader.readLine()) != null){
+						    	Log.d("requestDebug", str);
+						    }
+					    	Log.d("requestDebug", "<<Dump end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+							return false;
+						}
+						
+					});
+				}
 			}
 			// fetch remote
 			isOk = client.execute(msg, new ResponseHandler<Boolean>() {
@@ -200,10 +225,10 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 					}
 					InputStream stream = response.getEntity().getContent();
 					if (isGZipHttpResponse(response)) {
-						Log.i("request", "Gzip: Enabled");
+						if(BuildConfig.DEBUG) Log.i("request", "Gzip: Enabled");
 						stream =  new GZIPInputStream(stream);
 					} else if(isDeflateHttpResponse(response)){
-						Log.i("request", "Deflate: Enabled");
+						if(BuildConfig.DEBUG) Log.i("request", "Deflate: Enabled");
 						stream =  new InflaterInputStream(stream);
 					}
 					switch(status){

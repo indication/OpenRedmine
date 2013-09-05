@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- The content of app_description is out of GPL. Those paragraph is own by author -->
+	<string name="app_description"><![CDATA[
+"Looking back on corporate life"
+
+
+
+
+It is evil is a lie and management.
+
+
+
+
+Who Shi to enjoying management capture positively all of the environment surrounding the self-deception of the surroundings and always self.
+
+
+They're looking at what the common interpretation is also conventional wisdom also is bent screws if before the two characters of the management. It's not only the spice of management even failed secrets lie nor sin and If you come to them.
+
+
+Can fail temporarily if is a testament to the management, or not funny If it is not right in the middle management are also human beings failed to make project.
+
+
+
+
+However, they will not admit it. Not only opportunism their all.
+
+
+Let's say a conclusion. Fool Domo enjoy administration, wanna be smashed up.
+
+
+
+
+""My Youth Romantic Comedy Is Wrong As I Expected."": (modified) quoted source. Quote from the first story
+Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I Expected.
+
+]]></string>
 	<string name="app_name">OpenRedmine</string>
 	<string name="menu_settings">Settings</string>
 	<string name="menu_access_to">Access</string>
@@ -26,7 +61,6 @@
 	<string name="menu_config_delete_yes">Yes</string>
 	<string name="menu_config_delete_no">No</string>
 	<string name="menu_cancel">Cancel</string>
-	<string name="app_description">description</string>
 	<string name="preference_category_issue">Issues</string>
 	<string name="preference_issue_get_all">Get all issues</string>
 	<string name="preference_issue_description_get_all">By default, fetch UNCLOSED issues from remote. If you wish to get all issues from remote, check this option.</string>

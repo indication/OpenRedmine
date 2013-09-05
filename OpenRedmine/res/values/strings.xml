@@ -103,6 +103,7 @@ After the setting, list up the connection.]]></string>
 	<string name="menu_setting_goto_redmine">Get token</string>
 	<string name="menu_setting_message_accesstoken">NOTE: To get AccessToken, press \"Get token\" button.</string>
 	<string name="menu_powered_by_icon">icons by</string>
+	<string name="menu_add_timeentry">Record Time</string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">Cancel</string>
 	<string name="menu_filter">Filter</string>

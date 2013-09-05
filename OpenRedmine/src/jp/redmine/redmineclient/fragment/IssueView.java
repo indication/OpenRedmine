@@ -282,6 +282,13 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 				mListener.onIssueEdit(baseintent.getConnectionId(), baseintent.getIssueId());
 				return true;
 			}
+			case R.id.menu_add_timeentry:
+			{
+				IssueArgument baseintent = new IssueArgument();
+				baseintent.setArgument(getArguments());
+				mTimeEntryListener.onTimeEntryAdd(baseintent.getConnectionId(), baseintent.getIssueId());
+				return true;
+			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

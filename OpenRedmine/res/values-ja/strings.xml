@@ -103,6 +103,7 @@
 	<string name="menu_setting_goto_redmine">取得</string>
 	<string name="menu_setting_message_accesstoken">ノート: アクセストークンを自動的に取得するには \"取得\"ボタンを押してください。</string>
 	<string name="menu_powered_by_icon">icons by</string>
+	<string name="menu_add_timeentry">時間を記録</string>
 	<string name="button_ok">OK</string>
 	<string name="button_cancel">キャンセル</string>
 	<string name="menu_filter">フィルタ</string>

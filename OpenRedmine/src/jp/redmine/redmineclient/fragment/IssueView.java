@@ -6,6 +6,9 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
@@ -20,6 +23,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
@@ -156,6 +160,30 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		return inflater.inflate(R.layout.stickylistheaderslist, container, false);
 	}
 
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		Object item = adapter.getItem(position);
+		if(item == null){}
+		else if (item instanceof RedmineTimeEntry){
+			RedmineTimeEntry entry = (RedmineTimeEntry)item;
+			mTimeEntryListener.onTimeEntrySelected(entry.getConnectionId(), entry.getIssueId(), entry.getTimeentryId());
+			return;
+		} else if (item instanceof RedmineIssueRelation){
+			RedmineIssueRelation relation = (RedmineIssueRelation)item;
+			if(relation.getIssue() != null){
+				mListener.onIssueSelected(relation.getConnectionId(), relation.getIssue().getIssueId());
+				return;
+			}
+		} else if (item instanceof RedmineIssue) {
+			RedmineIssue issue = (RedmineIssue)item;
+			if(v.getId() == R.id.textProject && issue.getProject() != null){
+				mListener.onIssueList(issue.getConnectionId(), issue.getProject().getId());
+				return;
+			}
+		}
+		super.onListItemClick(l, v, position, id);
+	}
+	
 	protected void onRefresh(boolean isFetch){
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());

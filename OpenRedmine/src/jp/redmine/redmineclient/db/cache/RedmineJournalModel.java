@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 
 
 public class RedmineJournalModel {
@@ -93,9 +94,9 @@ public class RedmineJournalModel {
 			} catch (ClassNotFoundException e) {
 				Log.e(TAG,"getDetails",e);
 			}
-			if(item.changes == null){
-				item.changes = new ArrayList<RedmineJournalChanges>();
-			}
+		}
+		if(item.changes == null){
+			item.changes = new ArrayList<RedmineJournalChanges>();
 		}
 		return item;
 	}

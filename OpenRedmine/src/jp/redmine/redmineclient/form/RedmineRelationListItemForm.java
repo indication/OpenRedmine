@@ -29,7 +29,8 @@ public class RedmineRelationListItemForm extends FormHelper {
 	}
 	public void setValue(RedmineIssueRelation rd){
 		if(rd.getType() != null )
-			textDelay.setText(textDelay.getContext().getString(rd.getType().getResourceId(),rd.getDelay().intValue()));
+			textDelay.setText(textDelay.getContext().getString(rd.getType().getResourceId(),
+					(rd.getDelay() == null ? 0 : rd.getDelay().intValue()) ));
 		setValue(rd.getIssue() == null ? new RedmineIssue() : rd.getIssue());
 	}
 

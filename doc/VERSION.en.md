@@ -5,6 +5,11 @@ Release history
 Next Release
 ===========
 
+v3.2 - 32 - 2013/09/09
+===========
+- Fix crashes on fetching issue from remote - relative issue reference was wrong
+- Update submodule - android-form-edittext
+
 v3.1 - 31 - 2013/09/05
 ===========
 - Add sticky view on issue

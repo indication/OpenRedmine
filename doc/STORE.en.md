@@ -24,11 +24,10 @@ Features:
 * View issues offline
 * Filter (Status/Tracker/Category/Priority/Author/Assined)
 * Sort (IssueID/Created/Modified/... etc)
-* Show changelogs
+* Show changelogs, relative issues
 * Create or modify issue/timeentry
 
 Release planing:
-* Show relative issues
 * TimeEntry like stop watch (no plan...)
 
 Note:

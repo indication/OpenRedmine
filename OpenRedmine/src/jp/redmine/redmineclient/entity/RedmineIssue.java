@@ -142,6 +142,7 @@ public class RedmineIssue implements IPostingRecord {
 			return;
 		for (RedmineAttachment data : item.getAttachments()){
 			data.setConnectionId(item.getConnectionId());
+			data.setIssueId(item.getIssueId());
 		}
 	}
 

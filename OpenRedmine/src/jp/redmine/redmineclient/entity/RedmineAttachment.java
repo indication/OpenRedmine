@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class RedmineAttachment implements IUserRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
-	public final static String JOURNAL_ID = "attachment_id";
+	public final static String ATTACHMENT_ID = "attachment_id";
 	public final static String ISSUE_ID = "issue_id";
 
 	@DatabaseField(generatedId = true)
@@ -17,7 +17,7 @@ public class RedmineAttachment implements IUserRecord {
 	@DatabaseField(uniqueIndexName="attachment_target")
 	private Integer connection_id;
 	@DatabaseField()
-	private Long issue_id;
+	private Integer issue_id;
 	@DatabaseField(uniqueIndexName="attachment_target")
 	private int attachment_id;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
@@ -76,10 +76,10 @@ public class RedmineAttachment implements IUserRecord {
 	public Integer getConnectionId() {
 		return connection_id;
 	}
-	public Long getIssueId() {
+	public Integer getIssueId() {
 		return issue_id;
 	}
-	public void setIssueId(Long issue_id) {
+	public void setIssueId(Integer issue_id) {
 		this.issue_id = issue_id;
 	}
 	public RedmineUser getUser() {

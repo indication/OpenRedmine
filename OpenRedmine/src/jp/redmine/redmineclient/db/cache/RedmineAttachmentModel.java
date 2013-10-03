@@ -3,7 +3,6 @@ package jp.redmine.redmineclient.db.cache;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.RedmineAttachment;
-import jp.redmine.redmineclient.entity.RedmineJournal;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
@@ -26,7 +25,7 @@ public class RedmineAttachmentModel {
 		PreparedQuery<RedmineAttachment> query = dao.queryBuilder().where()
 		.eq(RedmineAttachment.CONNECTION, connection)
 		.and()
-		.eq(RedmineAttachment.JOURNAL_ID, journalId)
+		.eq(RedmineAttachment.ATTACHMENT_ID, journalId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
 		RedmineAttachment item = dao.queryForFirst(query);
@@ -47,9 +46,9 @@ public class RedmineAttachmentModel {
 		builder
 			.setCountOf(true)
 			.where()
-				.eq(RedmineJournal.CONNECTION, connection_id)
+				.eq(RedmineAttachment.CONNECTION, connection_id)
 				.and()
-				.eq(RedmineJournal.ISSUE_ID, issue_id)
+				.eq(RedmineAttachment.ISSUE_ID, issue_id)
 				;
 		return dao.countOf(builder.prepare());
 	}
@@ -60,11 +59,11 @@ public class RedmineAttachmentModel {
 		builder
 			.limit(limit)
 			.offset(offset)
-			.orderBy(RedmineJournal.JOURNAL_ID, true)
+			.orderBy(RedmineAttachment.ATTACHMENT_ID, true)
 			.where()
-				.eq(RedmineJournal.CONNECTION, connection_id)
+				.eq(RedmineAttachment.CONNECTION, connection_id)
 				.and()
-				.eq(RedmineJournal.ISSUE_ID, issue_id)
+				.eq(RedmineAttachment.ISSUE_ID, issue_id)
 				;
 		RedmineAttachment item = builder.queryForFirst();
 		if(item == null){

@@ -160,6 +160,7 @@
 	<string name="ticket_detail">詳細</string>
 	<string name="ticket_relations">関係</string>
 	<string name="ticket_journals">コメント</string>
+	<string name="ticket_attachments">添付ファイル</string>
 	<string name="ticket_project">プロジェクト</string>
 	<string name="ticket_description">説明</string>
 

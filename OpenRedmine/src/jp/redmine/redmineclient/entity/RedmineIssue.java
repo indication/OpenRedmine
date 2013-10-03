@@ -89,6 +89,7 @@ public class RedmineIssue implements IPostingRecord {
 
 	private List<RedmineJournal> journals;
 	private List<RedmineIssueRelation> relations;
+	private List<RedmineAttachment> attachments;
 
 	static public void setupConnectionId(RedmineIssue item){
 		if(item.getConnectionId() == null)
@@ -133,6 +134,13 @@ public class RedmineIssue implements IPostingRecord {
 		if(item.getRelations() == null)
 			return;
 		for (RedmineIssueRelation data : item.getRelations()){
+			data.setConnectionId(item.getConnectionId());
+		}
+	}
+	static public void setupAttachments(RedmineIssue item){
+		if(item.getAttachments() == null)
+			return;
+		for (RedmineAttachment data : item.getAttachments()){
 			data.setConnectionId(item.getConnectionId());
 		}
 	}
@@ -514,6 +522,14 @@ public class RedmineIssue implements IPostingRecord {
 
 	public void setRelations(List<RedmineIssueRelation> relations) {
 		this.relations = relations;
+	}
+
+	public List<RedmineAttachment> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<RedmineAttachment> attachments) {
+		this.attachments = attachments;
 	}
 
 	/**

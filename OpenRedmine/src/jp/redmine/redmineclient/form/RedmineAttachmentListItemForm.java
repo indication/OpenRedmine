@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.form;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
@@ -35,15 +36,17 @@ public class RedmineAttachmentListItemForm extends FormHelper {
 		if(size == null)
 			return "";
 		BigDecimal export = new BigDecimal(size);
+		BigDecimal base = new BigDecimal(1024);
+		String exportname = "";
+		NumberFormat df = NumberFormat.getIntegerInstance();
 		export.setScale(1, RoundingMode.HALF_UP);
-		String laststr = "";
-		for(String cnt : sizes){
-			if(export.longValue() < 1024)
+		for(String sizename : sizes){
+			exportname = sizename;
+			if(export.longValue() < base.longValue())
 				break;
-			laststr = cnt;
-			export = export.divide(new BigDecimal(1024));
+			export = export.divide(base);
 		}
-		return export.toString() + laststr;
+		return  df.format(export) + exportname;
 	}
 
 }

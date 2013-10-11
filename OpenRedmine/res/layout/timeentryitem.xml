@@ -3,16 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="10dip"
     android:shrinkColumns="1"
-    android:stretchColumns="0" >
+    android:stretchColumns="1" >
 
     <TableRow tools:ignore="UselessParent" >
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:src="@android:drawable/ic_menu_recent_history"
+			android:contentDescription="@string/ticket_time"/>
 
         <TextView
             android:id="@+id/textAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
             android:text="Author"
             tools:ignore="HardcodedText" />
 
@@ -20,14 +26,16 @@
             android:id="@+id/textActivity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activity"
+			android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
+            android:text="Activity"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/textSpentsOn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
             android:text="2012-12-12"
             android:layout_marginLeft="5dp"
             tools:ignore="HardcodedText" />
@@ -36,6 +44,7 @@
             android:id="@+id/textTimeEntry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
             android:text="@string/ticket_time_estimate"
             android:layout_marginLeft="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium" />

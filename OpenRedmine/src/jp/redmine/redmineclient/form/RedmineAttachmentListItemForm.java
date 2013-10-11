@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class RedmineAttachmentListItemForm extends FormHelper {
 	public TextView textSubject;
 	public TextView textSize;
-	public TextView textModified;
+	public TextView textCreated;
 	protected String[] sizes = new String[]{"","k","M","G","E"};
 	public RedmineAttachmentListItemForm(View activity){
 		this.setup(activity);
@@ -22,13 +22,13 @@ public class RedmineAttachmentListItemForm extends FormHelper {
 	public void setup(View view){
 		textSubject = (TextView)view.findViewById(R.id.textSubject);
 		textSize = (TextView)view.findViewById(R.id.textSize);
-		textModified = (TextView)view.findViewById(R.id.textModified);
+		textCreated = (TextView)view.findViewById(R.id.textCreated);
 
 	}
 	public void setValue(RedmineAttachment rd){
 		textSubject.setText(rd.getFilename());
 		textSize.setText(getSizeString(rd.getFilesize()));
-		convertDate(textModified, rd.getCreated());
+		setDate(textCreated, rd.getCreated());
 	}
 	
 	protected String getSizeString(Integer size){

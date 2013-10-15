@@ -57,7 +57,7 @@ public class RedmineDownloadForm extends FormHelper {
 	public void setValue(RedmineAttachment rd){
 		textSubject.setText(rd.getFilename());
 		progressBar.setMax(rd.getFilesize());
-		textSize.setText(rd.getFilesize());
+		textSize.setText(String.valueOf(rd.getFilesize()));
 		setDateTime(textCreated, rd.getCreated());
 		setMasterName(textAuthor, rd.getUser());
 	}

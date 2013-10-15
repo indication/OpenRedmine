@@ -3,6 +3,8 @@ package jp.redmine.redmineclient.fragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.AttachmentActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
@@ -12,6 +14,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -41,6 +44,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private WebviewActionInterface mActionListener;
 	private IssueActionInterface mListener;
 	private TimeentryActionInterface mTimeEntryListener;
+	private AttachmentActionInterface mAttachmentListener;
 
 	public IssueView(){
 		super();
@@ -78,11 +82,13 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			mActionListener		= aif.getHandler(WebviewActionInterface.class);
 			mListener			= aif.getHandler(IssueActionInterface.class);
 			mTimeEntryListener	= aif.getHandler(TimeentryActionInterface.class);
+			mAttachmentListener	= aif.getHandler(AttachmentActionInterface.class);
 		}
 		//setup empty events
 		if(mActionListener		== null)	mActionListener		= new WebviewActionEmptyHandler();
 		if(mListener			== null)	mListener			= new IssueActionEmptyHandler();
 		if(mTimeEntryListener	== null)	mTimeEntryListener	= new TimeentryActionEmptyHandler();
+		if(mAttachmentListener	== null)	mAttachmentListener	= new AttachmentActionEmptyHandler();
 
 	}
 	@Override
@@ -135,6 +141,10 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 				mListener.onIssueList(issue.getConnectionId(), issue.getProject().getId());
 				return;
 			}
+		} else if (item instanceof RedmineAttachment) {
+			RedmineAttachment attachment =  (RedmineAttachment)item;
+			mAttachmentListener.onAttachmentSelected(attachment.getConnectionId(), attachment.getAttachmentId());
+			return;
 		}
 		super.onListItemClick(l, v, position, id);
 	}

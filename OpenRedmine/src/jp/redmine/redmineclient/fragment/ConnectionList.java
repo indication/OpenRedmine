@@ -4,6 +4,8 @@ import java.io.File;
 
 import jp.redmine.redmineclient.CommonPreferenceActivity;
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
@@ -28,13 +30,7 @@ public class ConnectionList extends ListFragment {
 	private DatabaseHelper helperStore;
 	private ConnectionListAdapter adapter;
 	private View mFooter;
-	private OnArticleSelectedListener mListener;
-	public interface OnArticleSelectedListener {
-		public void onConnectionSelected(int connectionid);
-		public void onConnectionEdit(int connectionid);
-		public void onConnectionAdd();
-	}
-
+	private ConnectionActionInterface mListener;
 	public ConnectionList(){
 		super();
 	}
@@ -47,21 +43,11 @@ public class ConnectionList extends ListFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			mListener = ((ActivityInterface)activity).getHandler(ConnectionActionInterface.class);
 		}
 		if(mListener == null) {
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-				@Override
-				public void onConnectionSelected(int connectionid) {
-				}
-				@Override
-				public void onConnectionEdit(int connectionid) {
-				}
-				@Override
-				public void onConnectionAdd() {
-				}
-			};
+			mListener = new ConnectionActionEmptyHandler();
 		}
 
 	}

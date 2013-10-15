@@ -4,6 +4,7 @@ import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import jp.redmine.redmineclient.activity.handler.ConnectionListHandler;
 import jp.redmine.redmineclient.activity.handler.Core.ActivityRegistry;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.activity.handler.IssueViewHandler;
 import jp.redmine.redmineclient.activity.handler.TimeEntryHandler;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
@@ -56,7 +57,7 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 			}
 
 		};
-		if(cls.equals(ConnectionList.OnArticleSelectedListener.class))
+		if(cls.equals(ConnectionActionInterface.class))
 			return (T) new ConnectionListHandler(registry);
 		if(cls.equals(IntentAction.class))
 			return (T) new IssueViewHandler(registry);

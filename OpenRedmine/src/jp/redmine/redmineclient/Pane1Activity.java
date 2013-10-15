@@ -6,13 +6,13 @@ import jp.redmine.redmineclient.activity.handler.ConnectionListHandler;
 import jp.redmine.redmineclient.activity.handler.Core.ActivityRegistry;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.activity.handler.IssueViewHandler;
+import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.handler.TimeEntryHandler;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.ConnectionList;
-import jp.redmine.redmineclient.fragment.IssueView;
 import jp.redmine.redmineclient.fragment.TimeEntryList;
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,7 +61,7 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 			return (T) new ConnectionListHandler(registry);
 		if(cls.equals(IntentAction.class))
 			return (T) new IssueViewHandler(registry);
-		if(cls.equals(IssueView.OnArticleSelectedListener.class))
+		if(cls.equals(IssueActionInterface.class))
 			return (T) new IssueViewHandler(registry);
 		if(cls.equals(TimeEntryList.OnArticleSelectedListener.class))
 			return (T) new TimeEntryHandler(registry);

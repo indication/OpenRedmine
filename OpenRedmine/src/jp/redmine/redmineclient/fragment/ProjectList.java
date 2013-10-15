@@ -7,6 +7,8 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
+import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
@@ -17,7 +19,6 @@ import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.form.StatusUserForm;
-import jp.redmine.redmineclient.fragment.IssueView.OnArticleSelectedListener;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
@@ -41,7 +42,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private MenuItem menu_refresh;
 	private View mHeader;
 	private View mFooter;
-	private OnArticleSelectedListener mListener;
+	private IssueActionInterface mListener;
 	private ConnectionActionInterface mConnectionListener;
 
 	public ProjectList(){
@@ -59,25 +60,12 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
 			ActivityInterface aif = (ActivityInterface)activity;
-			mListener = aif.getHandler(OnArticleSelectedListener.class);
+			mListener = aif.getHandler(IssueActionInterface.class);
 			mConnectionListener = aif.getHandler(ConnectionActionInterface.class);
 		}
 		if(mListener == null) {
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-				@Override
-				public void onIssueFilterList(int connectionId, int filterid) {}
-				@Override
-				public void onIssueList(int connectionId, long projectId) {}
-				@Override
-				public void onIssueSelected(int connectionid, int issueid) {}
-				@Override
-				public void onIssueEdit(int connectionid, int issueid) {}
-				@Override
-				public void onIssueRefreshed(int connectionid, int issueid) {}
-				@Override
-				public void onIssueAdd(int connectionId, long projectId) {}
-			};
+			mListener = new IssueActionEmptyHandler();
 		}
 		if(mConnectionListener == null) {
 			//setup empty events

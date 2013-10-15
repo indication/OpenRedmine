@@ -16,7 +16,7 @@ import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class IssueViewHandler extends Core
-	implements IssueView.OnArticleSelectedListener, IntentAction {
+	implements IssueActionInterface, IntentAction {
 
 	public IssueViewHandler(ActivityRegistry manager) {
 		super(manager);

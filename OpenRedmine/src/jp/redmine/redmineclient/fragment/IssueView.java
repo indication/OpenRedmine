@@ -3,6 +3,8 @@ package jp.redmine.redmineclient.fragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -34,7 +36,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private IntentAction mActionListener;
-	private OnArticleSelectedListener mListener;
+	private IssueActionInterface mListener;
 	private TimeEntryList.OnArticleSelectedListener mTimeEntryListener;
 
 	public IssueView(){
@@ -65,22 +67,13 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onPause();
 	}
 
-	public interface OnArticleSelectedListener {
-		public void onIssueFilterList(int connectionid, int filterid);
-		public void onIssueList(int connectionid, long projectid);
-		public void onIssueSelected(int connectionid, int issueid);
-		public void onIssueEdit(int connectionid, int issueid);
-		public void onIssueRefreshed(int connectionid, int issueid);
-		public void onIssueAdd(int connectionId, long projectId);
-	}
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
 			ActivityInterface aif = (ActivityInterface)activity;
 			mActionListener = aif.getHandler(IntentAction.class);
-			mListener = aif.getHandler(OnArticleSelectedListener.class);
+			mListener = aif.getHandler(IssueActionInterface.class);
 			mTimeEntryListener = aif.getHandler(TimeEntryList.OnArticleSelectedListener.class);
 		}
 		if(mActionListener == null) {
@@ -98,21 +91,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		}
 		if(mListener == null){
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-
-				@Override
-				public void onIssueFilterList(int connectionId, int filterid) {}
-				@Override
-				public void onIssueList(int connectionId, long projectId) {}
-				@Override
-				public void onIssueSelected(int connectionid, int issueid) {}
-				@Override
-				public void onIssueEdit(int connectionid, int issueid) {}
-				@Override
-				public void onIssueRefreshed(int connectionid, int issueid) {}
-				@Override
-				public void onIssueAdd(int connectionId, long projectId) {}
-			};
+			mListener = new IssueActionEmptyHandler();
 		}
 		if(mTimeEntryListener == null){
 			//setup empty events

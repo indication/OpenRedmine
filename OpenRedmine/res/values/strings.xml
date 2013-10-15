@@ -199,5 +199,8 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="input_error_invalid_decimal">Input valid number.</string>
 	<string name="input_error_select">Select %1$s</string>
 	<string name="warning_experimental_feature">This is EXPERIMANTAL. This feature may affect bad to your redmine.</string>
+	<string name="size">Size</string>
+	<string name="progress">Progress</string>
+	<string name="download">Download</string>
 
 </resources>

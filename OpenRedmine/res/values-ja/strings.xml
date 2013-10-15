@@ -200,5 +200,8 @@
 	<string name="input_error_invalid_decimal">有効な数値を入力してください。</string>
 	<string name="input_error_select">%1$s を選択してください</string>
 	<string name="warning_experimental_feature">これは実験的です。この機能は、Redmineのに悪い影響を与える可能性があります。</string>
+	<string name="size">サイズ</string>
+	<string name="progress">進捗</string>
+	<string name="download">ダウンロード</string>
 
 </resources>

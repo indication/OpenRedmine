@@ -3,9 +3,10 @@ package jp.redmine.redmineclient.fragment;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.form.RedmineIssueJumpForm;
-import jp.redmine.redmineclient.fragment.IssueView.OnArticleSelectedListener;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import android.view.ViewGroup;
 public class IssueJump extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	private RedmineIssueJumpForm form;
-	private OnArticleSelectedListener mListener;
+	private IssueActionInterface mListener;
 
 	public IssueJump(){
 		super();
@@ -58,25 +59,11 @@ public class IssueJump extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			mListener = ((ActivityInterface)activity).getHandler(IssueActionInterface.class);
 		}
 		if(mListener == null) {
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-
-				@Override
-				public void onIssueFilterList(int connectionId, int filterid) {}
-				@Override
-				public void onIssueList(int connectionId, long projectId) {}
-				@Override
-				public void onIssueSelected(int connectionid, int issueid) {}
-				@Override
-				public void onIssueEdit(int connectionid, int issueid) {}
-				@Override
-				public void onIssueRefreshed(int connectionid, int issueid) {}
-				@Override
-				public void onIssueAdd(int connectionId, long projectId) {}
-			};
+			mListener = new IssueActionEmptyHandler();
 		}
 
 	}

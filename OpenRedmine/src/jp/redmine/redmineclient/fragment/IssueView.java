@@ -3,13 +3,18 @@ package jp.redmine.redmineclient.fragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
+import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
+import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
@@ -33,9 +38,9 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
-	private IntentAction mActionListener;
-	private OnArticleSelectedListener mListener;
-	private TimeEntryList.OnArticleSelectedListener mTimeEntryListener;
+	private WebviewActionInterface mActionListener;
+	private IssueActionInterface mListener;
+	private TimeentryActionInterface mTimeEntryListener;
 
 	public IssueView(){
 		super();
@@ -65,68 +70,26 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onPause();
 	}
 
-	public interface OnArticleSelectedListener {
-		public void onIssueFilterList(int connectionid, int filterid);
-		public void onIssueList(int connectionid, long projectid);
-		public void onIssueSelected(int connectionid, int issueid);
-		public void onIssueEdit(int connectionid, int issueid);
-		public void onIssueRefreshed(int connectionid, int issueid);
-		public void onIssueAdd(int connectionId, long projectId);
-	}
-
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
 			ActivityInterface aif = (ActivityInterface)activity;
-			mActionListener = aif.getHandler(IntentAction.class);
-			mListener = aif.getHandler(OnArticleSelectedListener.class);
-			mTimeEntryListener = aif.getHandler(TimeEntryList.OnArticleSelectedListener.class);
+			mActionListener = aif.getHandler(WebviewActionInterface.class);
+			mListener = aif.getHandler(IssueActionInterface.class);
+			mTimeEntryListener = aif.getHandler(TimeentryActionInterface.class);
 		}
 		if(mActionListener == null) {
 			//setup empty events
-			mActionListener = new IntentAction() {
-				@Override
-				public void issue(int connection, int issueid) {
-				}
-
-				@Override
-				public boolean url(String url) {
-					return false;
-				}
-			};
+			mActionListener = new WebviewActionEmptyHandler();
 		}
 		if(mListener == null){
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-
-				@Override
-				public void onIssueFilterList(int connectionId, int filterid) {}
-				@Override
-				public void onIssueList(int connectionId, long projectId) {}
-				@Override
-				public void onIssueSelected(int connectionid, int issueid) {}
-				@Override
-				public void onIssueEdit(int connectionid, int issueid) {}
-				@Override
-				public void onIssueRefreshed(int connectionid, int issueid) {}
-				@Override
-				public void onIssueAdd(int connectionId, long projectId) {}
-			};
+			mListener = new IssueActionEmptyHandler();
 		}
 		if(mTimeEntryListener == null){
 			//setup empty events
-			mTimeEntryListener = new TimeEntryList.OnArticleSelectedListener() {
-
-				@Override
-				public void onTimeEntrySelected(int connectionid, int issueid, int timeentryid) {}
-				@Override
-				public void onTimeEntryList(int connectionid, int issueid) {}
-				@Override
-				public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid) {}
-				@Override
-				public void onTimeEntryAdd(int connectionid, int issueid) {}
-			};
+			mTimeEntryListener = new TimeentryActionEmptyHandler();
 		}
 
 	}

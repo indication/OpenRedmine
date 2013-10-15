@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -13,7 +15,6 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.RedmineIssueEditForm;
-import jp.redmine.redmineclient.fragment.IssueView.OnArticleSelectedListener;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssuePost;
@@ -34,7 +35,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	private RedmineIssueEditForm form;
 	private ProgressDialog dialog;
-	private OnArticleSelectedListener mListener;
+	private IssueActionInterface mListener;
 
 	public IssueEdit(){
 		super();
@@ -81,25 +82,11 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			mListener = ((ActivityInterface)activity).getHandler(IssueActionInterface.class);
 		}
 		if(mListener == null) {
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-
-				@Override
-				public void onIssueFilterList(int connectionId, int filterid) {}
-				@Override
-				public void onIssueList(int connectionId, long projectId) {}
-				@Override
-				public void onIssueSelected(int connectionid, int issueid) {}
-				@Override
-				public void onIssueEdit(int connectionid, int issueid) {}
-				@Override
-				public void onIssueRefreshed(int connectionid, int issueid) {}
-				@Override
-				public void onIssueAdd(int connectionId, long projectId) {}
-			};
+			mListener = new IssueActionEmptyHandler();
 		}
 
 	}

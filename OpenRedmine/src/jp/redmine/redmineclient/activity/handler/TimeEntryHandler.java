@@ -8,7 +8,7 @@ import jp.redmine.redmineclient.fragment.TimeEntryList;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
 
-public class TimeEntryHandler extends Core implements TimeEntryList.OnArticleSelectedListener {
+public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 
 	public TimeEntryHandler(ActivityRegistry manager) {
 		super(manager);

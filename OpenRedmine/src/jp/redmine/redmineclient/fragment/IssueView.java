@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
+import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
@@ -37,7 +39,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private View mFooter;
 	private IntentAction mActionListener;
 	private IssueActionInterface mListener;
-	private TimeEntryList.OnArticleSelectedListener mTimeEntryListener;
+	private TimeentryActionInterface mTimeEntryListener;
 
 	public IssueView(){
 		super();
@@ -74,7 +76,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			ActivityInterface aif = (ActivityInterface)activity;
 			mActionListener = aif.getHandler(IntentAction.class);
 			mListener = aif.getHandler(IssueActionInterface.class);
-			mTimeEntryListener = aif.getHandler(TimeEntryList.OnArticleSelectedListener.class);
+			mTimeEntryListener = aif.getHandler(TimeentryActionInterface.class);
 		}
 		if(mActionListener == null) {
 			//setup empty events
@@ -95,17 +97,7 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		}
 		if(mTimeEntryListener == null){
 			//setup empty events
-			mTimeEntryListener = new TimeEntryList.OnArticleSelectedListener() {
-
-				@Override
-				public void onTimeEntrySelected(int connectionid, int issueid, int timeentryid) {}
-				@Override
-				public void onTimeEntryList(int connectionid, int issueid) {}
-				@Override
-				public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid) {}
-				@Override
-				public void onTimeEntryAdd(int connectionid, int issueid) {}
-			};
+			mTimeEntryListener = new TimeentryActionEmptyHandler();
 		}
 
 	}

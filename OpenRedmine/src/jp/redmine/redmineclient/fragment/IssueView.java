@@ -75,22 +75,14 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
 			ActivityInterface aif = (ActivityInterface)activity;
-			mActionListener = aif.getHandler(WebviewActionInterface.class);
-			mListener = aif.getHandler(IssueActionInterface.class);
-			mTimeEntryListener = aif.getHandler(TimeentryActionInterface.class);
+			mActionListener		= aif.getHandler(WebviewActionInterface.class);
+			mListener			= aif.getHandler(IssueActionInterface.class);
+			mTimeEntryListener	= aif.getHandler(TimeentryActionInterface.class);
 		}
-		if(mActionListener == null) {
-			//setup empty events
-			mActionListener = new WebviewActionEmptyHandler();
-		}
-		if(mListener == null){
-			//setup empty events
-			mListener = new IssueActionEmptyHandler();
-		}
-		if(mTimeEntryListener == null){
-			//setup empty events
-			mTimeEntryListener = new TimeentryActionEmptyHandler();
-		}
+		//setup empty events
+		if(mActionListener		== null)	mActionListener		= new WebviewActionEmptyHandler();
+		if(mListener			== null)	mListener			= new IssueActionEmptyHandler();
+		if(mTimeEntryListener	== null)	mTimeEntryListener	= new TimeentryActionEmptyHandler();
 
 	}
 	@Override

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
@@ -20,7 +21,6 @@ import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
 import jp.redmine.redmineclient.form.RedmineJournalListItemHeaderForm;
-import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,7 +43,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	private RedmineProjectModel mProject;
 	protected Integer connection_id;
 	protected Long issue_id;
-	protected IntentAction action;
+	protected WebviewActionInterface action;
 	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, RedmineJournalListAdapter.fetchHelper>();
 
 	protected void setupHashmap(){
@@ -216,7 +216,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	}
 
 
-	public RedmineJournalListAdapter(DatabaseCacheHelper m,IntentAction act){
+	public RedmineJournalListAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
 		super();
 		mJournal = new RedmineJournalModel(m);
 		mVersion = new RedmineVersionModel(m);

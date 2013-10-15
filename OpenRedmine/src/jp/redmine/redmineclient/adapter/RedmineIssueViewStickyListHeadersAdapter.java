@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +43,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	private RedmineIssueModel mIssue;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 	
-	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,IntentAction act){
+	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
 		adapterJournal = new RedmineJournalListAdapter(m, act);
 		adapterIssue = new RedmineIssueDetailAdapter(m, act);
 		adapterRelation = new RedmineRelativeIssueListAdapter(m, act);

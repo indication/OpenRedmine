@@ -3,13 +3,13 @@ package jp.redmine.redmineclient.adapter;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
 import jp.redmine.redmineclient.form.RedmineJournalListItemHeaderForm;
-import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +22,11 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 	private RedmineTimeEntryModel mTimeEntry;
 	protected Integer connection_id;
 	protected Long issue_id;
-	protected IntentAction action;
+	protected WebviewActionInterface action;
 	private RedmineIssue cache;
 
 
-	public RedmineIssueDetailAdapter(DatabaseCacheHelper m,IntentAction act){
+	public RedmineIssueDetailAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
 		super();
 		mIssue = new RedmineIssueModel(m);
 		mTimeEntry = new RedmineTimeEntryModel(m);

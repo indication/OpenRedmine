@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import jp.redmine.redmineclient.fragment.Empty;
 import jp.redmine.redmineclient.fragment.IssueComment;
 import jp.redmine.redmineclient.fragment.IssueEdit;
@@ -16,7 +15,7 @@ import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class IssueViewHandler extends Core
-	implements IssueActionInterface, IntentAction {
+	implements IssueActionInterface, WebviewActionInterface {
 
 	public IssueViewHandler(ActivityRegistry manager) {
 		super(manager);

@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.form.helper.TextileHelper;
-import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TableRow;
@@ -36,7 +36,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	}
 
 
-	public void setupWebView(IntentAction act){
+	public void setupWebView(WebviewActionInterface act){
 		webViewHelper = new TextileHelper(webView);
 		webViewHelper.setup();
 		webViewHelper.setAction(act);

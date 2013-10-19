@@ -40,7 +40,7 @@ public class RedmineDownloadForm extends FormHelper {
 	}
 	
 	public void progress(Integer size){
-		if(size == null || size <= progressBar.getMax()){
+		if(size == null || size >= progressBar.getMax()){
 			buttonDownload.setEnabled(true);
 			rowProgress.setVisibility(View.GONE);
 		} else {
@@ -49,7 +49,7 @@ public class RedmineDownloadForm extends FormHelper {
 				rowProgress.setVisibility(View.VISIBLE);
 			}
 			progressBar.setProgress(size);
-			int current = Math.round(((float)size)/progressBar.getMax())*100;
+			int current = Math.round((float)(size*100)/progressBar.getMax());
 			textProgress.setText(textProgress.getContext().getString(R.string.format_progress, current));
 		}
 	}

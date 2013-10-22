@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.form;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.form.helper.FormHelper;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -48,9 +49,17 @@ public class RedmineDownloadForm extends FormHelper {
 				buttonDownload.setEnabled(false);
 				rowProgress.setVisibility(View.VISIBLE);
 			}
-			progressBar.setProgress(size);
-			int current = Math.round((float)(size*100)/progressBar.getMax());
-			textProgress.setText(textProgress.getContext().getString(R.string.format_progress, current));
+			//show animation
+			if(size == 0){
+				progressBar.setIndeterminate(true);
+				textProgress.setText("");
+			} else {
+				if(TextUtils.isEmpty(textProgress.getText()))
+					progressBar.setIndeterminate(false);
+				progressBar.setProgress(size);
+				int current = Math.round((float)(size*100)/progressBar.getMax());
+				textProgress.setText(textProgress.getContext().getString(R.string.format_progress, current));
+			}
 		}
 	}
 

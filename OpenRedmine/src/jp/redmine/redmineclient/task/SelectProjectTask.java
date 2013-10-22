@@ -64,7 +64,7 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 				List<RedmineProject> projects = fetchProject(connection,client,offset,limit);
 				count = projects.size();
 				//TODO
-				publishProgress(0, 0);
+				notifyProgress(0, 0);
 				if(offset != 0){
 					//sleep for server
 					try {

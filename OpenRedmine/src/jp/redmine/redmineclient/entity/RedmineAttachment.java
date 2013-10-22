@@ -1,6 +1,10 @@
 package jp.redmine.redmineclient.entity;
 
+import java.io.File;
 import java.util.Date;
+
+import android.annotation.SuppressLint;
+import android.text.TextUtils;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -36,6 +40,8 @@ public class RedmineAttachment implements IUserRecord {
 	private Date created;
 	@DatabaseField
 	private Date modified;
+	
+	private File file;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -117,6 +123,20 @@ public class RedmineAttachment implements IUserRecord {
 	}
 	public void setContentUrl(String content_url) {
 		this.content_url = content_url;
+	}
+	public String getLocalFileName(){
+		return String.valueOf(connection_id) + "_" + String.valueOf(id);
+	}
+	@SuppressLint("DefaultLocale")
+	public String getFilenameExt(){
+		int ch = TextUtils.isEmpty(getFilename()) ? -1 : getFilename().lastIndexOf('.');
+		return ((ch>=0)?getFilename().substring(ch + 1):"").toLowerCase();
+	}
+	public File getFile() {
+		return file;
+	}
+	public void setFile(File file) {
+		this.file = file;
 	}
 
 }

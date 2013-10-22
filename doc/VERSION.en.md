@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- Download file related with issues
 
 v3.2 - 32 - 2013/09/09
 ===========

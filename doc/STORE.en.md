@@ -4,7 +4,7 @@ OpenRedmine
 
 Description
 ==========
-OpenRedmine is an android Redmine client. gamma release.
+OpenRedmine is an android Redmine client.
 
 Requirement:
 * Redmine 1.2 later
@@ -26,6 +26,7 @@ Features:
 * Sort (IssueID/Created/Modified/... etc)
 * Show changelogs, relative issues
 * Create or modify issue/timeentry
+* Download file related with issues
 
 Release planing:
 * TimeEntry like stop watch (no plan...)

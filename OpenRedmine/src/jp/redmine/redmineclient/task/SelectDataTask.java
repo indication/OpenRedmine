@@ -87,7 +87,7 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		Log.e("SelectDataTask", "background", lasterror);
 	}
 
-	protected void publishProgress(int max,int proc){
+	protected void notifyProgress(int max,int proc){
 		super.publishProgress(ProgressKind.progress,max,proc);
 	}
 

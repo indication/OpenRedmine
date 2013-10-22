@@ -10,6 +10,7 @@ Features
 * View issues offline
 * Get API key from web site
 * Filter (Status/Tracker/Category/Priority)
+* Download file
 
 
 Version

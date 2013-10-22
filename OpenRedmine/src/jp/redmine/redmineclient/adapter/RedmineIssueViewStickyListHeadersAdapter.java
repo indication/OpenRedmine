@@ -40,6 +40,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	private RedmineIssueDetailAdapter adapterIssue;
 	private RedmineRelativeIssueListAdapter adapterRelation;
 	private RedmineTimeEntryListAdapter adapterTimeEntry;
+	private RedmineIssueAttachmentListAdapter adapterAttachment;
 	private RedmineIssueModel mIssue;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 	
@@ -48,9 +49,11 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 		adapterIssue = new RedmineIssueDetailAdapter(m, act);
 		adapterRelation = new RedmineRelativeIssueListAdapter(m, act);
 		adapterTimeEntry = new RedmineTimeEntryListAdapter(m);
+		adapterAttachment = new RedmineIssueAttachmentListAdapter(m);
 		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));
 		mapAdapters.add(new AggrigateAdapter(adapterRelation, R.string.ticket_relations));
 		mapAdapters.add(new AggrigateAdapter(adapterTimeEntry, R.string.ticket_time));
+		mapAdapters.add(new AggrigateAdapter(adapterAttachment, R.string.ticket_attachments));
 		mapAdapters.add(new AggrigateAdapter(adapterJournal, R.string.ticket_journals));
 		mIssue = new RedmineIssueModel(m);
 	}
@@ -114,6 +117,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 			int issue_id = is.getIssueId();
 			adapterRelation.setupParameter(connection, issue_id);
 			adapterTimeEntry.setupParameter(connection, issue_id);
+			adapterAttachment.setupParameter(connection, issue_id);
 		} catch (SQLException e) {
 			Log.e(TAG,"setupParameter", e);
 		}

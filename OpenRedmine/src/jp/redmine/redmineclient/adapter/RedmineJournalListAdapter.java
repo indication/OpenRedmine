@@ -203,6 +203,18 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 				return R.string.ticket_project;
 			}
 		});
+		fetchMap.put("attachment", new fetchHelper(){
+			@Override
+			protected IMasterRecord getRawItem(String input) throws SQLException {
+				DummySelection item = new DummySelection();
+				item.setName(input);
+				return item;
+			}
+			@Override
+			public int getResourceNameId() {
+				return R.string.ticket_attachments;
+			}
+		});
 	}
 
 	private abstract class fetchHelper{
@@ -269,6 +281,8 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 		for(RedmineJournalChanges cg : jr.changes){
 			if("attr".equalsIgnoreCase(cg.getProperty()))
 				getAttributeDetail(cg);
+			else if("attachment".equalsIgnoreCase(cg.getProperty()))
+				getAttachmentDetail(cg);
 			else
 				Log.w(TAG,"Changes: " + cg.getName() + "," + cg.getProperty());
 		}
@@ -284,6 +298,15 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 			return;
 		}
 		fetchHelper helper = fetchMap.get(name);
+		cg.setResourceId(helper.getResourceNameId());
+		cg.setMasterBefore(helper.getItem(cg.getBefore()));
+		cg.setMasterAfter(helper.getItem(cg.getAfter()));
+	}
+	protected void getAttachmentDetail(RedmineJournalChanges cg) throws SQLException{
+		if(TextUtils.isEmpty(cg.getName()))
+			return;
+		//String name = cg.getName();
+		fetchHelper helper = fetchMap.get("attachment");
 		cg.setResourceId(helper.getResourceNameId());
 		cg.setMasterBefore(helper.getItem(cg.getBefore()));
 		cg.setMasterAfter(helper.getItem(cg.getAfter()));

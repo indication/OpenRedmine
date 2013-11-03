@@ -47,6 +47,7 @@ public class RedmineIssueRelation {
 		Blocked		("blocked"		, false,	false,	R.string.relation_blocked),
 		Precedes	("precedes"		, true,		true,	R.string.relation_precedes),
 		Follows		("follows"		, true,		false,	R.string.relation_follows),
+		Copied		("copied_to"	, true,		false,	R.string.relation_copied_to),
 		;
 		
 		RelationType(String nm, boolean d, boolean ft, int r){

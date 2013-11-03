@@ -172,6 +172,7 @@
 	<string name="relation_blocked">ブロックされる</string>
 	<string name="relation_precedes">%1$d日遅れ</string>
 	<string name="relation_follows">%1$d日先行</string>
+	<string name="relation_copied_to">コピー</string>
 
 	<string name="ascending">昇順</string>
 	<string name="descending">降順</string>

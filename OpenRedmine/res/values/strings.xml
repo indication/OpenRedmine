@@ -171,8 +171,9 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="relation_blocked">Blocked</string>
 	<string name="relation_precedes">%1$d days precedes</string>
 	<string name="relation_follows">%1$d days follows</string>
+	<string name="relation_copied_to">Copied</string>
 
-		<string name="ascending">ascending</string>
+	<string name="ascending">ascending</string>
 	<string name="descending">descending</string>
 	<string name="menu_button_next">Next</string>
 	<string name="menu_setting_goto_redmine">Get token</string>

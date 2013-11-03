@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.form;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation.RelationType;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,12 +32,12 @@ public class RedmineRelationListItemForm extends FormHelper {
 
 	}
 	public void setValue(RedmineIssueRelation rd){
-		if(rd.getType() != null )
-			textDelay.setText(textDelay.getContext().getString(rd.getType().getResourceId(),
-					(rd.getDelay() == null ? 0 : rd.getDelay().intValue()) ));
+		RelationType type = rd.getType() == null ? RelationType.None : rd.getType();
+		textDelay.setText(textDelay.getContext().getString(type.getResourceId(),
+				(rd.getDelay() == null ? 0 : rd.getDelay().intValue()) ));
 		setValue(rd.getIssue() == null ? new RedmineIssue() : rd.getIssue());
 		int drawable = R.drawable.ic_relative_related;
-		switch(rd.getType()){
+		switch(type){
 		case Blocks:
 			drawable = R.drawable.ic_relative_base_to;
 			break;
@@ -54,6 +55,9 @@ public class RedmineRelationListItemForm extends FormHelper {
 			break;
 		case Follows:
 			drawable = R.drawable.ic_relative_follows_from;
+			break;
+		case Copied:
+			drawable = R.drawable.ic_relative_copy_to;
 			break;
 		case Relates:
 		default:

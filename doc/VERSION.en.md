@@ -4,6 +4,9 @@ Release history
 
 Next Release
 ===========
+
+v3.3 - 33 - 2013/11/06
+===========
 - Download file related with issues
 - Fixes crash on showing unknown relation type
 

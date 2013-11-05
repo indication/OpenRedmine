@@ -85,7 +85,11 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 			}
 		};
 		RemoteUrlIssue url = new RemoteUrlIssue();
-		url.setInclude(RemoteUrlIssue.Includes.Journals,RemoteUrlIssue.Includes.Relations);
+		url.setInclude(
+				 RemoteUrlIssue.Includes.Journals
+				,RemoteUrlIssue.Includes.Relations
+				,RemoteUrlIssue.Includes.Attachments
+				);
 		for(int param: params){
 			url.setIssueId(param);
 			fetchData(client,connection, url, handler);

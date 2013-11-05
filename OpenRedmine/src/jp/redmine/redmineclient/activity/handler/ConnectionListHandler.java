@@ -3,13 +3,12 @@ package jp.redmine.redmineclient.activity.handler;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.fragment.ConnectionEdit;
-import jp.redmine.redmineclient.fragment.ConnectionList;
 import jp.redmine.redmineclient.fragment.Empty;
 import jp.redmine.redmineclient.fragment.IssueJump;
 import jp.redmine.redmineclient.fragment.ProjectList;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 
-public class ConnectionListHandler extends Core implements ConnectionList.OnArticleSelectedListener {
+public class ConnectionListHandler extends Core implements ConnectionActionInterface {
 
 	public ConnectionListHandler(ActivityRegistry manager) {
 		super(manager);

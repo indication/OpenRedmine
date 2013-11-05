@@ -161,6 +161,7 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="ticket_detail">Detail</string>
 	<string name="ticket_relations">Relations</string>
 	<string name="ticket_journals">Journals</string>
+	<string name="ticket_attachments">Attachments</string>
 
 	<string name="relation_none"></string>
 	<string name="relation_relates">Relate</string>
@@ -170,8 +171,9 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="relation_blocked">Blocked</string>
 	<string name="relation_precedes">%1$d days precedes</string>
 	<string name="relation_follows">%1$d days follows</string>
+	<string name="relation_copied_to">Copied</string>
 
-		<string name="ascending">ascending</string>
+	<string name="ascending">ascending</string>
 	<string name="descending">descending</string>
 	<string name="menu_button_next">Next</string>
 	<string name="menu_setting_goto_redmine">Get token</string>
@@ -198,5 +200,8 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="input_error_invalid_decimal">Input valid number.</string>
 	<string name="input_error_select">Select %1$s</string>
 	<string name="warning_experimental_feature">This is EXPERIMANTAL. This feature may affect bad to your redmine.</string>
+	<string name="size">Size</string>
+	<string name="progress">Progress</string>
+	<string name="download">Download</string>
 
 </resources>

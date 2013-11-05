@@ -3,12 +3,12 @@ package jp.redmine.redmineclient.adapter;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueRelationModel;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.form.RedmineRelationListItemForm;
-import jp.redmine.redmineclient.form.helper.TextileHelper.IntentAction;
 import android.view.View;
 
 public class RedmineRelativeIssueListAdapter extends RedmineBaseAdapter<RedmineIssueRelation>  {
@@ -21,7 +21,7 @@ public class RedmineRelativeIssueListAdapter extends RedmineBaseAdapter<RedmineI
 
 
 
-	public RedmineRelativeIssueListAdapter(DatabaseCacheHelper m,IntentAction act){
+	public RedmineRelativeIssueListAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
 		super();
 		mRelation = new RedmineIssueRelationModel(m);
 		mIssue = new RedmineIssueModel(m);

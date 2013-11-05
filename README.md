@@ -10,6 +10,7 @@ Features
 * View issues offline
 * Get API key from web site
 * Filter (Status/Tracker/Category/Priority)
+* Download file
 
 
 Version
@@ -53,6 +54,12 @@ Used references
 
 - URI handling on TextileHelper from "Perl note"
   http://www.din.or.jp/~ohzaki/perl.htm#URI
+
+- Detect MIME type on opening file from "moplog"
+  http://ac-mopp.blogspot.jp/2011/12/android-mime-type.html
+
+- Open file via intent from "PG Senki hikaruright"
+  http://d.hatena.ne.jp/hikaruright/20120119/1326965685
 
 Using Libraries
 ==========

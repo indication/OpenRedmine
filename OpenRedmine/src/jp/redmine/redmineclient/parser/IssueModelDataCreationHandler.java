@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineAttachmentModel;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueRelationModel;
@@ -15,6 +16,7 @@ import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
+import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
@@ -32,6 +34,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 	private RedmineJournalModel mJournal;
 	private RedmineProjectModel mProject;
 	private RedmineIssueRelationModel mRelation;
+	private RedmineAttachmentModel mAttachment;
 	public IssueModelDataCreationHandler(DatabaseCacheHelper helperCache){
 		mIssue = new RedmineIssueModel(helperCache);
 		mVersion = new RedmineVersionModel(helperCache);
@@ -43,6 +46,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mJournal = new RedmineJournalModel(helperCache);
 		mProject = new RedmineProjectModel(helperCache);
 		mRelation = new RedmineIssueRelationModel(helperCache);
+		mAttachment = new RedmineAttachmentModel(helperCache);
 	}
 	public void onData(RedmineConnection connection,RedmineIssue data) throws SQLException {
 		data.setConnectionId(connection.getId());
@@ -60,6 +64,8 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		onDataJournal(data);
 		RedmineIssue.setupRelations(data);
 		onDataRelation(data);
+		RedmineIssue.setupAttachments(data);
+		onDataAttachment(data);
 	}
 	public void onDataJournal(RedmineIssue data) throws SQLException {
 		if(data.getJournals() == null)
@@ -81,6 +87,14 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 			if(!listRelations.contains(relation.getRelationId())){
 				mRelation.delete(relation);
 			}
+		}
+	}
+	public void onDataAttachment(RedmineIssue data) throws SQLException {
+		if(data.getAttachments() == null)
+			return;
+		for (RedmineAttachment attachment : data.getAttachments()){
+			mUser.refreshItem(attachment);
+			mAttachment.refreshItem(attachment);
 		}
 	}
 }

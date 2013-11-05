@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.db.cache;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
@@ -27,7 +28,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=8;
+	private static int DB_VERSION=9;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -55,6 +56,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(source, RedmineTimeEntry.class);
 			TableUtils.createTable(source, RedmineTimeActivity.class);
 			TableUtils.createTable(source, RedmineIssueRelation.class);
+			TableUtils.createTable(source, RedmineAttachment.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -88,6 +90,8 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				addColumn(db,RedmineUser.class,"is_current BOOLEAN");
 			case 7:
 				TableUtils.createTable(source, RedmineIssueRelation.class);
+			case 8:
+				TableUtils.createTable(source, RedmineAttachment.class);
 				break;
 			}
 

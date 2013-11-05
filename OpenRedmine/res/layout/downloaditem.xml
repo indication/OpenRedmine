@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+	<TableLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingBottom="10dp"
+	    android:shrinkColumns="0"
+	    android:stretchColumns="1" >
+
+		<TableRow
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dp" >
+			
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ticket_attachments" />
+			
+			<TextView
+				android:id="@+id/textSubject"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="Attachment file name is too long to display by single line.png"
+				tools:ignore="HardcodedText" />
+		</TableRow>
+
+		<TableRow
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dp" >
+			
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ticket_author" />
+			
+			<TextView
+				android:id="@+id/textAuthor"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="Created Username"
+				tools:ignore="HardcodedText" />
+		</TableRow>
+
+		<TableRow
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dp" >
+			
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ticket_created" />
+			
+			<TextView
+				android:id="@+id/textCreated"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:singleLine="true"
+				android:text="2013-01-01"
+				tools:ignore="HardcodedText" />
+		</TableRow>
+
+		<TableRow
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dp" >
+			
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/size" />
+			
+		<TextView
+			android:id="@+id/textSize"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:singleLine="true"
+			android:layout_marginLeft="10dip"
+			android:text="10.2k"
+			tools:ignore="HardcodedText" />
+		</TableRow>
+
+		<TableRow
+		    android:id="@+id/rowProgress"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="10dp"
+		    android:visibility="gone" >
+			
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/progress" />
+
+			<LinearLayout
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal" >
+
+				<TextView
+				    android:id="@+id/textProgress"
+				    android:layout_width="wrap_content"
+				    android:layout_height="match_parent"
+				    android:layout_gravity="center_vertical"
+				    android:layout_marginLeft="10dip"
+				    android:singleLine="true"
+				    android:text="10%"
+				    tools:ignore="HardcodedText" />
+
+				<ProgressBar
+					android:id="@+id/progress"
+					style="?android:attr/progressBarStyleHorizontal"
+					android:layout_width="0dp"
+					android:layout_height="30dp"
+					android:layout_marginRight="3dp"
+					android:layout_weight="1"
+					android:max="100"
+					android:progress="30"
+					android:progressDrawable="@android:drawable/progress_horizontal" />
+
+			</LinearLayout>
+
+		</TableRow>
+	</TableLayout>
+	
+	<Button
+		android:id="@+id/buttonDownload"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@android:drawable/ic_menu_save"
+		android:text="@string/download" />
+	
+</LinearLayout>

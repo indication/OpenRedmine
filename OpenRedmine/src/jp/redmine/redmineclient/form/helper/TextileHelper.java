@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.TypeConverter;
-
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
@@ -52,21 +52,16 @@ public class TextileHelper {
 			"))"
 			);
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
-	private IntentAction action;
+	private WebviewActionInterface action;
 	public TextileHelper(WebView web){
 		view = web;
 	}
-	public void setAction(IntentAction act){
+	public void setAction(WebviewActionInterface act){
 		action = act;
 	}
 	public void setup(){
 		setupWebView();
 		setupHandler();
-	}
-
-	public interface IntentAction{
-		public void issue(int connection,int issueid);
-		public boolean url(String url);
 	}
 
 	protected void setupWebView(){

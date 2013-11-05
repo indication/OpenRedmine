@@ -3,6 +3,8 @@ package jp.redmine.redmineclient.fragment;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineTimeEntryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -20,14 +22,8 @@ import android.widget.ListView;
 public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private RedmineTimeEntryListAdapter adapter;
 	private View mFooter;
-	private OnArticleSelectedListener mListener;
+	private TimeentryActionInterface mListener;
 
-	public interface OnArticleSelectedListener {
-		public void onTimeEntryList(int connectionid, int issueid);
-		public void onTimeEntrySelected(int connectionid, int issueid, int timeentryid);
-		public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid);
-		public void onTimeEntryAdd(int connectionid, int issueid);
-	}
 	public TimeEntryList(){
 		super();
 	}
@@ -42,24 +38,11 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			mListener = ((ActivityInterface)activity).getHandler(TimeentryActionInterface.class);
 		}
 		if(mListener == null){
 			//setup empty events
-			mListener = new OnArticleSelectedListener() {
-
-				@Override
-				public void onTimeEntryList(int connectionid, int issueid) {}
-
-				@Override
-				public void onTimeEntrySelected(int connectionid, int issueid, int timeentryid) {}
-
-				@Override
-				public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid) {}
-
-				@Override
-				public void onTimeEntryAdd(int connectionid, int issueid) {}
-			};
+			mListener = new TimeentryActionEmptyHandler();
 		}
 
 	}

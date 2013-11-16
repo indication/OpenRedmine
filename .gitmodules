@@ -1,6 +1,0 @@
-[submodule "android-form-edittext"]
-	path = android-form-edittext
-	url = git@github.com:indication/android-form-edittext.git
-[submodule "android-form-edittext"]
-	path = android-stickylistheaders
-	url = https://github.com/emilsjolander/StickyListHeaders.git

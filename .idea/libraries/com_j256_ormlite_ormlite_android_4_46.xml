@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="com.j256.ormlite:ormlite-android:4.46" type="repository">
+    <properties maven-id="com.j256.ormlite:ormlite-android:4.46" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/j256/ormlite/ormlite-android/4.46/ormlite-android-4.46.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/j256/ormlite/ormlite-core/4.46/ormlite-core-4.46.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

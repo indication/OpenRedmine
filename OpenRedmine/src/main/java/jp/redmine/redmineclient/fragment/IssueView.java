@@ -21,6 +21,8 @@ import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+
 import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -31,13 +33,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
-public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
+public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private final String TAG = IssueView.class.getSimpleName();
 	private RedmineIssueViewStickyListHeadersAdapter adapter;
+    private StickyListHeadersListView list;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
@@ -59,7 +64,8 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onDestroyView() {
 		cancelTask(true);
-		setListAdapter(null);
+        if(list  != null)
+            list.setAdapter(null);
 		super.onDestroyView();
 	}
 	protected void cancelTask(boolean isForce){
@@ -95,13 +101,12 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		getListView().addFooterView(mFooter);
+        list.addFooterView(mFooter);
 
 		adapter = new RedmineIssueViewStickyListHeadersAdapter(getHelper(),mActionListener);
+        list.setAdapter(adapter);
 		
-		setListAdapter(adapter);
-		
-		getListView().setFastScrollEnabled(true);
+        list.setFastScrollEnabled(true);
 
 		onRefresh(true);
 
@@ -118,35 +123,38 @@ public class IssueView extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		return inflater.inflate(R.layout.stickylistheaderslist, container, false);
-	}
+        View current = inflater.inflate(R.layout.stickylistheaderslist, container, false);
+        list = (StickyListHeadersListView)current.findViewById(R.id.list);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		Object item = adapter.getItem(position);
-		if(item == null){}
-		else if (item instanceof RedmineTimeEntry){
-			RedmineTimeEntry entry = (RedmineTimeEntry)item;
-			mTimeEntryListener.onTimeEntrySelected(entry.getConnectionId(), entry.getIssueId(), entry.getTimeentryId());
-			return;
-		} else if (item instanceof RedmineIssueRelation){
-			RedmineIssueRelation relation = (RedmineIssueRelation)item;
-			if(relation.getIssue() != null){
-				mListener.onIssueSelected(relation.getConnectionId(), relation.getIssue().getIssueId());
-				return;
-			}
-		} else if (item instanceof RedmineIssue) {
-			RedmineIssue issue = (RedmineIssue)item;
-			if(v.getId() == R.id.textProject && issue.getProject() != null){
-				mListener.onIssueList(issue.getConnectionId(), issue.getProject().getId());
-				return;
-			}
-		} else if (item instanceof RedmineAttachment) {
-			RedmineAttachment attachment =  (RedmineAttachment)item;
-			mAttachmentListener.onAttachmentSelected(attachment.getConnectionId(), attachment.getAttachmentId());
-			return;
-		}
-		super.onListItemClick(l, v, position, id);
+                Object item = adapter.getItem(position);
+                if (item == null) {
+                } else if (item instanceof RedmineTimeEntry) {
+                    RedmineTimeEntry entry = (RedmineTimeEntry) item;
+                    mTimeEntryListener.onTimeEntrySelected(entry.getConnectionId(), entry.getIssueId(), entry.getTimeentryId());
+                    return;
+                } else if (item instanceof RedmineIssueRelation) {
+                    RedmineIssueRelation relation = (RedmineIssueRelation) item;
+                    if (relation.getIssue() != null) {
+                        mListener.onIssueSelected(relation.getConnectionId(), relation.getIssue().getIssueId());
+                        return;
+                    }
+                } else if (item instanceof RedmineIssue) {
+                    RedmineIssue issue = (RedmineIssue) item;
+                    if (view.getId() == R.id.textProject && issue.getProject() != null) {
+                        mListener.onIssueList(issue.getConnectionId(), issue.getProject().getId());
+                        return;
+                    }
+                } else if (item instanceof RedmineAttachment) {
+                    RedmineAttachment attachment = (RedmineAttachment) item;
+                    mAttachmentListener.onAttachmentSelected(attachment.getConnectionId(), attachment.getAttachmentId());
+                    return;
+                }
+            }
+        });
+        return current;
 	}
 	
 	protected void onRefresh(boolean isFetch){

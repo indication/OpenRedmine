@@ -28,7 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal>  implements StickyListHeadersAdapter {
 	private final static String TAG = "RedmineJournalListAdapter";

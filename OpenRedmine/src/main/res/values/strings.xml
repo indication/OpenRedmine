@@ -152,7 +152,6 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="ticket_modified_by">%2$s</string>
 	<string name="ticket_time">Time</string>
 	<string name="ticket_time_estimate">%.2f</string>
-	<string name="ticket_date">Date</string>
 	<string name="ticket_activity">Activity</string>
 	<string name="ticket_issue">Issue</string>
 	<string name="ticket_sort">Sort</string>

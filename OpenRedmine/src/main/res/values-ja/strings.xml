@@ -153,7 +153,6 @@
 	<string name="ticket_modified_by">%2$s</string>
 	<string name="ticket_time">時間</string>
 	<string name="ticket_time_estimate">%.2f</string>
-	<string name="ticket_date">日付</string>
 	<string name="ticket_activity">活動</string>
 	<string name="ticket_issue">チケット</string>
 	<string name="ticket_sort">ソート</string>

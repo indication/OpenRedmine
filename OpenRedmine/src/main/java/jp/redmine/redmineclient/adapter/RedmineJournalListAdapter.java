@@ -247,6 +247,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 		issue_id = issue;
 	}
 
+    @Override
 	public boolean isValidParameter(){
 		if(issue_id == null || connection_id == null)
 			return false;
@@ -268,15 +269,11 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 
 	@Override
 	protected int getDbCount() throws SQLException {
-		if(!isValidParameter())
-			return 0;
 		return (int) mJournal.countByIssue(connection_id, issue_id);
 	}
 
 	@Override
 	protected RedmineJournal getDbItem(int position) throws SQLException {
-		if(!isValidParameter())
-			return null;
 		RedmineJournal jr = mJournal.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
 		for(RedmineJournalChanges cg : jr.changes){
 			if("attr".equalsIgnoreCase(cg.getProperty()))

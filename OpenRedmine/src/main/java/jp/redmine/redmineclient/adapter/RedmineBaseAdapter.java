@@ -31,12 +31,14 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 	@Override
 	public void notifyDataSetChanged() {
 		cache.clear();
-		try {
-			count = getDbCount();
-		} catch (SQLException e) {
-			Log.e(TAG,"getDbCount" , e);
-			count = 0;
-		}
+        if(isValidParameter()){
+            try {
+                count = getDbCount();
+            } catch (SQLException e) {
+                Log.e(TAG,"getDbCount" , e);
+                count = 0;
+            }
+        }
 		super.notifyDataSetChanged();
 	}
 
@@ -74,7 +76,9 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 	 */
 	@Override
 	public Object getItem(Integer position) {
-		try {
+		if(!isValidParameter())
+            return null;
+        try {
 			return getDbItem(position);
 		} catch (SQLException e) {
 			Log.e(TAG,"getDbItem" , e);
@@ -126,4 +130,7 @@ public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCa
 		return getItemViewId();
 	}
 
+    public boolean isValidParameter(){
+        return true;
+    }
 }

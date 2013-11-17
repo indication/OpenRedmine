@@ -32,6 +32,7 @@ public class RedmineRelativeIssueListAdapter extends RedmineBaseAdapter<RedmineI
 		issue_id = issue;
 	}
 
+    @Override
 	public boolean isValidParameter(){
 		if(issue_id == null || connection_id == null)
 			return false;
@@ -52,15 +53,11 @@ public class RedmineRelativeIssueListAdapter extends RedmineBaseAdapter<RedmineI
 
 	@Override
 	protected int getDbCount() throws SQLException {
-		if(!isValidParameter())
-			return 0;
 		return (int) mRelation.countByIssue(connection_id, issue_id);
 	}
 
 	@Override
 	protected RedmineIssueRelation getDbItem(int position) throws SQLException {
-		if(!isValidParameter())
-			return null;
 		RedmineIssueRelation rel = mRelation.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
 		rel.setIssue(mIssue.fetchById(connection_id, rel.getTargetIssueId(issue_id)));
 		return rel;

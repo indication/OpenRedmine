@@ -48,6 +48,7 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 		filter_id = filter;
 	}
 
+    @Override
 	public boolean isValidParameter(){
 		if(project_id != null && connection_id != null)
 			return true;

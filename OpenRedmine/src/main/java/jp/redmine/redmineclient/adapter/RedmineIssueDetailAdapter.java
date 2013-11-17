@@ -23,7 +23,6 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 	protected Integer connection_id;
 	protected Long issue_id;
 	protected WebviewActionInterface action;
-	private RedmineIssue cache;
 
 
 	public RedmineIssueDetailAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
@@ -38,6 +37,7 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 		issue_id = issue;
 	}
 
+    @Override
 	public boolean isValidParameter(){
 		if(issue_id == null || connection_id == null)
 			return false;
@@ -60,20 +60,13 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 
 	@Override
 	protected int getDbCount() throws SQLException {
-		if(!isValidParameter())
-			return 0;
 		return getDbItem(0) == null ? 0 : 1;
 	}
 
 	@Override
 	protected RedmineIssue getDbItem(int position) throws SQLException {
-		if(!isValidParameter())
-			return null;
-		if(cache != null)
-			return cache;
 		RedmineIssue issue = mIssue.fetchById(issue_id.intValue());
 		issue.setDoneHours(mTimeEntry.sumByIssueId(connection_id, issue.getIssueId()));
-		cache = issue;
 		return issue;
 	}
 

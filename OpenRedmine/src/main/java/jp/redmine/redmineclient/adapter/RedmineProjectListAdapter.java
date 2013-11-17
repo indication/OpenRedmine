@@ -20,6 +20,7 @@ public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject
 		connection_id = connection;
 	}
 
+    @Override
 	public boolean isValidParameter(){
 		if(connection_id == null)
 			return false;
@@ -40,15 +41,11 @@ public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject
 
 	@Override
 	protected int getDbCount() throws SQLException {
-		if(!isValidParameter())
-			return 0;
 		return (int) model.countByProject(connection_id,0);
 	}
 
 	@Override
 	protected RedmineProject getDbItem(int position) throws SQLException {
-		if(!isValidParameter())
-			return new RedmineProject();
 		return model.fetchItemByProject(connection_id,0,(long) position, 1L);
 	}
 

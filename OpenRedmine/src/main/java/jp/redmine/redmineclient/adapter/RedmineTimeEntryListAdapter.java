@@ -24,6 +24,7 @@ public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeE
 		issue_id = issue;
 	}
 
+    @Override
 	public boolean isValidParameter(){
 		if(issue_id == null || connection_id == null)
 			return false;

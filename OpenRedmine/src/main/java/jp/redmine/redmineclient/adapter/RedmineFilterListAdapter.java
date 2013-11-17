@@ -48,6 +48,7 @@ public class RedmineFilterListAdapter extends RedmineBaseAdapter<IMasterRecord> 
 		project_id = project;
 	}
 
+    @Override
 	public boolean isValidParameter(){
 		if(project_id == null || connection_id == null)
 			return false;
@@ -66,14 +67,12 @@ public class RedmineFilterListAdapter extends RedmineBaseAdapter<IMasterRecord> 
 	}
 	@Override
 	protected int getDbCount() throws SQLException {
-		if(!isValidParameter()) return 0;
 		int count = addNone ? 1 : 0;
 		count += (int) model.countByProject(connection_id, project_id);
 		return count;
 	}
 	@Override
 	protected IMasterRecord getDbItem(int position) throws SQLException {
-		if(!isValidParameter()) return null;
 		int realpos = position - (addNone ? 1 : 0);
 		switch(position){
 		case 0:

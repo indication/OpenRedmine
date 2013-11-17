@@ -156,17 +156,11 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	}
 
 
-	/**
-	 * @return isFetchAll
-	 */
 	public boolean isFetchAll() {
 		return isFetchAll;
 	}
 
 
-	/**
-	 * @param isFetchAll セチE��する isFetchAll
-	 */
 	public void setFetchAll(boolean isFetchAll) {
 		this.isFetchAll = isFetchAll;
 	}

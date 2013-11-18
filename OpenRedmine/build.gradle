@@ -23,25 +23,15 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
-    compile ('com.andreabaccega:android-form-edittext:1.0.4'){
-        exclude module: 'com.android.support:support-v4'
-    }
-    /*
-    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0'
-    compile ('com.actionbarsherlock:actionbarsherlock-i18n:4.4.0'){
-        exclude module: 'com.android.support:support-v4'
-    }
-    */
-    compile ('se.emilsjolander:stickylistheaders:2.1.2'){
-        exclude module: 'com.android.support:support-v4'
-    }
-    compile 'com.j256.ormlite:ormlite-core:4.46@jar'
-    compile 'com.j256.ormlite:ormlite-android:4.46@jar'
-    compile ('org.apache.httpcomponents:httpmime:4.2.5@jar') {
-        exclude module: 'org.apache.httpcomponents:httpcore'
-    }
-    compile 'org.apache.commons:commons-lang3:3.1@jar'
-    compile 'net.java:textile-j:2.2'
-    compile project(':Transdroid')
+compile 'com.android.support:support-v4:+'
+compile 'com.andreabaccega:android-form-edittext:+'
+//compile 'com.github.chrisbanes.pulltorefresh:library:2.+'
+compile 'se.emilsjolander:stickylistheaders:2.+'
+//compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abs:+'
+compile 'com.j256.ormlite:ormlite-core:4.+@jar'
+compile 'com.j256.ormlite:ormlite-android:4.+@jar'
+//compile 'org.apache.httpcomponents:httpmime:4.2.5@jar'
+compile 'org.apache.commons:commons-lang3:3.1@jar'
+compile 'net.java:textile-j:2.2'
+compile project(':Transdroid')
 }

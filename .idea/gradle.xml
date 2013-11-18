@@ -4,7 +4,7 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="C:\Users\da\repos\OpenRedmineProject" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
       </GradleProjectSettings>
     </option>
   </component>

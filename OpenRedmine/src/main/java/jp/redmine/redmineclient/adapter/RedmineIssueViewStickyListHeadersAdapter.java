@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import jp.redmine.redmineclient.form.helper.TextileHelper;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 /**
@@ -137,7 +138,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
 		AggrigateAdapter adapter = getInner(position);
 		if(adapter.adapter instanceof StickyListHeadersAdapter){
-			return ((StickyListHeadersAdapter) adapter.adapter).getHeaderView(adapter.getInnerPos(position), convertView, parent);
+            convertView = ((StickyListHeadersAdapter) adapter.adapter).getHeaderView(adapter.getInnerPos(position), convertView, parent);
 		} else {
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -147,6 +148,8 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 				text.setText(adapter == null ? "" : convertView.getContext().getString(getInner(position).res));
 			}
 		}
+        //fix background to hide transparent headers
+        convertView.setBackgroundColor(TextileHelper.getBackgroundColor(convertView.getContext()));
 		return convertView;
 	}
 

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" >
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/ticket_title" />
+
+	<com.andreabaccega.widget.FormEditText
+	    android:id="@+id/textTitle"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:ems="10"
+	    android:text="@string/ticket_title"
+	    app:emptyAllowed="false" />
+
+	<TableLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_status" />
+
+	        <Spinner
+	            android:id="@+id/spinnerStatus"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_tracker" />
+
+	        <Spinner
+	            android:id="@+id/spinnerTracker"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_category" />
+
+	        <Spinner
+	            android:id="@+id/spinnerCategory"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_priority" />
+
+	        <Spinner
+	            android:id="@+id/spinnerPriority"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_version" />
+
+	        <Spinner
+	            android:id="@+id/spinnerVersion"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_assigned_to" />
+
+	        <Spinner
+	            android:id="@+id/spinnerAssigned"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+			<LinearLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:orientation="horizontal" >
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="@string/ticket_progress" />
+
+		        <TextView
+			        android:id="@+id/textProgress"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="10%"
+				    tools:ignore="HardcodedText" />
+			</LinearLayout>
+
+		    <SeekBar
+		        android:id="@+id/progressIssue"
+		        style="?android:attr/progressBarStyleHorizontal"
+		        android:layout_width="fill_parent"
+		        android:layout_height="30dp"
+		        android:layout_marginRight="3dp"
+		        android:max="100"
+		        android:progress="30"
+		        android:progressDrawable="@android:drawable/progress_horizontal" />
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_date_start" />
+			<LinearLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:orientation="horizontal" >
+
+				<com.andreabaccega.widget.FormEditText
+				    android:id="@+id/textDateStart"
+				    android:layout_width="150dp"
+				    android:layout_height="wrap_content"
+				    android:ems="10"
+				    android:hint="2012-11-11"
+				    android:imeOptions="actionNext"
+				    android:inputType="date"
+				    android:maxLength="10"
+				    android:text="2012-11-11"
+				    app:emptyAllowed="true"
+				    app:testType="date"
+				    app:customFormat="yyyy-MM-dd"
+				    tools:ignore="HardcodedText" />
+
+				<ImageButton
+				    android:id="@+id/imageCalendarStart"
+				    style="imageViewStyle"
+				    android:layout_width="53dp"
+				    android:layout_height="50dp"
+				    android:contentDescription="Select start date"
+				    android:src="@android:drawable/ic_menu_today"
+				    tools:ignore="HardcodedText" />
+
+			</LinearLayout>
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_date_due" />
+			<LinearLayout
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+				android:orientation="horizontal" >
+
+				<com.andreabaccega.widget.FormEditText
+				    android:id="@+id/textDateDue"
+				    android:layout_width="150dp"
+				    android:layout_height="wrap_content"
+				    android:ems="10"
+				    android:hint="2012-11-11"
+				    android:imeOptions="actionNext"
+				    android:inputType="date"
+				    android:maxLength="10"
+				    android:text="2012-11-11"
+				    app:emptyAllowed="true"
+				    app:testType="date"
+				    app:customFormat="yyyy-MM-dd"
+				    tools:ignore="HardcodedText" />
+
+				<ImageButton
+				    android:id="@+id/imageCalendarDue"
+				    style="imageViewStyle"
+				    android:layout_width="53dp"
+				    android:layout_height="50dp"
+				    android:contentDescription="Select start date"
+				    android:src="@android:drawable/ic_menu_today"
+				    tools:ignore="HardcodedText" />
+
+			</LinearLayout>
+
+	    </TableRow>
+
+	    <TableRow
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_time" />
+
+			<com.andreabaccega.widget.FormEditText
+			    android:id="@+id/textTime"
+			    android:layout_width="120dp"
+			    android:layout_height="wrap_content"
+			    android:ems="10"
+			    android:hint="8.0"
+			    android:imeOptions="actionNext"
+			    android:inputType="numberDecimal"
+			    android:maxLength="10"
+			    android:text="8.0"
+			    app:emptyAllowed="true"
+			    app:testType="regexp"
+			    app:customRegexp="\\d+(\\.\\d+)?"
+			    app:testErrorString="@string/input_error_invalid_decimal"
+			    tools:ignore="HardcodedText" />
+
+	    </TableRow>
+
+	    <TableRow
+			android:id="@+id/rowCreated"
+			android:visibility="gone"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_created" />
+
+	        <TextView
+			    android:id="@+id/textCreated"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="2012-12-11 11:00:00"
+			    tools:ignore="HardcodedText" />
+
+
+	    </TableRow>
+
+	    <TableRow
+			android:id="@+id/rowModified"
+			android:visibility="gone"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/ticket_modified" />
+
+	        <TextView
+			    android:id="@+id/textModified"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="2012-12-11 11:00:00"
+			    tools:ignore="HardcodedText" />
+
+
+	    </TableRow>
+	</TableLayout>
+
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/ticket_description" />
+
+	<com.andreabaccega.widget.FormEditText
+	    android:id="@+id/textDescription"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:ems="10"
+	    android:minLines="5"
+		app:testType="nocheck"
+	    android:text="@string/ticket_description"
+	    app:emptyAllowed="true" >
+
+	</com.andreabaccega.widget.FormEditText>
+	<LinearLayout
+		android:id="@+id/layoutComment"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:visibility="gone"
+	    android:orientation="vertical" >
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/menu_setting_list_menu_comment" />
+
+		<com.andreabaccega.widget.FormEditText
+		    android:id="@+id/textComment"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+			app:testType="nocheck"
+		    app:emptyAllowed="true"
+		    android:ems="10"
+		    android:minLines="3" />
+
+
+	</LinearLayout>
+
+</LinearLayout>
+</ScrollView>

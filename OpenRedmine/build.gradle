@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion '18.1.1'
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 18
+    }
+    buildTypes {}
+}
+
+dependencies {
+compile 'com.android.support:support-v4:+'
+compile 'com.andreabaccega:android-form-edittext:+'
+//compile 'com.github.chrisbanes.pulltorefresh:library:2.+'
+compile 'se.emilsjolander:stickylistheaders:2.+'
+//compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abs:+'
+compile 'com.j256.ormlite:ormlite-core:4.+@jar'
+compile 'com.j256.ormlite:ormlite-android:4.+@jar'
+//compile 'org.apache.httpcomponents:httpmime:4.2.5@jar'
+compile 'org.apache.commons:commons-lang3:3.1@jar'
+compile 'net.java:textile-j:2.2'
+compile project(':Transdroid')
+}

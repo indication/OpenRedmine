@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="com.actionbarsherlock:actionbarsherlock:4.4.0" type="repository">
+    <properties maven-id="com.actionbarsherlock:actionbarsherlock:4.4.0" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/actionbarsherlock/actionbarsherlock/4.4.0/actionbarsherlock-4.4.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/android/android/4.0.1.2/android-4.0.1.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.0.1/httpclient-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/khronos/opengl-api/gl1.1-android-2.1_r1/opengl-api-gl1.1-android-2.1_r1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/xpp3/xpp3/1.1.4c/xpp3-1.1.4c.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/json/json/20080701/json-20080701.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/android/support-v4/r7/support-v4-r7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

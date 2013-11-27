@@ -162,6 +162,7 @@
 	<string name="ticket_attachments">添付ファイル</string>
 	<string name="ticket_project">プロジェクト</string>
 	<string name="ticket_description">説明</string>
+	<string name="ticket_jump">ジャンプ</string>
 
 	<string name="relation_none"></string>
 	<string name="relation_relates">関係する</string>

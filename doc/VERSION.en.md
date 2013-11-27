@@ -4,6 +4,8 @@ Release history
 
 Next Release
 ===========
+- Switch list via swipe
+- (Internal changes) Port to Android Studio
 
 v3.3 - 33 - 2013/11/06
 ===========

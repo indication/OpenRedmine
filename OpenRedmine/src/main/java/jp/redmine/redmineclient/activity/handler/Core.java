@@ -17,9 +17,19 @@ public class Core {
 		tran.commit();
 	}
 
+	protected void kickActivity(Class<?> activity, IntentFactory factory){
+		Intent intent = manager.getIntent(activity);
+		factory.generateIntent(intent);
+		manager.kickActivity(intent);
+	}
+
 	public interface ActivityRegistry{
 		public FragmentManager getFragment();
+		public Intent getIntent(Class<?> activity);
 		public void kickActivity(Intent intent);
+	}
+	public interface IntentFactory{
+		public void generateIntent(Intent intent);
 	}
 
 	protected interface TransitFragment{

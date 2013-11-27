@@ -54,6 +54,11 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 			}
 
 			@Override
+			public Intent getIntent(Class<?> activity) {
+				return new Intent(getApplicationContext(),activity);
+			}
+
+			@Override
 			public void kickActivity(Intent intent) {
 				startActivity(intent);
 			}

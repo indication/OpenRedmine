@@ -10,6 +10,7 @@ import jp.redmine.redmineclient.fragment.IssueEdit;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.IssueTitle;
 import jp.redmine.redmineclient.fragment.IssueView;
+import jp.redmine.redmineclient.fragment.pager.ProjectHome;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -46,7 +47,7 @@ public class IssueViewHandler extends Core
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, IssueList.newInstance(arg));
+				tran.replace(R.id.fragmentOne, ProjectHome.newInstance(arg));
 			}
 		}, null);
 	}

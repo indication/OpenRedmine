@@ -24,7 +24,7 @@ android {
 
 dependencies {
 compile 'com.android.support:support-v4:+'
-compile 'com.andreabaccega:android-form-edittext:+'
+compile 'com.andreabaccega:android-form-edittext:1.0.4'
 //compile 'com.github.chrisbanes.pulltorefresh:library:2.+'
 compile 'se.emilsjolander:stickylistheaders:2.+'
 //compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abs:+'

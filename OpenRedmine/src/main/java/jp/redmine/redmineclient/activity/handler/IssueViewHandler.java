@@ -3,8 +3,6 @@ package jp.redmine.redmineclient.activity.handler;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
-
-import jp.redmine.redmineclient.Pane1IssueActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.fragment.Empty;
 import jp.redmine.redmineclient.fragment.IssueComment;
@@ -40,17 +38,18 @@ public class IssueViewHandler extends Core
 	}
 
 	@Override
-	public void onIssueList(final int connectionid, final long projectid) {
+	public void onIssueList(int connectionid, long projectid) {
+		final ProjectArgument arg = new ProjectArgument();
+		arg.setArgument();
+		arg.setConnectionId(connectionid);
+		arg.setProjectId(projectid);
 
-		kickActivity(Pane1IssueActivity.class,new IntentFactory() {
+		runTransaction(new TransitFragment() {
 			@Override
-			public void generateIntent(Intent intent) {
-				ProjectArgument arg = new ProjectArgument();
-				arg.setIntent(intent);
-				arg.setConnectionId(connectionid);
-				arg.setProjectId(projectid);
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, ProjectHome.newInstance(arg));
 			}
-		});
+		}, null);
 	}
 
 	@Override

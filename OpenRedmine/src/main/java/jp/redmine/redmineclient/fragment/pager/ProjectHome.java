@@ -45,11 +45,11 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		super.onViewCreated(view, savedInstanceState);
 		List<CorePager.PageFragment> list = new LinkedList<CorePager.PageFragment>();
 		// Project list
+		final ProjectArgument arg = new ProjectArgument();
+		arg.setArgument(getArguments());
 		list.add(new CorePager.PageFragment() {
 			@Override
 			public Fragment getFragment() {
-				ProjectArgument arg = new ProjectArgument();
-				arg.setArgument(getArguments());
 				return IssueList.newInstance(arg);
 			}
 
@@ -60,8 +60,6 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		});
 
 		// current user
-		ProjectArgument arg = new ProjectArgument();
-		arg.setArgument(getArguments());
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
 		RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
 		RedmineProjectModel mProjectModel = new RedmineProjectModel(getHelper());
@@ -81,12 +79,14 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 					target = mFilter.getSynonym(filter);
 				}
 				final FilterArgument param = new FilterArgument();
-				param.setArgument(getArguments());
+				param.setArgument(); //Do not set getArgument(). Dirty actions following.
+				param.setConnectionId(arg.getConnectionId());
+				param.setProjectId(arg.getProjectId());
 				param.setFilterId(target.getId());
 
 				list.add(new CorePager.PageFragment() {
 					@Override
-					public Fragment getFragment() throws SQLException {
+					public Fragment getFragment() {
 						return IssueList.newInstance(param);
 					}
 

@@ -24,13 +24,11 @@ import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.form.StatusUserForm;
 import jp.redmine.redmineclient.fragment.IssueJump;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.ProjectList;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
-import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class ConnectionHome extends OrmLiteFragment<DatabaseCacheHelper> {
 	private static final String TAG = ConnectionHome.class.getSimpleName();
@@ -81,28 +79,24 @@ public class ConnectionHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		try {
 			final RedmineUser user = mUserModel.fetchCurrentUser(arg.getConnectionId());
 			if(user != null){
+				final FilterArgument param = new FilterArgument();
+				param.setArgument(); //Do not set getArgument(). Dirty actions following.
+				param.setConnectionId(arg.getConnectionId());
+				RedmineFilter filter = new RedmineFilter();
+				filter.setConnectionId(param.getConnectionId());
+				filter.setAssigned(user);
+				filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
+				RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
+				RedmineFilter target = mFilter.getSynonym(filter);
+				if (target == null) {
+					mFilter.insert(filter);
+					target = mFilter.getSynonym(filter);
+				}
+				param.setFilterId(target.getId());
 				list.add(new CorePager.PageFragment() {
 					@Override
 					public Fragment getFragment() {
-						final FilterArgument param = new FilterArgument();
-						param.setArgument(getArguments());
-						RedmineFilter filter = new RedmineFilter();
-						filter.setConnectionId(param.getConnectionId());
-						filter.setAssigned(user);
-						filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
-						RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
-						try {
-							RedmineFilter target = mFilter.getSynonym(filter);
-							if (target == null) {
-								mFilter.insert(filter);
-								target = mFilter.getSynonym(filter);
-							}
-							param.setFilterId(target.getId());
-							return IssueList.newInstance(param);
-						} catch (SQLException e) {
-							Log.e(TAG, "getFragment", e);
-						}
-						return  ProjectList.newInstance(arg); //fail safer
+						return IssueList.newInstance(param);
 					}
 
 					@Override

@@ -30,6 +30,7 @@
 			</intent-filter>
         </activity>
         <activity android:name=".Pane1Activity"></activity>
+	    <activity android:name=".Pane1IssueActivity"></activity>
         <activity android:name=".ConnectionNaviActivity"></activity>
         <activity android:name=".FilterViewActivity"></activity>
     </application>

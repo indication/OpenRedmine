@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,13 +47,13 @@ public class ConnectionHome extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		final ConnectionArgument arg = new ConnectionArgument();
-		arg.setArgument(getArguments());
-		List<CorePager.PageFragment> list = new LinkedList<CorePager.PageFragment>();
+		List<CorePager.PageFragment> list = new ArrayList<CorePager.PageFragment>();
 		// Project list
 		list.add(new CorePager.PageFragment() {
 			@Override
 			public Fragment getFragment() {
+				ConnectionArgument arg = new ConnectionArgument();
+				arg.setArgument(getArguments(), true);
 				return ProjectList.newInstance(arg);
 			}
 
@@ -65,6 +66,8 @@ public class ConnectionHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		list.add(new CorePager.PageFragment() {
 			@Override
 			public Fragment getFragment() {
+				ConnectionArgument arg = new ConnectionArgument();
+				arg.setArgument(getArguments(), true);
 				return IssueJump.newInstance(arg);
 			}
 
@@ -75,15 +78,14 @@ public class ConnectionHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		});
 
 
+		ConnectionArgument arg = new ConnectionArgument();
+		arg.setArgument(getArguments());
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
 		try {
 			final RedmineUser user = mUserModel.fetchCurrentUser(arg.getConnectionId());
 			if(user != null){
-				final FilterArgument param = new FilterArgument();
-				param.setArgument(); //Do not set getArgument(). Dirty actions following.
-				param.setConnectionId(arg.getConnectionId());
 				RedmineFilter filter = new RedmineFilter();
-				filter.setConnectionId(param.getConnectionId());
+				filter.setConnectionId(arg.getConnectionId());
 				filter.setAssigned(user);
 				filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
 				RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
@@ -92,10 +94,13 @@ public class ConnectionHome extends OrmLiteFragment<DatabaseCacheHelper> {
 					mFilter.insert(filter);
 					target = mFilter.getSynonym(filter);
 				}
-				param.setFilterId(target.getId());
+				final int target_id = target.getId();
 				list.add(new CorePager.PageFragment() {
 					@Override
 					public Fragment getFragment() {
+						FilterArgument param = new FilterArgument();
+						param.setArgument(getArguments(), true);
+						param.setFilterId(target_id);
 						return IssueList.newInstance(param);
 					}
 

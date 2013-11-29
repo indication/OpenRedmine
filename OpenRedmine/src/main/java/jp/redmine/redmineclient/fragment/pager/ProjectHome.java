@@ -24,6 +24,7 @@ import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.IssueList;
+import jp.redmine.redmineclient.fragment.VersionList;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
@@ -99,6 +100,21 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);
 		}
+
+
+		// version
+		list.add(new CorePager.PageFragment() {
+			@Override
+			public Fragment getFragment() {
+
+				return VersionList.newInstance(arg);
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getActivity().getString(R.string.ticket_version);
+			}
+		});
 		ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);
 		viewPager.setAdapter(new CorePager(getChildFragmentManager(), list));
 	}

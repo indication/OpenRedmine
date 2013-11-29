@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.RedmineProjectListItemForm;
+import jp.redmine.redmineclient.form.IMasterRecordListItemForm;
+
 import android.view.View;
 
 public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject> {
@@ -35,7 +36,7 @@ public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject
 
 	@Override
 	protected void setupView(View view, RedmineProject data) {
-		RedmineProjectListItemForm form = new RedmineProjectListItemForm(view);
+		IMasterRecordListItemForm form = new IMasterRecordListItemForm(view);
 		form.setValue(data);
 	}
 

@@ -1,13 +1,13 @@
 package jp.redmine.redmineclient.form;
 
-import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.TextView;
 
-public class RedmineProjectListItemForm extends FormHelper {
+public class IMasterRecordListItemForm extends FormHelper {
 	public TextView textSubject;
-	public RedmineProjectListItemForm(View activity){
+	public IMasterRecordListItemForm(View activity){
 		this.setup(activity);
 	}
 
@@ -17,7 +17,7 @@ public class RedmineProjectListItemForm extends FormHelper {
 	}
 
 
-	public void setValue(RedmineProject rd){
+	public void setValue(IMasterRecord rd){
 		textSubject.setText(rd.getName());
 
 	}

@@ -109,5 +109,6 @@
 	<string name="connection">Connection</string>
 	<string name="favorite">Favorite</string>
 	<string name="information">Information</string>
+	<string name="homepage">Homepage</string>
 
 </resources>

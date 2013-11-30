@@ -28,16 +28,14 @@ import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
-import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private final String TAG = IssueView.class.getSimpleName();

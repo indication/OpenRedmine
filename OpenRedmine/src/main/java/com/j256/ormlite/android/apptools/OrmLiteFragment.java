@@ -1,13 +1,9 @@
 package com.j256.ormlite.android.apptools;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
-
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 
 /**
  * Base class to use for fragment in Android.
@@ -22,7 +18,7 @@ import android.support.v4.app.FragmentActivity;
  *
  * @author graywatson, kevingalligan
  */
-public abstract class OrmLiteFragment<H extends OrmLiteSqliteOpenHelper> extends Fragment {
+public abstract class OrmLiteFragment<H extends OrmLiteSqliteOpenHelper> extends SherlockFragment {
 	private static Logger logger = LoggerFactory.getLogger(OrmLiteBaseActivity.class);
 
 	/**

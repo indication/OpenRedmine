@@ -88,6 +88,9 @@ Using Libraries
 - ActionBarSherlock (Apache License, Version 2.0) - support actionbar
   https://github.com/JakeWharton/ActionBarSherlock
 
+- actionbarpulltorefresh (Apache License, Version 2.0) - support pull to refresh
+  https://github.com/chrisbanes/ActionBar-PullToRefresh
+
 Using Icons
 ==========
 - redmine (by-sa/2.5)

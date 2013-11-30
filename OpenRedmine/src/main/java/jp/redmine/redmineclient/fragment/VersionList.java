@@ -2,13 +2,22 @@ package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
+
+import java.sql.SQLException;
 
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineVersionListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
+import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
+import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
@@ -60,20 +69,32 @@ public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	}
 
-	/*
 	@Override
-	public void onListItemClick(ListView parent, View v, int position, long id) {
-		super.onListItemClick(parent, v, position, id);
-		ListView listView = (ListView) parent;
+	public void onListItemClick(ListView listView, View v, int position, long id) {
+		super.onListItemClick(listView, v, position, id);
 		Object listitem = listView.getItemAtPosition(position);
-		if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
+		if(listitem == null || !RedmineProjectVersion.class.isInstance(listitem)  )
 		{
 			return;
 		}
-		RedmineIssue item = (RedmineIssue) listitem;
-		mListener.onIssueSelected(item.getConnectionId(), item.getIssueId());
-	}
-	*/
+		RedmineProjectVersion item = (RedmineProjectVersion) listitem;
 
+		RedmineFilter filter = new RedmineFilter();
+		filter.setConnectionId(item.getConnectionId());
+		filter.setProject(item.getProject());
+		filter.setVersion(item);
+		filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_DATE_DUE, false));
+		RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
+		try {
+			RedmineFilter target = mFilter.getSynonym(filter);
+			if(target == null){
+				mFilter.insert(filter);
+				target = filter;
+			}
+			mListener.onIssueFilterList(item.getConnectionId(), target.getId());
+		} catch (SQLException e) {
+			Log.e(TAG, "onListItemClick", e);
+		}
+	}
 
 }

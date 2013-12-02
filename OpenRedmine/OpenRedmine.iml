@@ -79,13 +79,13 @@
     <orderEntry type="library" exported="" name="ComAndreabaccegaAndroidFormEdittext104.aar" level="project" />
     <orderEntry type="library" exported="" name="textile-j-2.2" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
-    <orderEntry type="library" name="net.java:textile-j:2.2" level="project" />
-    <orderEntry type="library" name="httpmime-4.2.5" level="project" />
-    <orderEntry type="library" name="org.apache.httpcomponents:httpmime:4.2.5" level="project" />
-    <orderEntry type="library" name="com.j256.ormlite:ormlite-android:4.47" level="project" />
-    <orderEntry type="library" name="ComActionbarsherlockActionbarsherlock440.aar" level="project" />
-    <orderEntry type="library" name="com.actionbarsherlock:actionbarsherlock:4.4.0" level="project" />
-    <orderEntry type="library" name="com.github.chrisbanes.pulltorefresh:extra-listfragment:2.1.1" level="project" />
+    <orderEntry type="library" exported="" name="net.java:textile-j:2.2" level="project" />
+    <orderEntry type="library" exported="" name="httpmime-4.2.5" level="project" />
+    <orderEntry type="library" exported="" name="org.apache.httpcomponents:httpmime:4.2.5" level="project" />
+    <orderEntry type="library" exported="" name="com.j256.ormlite:ormlite-android:4.47" level="project" />
+    <orderEntry type="library" exported="" name="ComActionbarsherlockActionbarsherlock440.aar" level="project" />
+    <orderEntry type="library" exported="" name="com.actionbarsherlock:actionbarsherlock:4.4.0" level="project" />
+    <orderEntry type="library" exported="" name="com.github.chrisbanes.pulltorefresh:extra-listfragment:2.1.1" level="project" />
   </component>
 </module>
 

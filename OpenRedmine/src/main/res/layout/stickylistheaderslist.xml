@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<se.emilsjolander.stickylistheaders.StickyListHeadersListView
+<uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/list"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical" />
+	android:id="@+id/ptr_layout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<se.emilsjolander.stickylistheaders.StickyListHeadersListView
+		android:id="@+id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:orientation="vertical" />
+</uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>

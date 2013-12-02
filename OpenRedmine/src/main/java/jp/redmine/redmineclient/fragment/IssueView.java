@@ -154,7 +154,34 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
         });
         return current;
 	}
-	
+
+	private PullToRefreshLayout mPullToRefreshLayout;
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		// This is the View which is created by ListFragment
+		ViewGroup viewGroup = (ViewGroup) view;
+
+		// We need to create a PullToRefreshLayout manually
+		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
+
+		// We can now setup the PullToRefreshLayout
+		ActionBarPullToRefresh.from(getActivity())
+
+				// We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
+				.insertLayoutInto(viewGroup)
+
+						// We need to mark the ListView and it's Empty View as pullable
+						// This is because they are not dirent children of the ViewGroup
+				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
+
+						// We can now complete the setup as desired
+		//		.listener(...)
+		//.options(...)
+		.setup(mPullToRefreshLayout);
+	}
+
 	protected void onRefresh(boolean isFetch){
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());

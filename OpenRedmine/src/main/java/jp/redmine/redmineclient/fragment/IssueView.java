@@ -237,7 +237,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mPullToRefreshLayout != null)
+			if(mPullToRefreshLayout != null && !mPullToRefreshLayout.isRefreshing())
 				mPullToRefreshLayout.setRefreshing(true);
 		}
 

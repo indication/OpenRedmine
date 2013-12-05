@@ -24,6 +24,7 @@ import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.IssueList;
+import jp.redmine.redmineclient.fragment.VersionList;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
@@ -45,11 +46,11 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		super.onViewCreated(view, savedInstanceState);
 		List<CorePager.PageFragment> list = new LinkedList<CorePager.PageFragment>();
 		// Project list
-		final ProjectArgument arg = new ProjectArgument();
-		arg.setArgument(getArguments());
 		list.add(new CorePager.PageFragment() {
 			@Override
 			public Fragment getFragment() {
+				ProjectArgument arg = new ProjectArgument();
+				arg.setArgument(getArguments(), true);
 				return IssueList.newInstance(arg);
 			}
 
@@ -60,6 +61,8 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		});
 
 		// current user
+		ProjectArgument arg = new ProjectArgument();
+		arg.setArgument(getArguments());
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
 		RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
 		RedmineProjectModel mProjectModel = new RedmineProjectModel(getHelper());
@@ -76,17 +79,16 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 				RedmineFilter target = mFilter.getSynonym(filter);
 				if (target == null) {
 					mFilter.insert(filter);
-					target = mFilter.getSynonym(filter);
+					target = filter;
 				}
-				final FilterArgument param = new FilterArgument();
-				param.setArgument(); //Do not set getArgument(). Dirty actions following.
-				param.setConnectionId(arg.getConnectionId());
-				param.setProjectId(arg.getProjectId());
-				param.setFilterId(target.getId());
+				final int target_id = target.getId();
 
 				list.add(new CorePager.PageFragment() {
 					@Override
 					public Fragment getFragment() {
+						FilterArgument param = new FilterArgument();
+						param.setArgument(getArguments(), true);
+						param.setFilterId(target_id);
 						return IssueList.newInstance(param);
 					}
 
@@ -99,6 +101,22 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);
 		}
+
+
+		// version
+		list.add(new CorePager.PageFragment() {
+			@Override
+			public Fragment getFragment() {
+				ProjectArgument arg = new ProjectArgument();
+				arg.setArgument(getArguments(), true);
+				return VersionList.newInstance(arg);
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getActivity().getString(R.string.ticket_version);
+			}
+		});
 		ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);
 		viewPager.setAdapter(new CorePager(getChildFragmentManager(), list));
 	}

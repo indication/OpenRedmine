@@ -65,7 +65,6 @@ Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs
  https://github.com/vekexasia/android-form-edittext
- To build this project, needs to checkout android-form-edittext parent dir.
 
 - Transdroid (GPL) - needs to access untrusted ca.
  http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeSocketFactory.java	r1de55ccfce7b
@@ -85,6 +84,12 @@ Using Libraries
 
 - StickyListHeaders (Apache License, Version 2.0) - section headers that stick to the top
   https://github.com/emilsjolander/StickyListHeaders
+
+- ActionBarSherlock (Apache License, Version 2.0) - support actionbar
+  https://github.com/JakeWharton/ActionBarSherlock
+
+- actionbarpulltorefresh (Apache License, Version 2.0) - support pull to refresh
+  https://github.com/chrisbanes/ActionBar-PullToRefresh
 
 Using Icons
 ==========

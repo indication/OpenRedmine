@@ -1,9 +1,10 @@
 package jp.redmine.redmineclient;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 
-public class CommonPreferenceActivity extends PreferenceActivity {
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
+public class CommonPreferenceActivity extends SherlockPreferenceActivity {
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

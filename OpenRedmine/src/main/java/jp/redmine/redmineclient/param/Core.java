@@ -14,7 +14,10 @@ abstract class Core {
 		this.bundle = new Bundle();
 	}
 	public void setArgument(Bundle bundle){
-		this.bundle = bundle;
+		setArgument(bundle, false);
+	}
+	public void setArgument(Bundle bundle, boolean doClone){
+		this.bundle = doClone ? (Bundle) bundle.clone() : bundle;
 	}
 	public Intent getIntent(){
 		return this.intent;
@@ -42,7 +45,7 @@ abstract class Core {
 	/**
 	 * Get value from intent or bundle
 	 * @param key key
-	 * @param value default value(nullable)
+	 * @param defaultValue default value(nullable)
 	 */
 	protected Integer getArg(String key, Integer defaultValue){
 		if(bundle != null)
@@ -67,7 +70,7 @@ abstract class Core {
 	/**
 	 * Get value from intent or bundle
 	 * @param key key
-	 * @param value default value(nullable)
+	 * @param defaultValue default value(nullable)
 	 */
 	protected Long getArg(String key, Long defaultValue){
 		if(bundle != null)
@@ -92,7 +95,7 @@ abstract class Core {
 	/**
 	 * Get value from intent or bundle
 	 * @param key key
-	 * @param value default value(nullable)
+	 * @param defaultValue default value(nullable)
 	 */
 	protected Boolean getArg(String key, Boolean defaultValue){
 		if(bundle != null)
@@ -117,7 +120,7 @@ abstract class Core {
 	/**
 	 * Get value from intent or bundle
 	 * @param key key
-	 * @param value default value(nullable)
+	 * @param defaultValue default value(nullable)
 	 */
 	protected String getArg(String key, String defaultValue){
 		if(bundle != null)

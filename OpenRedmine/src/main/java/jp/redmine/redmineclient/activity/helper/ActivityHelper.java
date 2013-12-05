@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.view.Window;
 import android.widget.Toast;
 
 
@@ -17,17 +16,16 @@ public class ActivityHelper {
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 		String setting = sp.getString("appearance_themes", "default");
-		Integer theme = null;
+		Integer theme = R.style.ThemeDefault;
 		if("dark".equals(setting)){
-			theme = R.style.ThemeBlack;
+			theme = R.style.ThemeDark;
 		} else if("light".equals(setting)){
 			theme = R.style.ThemeLight;
 		} else if("hololight".equals(setting)){
-			theme = R.style.ThemeHoloLight;
+			theme = R.style.ThemeLight;
 		}
 		if(theme != null){
 			activity.setTheme(theme);
-			activity.getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		}
 	}
 

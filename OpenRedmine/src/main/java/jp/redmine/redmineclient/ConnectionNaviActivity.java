@@ -6,11 +6,12 @@ import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class ConnectionNaviActivity extends FragmentActivity {
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+public class ConnectionNaviActivity extends SherlockFragmentActivity {
 	public ConnectionNaviActivity(){
 		super();
 	}

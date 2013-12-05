@@ -29,8 +29,9 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
+		super.onCreate(savedInstanceState);
+		getSupportActionBar();
 		setContentView(R.layout.fragment_one);
 
 		/**

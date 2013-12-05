@@ -22,6 +22,9 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 import android.app.Activity;
 import android.os.AsyncTask.Status;
@@ -154,7 +157,39 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
         });
         return current;
 	}
-	
+
+	private PullToRefreshLayout mPullToRefreshLayout;
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		// This is the View which is created by ListFragment
+		ViewGroup viewGroup = (ViewGroup) view;
+
+		// We need to create a PullToRefreshLayout manually
+		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
+
+		// We can now setup the PullToRefreshLayout
+		ActionBarPullToRefresh.from(getActivity())
+
+				// We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
+				.insertLayoutInto(viewGroup)
+
+				// We need to mark the ListView and it's Empty View as pullable
+				// This is because they are not dirent children of the ViewGroup
+				.theseChildrenArePullable(R.id.list, android.R.id.empty)
+
+				// We can now complete the setup as desired
+				.listener(new OnRefreshListener() {
+					@Override
+					public void onRefreshStarted(View view) {
+						onRefresh(true);
+					}
+				})
+		//.options(...)
+		.setup(mPullToRefreshLayout);
+	}
+
 	protected void onRefresh(boolean isFetch){
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());
@@ -202,6 +237,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
+			if(mPullToRefreshLayout != null && !mPullToRefreshLayout.isRefreshing())
+				mPullToRefreshLayout.setRefreshing(true);
 		}
 
 		// can use UI thread here
@@ -224,6 +261,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			mFooter.setVisibility(View.GONE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
+			if(mPullToRefreshLayout != null)
+				mPullToRefreshLayout.setRefreshComplete();
 		}
 	}
 	@Override

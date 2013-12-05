@@ -74,9 +74,12 @@
     <orderEntry type="library" exported="" name="support-v4-18.0.0" level="project" />
     <orderEntry type="library" exported="" name="SeEmilsjolanderStickylistheaders213.aar" level="project" />
     <orderEntry type="library" exported="" name="ormlite-android-4.47" level="project" />
+    <orderEntry type="library" exported="" name="ComGithubChrisbanesActionbarpulltorefreshLibrary092.aar" level="project" />
     <orderEntry type="library" exported="" name="ormlite-core-4.47" level="project" />
     <orderEntry type="module" module-name="Transdroid" exported="" />
     <orderEntry type="library" exported="" name="ComAndreabaccegaAndroidFormEdittext104.aar" level="project" />
+    <orderEntry type="library" exported="" name="ComGithubChrisbanesActionbarpulltorefreshExtraAbs092.aar" level="project" />
+    <orderEntry type="library" exported="" name="ComActionbarsherlockActionbarsherlock440.aar" level="project" />
     <orderEntry type="library" exported="" name="textile-j-2.2" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
     <orderEntry type="library" exported="" name="net.java:textile-j:2.2" level="project" />

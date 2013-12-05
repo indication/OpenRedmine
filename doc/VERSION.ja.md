@@ -5,6 +5,7 @@ Release history
 Next Release
 ===========
 - スワイプでリストを切り替え
+- 画面を引っ張って...更新に対応
 - (内部変更) Android Studio対応
 
 v3.3 - 33 - 2013/11/06

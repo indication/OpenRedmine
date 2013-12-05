@@ -15,7 +15,6 @@ import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import jp.redmine.redmineclient.R;
@@ -116,6 +115,12 @@ public class ConnectionHome extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);
 		viewPager.setAdapter(new CorePager(getChildFragmentManager(), list));
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 
 	@Override

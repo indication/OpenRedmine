@@ -13,12 +13,8 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -26,7 +22,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
-public class ConnectionList extends ListFragment {
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+public class ConnectionList extends SherlockListFragment {
 	private DatabaseHelper helperStore;
 	private ConnectionListAdapter adapter;
 	private View mFooter;
@@ -117,8 +118,8 @@ public class ConnectionList extends ListFragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu( menu, inflater );
-		inflater.inflate( R.menu.connection, menu );
+		inflater.inflate(R.menu.connection, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.fragment.CategoryList;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.VersionList;
 import jp.redmine.redmineclient.param.FilterArgument;
@@ -115,6 +116,22 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 			@Override
 			public CharSequence getName() {
 				return getActivity().getString(R.string.ticket_version);
+			}
+		});
+
+
+		// category
+		list.add(new CorePager.PageFragment() {
+			@Override
+			public Fragment getFragment() {
+				ProjectArgument arg = new ProjectArgument();
+				arg.setArgument(getArguments(), true);
+				return CategoryList.newInstance(arg);
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getActivity().getString(R.string.ticket_category);
 			}
 		});
 		ViewPager viewPager = (ViewPager) getView().findViewById(R.id.pager);

@@ -196,8 +196,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
-		ListView listView = (ListView) parent;
-		Object listitem = listView.getItemAtPosition(position);
+		Object listitem = parent.getItemAtPosition(position);
 		if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
 		{
 			return;

@@ -14,6 +14,7 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.form.RedmineIssueFilterHeader;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -49,6 +50,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
+	private View mHeader;
 	private long lastPos = -1;
 
 	private IssueActionInterface mListener;
@@ -92,6 +94,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onActivityCreated(savedInstanceState);
 
 		getListView().addFooterView(mFooter);
+		getListView().addHeaderView(mHeader);
 
 		getListView().setFastScrollEnabled(true);
 
@@ -156,6 +159,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
+		mHeader = inflater.inflate(R.layout.filterheader,null);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
@@ -243,6 +247,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		adapter.notifyDataSetInvalidated();
 		adapter.notifyDataSetChanged();
+		RedmineIssueFilterHeader form = new RedmineIssueFilterHeader(mHeader);
+		form.setValue(adapter.getParameter());
 
 	}
 

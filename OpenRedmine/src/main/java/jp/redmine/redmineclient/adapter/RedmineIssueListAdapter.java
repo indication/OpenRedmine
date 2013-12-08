@@ -91,4 +91,7 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 		}
 	}
 
+	public RedmineFilter getParameter(){
+		return filter;
+	}
 }

@@ -37,7 +37,7 @@ public class RedmineIssueFilterHeader {
 		addRow(item.getTracker(), R.string.ticket_tracker);
 		addRow(item.getVersion(), R.string.ticket_version);
 
-		if (TextUtils.isEmpty(item.getSort())) {
+		if (!TextUtils.isEmpty(item.getSort())) {
 			RedmineFilterSortItem sort = RedmineFilterSortItem.setupFilter(new RedmineFilterSortItem(), item.getSort());
 			String sort_name = sort == null ? "" : layoutTable.getContext().getString(sort.getResource());
 			layoutTable.addView(generateRow(layoutTable.getContext(), sort_name, R.string.ticket_sort));

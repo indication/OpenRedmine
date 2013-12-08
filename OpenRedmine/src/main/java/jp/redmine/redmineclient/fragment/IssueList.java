@@ -131,7 +131,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount) {
+			                     int visibleItemCount, int totalItemCount) {
 				if (totalItemCount == firstVisibleItem + visibleItemCount) {
 					if(task != null && task.getStatus() == Status.RUNNING)
 						return;
@@ -196,6 +196,11 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
+		if(v == mHeader){
+			if(adapter != null && adapter.getParameter() != null && adapter.getParameter().isCurrent() == true)
+				intentFilterAction();
+			return;
+		}
 		Object listitem = parent.getItemAtPosition(position);
 		if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
 		{
@@ -301,6 +306,16 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
+	protected void intentFilterAction(){
+		ProjectArgument intent = new ProjectArgument();
+		intent.setArgument( getArguments() );
+		ProjectArgument send = new ProjectArgument();
+		send.setIntent( getActivity(), FilterViewActivity.class );
+		send.setConnectionId(intent.getConnectionId());
+		send.setProjectId(intent.getProjectId());
+		startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -313,13 +328,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 			case R.id.menu_issues_filter:
 			{
-				ProjectArgument intent = new ProjectArgument();
-				intent.setArgument( getArguments() );
-				ProjectArgument send = new ProjectArgument();
-				send.setIntent( getActivity(), FilterViewActivity.class );
-				send.setConnectionId(intent.getConnectionId());
-				send.setProjectId(intent.getProjectId());
-				startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
+				intentFilterAction();
 				return true;
 			}
 			case R.id.menu_access_addnew:

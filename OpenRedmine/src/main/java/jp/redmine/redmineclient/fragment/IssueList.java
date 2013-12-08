@@ -14,6 +14,7 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.form.RedmineIssueFilterHeader;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -49,6 +50,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
+	private View mHeader;
 	private long lastPos = -1;
 
 	private IssueActionInterface mListener;
@@ -92,6 +94,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onActivityCreated(savedInstanceState);
 
 		getListView().addFooterView(mFooter);
+		getListView().addHeaderView(mHeader);
 
 		getListView().setFastScrollEnabled(true);
 
@@ -128,7 +131,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount) {
+			                     int visibleItemCount, int totalItemCount) {
 				if (totalItemCount == firstVisibleItem + visibleItemCount) {
 					if(task != null && task.getStatus() == Status.RUNNING)
 						return;
@@ -156,6 +159,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
+		mHeader = inflater.inflate(R.layout.filterheader,null);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
@@ -192,8 +196,12 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
-		ListView listView = (ListView) parent;
-		Object listitem = listView.getItemAtPosition(position);
+		if(v == mHeader){
+			if(adapter != null && adapter.getParameter() != null && adapter.getParameter().isCurrent() == true)
+				intentFilterAction();
+			return;
+		}
+		Object listitem = parent.getItemAtPosition(position);
 		if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
 		{
 			return;
@@ -243,6 +251,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		adapter.notifyDataSetInvalidated();
 		adapter.notifyDataSetChanged();
+		RedmineIssueFilterHeader form = new RedmineIssueFilterHeader(mHeader);
+		form.setValue(adapter.getParameter());
 
 	}
 
@@ -296,6 +306,16 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
+	protected void intentFilterAction(){
+		ProjectArgument intent = new ProjectArgument();
+		intent.setArgument( getArguments() );
+		ProjectArgument send = new ProjectArgument();
+		send.setIntent( getActivity(), FilterViewActivity.class );
+		send.setConnectionId(intent.getConnectionId());
+		send.setProjectId(intent.getProjectId());
+		startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -308,13 +328,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 			case R.id.menu_issues_filter:
 			{
-				ProjectArgument intent = new ProjectArgument();
-				intent.setArgument( getArguments() );
-				ProjectArgument send = new ProjectArgument();
-				send.setIntent( getActivity(), FilterViewActivity.class );
-				send.setConnectionId(intent.getConnectionId());
-				send.setProjectId(intent.getProjectId());
-				startActivityForResult(send.getIntent(), ACTIVITY_FILTER);
+				intentFilterAction();
 				return true;
 			}
 			case R.id.menu_access_addnew:

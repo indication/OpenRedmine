@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion '18.1.1'
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 18
+
+        versionCode 34
+        versionName '3.4'
+    }
+    signingConfigs {
+        release
+    }
+    buildTypes {
+        debug {
+            debuggable true
+            zipAlign true
+        }
+        release {
+            //runProguard true
+            //proguardFile getDefaultProguardFile('proguard-android.txt')
+            //proguardFile file('proguard-project.txt')
+
+            debuggable false
+            zipAlign true
+            signingConfig signingConfigs.release
+        }
+
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile 'com.andreabaccega:android-form-edittext:1.0.4'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abs:+'
+    compile 'se.emilsjolander:stickylistheaders:2.+'
+    compile 'com.j256.ormlite:ormlite-core:4.+@jar'
+    compile 'com.j256.ormlite:ormlite-android:4.+@jar'
+    compile 'org.apache.commons:commons-lang3:3.1@jar'
+compile 'net.java:textile-j:2.2'
+compile project(':Transdroid')
+}
+
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.release.keyAlias = keyAlias
+}
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.release.keyPassword = keyPassword
+}
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.release.storeFile = file(storeFile)
+}
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.release.storePassword = storePassword
+}

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="net.java:textile-j:2.2" type="repository">
+    <properties maven-id="net.java:textile-j:2.2" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/java/textile-j/2.2/textile-j-2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

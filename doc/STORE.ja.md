@@ -4,7 +4,7 @@ OpenRedmine
 
 Description
 ==========
-OpenRedmine はアンドロイドクライアントです。
+OpenRedmine はアンドロイド用Redmineクライアントです。
 
 必須用件:
 * Redmine 1.2 以降

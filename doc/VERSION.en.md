@@ -5,6 +5,12 @@ Release history
 Next Release
 ===========
 
+v3.4 - 34 - 2013/12/09
+===========
+- Switch list via swipe
+- Support pull to refresh
+- (Internal changes) Port to Android Studio
+
 v3.3 - 33 - 2013/11/06
 ===========
 - Download file related with issues

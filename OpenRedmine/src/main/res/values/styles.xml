@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" >
+	<style name="ThemeDefault" parent="Theme.Sherlock">
+	    <item name="android:actionBarStyle">@android:style/Widget.DeviceDefault.Light.ActionBar</item>
+	</style>
+	<style name="ThemeDark" parent="Theme.Sherlock.Light.DarkActionBar">
+	    <item name="android:actionBarStyle">@android:style/Widget.DeviceDefault.Light.ActionBar</item>
+	</style>
+	<style name="ThemeLight" parent="Theme.Sherlock.Light">
+	    <item name="android:actionBarStyle">@android:style/Widget.DeviceDefault.ActionBar</item>
+	</style>
+</resources>

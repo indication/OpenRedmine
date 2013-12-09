@@ -61,6 +61,9 @@ Used references
 - Open file via intent from "PG Senki hikaruright"
   http://d.hatena.ne.jp/hikaruright/20120119/1326965685
 
+- Support gradle release from "ogaclejapan"
+  http://ogaclejapan.com/android/2013/07/07/new-build-system-part2-for-gradle/
+
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs

@@ -13,7 +13,7 @@
         android:numericShortcut="9"
         android:alphabeticShortcut="c"/>
     <item android:id="@+id/menu_delete"
-        android:title="@string/menu_setting_list_menu_delete"
+        android:title="@string/delete"
         android:icon="@android:drawable/ic_menu_delete"
         android:numericShortcut="7"
         android:alphabeticShortcut="d"/>

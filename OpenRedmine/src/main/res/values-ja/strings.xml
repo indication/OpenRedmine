@@ -99,7 +99,7 @@
 	<string name="menu_setting_list_menu_title">%1$s :</string>
 	<string name="menu_setting_list_menu_edit">編集</string>
 	<string name="menu_setting_list_menu_comment">コメント</string>
-	<string name="menu_setting_list_menu_delete">削除</string>
+	<string name="delete">削除</string>
 	<string name="menu_settings_loading"><![CDATA[データを受信中....]]></string>
 	<string name="menu_settings_uploading"><![CDATA[データを送信中....]]></string>
 	<string name="menu_confirm_delete_msg">この接続を削除してもよいですか？</string>

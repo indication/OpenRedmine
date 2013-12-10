@@ -102,9 +102,6 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="menu_settings_loading">Retreiving item data.. </string>
 	<string name="menu_settings_uploading">Posting item data.. </string>
 	<string name="menu_confirm_delete_msg">Are you sure you want to delete this connection?</string>
-	<string name="menu_config_delete_yes">Yes</string>
-	<string name="menu_config_delete_no">No</string>
-	<string name="menu_cancel">Cancel</string>
 	<string name="preference_category_issue">Issues</string>
 	<string name="preference_issue_get_all">Get all issues</string>
 	<string name="preference_issue_description_get_all">By default, fetch UNCLOSED issues from remote. If you wish to get all issues from remote, check this option.</string>
@@ -180,8 +177,6 @@ Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I
 	<string name="menu_setting_message_accesstoken">NOTE: To get AccessToken, press \"Get token\" button.</string>
 	<string name="menu_powered_by_icon">icons by</string>
 	<string name="menu_add_timeentry">Record Time</string>
-	<string name="button_ok">OK</string>
-	<string name="button_cancel">Cancel</string>
 	<string name="menu_filter">Filter</string>
 	<string name="filter_none">None</string>
 	<string name="edit">Edit</string>

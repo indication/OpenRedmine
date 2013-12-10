@@ -5,6 +5,10 @@ Release history
 Next Release
 ===========
 
+v3.4 - 35 - 2013/12/10
+===========
+- Fix crash on Android 2.3
+
 v3.4 - 34 - 2013/12/09
 ===========
 - Switch list via swipe

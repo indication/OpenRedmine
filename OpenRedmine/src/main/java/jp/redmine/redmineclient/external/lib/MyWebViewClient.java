@@ -101,7 +101,7 @@ public class MyWebViewClient extends WebViewClient {
 		mHttpAuthDialog.setTitle(view.getContext().getString(R.string.menu_setting_check_auth))
 			.setView(view)
 			.setCancelable(false)
-			.setPositiveButton(view.getContext().getString(R.string.button_ok)
+			.setPositiveButton(view.getContext().getString(android.R.string.ok)
 				, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 
@@ -114,7 +114,7 @@ public class MyWebViewClient extends WebViewClient {
 					handler.proceed(userName, userPass);
 				}
 			})
-			.setNegativeButton(view.getContext().getString(R.string.button_cancel)
+			.setNegativeButton(view.getContext().getString(android.R.string.cancel)
 				, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					handler.cancel();

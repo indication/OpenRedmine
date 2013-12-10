@@ -7,7 +7,7 @@
         android:numericShortcut="1"
          android:alphabeticShortcut="s" />
     <item android:id="@+id/menu_cancel"
-        android:title="@string/menu_cancel"
+        android:title="@android:string/cancel"
         android:showAsAction="ifRoom"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
         android:numericShortcut="9"

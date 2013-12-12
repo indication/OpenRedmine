@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.parser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineRole;
@@ -22,7 +23,7 @@ public class ParserRole extends BaseParserInternal<RedmineConnection, RedmineRol
 
 	@Override
 	protected void parseInternal(RedmineConnection con, RedmineRole item)
-			throws XmlPullParserException, IOException {
+			throws XmlPullParserException, IOException, SQLException {
 		if (xml.getDepth() <= 2)
 			return;
 		if (equalsTagName("id")) {

@@ -40,7 +40,7 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 
 	@Override
 	protected void parseInternal(RedmineConnection con, RedmineIssue item)
-			throws XmlPullParserException, IOException{
+			throws XmlPullParserException, IOException, SQLException{
 		if(xml.getDepth() <= 1)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){
@@ -125,11 +125,7 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			};
 
 			parserJournal.registerDataCreation(handler);
-			try {
-				parserJournal.parse(item);
-			} catch (SQLException e) {
-				Log.e(TAG,"parseInternal",e);
-			}
+			parserJournal.parse(item);
 			parserJournal.unregisterDataCreation(handler);
 			item.setJournals(journals);
 
@@ -146,11 +142,7 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			};
 
 			parserAttachment.registerDataCreation(handler);
-			try {
-				parserAttachment.parse(item);
-			} catch (SQLException e) {
-				Log.e(TAG,"parseInternal",e);
-			}
+			parserAttachment.parse(item);
 			parserAttachment.unregisterDataCreation(handler);
 			item.setAttachments(attachments);
 

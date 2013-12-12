@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.parser;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -22,7 +23,7 @@ public class ParserEnumerationTimeEntryActivity extends BaseParserInternal<Redmi
 
 	@Override
 	protected void parseInternal(RedmineConnection con, RedmineTimeActivity item)
-			throws XmlPullParserException, IOException{
+			throws XmlPullParserException, IOException, SQLException {
 		if(xml.getDepth() <= 2)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){

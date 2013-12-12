@@ -31,7 +31,7 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 	}
 	@Override
 	protected void parseInternal(RedmineIssue con, RedmineJournal journal)
-			throws XmlPullParserException, IOException{
+			throws XmlPullParserException, IOException, SQLException{
 
 
 		if("id".equalsIgnoreCase(xml.getName())){
@@ -57,11 +57,7 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 			};
 
 			parserDetails.registerDataCreation(handler);
-			try {
-				parserDetails.parse(journal);
-			} catch (SQLException e) {
-				Log.e("parserIssue","",e);
-			}
+			parserDetails.parse(journal);
 			parserDetails.unregisterDataCreation(handler);
 			journal.setDetails(details);
 		}

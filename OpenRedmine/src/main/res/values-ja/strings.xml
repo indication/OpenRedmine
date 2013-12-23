@@ -105,5 +105,6 @@
 	<string name="size">サイズ</string>
 	<string name="progress">進捗</string>
 	<string name="download">ダウンロード</string>
+	<string name="wiki">Wiki</string>
 
 </resources>

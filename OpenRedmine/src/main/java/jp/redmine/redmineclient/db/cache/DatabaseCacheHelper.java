@@ -18,6 +18,8 @@ import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.entity.RedmineWiki;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -28,7 +30,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=10;
+	private static int DB_VERSION=11;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -57,6 +59,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(source, RedmineTimeActivity.class);
 			TableUtils.createTable(source, RedmineIssueRelation.class);
 			TableUtils.createTable(source, RedmineAttachment.class);
+			TableUtils.createTable(source, RedmineWiki.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -94,6 +97,8 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				TableUtils.createTable(source, RedmineAttachment.class);
 			case 9:
 				addColumn(db,RedmineRole.class,"permissions TEXT");
+			case 10:
+				TableUtils.createTable(source, RedmineWiki.class);
 				break;
 			}
 

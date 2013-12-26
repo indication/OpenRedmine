@@ -56,7 +56,9 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 		final ParserWiki parser = new ParserWiki();
 		parser.registerDataCreation(new DataCreationHandler<RedmineProject,RedmineWiki>() {
 			public void onData(RedmineProject con,RedmineWiki data) throws SQLException {
-				model.refreshItem(connection, con.getId(),data);
+				data.setProject(con);
+				data.setConnectionId(con.getConnectionId());
+				model.refreshItem(con.getConnectionId(), con.getId(),data);
 			}
 		});
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {

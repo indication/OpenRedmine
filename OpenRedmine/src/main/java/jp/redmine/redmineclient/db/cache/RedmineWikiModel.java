@@ -121,7 +121,7 @@ public class RedmineWikiModel implements IMasterModel<RedmineWiki> {
 		data.setConnectionId(connection_id);
 		if(project.getId() == null){
 			this.insert(data);
-			project = fetchById(connection_id, data.getProject().getId(), data.getTitle());
+			project = fetchById(connection_id, project_id, data.getTitle());
 		} else {
 			data.setId(project.getId());
 			if(project.getModified() == null){

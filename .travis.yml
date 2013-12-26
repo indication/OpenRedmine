@@ -3,10 +3,42 @@ language: java
 notifications:
   email: false
 
+jdk:
+  - openjdk6
+
+# powered by http://www.msebera.cz/en/2013/09/27/android-gradle-config-for-travis-ci/ 
 before_install:
-  - wget http://dl.google.com/android/android-sdk_r21-linux.tgz
-  - tar -zxf android-sdk_r21-linux.tgz
-  - export ANDROID_HOME=$(pwd)/android-sdk-linux
-  - export PATH=${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${PATH}
-  - android update sdk --filter platform-tools,android-16 --no-ui --force
-  - git clone https://github.com/indication/android-form-edittext.git ../android-form-edittext
+  # environment info
+  - gradle -v
+  - uname -a
+  # required libs for android build tools
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get update; fi
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
+  # for gradle output style
+  # only needed for Travis, not for standard xterm
+  - export TERM=dumb
+  # newer version of gradle
+  - wget http://services.gradle.org/distributions/gradle-1.8-bin.zip
+  - unzip -qq gradle-1.8-bin.zip
+  # Having GRADLE_HOME property will make Travis CI use it for build
+  - export GRADLE_HOME=$PWD/gradle-1.8
+  - export PATH=$GRADLE_HOME/bin:$PATH
+  # newest android SDK 22.0.5
+  - wget http://dl.google.com/android/android-sdk_r22.0.5-linux.tgz
+  - tar -zxf android-sdk_r22.0.5-linux.tgz
+  - export ANDROID_HOME=`pwd`/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  # manually set sdk.dir variable, according to local paths
+  - echo "sdk.dir=$ANDROID_HOME" > local.properties
+  # "echo yes |" part is to accept license from android sdk manager tool
+  - echo yes | android update sdk -t tools,platform-tools,extra-android-support,extra-android-m2repository,android-18 --force --no-ui
+  # build tools cannot be installed through "android update sdk" as of now
+  - wget http://dl.google.com/android/repository/build-tools_r18.0.1-linux.zip
+  - mkdir -p $ANDROID_HOME/build-tools
+  - unzip -qq build-tools_r18.0.1-linux.zip -d $ANDROID_HOME/build-tools/
+  - mv $ANDROID_HOME/build-tools/android-4.3 $ANDROID_HOME/build-tools/18.0.1
+  # verify files exist in right paths
+  - find $ANDROID_HOME/build-tools
+  - file $ANDROID_HOME/build-tools/18.0.1/aapt
+
+

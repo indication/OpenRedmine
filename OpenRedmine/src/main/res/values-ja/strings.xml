@@ -1,86 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- The content of app_description is out of GPL. Those paragraph is own by author -->
-	<string name="app_description"><![CDATA[
-「企業生活を振り返って」
-
-
-
-
-
-
-
-
-
-
-
-
-
-管理とは嘘であり
-
-
-
-
-
-
-
-
-
-
-
-悪である。
-
-
-
-
-
-
-
-
-
-
-
-管理を謳歌せし者たちは常に自己と周囲を欺き自己のを取り巻く環境のすべてを肯定的に捉える。
-
-
-
-
-彼らは管理の二文字の前ならばどんな一般的な解釈も社会通念も捻じ曲げて見てる。
-
-彼らにかかれば嘘も秘密も罪とがも失敗さえも管理のスパイスでしかないのだ。
-
-
-
-
-仮に失敗することが管理の証であるなら、
-
-プロジェクト作りに失敗した人間もまた
-
-管理ど真ん中でなければおかしいではないか。
-
-
-
-
-しかし、彼らはそれを認めないだろう。すべては彼らのご都合主義でしかない。
-
-
-結論を言おう。管理を楽しむ愚か者ども、砕け散れ。
-
-
-
-
-引用元: "やはり俺の青春ラブコメはまちがっている。" 第1話より引用(改変)
-©2013 渡 航、小学館／やはりこの製作委員会はまちがっている。
-
-
-]]></string>
-	<string name="app_name">OpenRedmine</string>
-	<string name="product">製品</string>
-	<string name="production">製作</string>
-	<string name="app_production">やはり俺のレッドマインはまちがっている。</string>
-	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
-
- ]]></string>
 	<string name="menu_settings">設定</string>
 	<string name="menu_access_to">接続</string>
 	<string name="menu_setting_label_accessurl">Redmine URL</string>
@@ -91,38 +10,22 @@
 	<string name="menu_setting_edit_authid">Basic認証 ID</string>
 	<string name="menu_setting_label_authpasswd">パスワード</string>
 	<string name="menu_setting_edit_authpasswd">Basic認証パスワード</string>
-	<string name="menu_setting_edit_name">名称</string>
-	<string name="menu_setting_label_name">ラベル名</string>
-	<string name="menu_setting_button_save">保存</string>
-	<string name="add_new_item">追加</string>
+	<string name="name">名称</string>
+	<string name="label_name">ラベル名</string>
+	<string name="save">保存</string>
+	<string name="add">追加</string>
 	<string name="menu_setting_check_auth">HTTP ベーシック認証</string>
 	<string name="menu_setting_list_menu_title">%1$s :</string>
-	<string name="menu_setting_list_menu_edit">編集</string>
-	<string name="menu_setting_list_menu_comment">コメント</string>
-	<string name="menu_setting_list_menu_delete">削除</string>
+	<string name="comment">コメント</string>
+	<string name="delete">削除</string>
 	<string name="menu_settings_loading"><![CDATA[データを受信中....]]></string>
 	<string name="menu_settings_uploading"><![CDATA[データを送信中....]]></string>
 	<string name="menu_confirm_delete_msg">この接続を削除してもよいですか？</string>
-	<string name="menu_config_delete_yes">はい</string>
-	<string name="menu_config_delete_no">いいえ</string>
-	<string name="menu_cancel">キャンセル</string>
 	<string name="preference_category_issue">チケット</string>
 	<string name="preference_issue_get_all">すべてを取得する</string>
 	<string name="preference_issue_description_get_all">リモートからチケットを取得するとき、終了していないチケットのみを取得します。すべてを取得する場合はチェックを入れてください。</string>
 	<string name="preference_category_appearance">表示</string>
 	<string name="preference_category_appearance_themes">テーマ</string>
-	<string-array name="preference_appearance_themes_entries">
-		<item >デフォルト</item>
-		<item >暗い</item>
-		<item >明るい</item>
-		<item >Holo 明るい</item>
-	</string-array>
-	<string-array name="preference_appearance_themes_values">
-		<item >default</item>
-		<item >dark</item>
-		<item >light</item>
-		<item >hololight</item>
-	</string-array>
 	<string name="menu_refresh">更新</string>
 	<string name="menu_setting_permit_unsafe">信頼できないSSL接続を許可する</string>
 	<string name="menu_setting_label_certkey">証明書キー (オプション)</string>
@@ -181,8 +84,6 @@
 	<string name="menu_setting_message_accesstoken">ノート: アクセストークンを自動的に取得するには \"取得\"ボタンを押してください。</string>
 	<string name="menu_powered_by_icon">icons by</string>
 	<string name="menu_add_timeentry">時間を記録</string>
-	<string name="button_ok">OK</string>
-	<string name="button_cancel">キャンセル</string>
 	<string name="menu_filter">フィルタ</string>
 	<string name="filter_none">選択なし</string>
 	<string name="edit">編集</string>

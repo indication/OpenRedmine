@@ -8,7 +8,7 @@
     android:drawableLeft="@android:drawable/ic_menu_add"
     android:drawablePadding="5dp"
     android:padding="10dp"
-    android:text="@string/add_new_item"
+    android:text="@string/add"
     android:textAppearance="?android:attr/textAppearanceMedium" >
 
 </TextView>

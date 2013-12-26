@@ -11,6 +11,8 @@ before_install:
   # environment info
   - gradle -v
   - uname -a
+  # fix gradlew: Permission denied
+  - chmod +x gradlew
   # required libs for android build tools
   - if [ `uname -m` = x86_64 ]; then sudo apt-get update; fi
   - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi

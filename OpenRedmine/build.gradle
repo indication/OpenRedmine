@@ -37,7 +37,9 @@ android {
 
             debuggable false
             zipAlign true
-            signingConfig signingConfigs.release
+            if (project.hasProperty('keyAlias')) {
+                signingConfig signingConfigs.release
+            }
         }
 
     }

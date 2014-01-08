@@ -1,5 +1,7 @@
 package jp.redmine.redmineclient.parser;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -25,7 +27,7 @@ public class ParserWiki extends BaseParserInternal<RedmineProject,RedmineWiki> {
 	@Override
 	protected void parseInternal(RedmineProject con, RedmineWiki item)
 			throws XmlPullParserException, IOException, SQLException {
-		if(xml.getDepth() <= 2)
+		if(xml.getDepth() < 2)
 			return;
 		if(equalsTagName("title")){
 			item.setTitle(getNextText());

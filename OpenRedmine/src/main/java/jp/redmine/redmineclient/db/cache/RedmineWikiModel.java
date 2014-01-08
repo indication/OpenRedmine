@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
@@ -116,9 +117,10 @@ public class RedmineWikiModel implements IMasterModel<RedmineWiki> {
 	public RedmineWiki refreshItem(int connection_id,long project_id,RedmineWiki data) throws SQLException{
 		if(data == null)
 			return null;
-
+		Calendar now = Calendar.getInstance();
 		RedmineWiki project = this.fetchById(connection_id, project_id, data.getTitle());
 		data.setConnectionId(connection_id);
+		data.setDataModified(now.getTime());
 		if(project.getId() == null){
 			this.insert(data);
 			project = fetchById(connection_id, project_id, data.getTitle());
@@ -130,9 +132,7 @@ public class RedmineWikiModel implements IMasterModel<RedmineWiki> {
 			if(data.getModified() == null){
 				data.setModified(new java.util.Date());
 			}
-			if(project.getModified().after(data.getModified())){
-				this.update(data);
-			}
+			this.update(data);
 		}
 
 		return project;

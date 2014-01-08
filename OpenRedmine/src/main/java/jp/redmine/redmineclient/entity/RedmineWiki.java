@@ -38,17 +38,19 @@ public class RedmineWiki {
 	private Date created;
 	@DatabaseField
 	private Date modified;
+	@DatabaseField
+	private Date data_modified;
 	//supports for nested sort
 	@DatabaseField
 	private int rgt;
 	@DatabaseField
 	private int lft;
 
-	public Date getData_modified() {
+	public Date getDataModified() {
 		return data_modified;
 	}
 
-	public void setData_modified(Date data_modified) {
+	public void setDataModified(Date data_modified) {
 		this.data_modified = data_modified;
 	}
 
@@ -59,9 +61,6 @@ public class RedmineWiki {
 	public void setAttachments(List<RedmineAttachment> attachments) {
 		this.attachments = attachments;
 	}
-
-	@DatabaseField
-	private Date data_modified;
 
 	private List<RedmineAttachment> attachments;
 

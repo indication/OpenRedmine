@@ -11,16 +11,12 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
-import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
-import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.parser.ParserWiki;
-import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 import jp.redmine.redmineclient.url.RemoteUrlWiki;
 
 public class SelectWikiTask extends SelectDataTask<Void,String> {

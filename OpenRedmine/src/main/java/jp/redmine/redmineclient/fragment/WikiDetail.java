@@ -3,38 +3,39 @@ package jp.redmine.redmineclient.fragment;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.webkit.WebView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.j256.ormlite.android.apptools.OrmLiteListFragment;
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
+
+import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
-import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineWikiListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineWiki;
+import jp.redmine.redmineclient.form.helper.TextileHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
-import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.param.WikiArgument;
 import jp.redmine.redmineclient.task.SelectWikiTask;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
-	private static final String TAG = WikiList.class.getSimpleName();
-	private RedmineWikiListAdapter adapter;
+public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
+	private static final String TAG = WikiDetail.class.getSimpleName();
 	private SelectDataTask task;
-	private View mFooter;
 	private MenuItem menu_refresh;
+	private TextileHelper webViewHelper;
 
 	private WebviewActionInterface mListener;
 
@@ -62,12 +63,12 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			task.cancel(true);
 		}
 	}
-	public WikiList(){
+	public WikiDetail(){
 		super();
 	}
 
-	static public WikiList newInstance(ProjectArgument arg){
-		WikiList fragment = new WikiList();
+	static public WikiDetail newInstance(WikiArgument arg){
+		WikiDetail fragment = new WikiDetail();
 		fragment.setArguments(arg.getArgument());
 		return fragment;
 	}
@@ -75,35 +76,33 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onDestroyView() {
 		cancelTask();
-		setListAdapter(null);
 		super.onDestroyView();
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		getListView().setFastScrollEnabled(true);
-
-		adapter = new RedmineWikiListAdapter(getHelper());
-		ProjectArgument intent = new ProjectArgument();
-		intent.setArgument(getArguments());
-		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		adapter.notifyDataSetChanged();
-		setListAdapter(adapter);
-
+		webViewHelper.setAction(mListener);
+		webViewHelper.setup();
+		loadWebView(true);
 
 	}
 
-	@Override
-	public void onListItemClick(ListView listView, View v, int position, long id) {
-		super.onListItemClick(listView, v, position, id);
-		Object listitem = listView.getItemAtPosition(position);
-		if(listitem == null || !RedmineWiki.class.isInstance(listitem)  )
-		{
-			return;
+	public void loadWebView(boolean isRefresh){
+		RedmineWikiModel model = new RedmineWikiModel(getHelper());
+		WikiArgument intent = new WikiArgument();
+		intent.setArgument(getArguments());
+		try {
+			RedmineWiki wiki = model.fetchById(intent.getConnectionId(), intent.getProjectId(), intent.getWikiTitle());
+			if(wiki.getId() != null){
+
+				webViewHelper.setContent(intent.getConnectionId(),intent.getProjectId(), wiki.getBody());
+			} else if(isRefresh) {
+				onRefresh();
+			}
+		} catch (SQLException e) {
+			Log.e(TAG, "loadWebView", e);
 		}
-		RedmineWiki item = (RedmineWiki) listitem;
-		mListener.wiki(item.getConnectionId(),item.getProject().getId(),item.getTitle());
 	}
 
 	private class SelectDataTask extends SelectWikiTask {
@@ -114,7 +113,6 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		// can use UI thread here
 		@Override
 		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
 			if(mPullToRefreshLayout != null && !mPullToRefreshLayout.isRefreshing())
@@ -124,29 +122,24 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		// can use UI thread here
 		@Override
 		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
+			loadWebView(false);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 			if(mPullToRefreshLayout != null)
 				mPullToRefreshLayout.setRefreshComplete();
 		}
 
-		@Override
-		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
-		}
 	}
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		mFooter = inflater.inflate(R.layout.listview_footer,null);
-		mFooter.setVisibility(View.GONE);
-		return super.onCreateView(inflater, container, savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.webview, container, false);
+		WebView mWebView = (WebView) view.findViewById(R.id.webView);
+		webViewHelper = new TextileHelper(mWebView);
+		return view;
 	}
+
 	private PullToRefreshLayout mPullToRefreshLayout;
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -165,7 +158,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 				// We need to mark the ListView and it's Empty View as pullable
 				// This is because they are not dirent children of the ViewGroup
-				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
+				.theseChildrenArePullable(R.id.webView)
 
 				// We can now complete the setup as desired
 				.listener(new OnRefreshListener() {
@@ -176,20 +169,20 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 				})
 				.setup(mPullToRefreshLayout);
 	}
+
 	protected void onRefresh(){
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
 			return;
 		}
-		ProjectArgument intent = new ProjectArgument();
+		WikiArgument intent = new WikiArgument();
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		ConnectionModel mConnection = new ConnectionModel(getActivity());
 		RedmineConnection connection = mConnection.getItem(id);
 		mConnection.finalize();
 		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
-		task.execute("");
+		task.execute(intent.getWikiTitle());
 	}
-
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.refresh, menu);

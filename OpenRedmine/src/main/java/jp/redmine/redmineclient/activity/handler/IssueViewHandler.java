@@ -10,10 +10,12 @@ import jp.redmine.redmineclient.fragment.IssueEdit;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.IssueTitle;
 import jp.redmine.redmineclient.fragment.IssueView;
+import jp.redmine.redmineclient.fragment.WikiDetail;
 import jp.redmine.redmineclient.fragment.pager.ProjectHome;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.param.WikiArgument;
 
 public class IssueViewHandler extends Core
 	implements IssueActionInterface, WebviewActionInterface {
@@ -128,6 +130,22 @@ public class IssueViewHandler extends Core
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		manager.kickActivity(intent);
 		return true;
+	}
+
+	@Override
+	public void wiki(int connection, long projectid, String title) {
+		final WikiArgument arg = new WikiArgument();
+		arg.setArgument();
+		arg.setConnectionId(connection);
+		arg.setProjectId(projectid);
+		arg.setWikiTitle(title);
+
+		runTransaction(new TransitFragment() {
+			@Override
+			public void action(FragmentTransaction tran) {
+				tran.replace(R.id.fragmentOne, WikiDetail.newInstance(arg));
+			}
+		}, null);
 	}
 
 }

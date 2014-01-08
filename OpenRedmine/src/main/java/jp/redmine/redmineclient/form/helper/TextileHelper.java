@@ -1,6 +1,9 @@
 package jp.redmine.redmineclient.form.helper;
 
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +28,8 @@ public class TextileHelper {
 	static public final String URL_PREFIX = "redmine://";
 	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
 	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
+	private Pattern patternWiki = Pattern.compile("\\[\\[([^\\]\\|]+?)\\]\\]");
+	private Pattern patternWikiAnchor = Pattern.compile("\\[\\[([^\\]\\|]+?)\\|([^\\]\\|]+?)\\]\\]");
 	private Pattern patternInlineUrl = Pattern.compile(
 			"\\b((" +
 			//START inherits from http://www.din.or.jp/~ohzaki/perl.htm#URI
@@ -87,24 +92,34 @@ public class TextileHelper {
 	}
 
 	protected boolean kickAction(String urlpath){
+		String encodeStr = urlpath;
+		try {
+			encodeStr = URLDecoder.decode(urlpath, "utf-8");
+		} catch (UnsupportedEncodingException e) {
 
-		String[] items = urlpath.split("/");
+		}
+		String[] items = encodeStr.split("/");
 		int cnt = items.length;
 		if(cnt < 3 || action == null){
 			/* do nothing */
 		} else if("issue".equals(items[0])){
 			action.issue(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]));
 			return true;
+		} else if("wiki".equals(items[0]) && cnt >= 3){
+			action.wiki(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]), items[3]);
+			return true;
 		}
 		return false;
 	}
 
-	protected String  extendHtml(int connection_id,String input){
-		return extendHtml(String.valueOf(connection_id),input);
+	protected String  extendHtml(int connection_id,long projectid,String input){
+		return extendHtml(String.valueOf(connection_id),String.valueOf(projectid),input);
 	}
-	protected String  extendHtml(String connection,String input){
+	protected String  extendHtml(String connection,String project,String input){
 		String result = "";
 		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1")+"$2");
+		result = patternWikiAnchor.matcher(result).replaceAll(getAnchor("$2","wiki/",connection,"/",project,"/","$1"));
+		result = patternWiki.matcher(result).replaceAll(getAnchor("$1","wiki/",connection,"/",project,"/","$1"));
 		result = patternInlineUrl.matcher(result).replaceAll("<a href=\"$1\">$1</a>");
 		return result;
 	}
@@ -122,8 +137,10 @@ public class TextileHelper {
 		return sb.toString();
 	}
 
-	public void setContent(int connectionid,String text){
-		String inner = extendHtml(connectionid,convertTextileToHtml(text));
+	public void setContent(int connectionid,long project,String text){
+		if (text == null)
+			return;
+		String inner = extendHtml(connectionid,project,convertTextileToHtml(text));
 		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 
 	}
@@ -135,7 +152,7 @@ public class TextileHelper {
 
 
 	static protected String reduceExternalHtml(String input, HashMap<String,String> export){
-		Pattern p = Pattern.compile("<\\s*pre\\s*>(.*)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);
+		Pattern p = Pattern.compile("<\\s*pre\\s*>(.+?)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);
 		String texttile = input;
 		Matcher m = p.matcher(texttile);
 

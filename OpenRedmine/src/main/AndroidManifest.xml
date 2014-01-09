@@ -28,6 +28,7 @@
 			</intent-filter>
         </activity>
         <activity android:name=".Pane1Activity"></activity>
+	    <activity android:name=".ConnectionActivity"></activity>
 	    <activity android:name=".ProjectActivity"></activity>
         <activity android:name=".ConnectionNaviActivity"></activity>
         <activity android:name=".FilterViewActivity"></activity>

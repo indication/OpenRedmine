@@ -23,24 +23,21 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
-import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
-import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
-import jp.redmine.redmineclient.fragment.CategoryList;
+import jp.redmine.redmineclient.fragment.IssueJump;
 import jp.redmine.redmineclient.fragment.IssueList;
-import jp.redmine.redmineclient.fragment.VersionList;
-import jp.redmine.redmineclient.fragment.WikiList;
+import jp.redmine.redmineclient.fragment.ProjectList;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
-import jp.redmine.redmineclient.param.ProjectArgument;
 
-public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
+public class ConnectionActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
-	private static final String TAG = ProjectActivity.class.getSimpleName();
-	public ProjectActivity(){
+	private static final String TAG = ConnectionActivity.class.getSimpleName();
+	public ConnectionActivity(){
 		super();
 	}
 
@@ -51,96 +48,70 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
 
+		/**
+		 * Add fragment on first view only
+		 * On rotate, this method would be called with savedInstanceState.
+		 */
+		if(savedInstanceState != null)
+			return;
+
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		actionBar.setDisplayShowTitleEnabled(true);
 
-		ProjectArgument intent = new ProjectArgument();
+		ConnectionArgument intent = new ConnectionArgument();
 		intent.setIntent(getIntent());
 
-		ProjectArgument argIssueList = new ProjectArgument();
-		argIssueList.setArgument();
-		argIssueList.setConnectionId(intent.getConnectionId());
-		argIssueList.setProjectId(intent.getProjectId());
+		// Project list
+		ConnectionArgument argProject = new ConnectionArgument();
+		argProject.setArgument();
+		argProject.setConnectionId(intent.getConnectionId());
 
 		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.ticket_issue)
-				.setTabListener(IssueList.newInstance(argIssueList))
-				.setIcon(R.drawable.ic_action_message)
+				.setText(R.string.ticket_project)
+				.setTabListener( ProjectList.newInstance(argProject))
 			);
 
 
+		// Direct issue jump list
+		ConnectionArgument argJump = new ConnectionArgument();
+		argJump.setArgument();
+		argJump.setConnectionId(intent.getConnectionId());
 
-		// current user
+		actionBar.addTab(actionBar.newTab()
+				.setText(R.string.ticket_jump)
+				.setTabListener( IssueJump.newInstance(argJump))
+		);
+
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
-		RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
-		RedmineProjectModel mProjectModel = new RedmineProjectModel(getHelper());
 		try {
-			RedmineProject project = mProjectModel.fetchById(intent.getProjectId());
 			final RedmineUser user = mUserModel.fetchCurrentUser(intent.getConnectionId());
 			if(user != null){
-				//setup parameter
 				RedmineFilter filter = new RedmineFilter();
 				filter.setConnectionId(intent.getConnectionId());
 				filter.setAssigned(user);
-				filter.setProject(project);
 				filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
+				RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
 				RedmineFilter target = mFilter.getSynonym(filter);
 				if (target == null) {
 					mFilter.insert(filter);
-					target = filter;
+					target = mFilter.getSynonym(filter);
 				}
-				FilterArgument param = new FilterArgument();
-				param.setArgument();
-				param.setConnectionId(intent.getConnectionId());
-				param.setProjectId(intent.getProjectId());
-				param.setFilterId(target.getId());
 
+				FilterArgument argIssue = new FilterArgument();
+				argIssue.setArgument();
+				argIssue.setConnectionId(intent.getConnectionId());
+				argIssue.setFilterId(target.getId());
 				actionBar.addTab(actionBar.newTab()
-						.setText(user.getName())
-						.setTabListener(IssueList.newInstance(param))
-						.setIcon(R.drawable.ic_action_user)
+						.setText(R.string.ticket_jump)
+						.setTabListener(IssueList.newInstance(argIssue))
 				);
 			}
 		} catch (SQLException e) {
-			Log.e(TAG, "fetchCurrentUser", e);
+			Log.e(TAG,"fetchCurrentUser", e);
 		}
 
-		// wiki
-		ProjectArgument argWiki = new ProjectArgument();
-		argWiki.setArgument();
-		argWiki.setConnectionId(intent.getConnectionId());
-		argWiki.setProjectId(intent.getProjectId());
-
-		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.wiki)
-				.setTabListener(WikiList.newInstance(argWiki))
-		);
-
-
-		// version
-		ProjectArgument argVersion = new ProjectArgument();
-		argVersion.setArgument();
-		argVersion.setConnectionId(intent.getConnectionId());
-		argVersion.setProjectId(intent.getProjectId());
-
-		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.ticket_version)
-				.setTabListener(VersionList.newInstance(argVersion))
-		);
-
-
-		// category
-		ProjectArgument argCategory = new ProjectArgument();
-		argCategory.setArgument();
-		argCategory.setConnectionId(intent.getConnectionId());
-		argCategory.setProjectId(intent.getProjectId());
-
-		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.ticket_category)
-				.setTabListener(CategoryList.newInstance(argCategory))
-		);
 	}
 
 	@SuppressWarnings("unchecked")

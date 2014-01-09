@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.fragment;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,12 +95,13 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 		intent.setArgument(getArguments());
 		try {
 			RedmineWiki wiki = model.fetchById(intent.getConnectionId(), intent.getProjectId(), intent.getWikiTitle());
-			if(wiki.getId() != null){
-
-				webViewHelper.setContent(intent.getConnectionId(),intent.getProjectId(), wiki.getBody());
-			} else if(isRefresh) {
+			String content = "";
+			if(isRefresh && TextUtils.isEmpty(wiki.getBody())) {
 				onRefresh();
+			} else {
+				content = wiki.getBody();
 			}
+			webViewHelper.setContent(intent.getConnectionId(),intent.getProjectId(), content);
 		} catch (SQLException e) {
 			Log.e(TAG, "loadWebView", e);
 		}

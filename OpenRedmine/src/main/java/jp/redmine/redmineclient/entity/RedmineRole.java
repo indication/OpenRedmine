@@ -17,8 +17,10 @@ public class RedmineRole {
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="role_target")
     private int role_id;
-    @DatabaseField
-    private String name;
+	@DatabaseField
+	private String name;
+	@DatabaseField
+	private String permissions;
     @DatabaseField
     private Date created;
     @DatabaseField
@@ -119,4 +121,11 @@ public class RedmineRole {
 		return connection_id;
 	}
 
+	public String getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(String permissions) {
+		this.permissions = permissions;
+	}
 }

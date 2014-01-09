@@ -23,7 +23,7 @@ public class ParserAttachment extends BaseParserInternal<RedmineIssue,RedmineAtt
 	}
 	@Override
 	protected void parseInternal(RedmineIssue con, RedmineAttachment attachment)
-			throws XmlPullParserException, IOException{
+			throws XmlPullParserException, IOException, SQLException{
 
 
 		if("id".equalsIgnoreCase(xml.getName())){

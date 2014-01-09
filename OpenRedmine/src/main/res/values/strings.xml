@@ -103,5 +103,6 @@
 	<string name="size">Size</string>
 	<string name="progress">Progress</string>
 	<string name="download">Download</string>
+	<string name="wiki">Wiki</string>
 
 </resources>

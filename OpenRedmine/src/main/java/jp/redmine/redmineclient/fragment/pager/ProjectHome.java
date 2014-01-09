@@ -26,6 +26,7 @@ import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.CategoryList;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.VersionList;
+import jp.redmine.redmineclient.fragment.WikiList;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
@@ -102,6 +103,21 @@ public class ProjectHome extends OrmLiteFragment<DatabaseCacheHelper> {
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);
 		}
+
+		// wiki
+		list.add(new CorePager.PageFragment() {
+			@Override
+			public Fragment getFragment() {
+				ProjectArgument arg = new ProjectArgument();
+				arg.setArgument(getArguments(), true);
+				return WikiList.newInstance(arg);
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getActivity().getString(R.string.wiki);
+			}
+		});
 
 
 		// version

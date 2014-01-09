@@ -24,7 +24,7 @@ public class ParserIssueRelations extends BaseParserInternal<RedmineIssue,Redmin
 	}
 	@Override
 	protected void parseInternal(RedmineIssue con, RedmineIssueRelation item)
-			throws XmlPullParserException, IOException{
+			throws XmlPullParserException, IOException, SQLException{
 
 		if(equalsTagName("id")){
 			item.setRelationId(getTextInteger());

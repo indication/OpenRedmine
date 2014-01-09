@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- Support wiki view
 
 v3.4 - 35 - 2013/12/10
 ===========

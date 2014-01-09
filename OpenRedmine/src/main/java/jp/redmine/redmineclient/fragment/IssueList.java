@@ -24,7 +24,9 @@ import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
+import com.actionbarsherlock.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -43,7 +45,9 @@ import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
+public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper>
+		implements ActionBar.TabListener
+{
 	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
 	private RedmineIssueListAdapter adapter;
@@ -355,4 +359,19 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		}
 	}
 
+	@Override
+	public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
+		fragmentTransaction.add(android.R.id.content, this);
+		fragmentTransaction.attach(this);
+	}
+
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
+		fragmentTransaction.detach(this);
+	}
+
+	@Override
+	public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
+
+	}
 }

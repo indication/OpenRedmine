@@ -3,11 +3,13 @@ package jp.redmine.redmineclient.fragment;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -29,7 +31,7 @@ import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefresh
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
+public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implements ActionBar.TabListener {
 	private static final String TAG = WikiList.class.getSimpleName();
 	private RedmineWikiListAdapter adapter;
 	private SelectDataTask task;
@@ -211,5 +213,21 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+		fragmentTransaction.add(android.R.id.content, this);
+		fragmentTransaction.attach(this);
+	}
+
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+		fragmentTransaction.detach(this);
+	}
+
+	@Override
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
 	}
 }

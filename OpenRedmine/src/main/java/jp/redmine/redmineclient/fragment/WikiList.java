@@ -217,7 +217,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.add(android.R.id.content, this);
+		fragmentTransaction.replace(android.R.id.content, this);
 		fragmentTransaction.attach(this);
 	}
 

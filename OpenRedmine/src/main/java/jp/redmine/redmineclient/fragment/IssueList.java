@@ -361,7 +361,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper>
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.add(android.R.id.content, this);
+		fragmentTransaction.replace(android.R.id.content, this);
 		fragmentTransaction.attach(this);
 	}
 

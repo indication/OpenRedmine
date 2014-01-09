@@ -101,7 +101,7 @@ public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.add(android.R.id.content, this);
+		fragmentTransaction.replace(android.R.id.content, this);
 		fragmentTransaction.attach(this);
 	}
 

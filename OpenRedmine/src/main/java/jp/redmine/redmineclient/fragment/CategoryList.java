@@ -102,7 +102,7 @@ public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> imple
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.add(android.R.id.content, this);
+		fragmentTransaction.replace(android.R.id.content, this);
 		fragmentTransaction.attach(this);
 	}
 

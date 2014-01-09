@@ -27,6 +27,7 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 * 変更点・関係するチケットの表示
 * チケット・時間記録の作成/更新
 * チケットに関するファイルのダウンロード(/sdcard/download/jp.redmine.redmineclient/ へ保存されます)
+* Wikiの参照
 
 アプリの権限:
 * ネットワーク通信(完全なインターネットアクセス) - Redmine サーバーへの接続

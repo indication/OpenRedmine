@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- Wiki‚Ì•\Ž¦‚É‘Î‰ž
 
 v3.4 - 35 - 2013/12/10
 ===========

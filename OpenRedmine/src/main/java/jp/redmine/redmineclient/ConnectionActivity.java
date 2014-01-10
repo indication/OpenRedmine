@@ -17,6 +17,7 @@ import jp.redmine.redmineclient.activity.handler.ConnectionListHandler;
 import jp.redmine.redmineclient.activity.handler.Core.ActivityRegistry;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.handler.IssueViewHandler;
+import jp.redmine.redmineclient.activity.helper.TabHelper;
 import jp.redmine.redmineclient.activity.handler.TimeEntryHandler;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
@@ -47,14 +48,9 @@ public class ConnectionActivity extends OrmLiteFragmentActivity<DatabaseCacheHel
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
+		setContentView(R.layout.fragment_one);
 
-		/**
-		 * Add fragment on first view only
-		 * On rotate, this method would be called with savedInstanceState.
-		 */
-		if(savedInstanceState != null)
-			return;
-
+		int target_layout = R.id.fragmentOne;
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -70,7 +66,8 @@ public class ConnectionActivity extends OrmLiteFragmentActivity<DatabaseCacheHel
 
 		actionBar.addTab(actionBar.newTab()
 				.setText(R.string.ticket_project)
-				.setTabListener( ProjectList.newInstance(argProject))
+				.setTabListener(new TabHelper(ProjectList.newInstance(argProject), target_layout))
+				.setIcon(android.R.drawable.ic_menu_mapmode)
 			);
 
 
@@ -81,7 +78,8 @@ public class ConnectionActivity extends OrmLiteFragmentActivity<DatabaseCacheHel
 
 		actionBar.addTab(actionBar.newTab()
 				.setText(R.string.ticket_jump)
-				.setTabListener( IssueJump.newInstance(argJump))
+				.setTabListener(new TabHelper(IssueJump.newInstance(argJump), target_layout))
+				.setIcon(android.R.drawable.ic_menu_directions)
 		);
 
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
@@ -104,8 +102,9 @@ public class ConnectionActivity extends OrmLiteFragmentActivity<DatabaseCacheHel
 				argIssue.setConnectionId(intent.getConnectionId());
 				argIssue.setFilterId(target.getId());
 				actionBar.addTab(actionBar.newTab()
-						.setText(R.string.ticket_jump)
-						.setTabListener(IssueList.newInstance(argIssue))
+						.setText(user.getName())
+						.setTabListener(new TabHelper(IssueList.newInstance(argIssue), target_layout))
+						.setIcon(R.drawable.ic_action_user)
 				);
 			}
 		} catch (SQLException e) {
@@ -146,4 +145,6 @@ public class ConnectionActivity extends OrmLiteFragmentActivity<DatabaseCacheHel
 			return (T) new AttachmentActionHandler(registry);
 		return null;
 	}
+
+
 }

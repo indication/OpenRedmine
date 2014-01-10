@@ -21,6 +21,7 @@ import jp.redmine.redmineclient.activity.handler.TimeEntryHandler;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
+import jp.redmine.redmineclient.activity.helper.TabHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
@@ -50,7 +51,9 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
+		setContentView(R.layout.fragment_one);
 
+		int target_layout = R.id.fragmentOne;
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -66,7 +69,7 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 
 		actionBar.addTab(actionBar.newTab()
 				.setText(R.string.ticket_issue)
-				.setTabListener(IssueList.newInstance(argIssueList))
+				.setTabListener(new TabHelper(IssueList.newInstance(argIssueList), target_layout))
 				.setIcon(R.drawable.ic_action_message)
 			);
 
@@ -99,7 +102,7 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 
 				actionBar.addTab(actionBar.newTab()
 						.setText(user.getName())
-						.setTabListener(IssueList.newInstance(param))
+						.setTabListener(new TabHelper(IssueList.newInstance(param), target_layout))
 						.setIcon(R.drawable.ic_action_user)
 				);
 			}
@@ -115,7 +118,7 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 
 		actionBar.addTab(actionBar.newTab()
 				.setText(R.string.wiki)
-				.setTabListener(WikiList.newInstance(argWiki))
+				.setTabListener(new TabHelper(WikiList.newInstance(argWiki), target_layout))
 		);
 
 
@@ -127,7 +130,7 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 
 		actionBar.addTab(actionBar.newTab()
 				.setText(R.string.ticket_version)
-				.setTabListener(VersionList.newInstance(argVersion))
+				.setTabListener(new TabHelper(VersionList.newInstance(argVersion), target_layout))
 		);
 
 
@@ -139,7 +142,7 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 
 		actionBar.addTab(actionBar.newTab()
 				.setText(R.string.ticket_category)
-				.setTabListener(CategoryList.newInstance(argCategory))
+				.setTabListener(new TabHelper(CategoryList.newInstance(argCategory), target_layout))
 		);
 	}
 

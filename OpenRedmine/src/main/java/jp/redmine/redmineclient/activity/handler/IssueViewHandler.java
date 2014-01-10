@@ -63,9 +63,9 @@ public class IssueViewHandler extends Core
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				//tran.replace(R.id.fragmentOne, IssueView.newInstance(arg));
-				tran.replace(android.R.id.content, IssueTitle.newInstance(arg));
-				//tran.replace(R.id.fragmentOneFooter, IssueComment.newInstance(arg));
+				tran.replace(R.id.fragmentOne, IssueView.newInstance(arg));
+				tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
+				tran.replace(R.id.fragmentOneFooter, IssueComment.newInstance(arg));
 			}
 		}, null);
 	}
@@ -80,7 +80,8 @@ public class IssueViewHandler extends Core
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, IssueEdit.newInstance(arg));
+				tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
+				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
 			}
 		}, null);
 	}
@@ -96,14 +97,13 @@ public class IssueViewHandler extends Core
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, IssueEdit.newInstance(arg));
+				tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
 			}
 		}, null);
 	}
 
 	@Override
 	public void onIssueRefreshed(int connectionid, int issueid) {
-		/*
 		final IssueArgument arg = new IssueArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
@@ -117,7 +117,6 @@ public class IssueViewHandler extends Core
 		}, null);
 
 		manager.getFragment().popBackStack();
-		*/
 	}
 
 	@Override
@@ -143,7 +142,7 @@ public class IssueViewHandler extends Core
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, WikiDetail.newInstance(arg));
+				tran.replace(R.id.fragmentOne, WikiDetail.newInstance(arg));
 			}
 		}, null);
 	}

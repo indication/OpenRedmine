@@ -23,7 +23,8 @@ public class AttachmentActionHandler extends Core implements AttachmentActionInt
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, FileDownload.newInstance(arg));
+				tran.replace(R.id.fragmentOne, FileDownload.newInstance(arg));
+				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
 			}
 		}, null);
 	}

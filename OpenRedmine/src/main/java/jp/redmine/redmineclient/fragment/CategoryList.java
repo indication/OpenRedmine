@@ -2,12 +2,10 @@ package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import java.sql.SQLException;
@@ -23,7 +21,7 @@ import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
-public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> implements ActionBar.TabListener {
+public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = CategoryList.class.getSimpleName();
 	private RedmineCategoryListAdapter adapter;
 
@@ -100,19 +98,4 @@ public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> imple
 		}
 	}
 
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.replace(android.R.id.content, this);
-		fragmentTransaction.attach(this);
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.detach(this);
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-	}
 }

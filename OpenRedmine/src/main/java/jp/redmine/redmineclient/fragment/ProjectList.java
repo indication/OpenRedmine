@@ -2,7 +2,6 @@ package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
 
-import com.actionbarsherlock.app.ActionBar;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
@@ -30,7 +29,6 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import com.actionbarsherlock.view.Menu;
@@ -41,7 +39,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements ActionBar.TabListener {
+public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = ProjectList.class.getSimpleName();
 	private RedmineProjectListAdapter adapter;
 	private SelectDataTask task;
@@ -213,22 +211,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 			mConnection.finalize();
 		task = new SelectDataTask(getHelper());
 		task.execute(connection);
-	}
-
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.add(android.R.id.content, this);
-		fragmentTransaction.attach(this);
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
-		fragmentTransaction.detach(this);
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
-
 	}
 
 	private class SelectDataTask extends SelectProjectTask {

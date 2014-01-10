@@ -25,7 +25,8 @@ public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, TimeEntryList.newInstance(arg));
+				tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
+				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
 			}
 		}, null);
 
@@ -49,7 +50,7 @@ public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, TimeEntryEdit.newInstance(arg));
+				tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
 			}
 		}, null);
 	}
@@ -65,7 +66,7 @@ public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, TimeEntryEdit.newInstance(arg));
+				tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
 			}
 		}, null);
 	}

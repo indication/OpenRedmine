@@ -2,13 +2,18 @@ package jp.redmine.redmineclient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.redmine.redmineclient.activity.handler.AttachmentActionHandler;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
@@ -22,6 +27,8 @@ import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.activity.helper.TabHelper;
+import jp.redmine.redmineclient.activity.pager.CorePage;
+import jp.redmine.redmineclient.activity.pager.CorePager;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
@@ -51,41 +58,51 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
-		setContentView(R.layout.fragment_one);
+		setContentView(R.layout.fragment_pager);
 
-		int target_layout = R.id.fragmentOne;
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		actionBar.setDisplayShowTitleEnabled(true);
 
 		ProjectArgument intent = new ProjectArgument();
 		intent.setIntent(getIntent());
 
-		ProjectArgument argIssueList = new ProjectArgument();
-		argIssueList.setArgument();
-		argIssueList.setConnectionId(intent.getConnectionId());
-		argIssueList.setProjectId(intent.getProjectId());
-
-		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.ticket_issue)
-				.setTabListener(new TabHelper(IssueList.newInstance(argIssueList), target_layout))
-				.setIcon(R.drawable.ic_action_message)
-			);
+		ProjectArgument arg = new ProjectArgument();
+		arg.setArgument();
+		arg.setConnectionId(intent.getConnectionId());
+		arg.setProjectId(intent.getProjectId());
 
 
+
+		List<CorePage> list = new ArrayList<CorePage>();
+		// Project list
+		ProjectArgument argList = new ProjectArgument();
+		argList.setArgument(arg.getArgument(), true);
+		list.add((new CorePage<ProjectArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return IssueList.newInstance(getParam());
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.ticket_issue);
+			}
+
+			@Override
+			public Integer getIcon() {
+				return R.drawable.ic_action_message;
+			}
+		}).setParam(argList));
 
 		// current user
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
 		RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
 		RedmineProjectModel mProjectModel = new RedmineProjectModel(getHelper());
 		try {
-			RedmineProject project = mProjectModel.fetchById(intent.getProjectId());
-			final RedmineUser user = mUserModel.fetchCurrentUser(intent.getConnectionId());
+			RedmineProject project = mProjectModel.fetchById(arg.getProjectId());
+			final RedmineUser user = mUserModel.fetchCurrentUser(arg.getConnectionId());
 			if(user != null){
 				//setup parameter
 				RedmineFilter filter = new RedmineFilter();
-				filter.setConnectionId(intent.getConnectionId());
+				filter.setConnectionId(arg.getConnectionId());
 				filter.setAssigned(user);
 				filter.setProject(project);
 				filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
@@ -94,56 +111,125 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 					mFilter.insert(filter);
 					target = filter;
 				}
-				FilterArgument param = new FilterArgument();
-				param.setArgument();
-				param.setConnectionId(intent.getConnectionId());
-				param.setProjectId(intent.getProjectId());
-				param.setFilterId(target.getId());
 
-				actionBar.addTab(actionBar.newTab()
-						.setText(user.getName())
-						.setTabListener(new TabHelper(IssueList.newInstance(param), target_layout))
-						.setIcon(R.drawable.ic_action_user)
-				);
+				FilterArgument argUser = new FilterArgument();
+				argUser.setArgument(arg.getArgument(), true);
+				argUser.setFilterId(target.getId());
+				list.add((new CorePage<FilterArgument>() {
+					@Override
+					public Fragment getRawFragment() {
+						return IssueList.newInstance(getParam());
+					}
+
+					@Override
+					public CharSequence getName() {
+						return user.getName();
+					}
+
+					@Override
+					public Integer getIcon() {
+						return R.drawable.ic_action_user;
+					}
+				}).setParam(argUser));
 			}
 		} catch (SQLException e) {
-			Log.e(TAG, "fetchCurrentUser", e);
+			Log.e(TAG,"fetchCurrentUser", e);
 		}
 
 		// wiki
 		ProjectArgument argWiki = new ProjectArgument();
-		argWiki.setArgument();
-		argWiki.setConnectionId(intent.getConnectionId());
-		argWiki.setProjectId(intent.getProjectId());
+		argWiki.setArgument(arg.getArgument(), true);
+		list.add((new CorePage<ProjectArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return WikiList.newInstance(getParam());
+			}
 
-		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.wiki)
-				.setTabListener(new TabHelper(WikiList.newInstance(argWiki), target_layout))
-		);
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.wiki);
+			}
+		}).setParam(argWiki));
 
 
 		// version
 		ProjectArgument argVersion = new ProjectArgument();
-		argVersion.setArgument();
-		argVersion.setConnectionId(intent.getConnectionId());
-		argVersion.setProjectId(intent.getProjectId());
+		argVersion.setArgument(arg.getArgument(), true);
+		list.add((new CorePage<ProjectArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return VersionList.newInstance(getParam());
+			}
 
-		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.ticket_version)
-				.setTabListener(new TabHelper(VersionList.newInstance(argVersion), target_layout))
-		);
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.ticket_version);
+			}
+		}).setParam(argVersion));
 
 
 		// category
 		ProjectArgument argCategory = new ProjectArgument();
-		argCategory.setArgument();
-		argCategory.setConnectionId(intent.getConnectionId());
-		argCategory.setProjectId(intent.getProjectId());
+		argCategory.setArgument(arg.getArgument(), true);
+		list.add((new CorePage<ProjectArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return CategoryList.newInstance(getParam());
+			}
 
-		actionBar.addTab(actionBar.newTab()
-				.setText(R.string.ticket_category)
-				.setTabListener(new TabHelper(CategoryList.newInstance(argCategory), target_layout))
-		);
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.ticket_category);
+			}
+		}).setParam(argCategory));
+
+
+		final ActionBar actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		actionBar.setDisplayShowTitleEnabled(true);
+
+		final ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+
+		/** Defining a listener for pageChange */
+		ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
+			@Override
+			public void onPageSelected(int position) {
+				super.onPageSelected(position);
+				actionBar.setSelectedNavigationItem(position);
+			}
+		};
+
+		/** Setting the pageChange listner to the viewPager */
+		mPager.setOnPageChangeListener(pageChangeListener);
+		mPager.setAdapter(new CorePager(getSupportFragmentManager(), list));
+
+		ActionBar.TabListener listener = new ActionBar.TabListener() {
+			@Override
+			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+				mPager.setCurrentItem(tab.getPosition());
+			}
+
+			@Override
+			public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+			}
+
+			@Override
+			public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+			}
+		};
+
+		for(CorePage item : list){
+			ActionBar.Tab tab = actionBar.newTab();
+			tab.setText(item.getName());
+			tab.setTabListener(listener);
+			if (item.getIcon() != null)
+				tab.setIcon(item.getIcon());
+			actionBar.addTab(tab);
+		}
+
 	}
 
 	@SuppressWarnings("unchecked")

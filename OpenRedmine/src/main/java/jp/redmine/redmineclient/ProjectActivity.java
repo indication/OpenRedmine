@@ -60,6 +60,57 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 		getSupportActionBar();
 		setContentView(R.layout.fragment_pager);
 
+		List<CorePage> list = getTabs();
+
+		final ActionBar actionBar = getSupportActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		actionBar.setDisplayShowTitleEnabled(true);
+
+		final ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+
+		/** Defining a listener for pageChange */
+		ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
+			@Override
+			public void onPageSelected(int position) {
+				super.onPageSelected(position);
+				actionBar.setSelectedNavigationItem(position);
+			}
+		};
+
+		/** Setting the pageChange listner to the viewPager */
+		mPager.setOnPageChangeListener(pageChangeListener);
+		mPager.setAdapter(new CorePager(getSupportFragmentManager(), list));
+
+		ActionBar.TabListener listener = new ActionBar.TabListener() {
+			@Override
+			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+				mPager.setCurrentItem(tab.getPosition());
+			}
+
+			@Override
+			public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+			}
+
+			@Override
+			public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+
+			}
+		};
+
+		for(CorePage item : list){
+			ActionBar.Tab tab = actionBar.newTab();
+			tab.setText(item.getName());
+			tab.setTabListener(listener);
+			if (item.getIcon() != null)
+				tab.setIcon(item.getIcon());
+			actionBar.addTab(tab);
+		}
+
+	}
+
+	protected List<CorePage> getTabs(){
 
 		ProjectArgument intent = new ProjectArgument();
 		intent.setIntent(getIntent());
@@ -183,53 +234,7 @@ public class ProjectActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper
 			}
 		}).setParam(argCategory));
 
-
-		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		actionBar.setDisplayShowTitleEnabled(true);
-
-		final ViewPager mPager = (ViewPager) findViewById(R.id.pager);
-
-		/** Defining a listener for pageChange */
-		ViewPager.SimpleOnPageChangeListener pageChangeListener = new ViewPager.SimpleOnPageChangeListener(){
-			@Override
-			public void onPageSelected(int position) {
-				super.onPageSelected(position);
-				actionBar.setSelectedNavigationItem(position);
-			}
-		};
-
-		/** Setting the pageChange listner to the viewPager */
-		mPager.setOnPageChangeListener(pageChangeListener);
-		mPager.setAdapter(new CorePager(getSupportFragmentManager(), list));
-
-		ActionBar.TabListener listener = new ActionBar.TabListener() {
-			@Override
-			public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-				mPager.setCurrentItem(tab.getPosition());
-			}
-
-			@Override
-			public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-			}
-
-			@Override
-			public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-
-			}
-		};
-
-		for(CorePage item : list){
-			ActionBar.Tab tab = actionBar.newTab();
-			tab.setText(item.getName());
-			tab.setTabListener(listener);
-			if (item.getIcon() != null)
-				tab.setIcon(item.getIcon());
-			actionBar.addTab(tab);
-		}
-
+		return list;
 	}
 
 	@SuppressWarnings("unchecked")

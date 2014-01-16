@@ -20,9 +20,9 @@ import android.support.v4.app.FragmentManager;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
-public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
+public class ConnectionListActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
-	public Pane1Activity(){
+	public ConnectionListActivity(){
 		super();
 	}
 

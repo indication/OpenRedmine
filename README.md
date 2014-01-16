@@ -94,6 +94,9 @@ Using Libraries
 - actionbarpulltorefresh (Apache License, Version 2.0) - support pull to refresh
   https://github.com/chrisbanes/ActionBar-PullToRefresh
 
+- PtrStickyListHeadersListView (unknown)  - support pull to refresh on StickyListHeaders
+  http://stackoverflow.com/questions/20143008/is-it-possible-to-merge-stickylistviewheader-with-crisbanes-pulltorefresh
+
 Using Icons
 ==========
 - redmine (by-sa/2.5)

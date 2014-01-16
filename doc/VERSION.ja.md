@@ -5,6 +5,7 @@ Release history
 Next Release
 ===========
 - Wikiの表示に対応
+- タブ表示を追加
 
 v3.4 - 35 - 2013/12/10
 ===========

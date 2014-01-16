@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 
 import jp.redmine.redmineclient.ConnectionActivity;
-import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.fragment.ConnectionEdit;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;

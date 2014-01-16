@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 
+import jp.redmine.redmineclient.IssueActivity;
 import jp.redmine.redmineclient.ProjectActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.fragment.Empty;
@@ -35,7 +36,7 @@ public class IssueViewHandler extends Core
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, IssueList.newInstance(arg));
+				tran.replace(android.R.id.content, IssueList.newInstance(arg));
 			}
 		}, null);
 	}
@@ -54,20 +55,16 @@ public class IssueViewHandler extends Core
 	}
 
 	@Override
-	public void onIssueSelected(int connectionid, int issueid) {
-		final IssueArgument arg = new IssueArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setIssueId(issueid);
-
-		runTransaction(new TransitFragment() {
+	public void onIssueSelected(final int connectionid, final int issueid) {
+		kickActivity(IssueActivity.class, new IntentFactory() {
 			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, IssueView.newInstance(arg));
-				tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
-				tran.replace(R.id.fragmentOneFooter, IssueComment.newInstance(arg));
+			public void generateIntent(Intent intent) {
+				IssueArgument arg = new IssueArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
+				arg.setIssueId(issueid);
 			}
-		}, null);
+		});
 	}
 
 	@Override
@@ -104,19 +101,7 @@ public class IssueViewHandler extends Core
 
 	@Override
 	public void onIssueRefreshed(int connectionid, int issueid) {
-		final IssueArgument arg = new IssueArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setIssueId(issueid);
-
-		runTransaction(new TransitFragment() {
-			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOneHeader, IssueTitle.newInstance(arg));
-			}
-		}, null);
-
-		manager.getFragment().popBackStack();
+		//TODO
 	}
 
 	@Override
@@ -142,7 +127,7 @@ public class IssueViewHandler extends Core
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, WikiDetail.newInstance(arg));
+				tran.replace(android.R.id.content, WikiDetail.newInstance(arg));
 			}
 		}, null);
 	}

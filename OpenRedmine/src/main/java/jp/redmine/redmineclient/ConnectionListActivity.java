@@ -32,7 +32,6 @@ public class ConnectionListActivity extends OrmLiteFragmentActivity<DatabaseCach
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
-		setContentView(R.layout.fragment_one);
 
 		/**
 		 * Add fragment on first view only
@@ -41,7 +40,7 @@ public class ConnectionListActivity extends OrmLiteFragmentActivity<DatabaseCach
 		if(savedInstanceState != null)
 			return;
 		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.fragmentOne, ConnectionList.newInstance())
+			.replace(android.R.id.content, ConnectionList.newInstance())
 			.commit();
 	}
 

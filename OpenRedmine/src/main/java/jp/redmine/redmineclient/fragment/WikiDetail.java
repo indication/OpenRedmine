@@ -187,6 +187,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 	}
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
 		inflater.inflate(R.menu.refresh, menu);
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING)

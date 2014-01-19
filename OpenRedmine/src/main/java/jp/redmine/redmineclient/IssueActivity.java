@@ -74,7 +74,6 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 				proj = mProject.fetchById(intent.getProjectId());
 			}
 			if(proj != null && proj.getId() != null){
-				intent.setProjectId(proj.getId());
 				setTitle(proj.getName());
 			}
 		} catch (SQLException e) {
@@ -112,9 +111,22 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 
 				IssueArgument intent = new IssueArgument();
 				intent.setIntent(getIntent());
-				if(intent.getProjectId() > 0){
-					IssueActionInterface handler = getHandler(IssueActionInterface.class);
-					handler.onIssueList(intent.getConnectionId(), intent.getProjectId());
+				if(intent.getProjectId() < 0){
+					RedmineProject proj = null;
+					try {
+						RedmineIssueModel mIssue = new RedmineIssueModel(getHelper());
+						RedmineIssue issue = mIssue.fetchById(intent.getConnectionId(), intent.getIssueId());
+						proj = issue.getProject();
+					} catch (SQLException e) {
+						Log.e(TAG, "onOptionsItemSelected", e);
+					}
+					if(proj != null && proj.getId() != null){
+						IssueActionInterface handler = getHandler(IssueActionInterface.class);
+						handler.onIssueList(intent.getConnectionId(),  proj.getId());
+						finish();
+					}
+				} else {
+					finish();
 				}
 				return true;
 			default:

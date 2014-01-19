@@ -12,12 +12,14 @@ import jp.redmine.redmineclient.activity.pager.CorePage;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.IssueJump;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.ProjectList;
+import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
 
@@ -36,6 +38,11 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		arg.setArgument();
 		arg.setConnectionId(intent.getConnectionId());
 
+		// setup navigation
+		ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
+		RedmineConnection con = mConnection.getItem(intent.getConnectionId());
+		if(con.getId() != null)
+			setTitle(con.getName());
 
 		List<CorePage> list = new ArrayList<CorePage>();
 		// Project list

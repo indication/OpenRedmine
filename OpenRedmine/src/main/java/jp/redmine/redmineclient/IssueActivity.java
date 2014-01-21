@@ -55,12 +55,6 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		IssueArgument intent = new IssueArgument();
 		intent.setIntent(getIntent());
 
-		IssueArgument arg = new IssueArgument();
-		arg.setArgument();
-		arg.setConnectionId(intent.getConnectionId());
-		arg.setProjectId(intent.getProjectId());
-		arg.setIssueId(intent.getIssueId());
-
 		// setup navigation
 		try {
 			RedmineProject proj = null;
@@ -83,7 +77,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		List<CorePage> list = new ArrayList<CorePage>();
 		// Issue view
 		IssueArgument argList = new IssueArgument();
-		argList.setArgument(arg.getArgument(), true);
+		argList.importArgument(intent);
 		list.add((new CorePage<IssueArgument>() {
 			@Override
 			public Fragment getRawFragment() {

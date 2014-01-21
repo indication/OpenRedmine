@@ -47,9 +47,7 @@ public class IssueFilterActivity extends OrmLiteFragmentActivity<DatabaseCacheHe
 
 		FilterArgument arg = new FilterArgument();
 		arg.setArgument();
-		arg.setConnectionId(intent.getConnectionId());
-		arg.setProjectId(intent.getProjectId());
-		arg.setFilterId(intent.getFilterId());
+		arg.importArgument(intent);
 
 		getSupportFragmentManager().beginTransaction()
 				.replace(android.R.id.content, IssueList.newInstance(arg))

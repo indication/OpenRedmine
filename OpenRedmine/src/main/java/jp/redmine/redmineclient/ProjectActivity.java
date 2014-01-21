@@ -40,12 +40,6 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		ProjectArgument intent = new ProjectArgument();
 		intent.setIntent(getIntent());
 
-		ProjectArgument arg = new ProjectArgument();
-		arg.setArgument();
-		arg.setConnectionId(intent.getConnectionId());
-		arg.setProjectId(intent.getProjectId());
-
-
 		// setup navigation
 		try {
 			RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
@@ -59,7 +53,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		List<CorePage> list = new ArrayList<CorePage>();
 		// Project list
 		ProjectArgument argList = new ProjectArgument();
-		argList.setArgument(arg.getArgument(), true);
+		argList.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
 			public Fragment getRawFragment() {
@@ -82,12 +76,12 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
 		RedmineProjectModel mProjectModel = new RedmineProjectModel(getHelper());
 		try {
-			RedmineProject project = mProjectModel.fetchById(arg.getProjectId());
-			final RedmineUser user = mUserModel.fetchCurrentUser(arg.getConnectionId());
+			RedmineProject project = mProjectModel.fetchById(intent.getProjectId());
+			final RedmineUser user = mUserModel.fetchCurrentUser(intent.getConnectionId());
 			if(user != null){
 				//setup parameter
 				RedmineFilter filter = new RedmineFilter();
-				filter.setConnectionId(arg.getConnectionId());
+				filter.setConnectionId(intent.getConnectionId());
 				filter.setAssigned(user);
 				filter.setProject(project);
 				filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
@@ -98,7 +92,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				}
 
 				FilterArgument argUser = new FilterArgument();
-				argUser.setArgument(arg.getArgument(), true);
+				argUser.importArgument(intent);
 				argUser.setFilterId(target.getId());
 				list.add((new CorePage<FilterArgument>() {
 					@Override
@@ -123,7 +117,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 
 		// wiki
 		ProjectArgument argWiki = new ProjectArgument();
-		argWiki.setArgument(arg.getArgument(), true);
+		argWiki.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
 			public Fragment getRawFragment() {
@@ -139,7 +133,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 
 		// version
 		ProjectArgument argVersion = new ProjectArgument();
-		argVersion.setArgument(arg.getArgument(), true);
+		argVersion.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
 			public Fragment getRawFragment() {
@@ -155,7 +149,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 
 		// category
 		ProjectArgument argCategory = new ProjectArgument();
-		argCategory.setArgument(arg.getArgument(), true);
+		argCategory.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
 			public Fragment getRawFragment() {

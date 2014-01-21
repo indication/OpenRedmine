@@ -9,4 +9,9 @@ public class ConnectionArgument extends Core {
 	public int getConnectionId(){
 		return getArg(CONNECTION_ID, -1);
 	}
+
+	@Override
+	public void importArgument(Core arg) {
+		setConnectionId(((ConnectionArgument)arg).getConnectionId());
+	}
 }

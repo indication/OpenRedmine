@@ -9,4 +9,10 @@ public class TimeEntryArgument extends IssueArgument {
 	public int getTimeEntryId(){
 		return getArg(TIMEENTRY_ID, -1);
 	}
+
+	@Override
+	public void importArgument(Core arg) {
+		setTimeEntryId(((TimeEntryArgument)arg).getTimeEntryId());
+		super.importArgument(arg);
+	}
 }

@@ -18,4 +18,12 @@ public class ConnectionNaviResultArgument extends ConnectionNaviArgument {
 	public boolean isUnsafeSSL(){
 		return getArg(UNSAFE_SSL,false);
 	}
+
+	@Override
+	public void importArgument(Core arg) {
+		ConnectionNaviResultArgument param = (ConnectionNaviResultArgument)arg;
+		setToken(param.getToken());
+		setUnsafeSSL(param.isUnsafeSSL());
+		super.importArgument(arg);
+	}
 }

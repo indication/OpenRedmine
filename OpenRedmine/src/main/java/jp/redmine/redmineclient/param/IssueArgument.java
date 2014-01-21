@@ -9,4 +9,10 @@ public class IssueArgument extends ProjectArgument {
 	public int getIssueId(){
 		return getArg(ISSUE_ID, -1);
 	}
+
+	@Override
+	public void importArgument(Core arg) {
+		setIssueId(((IssueArgument)arg).getIssueId());
+		super.importArgument(arg);
+	}
 }

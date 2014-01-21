@@ -29,6 +29,8 @@ abstract class Core {
 		this.intent = new Intent(applicationContext, cls);
 	}
 
+	abstract public void importArgument(Core arg);
+
 
 	/**
 	 * Set value to intent or bundle

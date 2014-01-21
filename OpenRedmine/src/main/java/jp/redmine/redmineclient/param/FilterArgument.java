@@ -12,4 +12,10 @@ public class FilterArgument extends ProjectArgument {
 	public boolean hasFilterId(){
 		return getFilterId() != -1;
 	}
+
+	@Override
+	public void importArgument(Core arg) {
+		setFilterId(((FilterArgument)arg).getFilterId());
+		super.importArgument(arg);
+	}
 }

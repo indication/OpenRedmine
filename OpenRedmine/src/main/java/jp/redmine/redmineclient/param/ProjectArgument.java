@@ -9,4 +9,10 @@ public class ProjectArgument extends ConnectionArgument {
 	public long getProjectId(){
 		return getArg(PROJECT_ID, -1L);
 	}
+
+	@Override
+	public void importArgument(Core arg) {
+		setProjectId(((ProjectArgument)arg).getProjectId());
+		super.importArgument(arg);
+	}
 }

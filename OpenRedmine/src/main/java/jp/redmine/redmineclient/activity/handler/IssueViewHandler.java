@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 
 import jp.redmine.redmineclient.IssueActivity;
+import jp.redmine.redmineclient.IssueFilterActivity;
 import jp.redmine.redmineclient.ProjectActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.fragment.Empty;
@@ -27,18 +28,16 @@ public class IssueViewHandler extends Core
 	}
 
 	@Override
-	public void onIssueFilterList(int connectionid, int filterid) {
-		final FilterArgument arg = new FilterArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setFilterId(filterid);
-
-		runTransaction(new TransitFragment() {
+	public void onIssueFilterList(final int connectionid, final int filterid) {
+		kickActivity(IssueFilterActivity.class, new IntentFactory() {
 			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, IssueList.newInstance(arg));
+			public void generateIntent(Intent intent) {
+				FilterArgument arg = new FilterArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
+				arg.setFilterId(filterid);
 			}
-		}, null);
+		});
 	}
 
 	@Override

@@ -47,10 +47,14 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 
 
 		// setup navigation
-		ConnectionModel mConnection = new ConnectionModel(this);
-		RedmineConnection con = mConnection.getItem(arg.getConnectionId());
-		if(con.getId() != null)
-			setTitle(con.getName());
+		try {
+			RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+			RedmineProject proj = mProject.fetchById(intent.getProjectId());
+			if(proj.getId() != null)
+				setTitle(proj.getName());
+		} catch (SQLException e) {
+			Log.e(TAG, "getTabs", e);
+		}
 
 		List<CorePage> list = new ArrayList<CorePage>();
 		// Project list

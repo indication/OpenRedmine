@@ -11,6 +11,7 @@ Features
 * Get API key from web site
 * Filter (Status/Tracker/Category/Priority)
 * Download file
+* Wiki
 
 
 Version
@@ -63,6 +64,9 @@ Used references
 
 - Support gradle release from "ogaclejapan"
   http://ogaclejapan.com/android/2013/07/07/new-build-system-part2-for-gradle/
+
+- Add feature about FragmentBreadCrumbs from "techbooster"
+  http://techbooster.org/android/application/15499/
 
 Using Libraries
 ==========

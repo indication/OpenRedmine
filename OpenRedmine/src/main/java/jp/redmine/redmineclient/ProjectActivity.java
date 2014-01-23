@@ -53,6 +53,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		List<CorePage> list = new ArrayList<CorePage>();
 		// Project list
 		ProjectArgument argList = new ProjectArgument();
+		argList.setArgument();
 		argList.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
@@ -92,6 +93,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				}
 
 				FilterArgument argUser = new FilterArgument();
+				argUser.setArgument();
 				argUser.importArgument(intent);
 				argUser.setFilterId(target.getId());
 				list.add((new CorePage<FilterArgument>() {
@@ -117,6 +119,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 
 		// wiki
 		ProjectArgument argWiki = new ProjectArgument();
+		argWiki.setArgument();
 		argWiki.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
@@ -133,6 +136,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 
 		// version
 		ProjectArgument argVersion = new ProjectArgument();
+		argVersion.setArgument();
 		argVersion.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
@@ -149,6 +153,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 
 		// category
 		ProjectArgument argCategory = new ProjectArgument();
+		argCategory.setArgument();
 		argCategory.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override

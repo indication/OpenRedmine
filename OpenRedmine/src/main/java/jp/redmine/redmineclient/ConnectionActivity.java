@@ -34,10 +34,6 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setIntent(getIntent());
 
-		ConnectionArgument arg = new ConnectionArgument();
-		arg.setArgument();
-		arg.setConnectionId(intent.getConnectionId());
-
 		// setup navigation
 		ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
 		RedmineConnection con = mConnection.getItem(intent.getConnectionId());
@@ -47,7 +43,8 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		List<CorePage> list = new ArrayList<CorePage>();
 		// Project list
 		ConnectionArgument argList = new ConnectionArgument();
-		argList.setArgument(arg.getArgument(), true);
+		argList.setArgument();
+		argList.importArgument(intent);
 		list.add((new CorePage<ConnectionArgument>() {
 			@Override
 			public Fragment getRawFragment() {
@@ -67,7 +64,8 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 
 		// Direct issue jump list
 		ConnectionArgument argJump = new ConnectionArgument();
-		argJump.setArgument(arg.getArgument(), true);
+		argJump.setArgument();
+		argJump.importArgument(intent);
 		list.add((new CorePage<ConnectionArgument>() {
 			@Override
 			public Fragment getRawFragment() {
@@ -103,7 +101,8 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				}
 
 				FilterArgument argIssue = new FilterArgument();
-				argIssue.setArgument(arg.getArgument(), true);
+				argIssue.setArgument();
+				argIssue.importArgument(intent);
 				argIssue.setFilterId(target.getId());
 				list.add((new CorePage<FilterArgument>() {
 					@Override

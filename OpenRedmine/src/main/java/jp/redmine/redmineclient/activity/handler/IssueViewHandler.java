@@ -8,13 +8,9 @@ import jp.redmine.redmineclient.IssueActivity;
 import jp.redmine.redmineclient.IssueFilterActivity;
 import jp.redmine.redmineclient.ProjectActivity;
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.WikiViewActivity;
 import jp.redmine.redmineclient.fragment.Empty;
-import jp.redmine.redmineclient.fragment.IssueComment;
 import jp.redmine.redmineclient.fragment.IssueEdit;
-import jp.redmine.redmineclient.fragment.IssueList;
-import jp.redmine.redmineclient.fragment.IssueTitle;
-import jp.redmine.redmineclient.fragment.IssueView;
-import jp.redmine.redmineclient.fragment.WikiDetail;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -116,19 +112,17 @@ public class IssueViewHandler extends Core
 	}
 
 	@Override
-	public void wiki(int connection, long projectid, String title) {
-		final WikiArgument arg = new WikiArgument();
-		arg.setArgument();
-		arg.setConnectionId(connection);
-		arg.setProjectId(projectid);
-		arg.setWikiTitle(title);
-
-		runTransaction(new TransitFragment() {
+	public void wiki(final int connection, final long projectid, final String title) {
+		kickActivity(WikiViewActivity.class, new IntentFactory() {
 			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, WikiDetail.newInstance(arg));
+			public void generateIntent(Intent intent) {
+				WikiArgument arg = new WikiArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connection);
+				arg.setProjectId(projectid);
+				arg.setWikiTitle(title);
 			}
-		}, null);
+		});
 	}
 
 }

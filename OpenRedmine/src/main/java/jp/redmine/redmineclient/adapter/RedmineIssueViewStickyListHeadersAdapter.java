@@ -112,10 +112,10 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	}
 	public void setupParameter(int connection, long issue){
 		adapterIssue.setupParameter(connection, issue);
-		adapterJournal.setupParameter(connection, issue);
 		try {
 			RedmineIssue is = mIssue.fetchById(issue);
 			int issue_id = is.getIssueId();
+			adapterJournal.setupParameter(connection,is.getProject().getId(), issue);
 			adapterRelation.setupParameter(connection, issue_id);
 			adapterTimeEntry.setupParameter(connection, issue_id);
 			adapterAttachment.setupParameter(connection, issue_id);

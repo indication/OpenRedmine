@@ -13,9 +13,8 @@ public class FilterArgument extends ProjectArgument {
 		return getFilterId() != -1;
 	}
 
-	@Override
-	public void importArgument(Core arg) {
-		setFilterId(((FilterArgument)arg).getFilterId());
+	public void importArgument(FilterArgument arg) {
+		setFilterId(arg.getFilterId());
 		super.importArgument(arg);
 	}
 }

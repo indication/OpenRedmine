@@ -28,8 +28,8 @@ abstract class Core {
 	public void setIntent(Context applicationContext, Class<?> cls){
 		this.intent = new Intent(applicationContext, cls);
 	}
-
-	abstract public void importArgument(Core arg);
+	public void importArgument(Core arg) {
+	}
 
 
 	/**

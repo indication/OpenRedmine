@@ -19,11 +19,9 @@ public class ConnectionNaviResultArgument extends ConnectionNaviArgument {
 		return getArg(UNSAFE_SSL,false);
 	}
 
-	@Override
-	public void importArgument(Core arg) {
-		ConnectionNaviResultArgument param = (ConnectionNaviResultArgument)arg;
-		setToken(param.getToken());
-		setUnsafeSSL(param.isUnsafeSSL());
+	public void importArgument(ConnectionNaviResultArgument arg) {
+		setToken(arg.getToken());
+		setUnsafeSSL(arg.isUnsafeSSL());
 		super.importArgument(arg);
 	}
 }

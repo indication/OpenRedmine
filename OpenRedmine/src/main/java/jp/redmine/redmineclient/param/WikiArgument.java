@@ -10,9 +10,8 @@ public class WikiArgument extends IssueArgument {
 		return getArg(WIKITITLE,"");
 	}
 
-	@Override
-	public void importArgument(Core arg) {
-		setWikiTitle(((WikiArgument)arg).getWikiTitle());
+	public void importArgument(WikiArgument arg) {
+		setWikiTitle(arg.getWikiTitle());
 		super.importArgument(arg);
 	}
 }

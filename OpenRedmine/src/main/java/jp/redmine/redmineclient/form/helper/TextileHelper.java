@@ -106,7 +106,10 @@ public class TextileHelper {
 			action.issue(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]));
 			return true;
 		} else if("wiki".equals(items[0]) && cnt >= 3){
-			action.wiki(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]), items[3]);
+			StringBuilder pagetitle = new StringBuilder();
+			for(int i = 3; i < items.length; i++)
+				pagetitle.append(items[i]);
+			action.wiki(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]), pagetitle.toString());
 			return true;
 		}
 		return false;

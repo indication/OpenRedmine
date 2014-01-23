@@ -1,9 +1,10 @@
 package jp.redmine.redmineclient.activity.handler;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.fragment.Empty;
 import jp.redmine.redmineclient.fragment.FileDownload;
 import jp.redmine.redmineclient.param.AttachmentArgument;
+
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 public class AttachmentActionHandler extends Core implements AttachmentActionInterface {
@@ -24,7 +25,9 @@ public class AttachmentActionHandler extends Core implements AttachmentActionInt
 			@Override
 			public void action(FragmentTransaction tran) {
 				tran.replace(R.id.fragmentOne, FileDownload.newInstance(arg));
-				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
+				Fragment frag = manager.getFragment().findFragmentById(R.id.fragmentOneFooter);
+				if(frag != null)
+					tran.remove(frag);
 			}
 		}, null);
 	}

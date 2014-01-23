@@ -24,7 +24,7 @@ public class ParserJournalChanges extends BaseParserInternal<RedmineJournal,Redm
 	}
 	@Override
 	protected void parseInternal(RedmineJournal con, RedmineJournalChanges journal)
-			throws XmlPullParserException, IOException{
+			throws XmlPullParserException, IOException, SQLException{
 
 
 		if(equalsTagName("old_value")){

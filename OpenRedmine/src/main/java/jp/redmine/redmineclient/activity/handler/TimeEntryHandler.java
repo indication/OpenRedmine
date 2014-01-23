@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.activity.handler;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.fragment.Empty;
@@ -26,7 +27,9 @@ public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 			@Override
 			public void action(FragmentTransaction tran) {
 				tran.replace(R.id.fragmentOne, TimeEntryList.newInstance(arg));
-				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
+				Fragment frag = manager.getFragment().findFragmentById(R.id.fragmentOneFooter);
+				if(frag != null)
+					tran.remove(frag);
 			}
 		}, null);
 
@@ -40,17 +43,21 @@ public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 
 
 	@Override
-	public void onTimeEntryEdit(int connectionid, int issueid, int timeentryid) {
+	public void onTimeEntryEdit(int connectionid, int issueid, Integer timeentryid) {
 		final TimeEntryArgument arg = new TimeEntryArgument();
 		arg.setArgument();
 		arg.setConnectionId(connectionid);
 		arg.setIssueId(issueid);
-		arg.setTimeEntryId(timeentryid);
+		if(timeentryid != null)
+			arg.setTimeEntryId(timeentryid);
 
 		runTransaction(new TransitFragment() {
 			@Override
 			public void action(FragmentTransaction tran) {
 				tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
+				Fragment frag = manager.getFragment().findFragmentById(R.id.fragmentOneFooter);
+				if(frag != null)
+					tran.remove(frag);
 			}
 		}, null);
 	}
@@ -58,17 +65,7 @@ public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 
 	@Override
 	public void onTimeEntryAdd(int connectionid, int issueid) {
-		final TimeEntryArgument arg = new TimeEntryArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setIssueId(issueid);
-
-		runTransaction(new TransitFragment() {
-			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
-			}
-		}, null);
+		onTimeEntryEdit(connectionid, issueid, null);
 	}
 
 }

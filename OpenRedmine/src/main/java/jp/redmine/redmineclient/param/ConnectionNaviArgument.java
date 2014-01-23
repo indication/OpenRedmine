@@ -23,4 +23,11 @@ public class ConnectionNaviArgument extends Core {
 	public String getAuthPassword(){
 		return getArg(PASSWORD,(String)null);
 	}
+
+	public void importArgument(ConnectionNaviArgument arg) {
+		setUrl(arg.getUrl());
+		setAuthID(arg.getAuthID());
+		setAuthPassword(arg.getAuthPassword());
+		super.importArgument(arg);
+	}
 }

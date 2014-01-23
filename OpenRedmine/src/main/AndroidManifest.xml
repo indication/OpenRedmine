@@ -27,7 +27,12 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
         </activity>
-        <activity android:name=".Pane1Activity"></activity>
+        <activity android:name=".ConnectionListActivity"></activity>
+	    <activity android:name=".ConnectionActivity"></activity>
+	    <activity android:name=".ProjectActivity"></activity>
+	    <activity android:name=".IssueActivity"></activity>
+	    <activity android:name=".IssueFilterActivity"></activity>
+		<activity android:name=".WikiViewActivity"></activity>
         <activity android:name=".ConnectionNaviActivity"></activity>
         <activity android:name=".FilterViewActivity"></activity>
     </application>

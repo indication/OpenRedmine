@@ -27,6 +27,7 @@ Features:
 * Show changelogs, relative issues
 * Create or modify issue/timeentry
 * Download file related with issues (saved to /sdcard/download/jp.redmine.redmineclient/)
+* View wiki
 
 Permissions:
 * INTERNET - connect to redmine server
@@ -40,4 +41,4 @@ Release planing:
 
 Note:
 * This app is open source(GPL exclude libraries), you can contribute.
-* Notice via github or twitter @OpenRedmine if you feel something good or bad.
+* Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.

@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.android.tools.build:gradle:0.7.+'
     }
 }
 apply plugin: 'android'
@@ -19,8 +19,8 @@ android {
         minSdkVersion 8
         targetSdkVersion 18
 
-        versionCode 35
-        versionName '3.4'
+        versionCode 36
+        versionName '3.5'
     }
     signingConfigs {
         release
@@ -37,7 +37,9 @@ android {
 
             debuggable false
             zipAlign true
-            signingConfig signingConfigs.release
+            if (project.hasProperty('keyAlias')) {
+                signingConfig signingConfigs.release
+            }
         }
 
     }
@@ -52,6 +54,7 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-core:4.+@jar'
     compile 'com.j256.ormlite:ormlite-android:4.+@jar'
     compile 'org.apache.commons:commons-lang3:3.1@jar'
+    //compile 'com.jakewharton:hanselandgretel:1.0.2'
 compile 'net.java:textile-j:2.2'
 compile project(':Transdroid')
 }

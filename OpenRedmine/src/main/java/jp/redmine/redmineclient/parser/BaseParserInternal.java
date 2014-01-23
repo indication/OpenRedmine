@@ -18,7 +18,7 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 	abstract protected String getProveTagName();
 	abstract protected ITEM getNewProveTagItem();
 	abstract protected void parseInternal(CON con,ITEM item)
-			throws XmlPullParserException, IOException;
+			throws XmlPullParserException, IOException, SQLException;
 
 	protected void onParseStart(CON con)
 			throws XmlPullParserException, IOException, SQLException {

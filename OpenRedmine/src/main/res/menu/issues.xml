@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 	<item android:id="@+id/menu_access_addnew"
-	    android:title="@string/add_new_item"
+	    android:title="@string/add"
 	    android:showAsAction="ifRoom"
 	    android:icon="@android:drawable/ic_menu_add"
         android:numericShortcut="1"

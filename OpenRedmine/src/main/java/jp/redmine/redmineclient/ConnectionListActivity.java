@@ -20,9 +20,9 @@ import android.support.v4.app.FragmentManager;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
-public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
+public class ConnectionListActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
-	public Pane1Activity(){
+	public ConnectionListActivity(){
 		super();
 	}
 
@@ -32,7 +32,6 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
-		setContentView(R.layout.fragment_one);
 
 		/**
 		 * Add fragment on first view only
@@ -41,7 +40,7 @@ public class Pane1Activity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 		if(savedInstanceState != null)
 			return;
 		getSupportFragmentManager().beginTransaction()
-			.replace(R.id.fragmentOne, ConnectionList.newInstance())
+			.replace(android.R.id.content, ConnectionList.newInstance())
 			.commit();
 	}
 

@@ -45,6 +45,6 @@
 	    android:layout_width="50dp"
 	    android:layout_height="wrap_content"
 	    android:layout_weight="0"
-	    android:text="@string/button_ok" />
+		    android:text="@android:string/ok" />
 
 </LinearLayout>

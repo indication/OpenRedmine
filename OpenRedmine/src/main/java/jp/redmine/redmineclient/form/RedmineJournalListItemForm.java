@@ -35,8 +35,8 @@ public class RedmineJournalListItemForm extends FormHelper {
 		webViewHelper.setAction(act);
 	}
 
-	public void setValue(RedmineJournal jr){
-		webViewHelper.setContent(jr.getConnectionId(), jr.getNotes());
+	public void setValue(RedmineJournal jr, long projectid){
+		webViewHelper.setContent(jr.getConnectionId(), projectid, jr.getNotes());
 		setChangesets(formChanges, jr.changes);
 	}
 

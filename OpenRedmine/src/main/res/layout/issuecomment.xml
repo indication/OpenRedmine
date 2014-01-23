@@ -8,7 +8,7 @@
     android:orientation="horizontal" >
 	<com.andreabaccega.widget.FormEditText
 	    android:id="@+id/textDescription"
-	    android:hint="@string/menu_setting_list_menu_comment"
+	    android:hint="@string/comment"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
@@ -23,5 +23,5 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="0"
 	    android:gravity="center_vertical|center_horizontal"
-	    android:text="@string/button_ok" />
+		android:text="@android:string/ok" />
 </LinearLayout>

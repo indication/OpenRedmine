@@ -22,6 +22,7 @@ local.properties
 .gradle
 /local.properties
 /.idea/workspace.xml
+/.idea/libraries/
 .DS_Store
 
 # Personal data file (sign configs)

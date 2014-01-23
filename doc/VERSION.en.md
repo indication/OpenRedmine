@@ -5,6 +5,11 @@ Release history
 Next Release
 ===========
 
+v3.5 - 36 - 2014/01/24
+===========
+- Support wiki view
+- Add tabs
+
 v3.4 - 35 - 2013/12/10
 ===========
 - Fix crash on Android 2.3

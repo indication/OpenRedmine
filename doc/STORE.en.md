@@ -41,4 +41,4 @@ Release planing:
 
 Note:
 * This app is open source(GPL exclude libraries), you can contribute.
-* Notice via github or twitter @OpenRedmine if you feel something good or bad.
+* Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.

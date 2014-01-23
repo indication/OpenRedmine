@@ -41,4 +41,4 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 
 ノート:
 * このアプリはオープンソース(ライブラリ等を除きGPL)です。あなたが参加できます。(例: 翻訳)
-* Notice via github or twitter @OpenRedmine if you feel something good or bad.
+* Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.

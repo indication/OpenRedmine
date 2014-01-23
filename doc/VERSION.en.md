@@ -5,6 +5,7 @@ Release history
 Next Release
 ===========
 - Support wiki view
+- Add tabs
 
 v3.4 - 35 - 2013/12/10
 ===========

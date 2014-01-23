@@ -43,6 +43,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	private RedmineProjectModel mProject;
 	protected Integer connection_id;
 	protected Long issue_id;
+	protected Long project_id;
 	protected WebviewActionInterface action;
 	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, RedmineJournalListAdapter.fetchHelper>();
 
@@ -242,9 +243,10 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 		setupHashmap();
 	}
 
-	public void setupParameter(int connection, long issue){
+	public void setupParameter(int connection, long project , long issue){
 		connection_id = connection;
 		issue_id = issue;
+		project_id = project;
 	}
 
     @Override
@@ -264,7 +266,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 	protected void setupView(View view, RedmineJournal data) {
 		RedmineJournalListItemForm form = new RedmineJournalListItemForm(view);
 		form.setupWebView(action);
-		form.setValue(data);
+		form.setValue(data, project_id);
 	}
 
 	@Override

@@ -9,4 +9,9 @@ public class WikiArgument extends IssueArgument {
 	public String getWikiTitle(){
 		return getArg(WIKITITLE,"");
 	}
+
+	public void importArgument(WikiArgument arg) {
+		setWikiTitle(arg.getWikiTitle());
+		super.importArgument(arg);
+	}
 }

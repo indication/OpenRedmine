@@ -54,6 +54,7 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-core:4.+@jar'
     compile 'com.j256.ormlite:ormlite-android:4.+@jar'
     compile 'org.apache.commons:commons-lang3:3.1@jar'
+    //compile 'com.jakewharton:hanselandgretel:1.0.2'
 compile 'net.java:textile-j:2.2'
 compile project(':Transdroid')
 }

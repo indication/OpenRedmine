@@ -44,7 +44,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private RedmineProjectListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
-	private View mHeader;
 	private View mFooter;
 	private IssueActionInterface mListener;
 	private ConnectionActionInterface mConnectionListener;
@@ -101,44 +100,11 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		final ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
-		adapter.setupParameter(intent.getConnectionId());
-		adapter.notifyDataSetInvalidated();
-		adapter.notifyDataSetChanged();
-
-		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
-		try {
-			final RedmineUser user = mUserModel.fetchCurrentUser(intent.getConnectionId());
-			if(user != null){
-				StatusUserForm formHeader = new StatusUserForm(mHeader);
-				formHeader.setValue(user);
-				getListView().addHeaderView(mHeader);
-				mHeader.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						RedmineFilter filter = new RedmineFilter();
-						filter.setConnectionId(intent.getConnectionId());
-						filter.setAssigned(user);
-						filter.setSort(RedmineFilterSortItem.getFilter(RedmineFilterSortItem.KEY_MODIFIED, false));
-						RedmineFilterModel mFilter = new RedmineFilterModel(getHelper());
-						try {
-							RedmineFilter target = mFilter.getSynonym(filter);
-							if(target == null){
-								mFilter.insert(filter);
-								target = mFilter.getSynonym(filter);
-							}
-							mListener.onIssueFilterList(target.getConnectionId(), target.getId());
-						} catch (SQLException e) {
-							Log.e(TAG,"onClickHeader", e);
-						}
-
-					}
-				});
-			}
-		} catch (SQLException e) {
-			Log.e(TAG,"fetchCurrentUser", e);
-		}
 
 		setListAdapter(adapter);
+		adapter.setupParameter(intent.getConnectionId());
+		adapter.notifyDataSetChanged();
+
 		if(adapter.getCount() < 1){
 			onRefresh();
 		}
@@ -155,7 +121,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		mHeader = inflater.inflate(R.layout.status_user,null);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 

@@ -21,6 +21,7 @@ import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
+import se.emilsjolander.stickylistheaders.PtrStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
@@ -186,6 +187,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 						onRefresh(true);
 					}
 				})
+
+				.useViewDelegate(PtrStickyListHeadersListView.class, (PtrStickyListHeadersListView)view.findViewById(R.id.list))
 		//.options(...)
 		.setup(mPullToRefreshLayout);
 	}

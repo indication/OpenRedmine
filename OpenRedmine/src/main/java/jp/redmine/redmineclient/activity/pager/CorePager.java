@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.fragment.pager;
+package jp.redmine.redmineclient.activity.pager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,9 +7,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.List;
 
 public class CorePager extends FragmentStatePagerAdapter {
-	private final List<PageFragment> fragmentlist;
+	private final List<CorePage> fragmentlist;
 
-	public CorePager(FragmentManager fm, List<PageFragment> fragments) {
+	public CorePager(FragmentManager fm, List<CorePage> fragments) {
 		super(fm);
 		fragmentlist = fragments;
 	}
@@ -31,10 +31,5 @@ public class CorePager extends FragmentStatePagerAdapter {
 		if(fragmentlist.size() <= position)
 			return null;
 		return fragmentlist.get(position).getName();
-	}
-
-	public interface PageFragment{
-		public Fragment getFragment();
-		public CharSequence getName();
 	}
 }

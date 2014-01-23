@@ -11,6 +11,7 @@ Features
 * Get API key from web site
 * Filter (Status/Tracker/Category/Priority)
 * Download file
+* Wiki
 
 
 Version
@@ -64,6 +65,9 @@ Used references
 - Support gradle release from "ogaclejapan"
   http://ogaclejapan.com/android/2013/07/07/new-build-system-part2-for-gradle/
 
+- Add feature about FragmentBreadCrumbs from "techbooster"
+  http://techbooster.org/android/application/15499/
+
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs
@@ -93,6 +97,9 @@ Using Libraries
 
 - actionbarpulltorefresh (Apache License, Version 2.0) - support pull to refresh
   https://github.com/chrisbanes/ActionBar-PullToRefresh
+
+- PtrStickyListHeadersListView (unknown)  - support pull to refresh on StickyListHeaders
+  http://stackoverflow.com/questions/20143008/is-it-possible-to-merge-stickylistviewheader-with-crisbanes-pulltorefresh
 
 Using Icons
 ==========

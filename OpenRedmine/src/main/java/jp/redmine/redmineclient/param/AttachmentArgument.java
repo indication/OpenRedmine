@@ -9,4 +9,9 @@ public class AttachmentArgument extends IssueArgument {
 	public int getAttachmentId(){
 		return getArg(ATTACHMENT_ID, -1);
 	}
+
+	public void importArgument(AttachmentArgument arg) {
+		setAttachmentId(arg.getAttachmentId());
+		super.importArgument(arg);
+	}
 }

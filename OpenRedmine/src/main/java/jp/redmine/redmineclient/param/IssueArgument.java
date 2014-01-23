@@ -9,4 +9,9 @@ public class IssueArgument extends ProjectArgument {
 	public int getIssueId(){
 		return getArg(ISSUE_ID, -1);
 	}
+
+	public void importArgument(IssueArgument arg) {
+		setIssueId(arg.getIssueId());
+		super.importArgument(arg);
+	}
 }

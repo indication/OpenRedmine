@@ -77,6 +77,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		List<CorePage> list = new ArrayList<CorePage>();
 		// Issue view
 		IssueArgument argList = new IssueArgument();
+		argList.setArgument();
 		argList.importArgument(intent);
 		list.add((new CorePage<IssueArgument>() {
 			@Override

@@ -174,11 +174,6 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 				return true;
 			}
-			case R.id.menu_cancel:
-			{
-				getFragmentManager().popBackStack();
-				return true;
-			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

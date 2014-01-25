@@ -65,27 +65,74 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 			Log.e(TAG, "getTabs", e);
 		}
 
+		boolean isValidIssue = intent.getIssueId() > 0;
+
 		List<CorePage> list = new ArrayList<CorePage>();
-		// Issue view
-		IssueArgument argList = new IssueArgument();
-		argList.setArgument();
-		argList.importArgument(intent);
+		if(isValidIssue){
+			// Issue view
+			IssueArgument argList = new IssueArgument();
+			argList.setArgument();
+			argList.importArgument(intent);
+			list.add((new CorePage<IssueArgument>() {
+				@Override
+				public Fragment getRawFragment() {
+					return Issue.newInstance(getParam());
+				}
+
+				@Override
+				public CharSequence getName() {
+					return getString(R.string.ticket_issue);
+				}
+
+				@Override
+				public Integer getIcon() {
+					return R.drawable.ic_action_message;
+				}
+			}).setParam(argList));
+
+			// Time Entry
+
+			TimeEntryArgument argTimeentry = new TimeEntryArgument();
+			argTimeentry.setArgument();
+			argTimeentry.importArgument(intent);
+			list.add((new CorePage<TimeEntryArgument>() {
+				@Override
+				public Fragment getRawFragment() {
+					return TimeEntryEdit.newInstance(getParam());
+				}
+
+				@Override
+				public CharSequence getName() {
+					return getString(R.string.ticket_time);
+				}
+
+				@Override
+				public Integer getIcon() {
+					return android.R.drawable.ic_menu_recent_history;
+				}
+			}).setParam(argTimeentry));
+		}
+
+		IssueArgument argEdit = new IssueArgument();
+		argEdit.setArgument();
+		argEdit.importArgument(intent);
 		list.add((new CorePage<IssueArgument>() {
 			@Override
 			public Fragment getRawFragment() {
-				return Issue.newInstance(getParam());
+				return IssueEdit.newInstance(getParam());
 			}
 
 			@Override
 			public CharSequence getName() {
-				return getString(R.string.ticket_issue);
+				return getString(R.string.edit);
 			}
 
 			@Override
 			public Integer getIcon() {
-				return R.drawable.ic_action_message;
+				return android.R.drawable.ic_menu_edit;
 			}
-		}).setParam(argList));
+		}).setParam(argEdit));
+
 
 		return list;
 	}

@@ -182,7 +182,8 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 							dialog.dismiss();
 						if(isSuccess){
 							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							getFragmentManager().popBackStack();
+							if(result.size() == 1)
+								mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
 						}
 					}
 				};

@@ -36,7 +36,7 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	}
 
 
-	static public TimeEntryEdit newInstance(ConnectionArgument intent){
+	static public TimeEntryEdit newInstance(TimeEntryArgument intent){
 		TimeEntryEdit instance = new TimeEntryEdit();
 		instance.setArguments(intent.getArgument());
 		return instance;

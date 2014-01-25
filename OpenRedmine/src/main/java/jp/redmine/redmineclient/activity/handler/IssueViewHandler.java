@@ -79,19 +79,17 @@ public class IssueViewHandler extends Core
 	}
 
 	@Override
-	public void onIssueAdd(int connectionid, long projectId) {
-		final IssueArgument arg = new IssueArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setProjectId(projectId);
-		arg.setIssueId(-1);
-
-		runTransaction(new TransitFragment() {
+	public void onIssueAdd(final int connectionid, final long projectId) {
+		kickActivity(IssueActivity.class, new IntentFactory() {
 			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
+			public void generateIntent(Intent intent) {
+				IssueArgument arg = new IssueArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
+				arg.setProjectId(projectId);
+				arg.setIssueId(-1);
 			}
-		}, null);
+		});
 	}
 
 	@Override

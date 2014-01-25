@@ -13,27 +13,18 @@ import java.util.List;
 
 import jp.redmine.redmineclient.activity.TabActivity;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.activity.handler.IssueViewHandler;
 import jp.redmine.redmineclient.activity.pager.CorePage;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
-import jp.redmine.redmineclient.db.cache.RedmineUserModel;
-import jp.redmine.redmineclient.entity.RedmineFilter;
-import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
-import jp.redmine.redmineclient.fragment.CategoryList;
 import jp.redmine.redmineclient.fragment.Issue;
-import jp.redmine.redmineclient.fragment.IssueList;
-import jp.redmine.redmineclient.fragment.VersionList;
-import jp.redmine.redmineclient.fragment.WikiList;
-import jp.redmine.redmineclient.param.FilterArgument;
+import jp.redmine.redmineclient.fragment.IssueEdit;
+import jp.redmine.redmineclient.fragment.TimeEntryEdit;
 import jp.redmine.redmineclient.param.IssueArgument;
-import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.param.TimeEntryArgument;
 
 public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 	implements ActivityInterface {

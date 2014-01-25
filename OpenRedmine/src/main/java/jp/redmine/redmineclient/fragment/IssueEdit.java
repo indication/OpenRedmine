@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
@@ -175,7 +176,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 						super.onPreExecute();
 					}
 					@Override
-					protected void onPostExecute(Void result) {
+					protected void onPostExecute(List<RedmineIssue> result) {
 						super.onPostExecute(result);
 						if (dialog.isShowing())
 							dialog.dismiss();

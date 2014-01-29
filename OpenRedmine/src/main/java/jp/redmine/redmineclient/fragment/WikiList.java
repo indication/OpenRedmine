@@ -91,6 +91,8 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		adapter.notifyDataSetChanged();
 		setListAdapter(adapter);
 
+        if(adapter.getCount() == 0)
+            onRefresh();
 
 	}
 

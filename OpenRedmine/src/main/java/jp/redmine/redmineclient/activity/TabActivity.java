@@ -88,7 +88,7 @@ abstract public class TabActivity<T extends OrmLiteSqliteOpenHelper> extends Orm
 			tab.setTabListener(listener);
 			if (item.getIcon() != null)
 				tab.setIcon(item.getIcon());
-			actionBar.addTab(tab);
+			actionBar.addTab(tab, item.isDefault());
 		}
 
 	}

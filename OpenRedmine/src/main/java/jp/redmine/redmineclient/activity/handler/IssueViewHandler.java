@@ -63,19 +63,18 @@ public class IssueViewHandler extends Core
 	}
 
 	@Override
-	public void onIssueEdit(int connectionid, int issueid) {
-		final IssueArgument arg = new IssueArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setIssueId(issueid);
+	public void onIssueEdit(final int connectionid, final int issueid) {
+        kickActivity(IssueActivity.class, new IntentFactory() {
+            @Override
+            public void generateIntent(Intent intent) {
+                IssueArgument arg = new IssueArgument();
+                arg.setIntent(intent);
+                arg.setConnectionId(connectionid);
+                arg.setIssueId(issueid);
+                arg.setIsEdit(true);
 
-		runTransaction(new TransitFragment() {
-			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, IssueEdit.newInstance(arg));
-				tran.replace(R.id.fragmentOneFooter, Empty.newInstance());
-			}
-		}, null);
+            }
+        });
 	}
 
 	@Override
@@ -88,6 +87,7 @@ public class IssueViewHandler extends Core
 				arg.setConnectionId(connectionid);
 				arg.setProjectId(projectId);
 				arg.setIssueId(-1);
+
 			}
 		});
 	}
@@ -95,6 +95,7 @@ public class IssueViewHandler extends Core
 	@Override
 	public void onIssueRefreshed(int connectionid, int issueid) {
 		//TODO
+
 	}
 
 	@Override

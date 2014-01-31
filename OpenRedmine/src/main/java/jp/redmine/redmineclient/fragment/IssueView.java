@@ -271,11 +271,11 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
-		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate( R.menu.issue_view, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
+        super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override
@@ -286,20 +286,6 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			case R.id.menu_refresh:
 			{
 				onFetchRemote();
-				return true;
-			}
-			case R.id.menu_edit:
-			{
-				IssueArgument baseintent = new IssueArgument();
-				baseintent.setArgument(getArguments());
-				mListener.onIssueEdit(baseintent.getConnectionId(), baseintent.getIssueId());
-				return true;
-			}
-			case R.id.menu_add_timeentry:
-			{
-				IssueArgument baseintent = new IssueArgument();
-				baseintent.setArgument(getArguments());
-				mTimeEntryListener.onTimeEntryAdd(baseintent.getConnectionId(), baseintent.getIssueId());
 				return true;
 			}
 		}

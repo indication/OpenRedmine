@@ -102,8 +102,8 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate( R.menu.edit, menu );
+        inflater.inflate( R.menu.edit, menu );
+        super.onCreateOptionsMenu(menu, inflater);
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)

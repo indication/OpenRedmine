@@ -4,7 +4,9 @@ Release history
 
 Next Release
 ===========
-- Fetch wiki when there is no item
+- Wikiリストを自動取得
+- チケット選択でアクティビティを開く
+- チケット追加を修正
 
 v3.5 - 36 - 2014/01/24
 ===========

@@ -34,8 +34,8 @@
 <string name="format_date">%tF</string>
 <string name="format_datetime">%1$tF %1$tH:%1$tM</string>
 <string name="format_progress">%1$d%%</string>
-<string name="ticket_created">Created</string>
-<string name="ticket_created_by">by %1$s on %2$s</string>
+<string name="ticket_created">Добавил(а)</string>
+<string name="ticket_created_by">%1$s в %2$s</string>
 <string name="ticket_author">Автор</string>
 <string name="ticket_title">Title</string>
 <string name="ticket_private">Частная</string>

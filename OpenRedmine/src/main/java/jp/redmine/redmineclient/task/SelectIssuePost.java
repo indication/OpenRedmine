@@ -3,6 +3,8 @@ package jp.redmine.redmineclient.task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -12,11 +14,12 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 
-public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
+public class SelectIssuePost extends SelectDataPost<List<RedmineIssue>,RedmineIssue> {
 	private final static String TAG = "SelectIssuePost";
 	protected DatabaseCacheHelper helper;
 	protected RedmineConnection connection;
@@ -30,14 +33,22 @@ public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
 	}
 
 	@Override
-	protected Void doInBackground(RedmineIssue... params) {
+	protected List<RedmineIssue> doInBackground(RedmineIssue... params) {
 		final ParserIssue parser = new ParserIssue();
+		final List<RedmineIssue> list =  new ArrayList<RedmineIssue>();
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
 				IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
 				parser.registerDataCreation(handler);
+				parser.registerDataCreation(new DataCreationHandler<RedmineConnection, RedmineIssue>() {
+					@Override
+					public void onData(RedmineConnection info, RedmineIssue data) throws SQLException {
+						list.add(data);
+					}
+				});
+
 				helperSetupParserStream(stream, parser);
 				parser.parse(connection);
 			}
@@ -58,6 +69,7 @@ public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
 				if(isSuccess && parser.getCount() < 1){
 					try {
 						mIssue.refreshItem(connection, item);
+						list.add(item);
 					} catch (SQLException e) {
 						Log.e(TAG,"update issue",e);
 					}
@@ -65,7 +77,7 @@ public class SelectIssuePost extends SelectDataPost<Void,RedmineIssue> {
 			}
 		}
 		client.close();
-		return null;
+		return list;
 	}
 
 	@Override

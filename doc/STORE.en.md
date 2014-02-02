@@ -41,4 +41,5 @@ Release planing:
 
 Note:
 * This app is open source(GPL exclude libraries), you can contribute.
+* You can translate your language via https://www.transifex.com/projects/p/openredmine/ .
 * Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.

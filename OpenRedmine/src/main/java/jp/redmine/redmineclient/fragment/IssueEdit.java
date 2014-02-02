@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
@@ -175,13 +176,14 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 						super.onPreExecute();
 					}
 					@Override
-					protected void onPostExecute(Void result) {
+					protected void onPostExecute(List<RedmineIssue> result) {
 						super.onPostExecute(result);
 						if (dialog.isShowing())
 							dialog.dismiss();
 						if(isSuccess){
 							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							getFragmentManager().popBackStack();
+							if(result.size() == 1)
+								mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
 						}
 					}
 				};
@@ -192,11 +194,6 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 			case R.id.menu_delete:
 			{
 
-				return true;
-			}
-			case R.id.menu_cancel:
-			{
-				getFragmentManager().popBackStack();
 				return true;
 			}
 		}

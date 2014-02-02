@@ -36,7 +36,7 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	}
 
 
-	static public TimeEntryEdit newInstance(ConnectionArgument intent){
+	static public TimeEntryEdit newInstance(TimeEntryArgument intent){
 		TimeEntryEdit instance = new TimeEntryEdit();
 		instance.setArguments(intent.getArgument());
 		return instance;
@@ -102,8 +102,8 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate( R.menu.edit, menu );
+        inflater.inflate( R.menu.edit, menu );
+        super.onCreateOptionsMenu(menu, inflater);
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
@@ -172,11 +172,6 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 			case R.id.menu_delete:
 			{
 
-				return true;
-			}
-			case R.id.menu_cancel:
-			{
-				getFragmentManager().popBackStack();
 				return true;
 			}
 		}

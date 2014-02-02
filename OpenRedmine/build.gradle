@@ -19,7 +19,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 18
 
-        versionCode 36
+        versionCode 37
         versionName '3.5'
     }
     signingConfigs {

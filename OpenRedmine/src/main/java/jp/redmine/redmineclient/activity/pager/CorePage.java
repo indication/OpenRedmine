@@ -27,4 +27,7 @@ abstract public class CorePage<T> {
 	public Integer getIcon(){
 		return null;
 	}
+	public boolean isDefault(){
+		return false;
+	}
 }

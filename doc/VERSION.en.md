@@ -4,6 +4,9 @@ Release history
 
 Next Release
 ===========
+
+v3.5 - 37 - 2014/02/02
+===========
 - Fetch wiki when there is no item
 - Open activity on select issue
 - Fix add new issue

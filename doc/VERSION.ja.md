@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- ƒƒVƒAŒê‚ğ’Ç‰Á(by box789)
 
 v3.5 - 37 - 2014/02/02
 ===========

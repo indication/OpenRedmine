@@ -38,6 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Contributors
 ==========
+*  [insink71](https://twitter.com/insink71/statuses/425297982078996480) - Promotion in [redmine wiki](http://www.redmine.org/projects/redmine/wiki/ThirdPartyTools)
 *  [box789](https://github.com/box789) - _Add russian translation
 
 Used references

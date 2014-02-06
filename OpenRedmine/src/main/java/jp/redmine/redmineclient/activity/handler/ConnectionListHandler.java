@@ -43,4 +43,9 @@ public class ConnectionListHandler extends Core implements ConnectionActionInter
 		onConnectionEdit(-1);
 	}
 
+	@Override
+	public void onConnectionSaved() {
+
+	}
+
 }

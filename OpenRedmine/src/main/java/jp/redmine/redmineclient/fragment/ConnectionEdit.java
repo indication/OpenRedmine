@@ -1,9 +1,14 @@
 package jp.redmine.redmineclient.fragment;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import jp.redmine.redmineclient.ConnectionNaviActivity;
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
@@ -26,7 +31,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private RedmineConnectionActivityForm form;
 
 	private ConnectionModel modelConnection;
-	//private OnArticleSelectedListener mListener;
+	private ConnectionActionInterface mListener;
 
 	public ConnectionEdit(){
 		super();
@@ -37,6 +42,12 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		ConnectionEdit instance = new ConnectionEdit();
 		instance.setArguments(intent.getArgument());
 		return instance;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -78,7 +89,11 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
-			//mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
+			mListener = ((ActivityInterface)activity).getHandler(ConnectionActionInterface.class);
+		}
+		if(mListener == null) {
+			//setup empty events
+			mListener = new ConnectionActionEmptyHandler();
 		}
 
 	}
@@ -118,7 +133,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		form.getValue(con);
 		modelConnection.updateItem(idEditing, con);
 		Toast.makeText(getActivity(),R.string.has_been_saved, Toast.LENGTH_SHORT).show();
-		getFragmentManager().popBackStack();
+		mListener.onConnectionSaved();
 	}
 
 	@Override
@@ -136,5 +151,27 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		default:
 			break;
 		}
+	}
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.edit, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch ( item.getItemId() )
+		{
+			case R.id.menu_save:
+				completeSave();
+				return true;
+			case R.id.menu_delete:
+			{
+
+				return true;
+			}
+		}
+		return super.onOptionsItemSelected(item);
 	}
 }

@@ -7,4 +7,6 @@ public class ConnectionActionEmptyHandler implements ConnectionActionInterface {
 	public void onConnectionEdit(int connectionid) {}
 	@Override
 	public void onConnectionAdd() {}
+	@Override
+	public void onConnectionSaved() {}
 }

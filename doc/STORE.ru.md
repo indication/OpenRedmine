@@ -4,41 +4,41 @@ OpenRedmine
 
 Description
 ==========
-OpenRedmine Android „‘„r„|„‘„u„„„ƒ„‘ „{„|„y„u„~„„„€„} .
+OpenRedmine Android ÑÐ²Ð»ÑÐµÑ‚ÑÑ ÐºÐ»Ð¸ÐµÐ½Ñ‚Ð¾Ð¼ .
 
-„O„q„‘„x„p„„„u„|„Ž„~„„u „„„‚„u„q„€„r„p„~„y„‘ :
-* Redmine 1.2 „y„|„y „q„€„|„u„u „„€„x„t„~„u„z
-* ( „M„€„w„u„„ „q„„„„Ž „y„x„}„u„~„u„~ „ƒ „„u„‚„ƒ„€„~„p„|„Ž„~„„}„y „~„p„ƒ„„„‚„€„z„{„p„}„y ) API „{„|„„‰ „t„€„ƒ„„„…„„p
+ÐžÐ±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ðµ Ñ‚Ñ€ÐµÐ±Ð¾Ð²Ð°Ð½Ð¸Ñ :
+* Redmine 1.2 Ð¸Ð»Ð¸ Ð±Ð¾Ð»ÐµÐµ Ð¿Ð¾Ð·Ð´Ð½ÐµÐ¹
+* ( ÐœÐ¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½ Ñ Ð¿ÐµÑ€ÑÐ¾Ð½Ð°Ð»ÑŒÐ½Ñ‹Ð¼Ð¸ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ°Ð¼Ð¸ ) API ÐºÐ»ÑŽÑ‡ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð°
 
-„P„‚„y„}„u„‰„p„~„y„u:
-* „R„€„‡„‚„p„~„‘„u„„„ƒ„‘ „{„„Š„p „t„p„~„~„„‡ („q„y„|„u„„ „q„„| „x„p„s„‚„…„w„u„~ ) , „~„u „q„…„t„…„‰„y „x„p„Š„y„†„‚„€„r„p„~. „D„|„‘ „€„„„€„q„‚„p„w„u„~„y„‘ „}„u„~„ „r „ƒ„„y„ƒ„{„u „ƒ„€„u„t„y„~„u„~„y„z , „„€„w„p„|„…„z„ƒ„„„p, „…„t„p„|„y„„„u „{„„Š „r„ƒ„u„s„€, „u„ƒ„|„y „r„ „‡„€„„„y„„„u „…„t„p„|„y„„„Ž „~„u„}„u„t„|„u„~„~„€.
-* „N„u „q„u„x„€„„p„ƒ„~„€ „t„|„‘ „r„ƒ„u„‡ , „‘„r„|„‘„u„„„ƒ„‘ „s„p„}„}„p- „‚„u„|„y„x„u. „O„~ „}„€„w„u„„ „€„„„€„q„‚„p„w„p„„„Ž „ƒ„„„p„~„€„r„y„„„ƒ„‘ „ƒ„„„‚„p„~„~„„} „r Android 2.x.
+ÐŸÑ€Ð¸Ð¼ÐµÑ‡Ð°Ð½Ð¸Ðµ:
+* Ð¡Ð¾Ñ…Ñ€Ð°Ð½ÑÐµÑ‚ÑÑ ÐºÑÑˆÐ° Ð´Ð°Ð½Ð½Ñ‹Ñ… (Ð±Ð¸Ð»ÐµÑ‚ Ð±Ñ‹Ð» Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½ ) , Ð½Ðµ Ð±ÑƒÐ´ÑƒÑ‡Ð¸ Ð·Ð°ÑˆÐ¸Ñ„Ñ€Ð¾Ð²Ð°Ð½. Ð”Ð»Ñ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ð¼ÐµÐ½ÑŽ Ð² ÑÐ¿Ð¸ÑÐºÐµ ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ð¹ , Ð¿Ð¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, ÑƒÐ´Ð°Ð»Ð¸Ñ‚Ðµ ÐºÑÑˆ Ð²ÑÐµÐ³Ð¾, ÐµÑÐ»Ð¸ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ Ð½ÐµÐ¼ÐµÐ´Ð»ÐµÐ½Ð½Ð¾.
+* ÐÐµ Ð±ÐµÐ·Ð¾Ð¿Ð°ÑÐ½Ð¾ Ð´Ð»Ñ Ð²ÑÐµÑ… , ÑÐ²Ð»ÑÐµÑ‚ÑÑ Ð³Ð°Ð¼Ð¼Ð°- Ñ€ÐµÐ»Ð¸Ð·Ðµ. ÐžÐ½ Ð¼Ð¾Ð¶ÐµÑ‚ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶Ð°Ñ‚ÑŒ ÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑÑ ÑÑ‚Ñ€Ð°Ð½Ð½Ñ‹Ð¼ Ð² Android 2.x.
 
-„R„€„u„t„y„~„u„~„y„u:
-* „B„ „}„€„w„u„„„u „q„„„„Ž SSL „ƒ„€„u„t„y„~„u„~„y„u „~„u „‘„r„|„‘„u„„„ƒ„‘ „t„€„r„u„‚„u„~„~„„}
-* „B„ „„„p„{„w„u „}„€„w„u„„„u „ƒ„r„‘„x„p„„„Ž„ƒ„‘ „ƒ „q„p„x„€„r„€„z „p„…„„„u„~„„„y„†„y„{„p„ˆ„y„y
-* „P„€„|„…„‰„y„„„Ž„{„|„„‰ API „„€„|„…„p„r„„„€„}„p„„„y„‰„u„ƒ„{„y „ƒ „r„u„q-„ƒ„p„z„„„p
-* Gzip („ƒ„w„p„„„y„‘) „ƒ„r„‘„x„y
+Ð¡Ð¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ:
+* Ð’Ñ‹ Ð¼Ð¾Ð¶ÐµÑ‚Ðµ Ð±Ñ‹Ñ‚ÑŒ SSL ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ Ð½Ðµ ÑÐ²Ð»ÑÐµÑ‚ÑÑ Ð´Ð¾Ð²ÐµÑ€ÐµÐ½Ð½Ñ‹Ð¼
+* Ð’Ñ‹ Ñ‚Ð°ÐºÐ¶Ðµ Ð¼Ð¾Ð¶ÐµÑ‚Ðµ ÑÐ²ÑÐ·Ð°Ñ‚ÑŒÑÑ Ñ Ð±Ð°Ð·Ð¾Ð²Ð¾Ð¹ Ð°ÑƒÑ‚ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ†Ð¸Ð¸
+* ÐŸÐ¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒÐºÐ»ÑŽÑ‡ API Ð¿Ð¾Ð»ÑƒÐ°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸ Ñ Ð²ÐµÐ±-ÑÐ°Ð¹Ñ‚Ð°
+* Gzip (ÑÐ¶Ð°Ñ‚Ð¸Ñ) ÑÐ²ÑÐ·Ð¸
 
-„O„ƒ„€„q„u„~„~„€„ƒ„„„y:
-* „A„y„|„u„„„ „t„|„‘ „„‚„€„ƒ„}„€„„„‚„p „r „p„r„„„€„~„€„}„~„€„} „‚„u„w„y„}„u
-* „U„y„|„Ž„„„‚ ( „Y„„„p„„ / Tracker / „{„p„„„u„s„€„‚„y„ / „„‚„y„€„‚„y„„„u„„ / „p„r„„„€„‚ / „‰„u„|)
-* „R„€„‚„„„y„‚„€„r„{„p ( „y „q„y„|„u„„ ID / „t„p„„„u „ƒ„€„x„t„p„~„y„‘ / „t„p„„„p / ...)
-* „O„„„€„q„‚„p„w„u„~„y„u „q„y„|„u„„„€„r, „ƒ„r„‘„x„p„~„~„„‡ „ƒ „y„x„}„u„~„u„~„y„u„}
-* „R„€„x„t„p„„„Ž / „€„q„~„€„r„y„„„Ž „q„y„|„u„„„p „‚„u„{„€„‚„t
-* „H„p„s„‚„…„x„y„„„u „†„p„z„| „~„p „q„y„|„u„„„u
-* „P„€„ƒ„}„€„„„‚„u„„„Ž „r„y„{„y
+ÐžÑÐ¾Ð±ÐµÐ½Ð½Ð¾ÑÑ‚Ð¸:
+* Ð‘Ð¸Ð»ÐµÑ‚Ñ‹ Ð´Ð»Ñ Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€Ð° Ð² Ð°Ð²Ñ‚Ð¾Ð½Ð¾Ð¼Ð½Ð¾Ð¼ Ñ€ÐµÐ¶Ð¸Ð¼Ðµ
+* Ð¤Ð¸Ð»ÑŒÑ‚Ñ€ ( Ð¨Ñ‚Ð°Ñ‚ / Tracker / ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸ÑŽ / Ð¿Ñ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚ / Ð°Ð²Ñ‚Ð¾Ñ€ / Ñ‡ÐµÐ»)
+* Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ° ( Ð¸ Ð±Ð¸Ð»ÐµÑ‚ ID / Ð´Ð°Ñ‚Ðµ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ / Ð´Ð°Ñ‚Ð° / ...)
+* ÐžÑ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ Ð±Ð¸Ð»ÐµÑ‚Ð¾Ð², ÑÐ²ÑÐ·Ð°Ð½Ð½Ñ‹Ñ… Ñ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸ÐµÐ¼
+* Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ / Ð¾Ð±Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ Ð±Ð¸Ð»ÐµÑ‚Ð° Ñ€ÐµÐºÐ¾Ñ€Ð´
+* Ð—Ð°Ð³Ñ€ÑƒÐ·Ð¸Ñ‚Ðµ Ñ„Ð°Ð¹Ð» Ð½Ð° Ð±Ð¸Ð»ÐµÑ‚Ðµ
+* ÐŸÐ¾ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ Ð²Ð¸ÐºÐ¸
 
 Permissions:
-* „I„N„S„E„Q„N„E„S - „„€„t„{„|„„‰„u„~„y„‘ „{ Redmine „ƒ„u„‚„r„u„‚
-* „r„y„q„‚„y„‚„€„r„p„„„Ž - „€„„€„r„u„‹„p„„„Ž „r„y„q„‚„y„‚„…„„„ „~„p „{„‚„p„~„u „„|„u„}„u„~„„ „ƒ„„y„ƒ„{„p
-* „P„I„Y„I„S„E „T„ƒ„„„‚„€„z„ƒ„„„r„p „‡„‚„p„~„u„~„y„‘ „t„p„~„~„„‡ - „ƒ„{„p„‰„p„„„Ž „„…„~„{„„„p „y „t„€„|„ „r „t„‚„…„s„€„} „„‚„y„|„€„w„u„~„y„y
+* Ð˜ÐÐ¢Ð•Ð ÐÐ•Ð¢ - Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸Ñ Ðº Redmine ÑÐµÑ€Ð²ÐµÑ€
+* Ð²Ð¸Ð±Ñ€Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ - Ð¾Ð¿Ð¾Ð²ÐµÑ‰Ð°Ñ‚ÑŒ Ð²Ð¸Ð±Ñ€Ð¸Ñ€ÑƒÑŽÑ‚ Ð½Ð° ÐºÑ€Ð°Ð½Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ ÑÐ¿Ð¸ÑÐºÐ°
+* ÐŸÐ˜Ð¨Ð˜Ð¢Ð• Ð£ÑÑ‚Ñ€Ð¾Ð¹ÑÑ‚Ð²Ð° Ñ…Ñ€Ð°Ð½ÐµÐ½Ð¸Ñ Ð´Ð°Ð½Ð½Ñ‹Ñ… - ÑÐºÐ°Ñ‡Ð°Ñ‚ÑŒ Ð¿ÑƒÐ½ÐºÑ‚Ð° Ð¸ Ð´Ð¾Ð»ÑŽ Ð² Ð´Ñ€ÑƒÐ³Ð¾Ð¼ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ð¸
 
-„C„€„t „r„„‡„€„t„p:
+Ð“Ð¾Ð´ Ð²Ñ‹Ñ…Ð¾Ð´Ð°:
 * Get nested tickets
 * Show activities
-* „R„u„{„…„~„t„€„}„u„‚ ( „~„u„x„p„„|„p„~„y„‚„€„r„p„~„~„„u )
+* Ð¡ÐµÐºÑƒÐ½Ð´Ð¾Ð¼ÐµÑ€ ( Ð½ÐµÐ·Ð°Ð¿Ð»Ð°Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ðµ )
 
-„P„‚„y„}„u„‰„p„~„y„u:
-* „D„p„~„~„€„u „„‚„y„|„€„w„u„~„y„u „‘„r„|„‘„u„„„ƒ„‘ (GPL , „x„p „y„ƒ„{„|„„‰„u„~„y„u„} „q„y„q„|„y„€„„„u„{ „y „„.„t.) „ƒ „€„„„{„‚„„„„„} „y„ƒ„‡„€„t„~„„} „{„€„t„€„} . „B„ „}„€„w„u„„„u „„‚„y„~„‘„„„Ž „…„‰„p„ƒ„„„y„u . („N„p„„‚„y„}„u„‚, „„u„‚„u„r„€„t)
+ÐŸÑ€Ð¸Ð¼ÐµÑ‡Ð°Ð½Ð¸Ðµ:
+* Ð”Ð°Ð½Ð½Ð¾Ðµ Ð¿Ñ€Ð¸Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ ÑÐ²Ð»ÑÐµÑ‚ÑÑ (GPL , Ð·Ð° Ð¸ÑÐºÐ»ÑŽÑ‡ÐµÐ½Ð¸ÐµÐ¼ Ð±Ð¸Ð±Ð»Ð¸Ð¾Ñ‚ÐµÐº Ð¸ Ñ‚.Ð´.) Ñ Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ñ‹Ð¼ Ð¸ÑÑ…Ð¾Ð´Ð½Ñ‹Ð¼ ÐºÐ¾Ð´Ð¾Ð¼ . Ð’Ñ‹ Ð¼Ð¾Ð¶ÐµÑ‚Ðµ Ð¿Ñ€Ð¸Ð½ÑÑ‚ÑŒ ÑƒÑ‡Ð°ÑÑ‚Ð¸Ðµ . (ÐÐ°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, Ð¿ÐµÑ€ÐµÐ²Ð¾Ð´)
 * Notice via github or twitter @OpenRedmine if you feel something good or bad.

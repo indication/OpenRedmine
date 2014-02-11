@@ -2,14 +2,18 @@ package jp.redmine.redmineclient.adapter;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.IMasterRecordListItemForm;
+import jp.redmine.redmineclient.form.ProjectListItemForm;
 
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 
 public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject> {
+	private static final String TAG = RedmineProjectListAdapter.class.getSimpleName();
 	private RedmineProjectModel model;
 	protected Integer connection_id;
 	public RedmineProjectListAdapter(DatabaseCacheHelper helper) {
@@ -31,12 +35,24 @@ public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject
 
 	@Override
 	protected int getItemViewId() {
-		return android.R.layout.simple_list_item_1;
+		return R.layout.projectitem;
 	}
 
 	@Override
-	protected void setupView(View view, RedmineProject data) {
-		IMasterRecordListItemForm form = new IMasterRecordListItemForm(view);
+	protected void setupView(View view, final RedmineProject data) {
+		ProjectListItemForm form = new ProjectListItemForm(view);
+		form.ratingBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+				data.setFavorite(b ? 1 : 0);
+				try {
+					model.update(data);
+				} catch (SQLException e) {
+					Log.e(TAG, "onCheckedChanged" , e);
+				}
+				notifyDataSetChanged();
+			}
+		});
 		form.setValue(data);
 	}
 

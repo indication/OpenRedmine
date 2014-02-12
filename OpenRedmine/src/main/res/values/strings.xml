@@ -104,5 +104,7 @@
 	<string name="progress">Progress</string>
 	<string name="download">Download</string>
 	<string name="wiki">Wiki</string>
+	<string name="connection">Connection</string>
+	<string name="favorite">Favorite</string>
 
 </resources>

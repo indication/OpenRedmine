@@ -104,5 +104,7 @@
 <string name="progress">Готовность</string>
 <string name="download">Загрузить</string>
 <string name="wiki">Wiki</string>
+	<string name="connection">подключение</string>
+	<string name="favorite">любимый</string>
 
 </resources>

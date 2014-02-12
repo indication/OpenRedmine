@@ -3,21 +3,22 @@ package jp.redmine.redmineclient.adapter;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
-import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.RedmineConnectionListItemForm;
+
+import android.content.Context;
 import android.view.View;
 
-public class ConnectionListAdapter extends RedmineBaseAdapter<RedmineConnection> {
-	private RedmineConnectionModel model;
-	public ConnectionListAdapter(DatabaseHelper helper) {
-		super();
-		model = new RedmineConnectionModel(helper);
+import com.j256.ormlite.stmt.QueryBuilder;
+
+public class ConnectionListAdapter extends RedmineDaoAdapter<RedmineConnection, Integer, DatabaseHelper> {
+	private static final String TAG = ConnectionListAdapter.class.getSimpleName();
+
+	public ConnectionListAdapter(DatabaseHelper helper, Context context) {
+		super(helper, context, RedmineConnection.class);
 	}
 
-	public void setupParameter(int connection){
-	}
-
+	@Override
 	public boolean isValidParameter(){
 		return true;
 	}
@@ -34,17 +35,10 @@ public class ConnectionListAdapter extends RedmineBaseAdapter<RedmineConnection>
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		if(!isValidParameter())
-			return 0;
-		return (int) model.countByProject(0,0);
-	}
-
-	@Override
-	protected RedmineConnection getDbItem(int position) throws SQLException {
-		if(!isValidParameter())
-			return new RedmineConnection();
-		return model.fetchItemByProject(0,0,(long) position, 1L);
+	protected QueryBuilder<RedmineConnection, Integer> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineConnection, Integer> builder = dao.queryBuilder();
+		builder.orderBy(RedmineConnection.ID, true);
+		return builder;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ Release history
 Next Release
 ===========
 - Add russian translation by box789
+- Add project favorites list
 
 v3.5 - 37 - 2014/02/02
 ===========

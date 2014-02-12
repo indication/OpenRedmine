@@ -88,6 +88,7 @@ public class RedmineProjectModel  implements IMasterModel<RedmineProject>{
 			data = fetchById(info.getId(), data.getProjectId());
 		} else {
 			data.setId(project.getId());
+			data.setFavorite(project.getFavorite());
 			if(data.getModified() != null && project.getModified().after(data.getModified())){
 				this.update(data);
 			}

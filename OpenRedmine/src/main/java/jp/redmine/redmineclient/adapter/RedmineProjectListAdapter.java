@@ -8,16 +8,20 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.ProjectListItemForm;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 
-public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject> {
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
+public class RedmineProjectListAdapter extends  RedmineDaoAdapter<RedmineProject, Long, DatabaseCacheHelper> {
 	private static final String TAG = RedmineProjectListAdapter.class.getSimpleName();
 	private RedmineProjectModel model;
 	protected Integer connection_id;
-	public RedmineProjectListAdapter(DatabaseCacheHelper helper) {
-		super();
+	public RedmineProjectListAdapter(DatabaseCacheHelper helper, Context context) {
+		super(helper, context, RedmineProject.class);
 		model = new RedmineProjectModel(helper);
 	}
 
@@ -57,13 +61,14 @@ public class RedmineProjectListAdapter extends RedmineBaseAdapter<RedmineProject
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		return (int) model.countByProject(connection_id,0);
-	}
-
-	@Override
-	protected RedmineProject getDbItem(int position) throws SQLException {
-		return model.fetchItemByProject(connection_id,0,(long) position, 1L);
+	protected QueryBuilder<RedmineProject, Long> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineProject, Long> builder = dao.queryBuilder();
+		Where<RedmineProject,Long> where = builder.where()
+				.eq(RedmineProject.CONNECTION, connection_id)
+				;
+		builder.setWhere(where);
+		builder.orderBy(RedmineProject.PROJECT_ID, true);
+		return builder;
 	}
 
 	@Override

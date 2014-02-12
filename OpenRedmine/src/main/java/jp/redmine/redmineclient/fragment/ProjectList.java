@@ -154,9 +154,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 				.setup(mPullToRefreshLayout);
 	}
 	@Override
-	public void onListItemClick(ListView parent, View v, int position, long id) {
-		super.onListItemClick(parent, v, position, id);
-		ListView listView = (ListView) parent;
+	public void onListItemClick(ListView listView, View v, int position, long id) {
+		super.onListItemClick(listView, v, position, id);
 		Object item =  listView.getItemAtPosition(position);
 		if(item == null || !(item instanceof RedmineProject))
 			return;

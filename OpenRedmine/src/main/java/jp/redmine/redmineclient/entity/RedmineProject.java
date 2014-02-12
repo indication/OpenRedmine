@@ -10,6 +10,7 @@ public class RedmineProject implements IMasterRecord {
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
 	public final static String NAME = "name";
+	public final static String FAVORITE = "favorite";
 
     @DatabaseField(generatedId = true)
     private Long id;

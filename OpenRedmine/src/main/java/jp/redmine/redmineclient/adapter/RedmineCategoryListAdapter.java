@@ -1,23 +1,21 @@
 package jp.redmine.redmineclient.adapter;
 
+import android.content.Context;
 import android.view.View;
+
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
-import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
-import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.form.IMasterRecordListItemForm;
 
-public class RedmineCategoryListAdapter extends RedmineBaseAdapter<RedmineProjectCategory> {
-	private RedmineCategoryModel model;
+public class RedmineCategoryListAdapter extends RedmineDaoAdapter<RedmineProjectCategory, Long, DatabaseCacheHelper> {
 	protected Integer connection_id;
 	protected Long project_id;
-	public RedmineCategoryListAdapter(DatabaseCacheHelper helper) {
-		super();
-		model = new RedmineCategoryModel(helper);
+	public RedmineCategoryListAdapter(DatabaseCacheHelper helper, Context context) {
+		super(helper, context, RedmineProjectCategory.class);
 	}
 
 	public void setupParameter(int connection, long project){
@@ -45,13 +43,16 @@ public class RedmineCategoryListAdapter extends RedmineBaseAdapter<RedmineProjec
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		return (int) model.countByProject(connection_id,project_id);
-	}
-
-	@Override
-	protected RedmineProjectCategory getDbItem(int position) throws SQLException {
-		return model.fetchItemByProject(connection_id,project_id,(long) position, 1L);
+	protected QueryBuilder<RedmineProjectCategory, Long> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineProjectCategory, Long> builder = dao.queryBuilder();
+		builder
+				.orderBy(RedmineProjectCategory.NAME, true)
+				.where()
+				.eq(RedmineProjectCategory.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineProjectCategory.PROJECT_ID, project_id)
+		;
+		return builder;
 	}
 
 	@Override

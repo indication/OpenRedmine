@@ -75,58 +75,6 @@ public class RedmineIssueModel {
 
 		return fetchBy(builder);
 	}
-	public long countByFilter(RedmineFilter filter) throws SQLException {
-		QueryBuilder<RedmineIssue, Long> builder = getQueryBuilder(filter);
-		builder.setCountOf(true);
-		return dao.countOf(builder.prepare());
-	}
-	public RedmineIssue fetchItemByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = getQueryBuilder(filter);
-		setupLimit(builder,startRow,maxRows);
-		return fetchBy(builder);
-	}
-	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder(RedmineFilter filter) throws SQLException{
-		Hashtable<String, Object> dic = new Hashtable<String, Object>();
-		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
-		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
-		if(filter.getTracker()	 != null) dic.put(RedmineFilter.TRACKER,		filter.getTracker()		);
-		if(filter.getAssigned()	 != null) dic.put(RedmineFilter.ASSIGNED,		filter.getAssigned()	);
-		if(filter.getAuthor()	 != null) dic.put(RedmineFilter.AUTHOR,			filter.getAuthor()		);
-		if(filter.getCategory()	 != null) dic.put(RedmineFilter.CATEGORY,		filter.getCategory()	);
-		if(filter.getStatus()	 != null) dic.put(RedmineFilter.STATUS,			filter.getStatus()		);
-		if(filter.getVersion()	 != null) dic.put(RedmineFilter.VERSION,		filter.getVersion()		);
-		if(filter.getPriority()	 != null) dic.put(RedmineFilter.PRIORITY,		filter.getPriority()	);
-
-		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
-		Where<RedmineIssue, Long> where = builder.where();
-		boolean isFirst = true;
-		for(Enumeration<String> e = dic.keys() ; e.hasMoreElements() ;){
-			String key = e.nextElement();
-			if(dic.get(key) == null)
-				continue;
-			if(isFirst){
-				isFirst = false;
-			} else {
-				where.and();
-			}
-			where.eq(key, dic.get(key));
-		}
-		builder.setWhere(where);
-		if(TextUtils.isEmpty(filter.getSort())){
-			builder.orderBy(RedmineIssue.ISSUE_ID, false);
-		} else {
-			for(RedmineFilterSortItem key : filter.getSortList()){
-				builder.orderBy(key.getDbKey(),key.isAscending());
-			}
-		}
-		return builder;
-	}
-
-	public List<RedmineIssue> fetchAllByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = getQueryBuilder(filter);
-		setupLimit(builder,startRow,maxRows);
-		return fetchAllBy(builder);
-	}
 
 	protected void setupLimit(QueryBuilder<?,?> builder,Long startRow, Long maxRows) throws SQLException{
 		if(maxRows != null){

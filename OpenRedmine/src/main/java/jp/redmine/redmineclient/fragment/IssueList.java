@@ -98,7 +98,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineIssueListAdapter(getHelper());
+		adapter = new RedmineIssueListAdapter(getHelper(), getActivity().getApplicationContext());
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument( getArguments() );
 		if(intent.hasFilterId()){

@@ -1,24 +1,21 @@
 package jp.redmine.redmineclient.adapter;
 
+import android.content.Context;
 import android.view.View;
+
+import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
-import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
-import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineWiki;
-import jp.redmine.redmineclient.form.IMasterRecordListItemForm;
 import jp.redmine.redmineclient.form.RedmineWikiListItemForm;
 
-public class RedmineWikiListAdapter extends RedmineBaseAdapter<RedmineWiki> {
-	private RedmineWikiModel model;
+public class RedmineWikiListAdapter extends RedmineDaoAdapter<RedmineWiki, Long, DatabaseCacheHelper> {
 	protected Integer connection_id;
 	protected Long project_id;
-	public RedmineWikiListAdapter(DatabaseCacheHelper helper) {
-		super();
-		model = new RedmineWikiModel(helper);
+	public RedmineWikiListAdapter(DatabaseCacheHelper helper, Context context) {
+		super(helper, context, RedmineWiki.class);
 	}
 
 	public void setupParameter(int connection, long project){
@@ -46,13 +43,16 @@ public class RedmineWikiListAdapter extends RedmineBaseAdapter<RedmineWiki> {
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		return (int) model.countByProject(connection_id,project_id);
-	}
-
-	@Override
-	protected RedmineWiki getDbItem(int position) throws SQLException {
-		return model.fetchItemByProject(connection_id,project_id,(long) position, 1L);
+	protected QueryBuilder<RedmineWiki, Long> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineWiki, Long> builder = dao.queryBuilder();
+		builder
+				.orderBy(RedmineWiki.TITLE, true)
+				.where()
+				.eq(RedmineWiki.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineWiki.PROJECT_ID, project_id)
+		;
+		return builder;
 	}
 
 	@Override

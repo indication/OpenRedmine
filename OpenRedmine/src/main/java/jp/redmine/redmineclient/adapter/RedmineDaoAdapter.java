@@ -42,7 +42,7 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 	 */
 	@Override
 	public void notifyDataSetChanged() {
-		cache.clear();
+		close();
         if(isValidParameter()){
             try {
 				dbResults =  (AndroidDatabaseResults) dao.iterator(getQueryBuilder().prepare()).getRawResults();
@@ -55,12 +55,16 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 	}
 	@Override
 	public void notifyDataSetInvalidated() {
+		close();
+		super.notifyDataSetInvalidated();
+	}
+
+	protected void close(){
 		cache.clear();
 		if(dbResults != null){
 			dbResults.closeQuietly();
 			dbResults = null;
 		}
-		super.notifyDataSetInvalidated();
 	}
 
 	@Override

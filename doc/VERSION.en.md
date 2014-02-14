@@ -4,8 +4,12 @@ Release history
 
 Next Release
 ===========
+
+v3.6 - 38 - 2014/02/15
+===========
 - Add russian translation by box789
 - Add project favorites list
+- Fix appearance on edit connection
 
 v3.5 - 37 - 2014/02/02
 ===========

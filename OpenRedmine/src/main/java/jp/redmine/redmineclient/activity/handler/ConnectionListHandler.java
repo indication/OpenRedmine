@@ -1,10 +1,9 @@
 package jp.redmine.redmineclient.activity.handler;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentTransaction;
 
 import jp.redmine.redmineclient.ConnectionActivity;
-import jp.redmine.redmineclient.fragment.ConnectionEdit;
+import jp.redmine.redmineclient.ConnectionEditActivity;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
@@ -27,24 +26,26 @@ public class ConnectionListHandler extends Core implements ConnectionActionInter
 	}
 
 	@Override
-	public void onConnectionEdit(int connectionid) {
-
-		final ConnectionArgument arg = new ConnectionArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-
-		runTransaction(new TransitFragment() {
+	public void onConnectionEdit(final int connectionid) {
+		kickActivity(ConnectionEditActivity.class, new IntentFactory() {
 			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(android.R.id.content, ConnectionEdit.newInstance(arg));
+			public void generateIntent(Intent intent) {
+				ConnectionArgument arg = new ConnectionArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
 			}
-		}, null);
+		});
 
 	}
 
 	@Override
 	public void onConnectionAdd() {
 		onConnectionEdit(-1);
+	}
+
+	@Override
+	public void onConnectionSaved() {
+
 	}
 
 }

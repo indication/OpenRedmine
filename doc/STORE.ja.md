@@ -4,41 +4,41 @@ OpenRedmine
 
 Description
 ==========
-OpenRedmine �̓A���h���C�h�pRedmine�N���C�A���g�ł��B
+OpenRedmine はアンドロイド用Redmineクライアントです。
 
-�K�{�p��:
-* Redmine 1.2 �ȍ~
-* API�A�N�Z�X�L�[ (�l�p�ݒ肩��ύX�\)
+必須用件:
+* Redmine 1.2 以降
+* APIアクセスキー (個人用設定から変更可能)
 
-����:
-* �L���b�V���f�[�^(�_�E�����[�h���ꂽ�`�P�b�g)�͈Í������ꂸ�ɕۑ�����܂��B �����ɍ폜����ꍇ�͐ڑ����X�g�Ń��j���[��\�����A���ׂẴL���b�V�����폜�@���Ă��������B
-* ���ׂĂɑ΂��Ĉ��S�ł͂Ȃ��A�K���}�����[�X�ł��BAndroid 2.x�ł͕\�������������Ȃ邱�Ƃ�����܂��B
+注意:
+* キャッシュデータ(ダウンロードされたチケット)は暗号化されずに保存されます。 すぐに削除する場合は接続リストでメニューを表示し、すべてのキャッシュを削除　してください。
+* すべてに対して安全ではない、ガンマリリースです。Android 2.xでは表示がおかしくなることがあります。
 
-�ڑ�:
-* �M������Ȃ�SSL�ڑ����邱�Ƃ��ł��܂�
-* �x�[�V�b�N�F�؂ł��ڑ����邱�Ƃ��ł��܂�
-* �E�F�u�T�C�g���甼�����I��API�L�[���擾
-* gzip(���k)�ڑ�
+接続:
+* 信頼されないSSL接続することができます
+* ベーシック認証でも接続することができます
+* ウェブサイトから半自動的にAPIキーを取得
+* gzip(圧縮)接続
 
-�@�\:
-* �I�t���C���ł̃`�P�b�g�{��
-* �t�B���^(���/�g���b�J/�J�e�S��/�D��x/�쐬��/�S����)
-* �\�[�g(�`�P�b�gID/�쐬��/�X�V��/...�Ȃ�)
-* �ύX�_�E�֌W����`�P�b�g�̕\��
-* �`�P�b�g�E���ԋL�^�̍쐬/�X�V
-* �`�P�b�g�Ɋւ���t�@�C���̃_�E�����[�h(/sdcard/download/jp.redmine.redmineclient/ �֕ۑ�����܂�)
-* Wiki�̎Q��
+機能:
+* オフラインでのチケット閲覧
+* フィルタ(状態/トラッカ/カテゴリ/優先度/作成者/担当者)
+* ソート(チケットID/作成日/更新日/...など)
+* 変更点・関係するチケットの表示
+* チケット・時間記録の作成/更新
+* チケットに関するファイルのダウンロード(/sdcard/download/jp.redmine.redmineclient/ へ保存されます)
+* Wikiの参照
 
-�A�v���̌���:
-* �l�b�g���[�N�ʐM(���S�ȃC���^�[�l�b�g�A�N�Z�X) - Redmine �T�[�o�[�ւ̐ڑ�
-* �n�[�h�E�F�A�̐���(�o�C�u���[�V�����̐���) - ���X�g�A�C�e���̃^�b�v�����Ƃ��Ƀo�C�u���[�V�����Œʒm
-* �X�g���[�W(SD �J�[�h�̃R���e���c���C��/�폜����) - �_�E�����[�h���Ăق��̃A�v���ƘA�g
+アプリの権限:
+* ネットワーク通信(完全なインターネットアクセス) - Redmine サーバーへの接続
+* ハードウェアの制御(バイブレーションの制御) - リストアイテムのタップしたときにバイブレーションで通知
+* ストレージ(SD カードのコンテンツを修正/削除する) - ダウンロードしてほかのアプリと連携
 
-�����[�X�\��:
-* �e�q�`�P�b�g�̎擾
-* �����̕\��
-* �X�g�b�v�E�H�b�`(���v��)
+リリース予定:
+* 親子チケットの取得
+* 活動の表示
+* ストップウォッチ(未計画)
 
-�m�[�g:
-* ���̃A�v���̓I�[�v���\�[�X(���C�u������������GPL)�ł��B���Ȃ����Q���ł��܂��B(��: �|��)
+ノート:
+* このアプリはオープンソース(ライブラリ等を除きGPL)です。あなたが参加できます。(例: 翻訳)
 * Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.

@@ -104,5 +104,7 @@
 	<string name="progress">進捗</string>
 	<string name="download">ダウンロード</string>
 	<string name="wiki">Wiki</string>
+	<string name="connection">接続</string>
+	<string name="favorite">お気に入り</string>
 
 </resources>

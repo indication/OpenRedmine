@@ -19,6 +19,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.form.helper.TextileHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -51,6 +52,8 @@ public class RedmineProjectFavoriteAdapter extends BaseAdapter implements Sticky
 		TextView text = (TextView)convertView.findViewById(R.id.name);
 		if(text != null)
 			text.setText((TextUtils.isEmpty(connection.getName())) ? "" : connection.getName());
+		//fix background to hide transparent headers
+		convertView.setBackgroundColor(TextileHelper.getBackgroundColor(convertView.getContext()));
 		return convertView;
 	}
 

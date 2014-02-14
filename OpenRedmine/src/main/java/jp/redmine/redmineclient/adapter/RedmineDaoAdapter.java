@@ -14,11 +14,8 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 
-import jp.redmine.redmineclient.external.lib.LRUCache;
-
-public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper> extends BaseAdapter implements LRUCache.IFetchObject<Integer> {
+public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper> extends BaseAdapter {
 	private static final String TAG = RedmineDaoAdapter.class.getSimpleName();
-	protected LRUCache<Integer,T> cache = new LRUCache<Integer,T>(10);
 	protected final LayoutInflater infrator;
 	protected Dao<T, ID> dao;
 	private AndroidDatabaseResults dbResults;
@@ -60,7 +57,6 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 	}
 
 	protected void close(){
-		cache.clear();
 		if(dbResults != null){
 			dbResults.closeQuietly();
 			dbResults = null;
@@ -69,26 +65,7 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 
 	@Override
 	public long getItemId(int position) {
-		return getDbItemId(getItemWithCache(position));
-	}
-	/**
-	 * Get item from database via cache
-	 * This method catches SQLException.
-	 * @return null or item
-	 * @deprecated this method is called from BaseAdapter only
-	 */
-	@Override
-	public Object getItem(int position) {
-		return getItemWithCache(position);
-	}
-
-	/**
-	 * Get item from database via cache
-	 * This method catches SQLException.
-	 * @return null or item
-	 */
-	protected T getItemWithCache(int position) {
-		return cache.getValue(position, this);
+		return getDbItemId((T)getItem(position));
 	}
 
 	/**
@@ -100,7 +77,7 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 	 * @deprecated this method is called from IFetchObject only
 	 */
 	@Override
-	public Object getItem(Integer position) {
+	public Object getItem(int position) {
 		if(!isValidParameter())
             return null;
 		return getDbItem(position);
@@ -134,7 +111,7 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 			convertView = getItemView(infrator);
 		}
 		if(convertView != null){
-			T rec = getItemWithCache(position);
+			T rec = (T)getItem(position);
 			if(rec == null){
 				Log.e(TAG,"getValue returns data is null");
 			} else {

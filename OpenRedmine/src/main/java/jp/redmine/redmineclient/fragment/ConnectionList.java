@@ -108,6 +108,13 @@ public class ConnectionList extends SherlockListFragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		if(adapter != null)
+			adapter.notifyDataSetChanged();
+	}
+
+	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
 		RedmineConnection item = (RedmineConnection) parent.getItemAtPosition(position);

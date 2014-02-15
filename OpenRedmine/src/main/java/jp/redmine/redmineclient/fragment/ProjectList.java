@@ -114,6 +114,13 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(adapter != null)
+			adapter.notifyDataSetChanged();
+	}
+
 	private PullToRefreshLayout mPullToRefreshLayout;
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {

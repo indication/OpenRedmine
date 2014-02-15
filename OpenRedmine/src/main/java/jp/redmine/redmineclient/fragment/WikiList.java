@@ -97,6 +97,13 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		if(adapter != null)
+			adapter.notifyDataSetChanged();
+	}
+
+	@Override
 	public void onListItemClick(ListView listView, View v, int position, long id) {
 		super.onListItemClick(listView, v, position, id);
 		Object listitem = listView.getItemAtPosition(position);

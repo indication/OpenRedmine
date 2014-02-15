@@ -194,6 +194,12 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		onRefreshList();
+	}
+
+	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
 		if(v == mHeader){
@@ -249,7 +255,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	protected void onRefreshList(){
 		if(adapter == null)
 			return;
-		adapter.notifyDataSetInvalidated();
 		adapter.notifyDataSetChanged();
 		RedmineIssueFilterHeader form = new RedmineIssueFilterHeader(mHeader);
 		form.setValue(adapter.getParameter());

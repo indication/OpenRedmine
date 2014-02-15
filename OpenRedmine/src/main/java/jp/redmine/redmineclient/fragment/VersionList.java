@@ -62,11 +62,18 @@ public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		adapter = new RedmineVersionListAdapter(getHelper());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
-		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		adapter.notifyDataSetChanged();
+		adapter.setupParameter(intent.getConnectionId(), intent.getProjectId());
 		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(adapter != null)
+			adapter.notifyDataSetChanged();
 	}
 
 	@Override

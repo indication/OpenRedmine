@@ -90,7 +90,6 @@ public class ConnectionList extends SherlockListFragment {
 		});
 
 		adapter = new ConnectionListAdapter(helperStore);
-		adapter.notifyDataSetInvalidated();
 		adapter.notifyDataSetChanged();
 		setListAdapter(adapter);
 	}
@@ -111,8 +110,7 @@ public class ConnectionList extends SherlockListFragment {
 	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
-		ListView listView = (ListView) parent;
-		RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
+		RedmineConnection item = (RedmineConnection) parent.getItemAtPosition(position);
 		mListener.onConnectionSelected(item.getId());
 	}
 

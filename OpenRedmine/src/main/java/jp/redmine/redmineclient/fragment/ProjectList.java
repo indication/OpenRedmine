@@ -1,7 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import java.sql.SQLException;
-
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
@@ -11,14 +9,8 @@ import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
-import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineFilter;
-import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.form.StatusUserForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
@@ -29,13 +21,11 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
-import android.util.Log;
 import android.view.LayoutInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
@@ -122,6 +112,13 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		return super.onCreateView(inflater, container, savedInstanceState);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(adapter != null)
+			adapter.notifyDataSetChanged();
 	}
 
 	private PullToRefreshLayout mPullToRefreshLayout;

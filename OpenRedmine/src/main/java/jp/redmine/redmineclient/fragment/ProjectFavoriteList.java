@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
@@ -81,6 +82,11 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 		return current;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(list.getAdapter() != null && list.getAdapter() instanceof  BaseAdapter)
+			((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
 
-
+	}
 }

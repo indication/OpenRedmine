@@ -14,6 +14,8 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.R;
+
 public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper> extends BaseAdapter {
 	private static final String TAG = RedmineDaoAdapter.class.getSimpleName();
 	protected final LayoutInflater infrator;
@@ -107,8 +109,15 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		// Check view id when reuse views
+		if(convertView != null){
+			Object tag = convertView.getTag(R.id.list);
+			if(tag != null && tag instanceof Integer && (Integer)tag != getItemViewId())
+				convertView = null;
+		}
 		if (convertView == null) {
 			convertView = getItemView(infrator);
+			convertView.setTag(R.id.list, getItemViewId());
 		}
 		if(convertView != null){
 			T rec = (T)getItem(position);

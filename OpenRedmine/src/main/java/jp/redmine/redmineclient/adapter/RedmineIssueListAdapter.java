@@ -82,7 +82,7 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 	}
 
 	public RedmineFilter getParameter() {
-		RedmineFilter filter;
+		RedmineFilter filter = null;
 		try {
 			if(filter_id != null)
 				filter = mFilter.fetchById(filter_id);
@@ -90,8 +90,9 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 				filter = mFilter.fetchByCurrent(connection_id, project_id);
 		} catch (SQLException e) {
 			Log.e(TAG, "getParameter", e);
-			filter = new RedmineFilter();
 		}
+		if(filter == null)
+			filter = new RedmineFilter();
 		return filter;
 	}
 
@@ -120,6 +121,10 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 				where.and();
 			}
 			where.eq(key, dic.get(key));
+		}
+		// return no data
+		if(dic.size() < 1){
+			where.eq(RedmineFilter.CONNECTION, -1);
 		}
 		builder.setWhere(where);
 		if(TextUtils.isEmpty(filter.getSort())){

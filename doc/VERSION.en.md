@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- Fix crash on fetch remote first time (#68)
 
 v3.6 - 38 - 2014/02/15
 ===========

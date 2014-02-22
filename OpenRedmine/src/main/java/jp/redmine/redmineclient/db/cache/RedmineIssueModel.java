@@ -54,8 +54,9 @@ public class RedmineIssueModel {
 			;
 		return builder;
 	}
-	protected QueryBuilder<RedmineIssue, Long> builderByIssue(int connection_id, long issue_id) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
+	public static QueryBuilder<RedmineIssue, Long> builderByIssue(Dao<RedmineIssue, Long> d,
+								int connection_id, long issue_id) throws SQLException{
+		QueryBuilder<RedmineIssue, Long> builder = d.queryBuilder();
 		builder.where()
 			.eq(RedmineIssue.CONNECTION, connection_id)
 			.and()
@@ -102,7 +103,7 @@ public class RedmineIssueModel {
 	}
 
 	public RedmineIssue fetchById(int connection, int issueId) throws SQLException{
-		PreparedQuery<RedmineIssue> query = builderByIssue(connection,issueId).prepare();
+		PreparedQuery<RedmineIssue> query = builderByIssue(dao, connection,issueId).prepare();
 		Log.d("RedmineIssue",query.getStatement());
 		RedmineIssue item = dao.queryForFirst(query);
 		if(item == null)
@@ -111,7 +112,7 @@ public class RedmineIssueModel {
 	}
 	
 	public Long getIdByIssue(int connection, int issueId) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = builderByIssue(connection,issueId);
+		QueryBuilder<RedmineIssue, Long> builder = builderByIssue(dao, connection,issueId);
 
 		builder.selectRaw(RedmineIssue.ID);
 		GenericRawResults<String[]> result = builder.queryRaw();

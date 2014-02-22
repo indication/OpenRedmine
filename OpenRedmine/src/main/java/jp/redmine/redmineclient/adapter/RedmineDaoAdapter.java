@@ -83,7 +83,7 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 		return getDbItem(position);
 	}
 
-	private T getDbItem(int position){
+	protected T getDbItem(int position){
 		if(dbResults == null)
 			return null;
 		dbResults.moveAbsolute(position);

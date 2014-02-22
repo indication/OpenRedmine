@@ -42,12 +42,11 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	private RedmineRelativeIssueListAdapter adapterRelation;
 	private RedmineTimeEntryListAdapter adapterTimeEntry;
 	private RedmineIssueAttachmentListAdapter adapterAttachment;
-	private RedmineIssueModel mIssue;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 	
-	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
+	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,Context context,WebviewActionInterface act){
 		adapterJournal = new RedmineJournalListAdapter(m, act);
-		adapterIssue = new RedmineIssueDetailAdapter(m, act);
+		adapterIssue = new RedmineIssueDetailAdapter(m,context, act);
 		adapterRelation = new RedmineRelativeIssueListAdapter(m, act);
 		adapterTimeEntry = new RedmineTimeEntryListAdapter(m);
 		adapterAttachment = new RedmineIssueAttachmentListAdapter(m);
@@ -56,7 +55,6 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 		mapAdapters.add(new AggrigateAdapter(adapterTimeEntry, R.string.ticket_time));
 		mapAdapters.add(new AggrigateAdapter(adapterAttachment, R.string.ticket_attachments));
 		mapAdapters.add(new AggrigateAdapter(adapterJournal, R.string.ticket_journals));
-		mIssue = new RedmineIssueModel(m);
 	}
 
 	protected class AggrigateAdapter {
@@ -112,15 +110,14 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	}
 	public void setupParameter(int connection, long issue){
 		adapterIssue.setupParameter(connection, issue);
-		try {
-			RedmineIssue is = mIssue.fetchById(issue);
+		adapterIssue.notifyDataSetChanged();
+		if(adapterIssue.getCount() > 0){
+			RedmineIssue is = adapterIssue.getDbItem(0);
 			int issue_id = is.getIssueId();
 			adapterJournal.setupParameter(connection,is.getProject().getId(), issue);
 			adapterRelation.setupParameter(connection, issue_id);
 			adapterTimeEntry.setupParameter(connection, issue_id);
 			adapterAttachment.setupParameter(connection, issue_id);
-		} catch (SQLException e) {
-			Log.e(TAG,"setupParameter", e);
 		}
 	}
 

@@ -52,8 +52,13 @@ public class RedmineIssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, L
 
 	@Override
 	protected void setupView(View view, RedmineIssue data) {
-		RedmineIssueViewDetailForm form = new RedmineIssueViewDetailForm(view);
-		form.setupWebView(action);
+		RedmineIssueViewDetailForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineIssueViewDetailForm){
+			form = (RedmineIssueViewDetailForm)view.getTag();
+		} else {
+			form = new RedmineIssueViewDetailForm(view);
+			form.setupWebView(action);
+		}
 		form.setValue(data);
 		form.setValueTimeEntry(data.getDoneHours());
 	}

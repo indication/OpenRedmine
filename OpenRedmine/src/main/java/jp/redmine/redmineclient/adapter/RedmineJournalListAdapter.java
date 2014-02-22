@@ -267,8 +267,13 @@ public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal,
 
 	@Override
 	protected void setupView(View view, RedmineJournal data) {
-		RedmineJournalListItemForm form = new RedmineJournalListItemForm(view);
-		form.setupWebView(action);
+		RedmineJournalListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineJournalListItemForm){
+			form = (RedmineJournalListItemForm)view.getTag();
+		} else {
+			form = new RedmineJournalListItemForm(view);
+			form.setupWebView(action);
+		}
 		form.setValue(data, project_id);
 	}
 

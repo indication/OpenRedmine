@@ -57,7 +57,12 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 
 	@Override
 	protected void setupView(View view, RedmineIssue data) {
-		RedmineIssueListItemForm form = new RedmineIssueListItemForm(view);
+		RedmineIssueListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineIssueListItemForm){
+			form = (RedmineIssueListItemForm)view.getTag();
+		} else {
+			form = new RedmineIssueListItemForm(view);
+		}
 		form.setValue(data);
 	}
 

@@ -38,7 +38,12 @@ public class RedmineWikiListAdapter extends RedmineDaoAdapter<RedmineWiki, Long,
 
 	@Override
 	protected void setupView(View view, RedmineWiki data) {
-		RedmineWikiListItemForm form = new RedmineWikiListItemForm(view);
+		RedmineWikiListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineWikiListItemForm){
+			form = (RedmineWikiListItemForm)view.getTag();
+		} else {
+			form = new RedmineWikiListItemForm(view);
+		}
 		form.setValue(data);
 	}
 

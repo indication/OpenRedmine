@@ -42,7 +42,12 @@ public class RedmineTimeEntryListAdapter extends RedmineDaoAdapter<RedmineTimeEn
 
 	@Override
 	protected void setupView(View view, RedmineTimeEntry data) {
-		RedmineTimeEntryListItemForm form = new RedmineTimeEntryListItemForm(view);
+		RedmineTimeEntryListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineTimeEntryListItemForm){
+			form = (RedmineTimeEntryListItemForm)view.getTag();
+		} else {
+			form = new RedmineTimeEntryListItemForm(view);
+		}
 		form.setValue(data);
 	}
 

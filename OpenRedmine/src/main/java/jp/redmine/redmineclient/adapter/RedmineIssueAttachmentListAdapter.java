@@ -42,7 +42,12 @@ public class RedmineIssueAttachmentListAdapter extends RedmineDaoAdapter<Redmine
 
 	@Override
 	protected void setupView(View view, RedmineAttachment data) {
-		RedmineAttachmentListItemForm form = new RedmineAttachmentListItemForm(view);
+		RedmineAttachmentListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineAttachmentListItemForm){
+			form = (RedmineAttachmentListItemForm)view.getTag();
+		} else {
+			form = new RedmineAttachmentListItemForm(view);
+		}
 		form.setValue(data);
 	}
 

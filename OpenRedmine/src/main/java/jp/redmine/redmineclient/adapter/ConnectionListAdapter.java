@@ -30,7 +30,12 @@ public class ConnectionListAdapter extends RedmineDaoAdapter<RedmineConnection, 
 
 	@Override
 	protected void setupView(View view, RedmineConnection data) {
-		RedmineConnectionListItemForm form = new RedmineConnectionListItemForm(view);
+		RedmineConnectionListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineConnectionListItemForm){
+			form = (RedmineConnectionListItemForm)view.getTag();
+		} else {
+			form = new RedmineConnectionListItemForm(view);
+		}
 		form.setValue(data);
 	}
 

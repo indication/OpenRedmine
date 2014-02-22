@@ -44,7 +44,12 @@ public class RedmineProjectListAdapter extends  RedmineDaoAdapter<RedmineProject
 
 	@Override
 	protected void setupView(View view, final RedmineProject data) {
-		ProjectListItemForm form = new ProjectListItemForm(view);
+		ProjectListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof ProjectListItemForm){
+			form = (ProjectListItemForm)view.getTag();
+		} else {
+			form = new ProjectListItemForm(view);
+		}
 		form.ratingBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -89,7 +89,8 @@ public class ConnectionList extends SherlockListFragment {
 			}
 		});
 
-		adapter = new ConnectionListAdapter(helperStore);
+		adapter = new ConnectionListAdapter(helperStore, getActivity().getApplicationContext());
+		setListAdapter(adapter);
 		adapter.notifyDataSetChanged();
 	}
 

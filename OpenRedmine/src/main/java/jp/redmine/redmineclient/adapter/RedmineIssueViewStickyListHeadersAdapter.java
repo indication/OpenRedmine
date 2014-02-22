@@ -48,7 +48,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 		adapterJournal = new RedmineJournalListAdapter(m, act);
 		adapterIssue = new RedmineIssueDetailAdapter(m,context, act);
 		adapterRelation = new RedmineRelativeIssueListAdapter(m,context);
-		adapterTimeEntry = new RedmineTimeEntryListAdapter(m);
+		adapterTimeEntry = new RedmineTimeEntryListAdapter(m,context);
 		adapterAttachment = new RedmineIssueAttachmentListAdapter(m);
 		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));
 		mapAdapters.add(new AggrigateAdapter(adapterRelation, R.string.ticket_relations));

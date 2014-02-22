@@ -14,7 +14,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 
-public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
+public class RedmineTimeEntryModel {
 	protected Dao<RedmineTimeEntry, Integer> dao;
 	public RedmineTimeEntryModel(DatabaseCacheHelper helper) {
 		try {
@@ -70,38 +70,6 @@ public class RedmineTimeEntryModel implements IMasterModel<RedmineTimeEntry> {
 			result = result.add(ent.getHours());
 		}
 		return result;
-	}
-
-	@Override
-	public long countByProject(int connection_id, long project_id) throws SQLException {
-		QueryBuilder<RedmineTimeEntry, ?> builder = dao.queryBuilder();
-		builder
-			.setCountOf(true)
-			.where()
-				.eq(RedmineTimeEntry.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineTimeEntry.ISSUE_ID, (int)project_id)
-				;
-		return dao.countOf(builder.prepare());
-	}
-
-	@Override
-	public RedmineTimeEntry fetchItemByProject(int connection_id,
-			long project_id, long offset, long limit) throws SQLException {
-		QueryBuilder<RedmineTimeEntry, ?> builder = dao.queryBuilder();
-		builder
-			.limit(limit)
-			.offset(offset)
-			//.orderBy(RedmineTimeEntry.NAME, true)
-			.where()
-				.eq(RedmineTimeEntry.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineTimeEntry.ISSUE_ID, (int) project_id)
-				;
-		RedmineTimeEntry item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineTimeEntry();
-		return item;
 	}
 
 	public int insert(RedmineTimeEntry item) throws SQLException{

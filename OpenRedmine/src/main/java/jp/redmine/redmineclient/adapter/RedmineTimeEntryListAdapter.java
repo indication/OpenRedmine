@@ -7,16 +7,19 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.form.RedmineTimeEntryListItemForm;
+
+import android.content.Context;
 import android.view.View;
 
-public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeEntry> {
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
+public class RedmineTimeEntryListAdapter extends RedmineDaoAdapter<RedmineTimeEntry, Long, DatabaseCacheHelper> {
 	private RedmineTimeEntryModel model;
 	protected Integer connection_id;
 	protected Integer issue_id;
-	public RedmineTimeEntryListAdapter(DatabaseCacheHelper helper) {
-		super();
-		model = new RedmineTimeEntryModel(helper);
-
+	public RedmineTimeEntryListAdapter(DatabaseCacheHelper helper, Context context) {
+		super(helper, context, RedmineTimeEntry.class);
 	}
 
 	public void setupParameter(int connection, int issue){
@@ -44,16 +47,6 @@ public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeE
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		return (int) model.countByProject(connection_id, issue_id);
-	}
-
-	@Override
-	protected RedmineTimeEntry getDbItem(int position) throws SQLException {
-		return model.fetchItemByProject(connection_id, issue_id, position, 1L);
-	}
-
-	@Override
 	protected long getDbItemId(RedmineTimeEntry item) {
 		if(item == null){
 			return -1;
@@ -62,4 +55,16 @@ public class RedmineTimeEntryListAdapter extends RedmineBaseAdapter<RedmineTimeE
 		}
 	}
 
+	@Override
+	protected QueryBuilder<RedmineTimeEntry, Long> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineTimeEntry, Long> builder = dao.queryBuilder();
+		Where<RedmineTimeEntry,Long> where = builder.where()
+				.eq(RedmineTimeEntry.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineTimeEntry.ISSUE_ID, issue_id)
+				;
+		builder.setWhere(where);
+		builder.orderBy(RedmineTimeEntry.ID, true);
+		return builder;
+	}
 }

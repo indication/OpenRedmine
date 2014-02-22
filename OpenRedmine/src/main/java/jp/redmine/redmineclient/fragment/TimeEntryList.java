@@ -57,7 +57,7 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().addFooterView(mFooter);
 
-		adapter = new RedmineTimeEntryListAdapter(getHelper());
+		adapter = new RedmineTimeEntryListAdapter(getHelper(),getActivity());
 		setListAdapter(adapter);
 
 		getListView().setFastScrollEnabled(true);

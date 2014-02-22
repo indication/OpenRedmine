@@ -105,7 +105,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 
         list.addFooterView(mFooter);
 
-		adapter = new RedmineIssueViewStickyListHeadersAdapter(getHelper(),getActivity().getApplicationContext(), mActionListener);
+		adapter = new RedmineIssueViewStickyListHeadersAdapter(getHelper(),getActivity(), mActionListener);
         list.setAdapter(adapter);
 		
         list.setFastScrollEnabled(true);

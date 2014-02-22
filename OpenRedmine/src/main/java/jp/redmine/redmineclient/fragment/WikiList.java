@@ -82,7 +82,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineWikiListAdapter(getHelper(), getActivity().getApplicationContext());
+		adapter = new RedmineWikiListAdapter(getHelper(), getActivity());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());

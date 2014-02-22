@@ -45,7 +45,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 	
 	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,Context context,WebviewActionInterface act){
-		adapterJournal = new RedmineJournalListAdapter(m, act);
+		adapterJournal = new RedmineJournalListAdapter(m,context, act);
 		adapterIssue = new RedmineIssueDetailAdapter(m,context, act);
 		adapterRelation = new RedmineRelativeIssueListAdapter(m,context);
 		adapterTimeEntry = new RedmineTimeEntryListAdapter(m,context);

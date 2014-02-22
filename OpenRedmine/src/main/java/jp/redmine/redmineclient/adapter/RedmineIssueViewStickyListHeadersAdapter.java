@@ -1,16 +1,13 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +32,6 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
  * 		JournalListView
  */
 public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
-	private final static String TAG = "RedmineIssueViewStickyListHeadersAdapter";
-
 	private RedmineJournalListAdapter adapterJournal;
 	private RedmineIssueDetailAdapter adapterIssue;
 	private RedmineRelativeIssueListAdapter adapterRelation;

@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 
 public class RedmineAttachmentModel {
@@ -38,37 +37,6 @@ public class RedmineAttachmentModel {
 		RedmineAttachment item = dao.queryForId(id);
 		if(item == null)
 			item = new RedmineAttachment();
-		return item;
-	}
-
-	public long countByIssue(int connection_id, int issue_id) throws SQLException {
-		QueryBuilder<RedmineAttachment, ?> builder = dao.queryBuilder();
-		builder
-			.setCountOf(true)
-			.where()
-				.eq(RedmineAttachment.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineAttachment.ISSUE_ID, issue_id)
-				;
-		return dao.countOf(builder.prepare());
-	}
-
-	public RedmineAttachment fetchItemByIssue(int connection_id, long issue_id,
-			long offset, long limit) throws SQLException {
-		QueryBuilder<RedmineAttachment, ?> builder = dao.queryBuilder();
-		builder
-			.limit(limit)
-			.offset(offset)
-			.orderBy(RedmineAttachment.ATTACHMENT_ID, true)
-			.where()
-				.eq(RedmineAttachment.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineAttachment.ISSUE_ID, issue_id)
-				;
-		RedmineAttachment item = builder.queryForFirst();
-		if(item == null){
-			item = new RedmineAttachment();
-		}
 		return item;
 	}
 

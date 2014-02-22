@@ -4,23 +4,22 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineAttachmentModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.form.RedmineAttachmentListItemForm;
+
+import android.content.Context;
 import android.view.View;
 
-public class RedmineIssueAttachmentListAdapter extends RedmineBaseAdapter<RedmineAttachment>  {
-	@SuppressWarnings("unused")
-	private static final String TAG = RedmineIssueAttachmentListAdapter.class.getSimpleName();
-	private RedmineAttachmentModel mRelation;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
+public class RedmineIssueAttachmentListAdapter extends RedmineDaoAdapter<RedmineAttachment, Long, DatabaseCacheHelper>  {
 	protected Integer connection_id;
 	protected Integer issue_id;
 
 
-
-	public RedmineIssueAttachmentListAdapter(DatabaseCacheHelper m){
-		super();
-		mRelation = new RedmineAttachmentModel(m);
+	public RedmineIssueAttachmentListAdapter(DatabaseCacheHelper m, Context context) {
+		super(m, context, RedmineAttachment.class);
 	}
 
 	public void setupParameter(int connection, int issue){
@@ -48,17 +47,6 @@ public class RedmineIssueAttachmentListAdapter extends RedmineBaseAdapter<Redmin
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		return (int) mRelation.countByIssue(connection_id, issue_id);
-	}
-
-	@Override
-	protected RedmineAttachment getDbItem(int position) throws SQLException {
-		RedmineAttachment rel = mRelation.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
-		return rel;
-	}
-
-	@Override
 	protected long getDbItemId(RedmineAttachment item) {
 		if(item == null){
 			return -1;
@@ -67,6 +55,17 @@ public class RedmineIssueAttachmentListAdapter extends RedmineBaseAdapter<Redmin
 		}
 	}
 
-
+	@Override
+	protected QueryBuilder<RedmineAttachment, Long> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineAttachment, Long> builder = dao.queryBuilder();
+		Where<RedmineAttachment,Long> where = builder.where()
+				.eq(RedmineAttachment.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineAttachment.ISSUE_ID, issue_id)
+				;
+		builder.setWhere(where);
+		builder.orderBy(RedmineAttachment.ATTACHMENT_ID, true);
+		return builder;
+	}
 
 }

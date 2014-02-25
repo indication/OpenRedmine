@@ -54,8 +54,9 @@ public class RedmineIssueModel {
 			;
 		return builder;
 	}
-	protected QueryBuilder<RedmineIssue, Long> builderByIssue(int connection_id, long issue_id) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
+	public static QueryBuilder<RedmineIssue, Long> builderByIssue(Dao<RedmineIssue, Long> d,
+								int connection_id, long issue_id) throws SQLException{
+		QueryBuilder<RedmineIssue, Long> builder = d.queryBuilder();
 		builder.where()
 			.eq(RedmineIssue.CONNECTION, connection_id)
 			.and()
@@ -74,58 +75,6 @@ public class RedmineIssueModel {
 		setupLimit(builder,startRow,maxRows);
 
 		return fetchBy(builder);
-	}
-	public long countByFilter(RedmineFilter filter) throws SQLException {
-		QueryBuilder<RedmineIssue, Long> builder = getQueryBuilder(filter);
-		builder.setCountOf(true);
-		return dao.countOf(builder.prepare());
-	}
-	public RedmineIssue fetchItemByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = getQueryBuilder(filter);
-		setupLimit(builder,startRow,maxRows);
-		return fetchBy(builder);
-	}
-	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder(RedmineFilter filter) throws SQLException{
-		Hashtable<String, Object> dic = new Hashtable<String, Object>();
-		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
-		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
-		if(filter.getTracker()	 != null) dic.put(RedmineFilter.TRACKER,		filter.getTracker()		);
-		if(filter.getAssigned()	 != null) dic.put(RedmineFilter.ASSIGNED,		filter.getAssigned()	);
-		if(filter.getAuthor()	 != null) dic.put(RedmineFilter.AUTHOR,			filter.getAuthor()		);
-		if(filter.getCategory()	 != null) dic.put(RedmineFilter.CATEGORY,		filter.getCategory()	);
-		if(filter.getStatus()	 != null) dic.put(RedmineFilter.STATUS,			filter.getStatus()		);
-		if(filter.getVersion()	 != null) dic.put(RedmineFilter.VERSION,		filter.getVersion()		);
-		if(filter.getPriority()	 != null) dic.put(RedmineFilter.PRIORITY,		filter.getPriority()	);
-
-		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
-		Where<RedmineIssue, Long> where = builder.where();
-		boolean isFirst = true;
-		for(Enumeration<String> e = dic.keys() ; e.hasMoreElements() ;){
-			String key = e.nextElement();
-			if(dic.get(key) == null)
-				continue;
-			if(isFirst){
-				isFirst = false;
-			} else {
-				where.and();
-			}
-			where.eq(key, dic.get(key));
-		}
-		builder.setWhere(where);
-		if(TextUtils.isEmpty(filter.getSort())){
-			builder.orderBy(RedmineIssue.ISSUE_ID, false);
-		} else {
-			for(RedmineFilterSortItem key : filter.getSortList()){
-				builder.orderBy(key.getDbKey(),key.isAscending());
-			}
-		}
-		return builder;
-	}
-
-	public List<RedmineIssue> fetchAllByFilter(RedmineFilter filter, Long startRow, Long maxRows) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = getQueryBuilder(filter);
-		setupLimit(builder,startRow,maxRows);
-		return fetchAllBy(builder);
 	}
 
 	protected void setupLimit(QueryBuilder<?,?> builder,Long startRow, Long maxRows) throws SQLException{
@@ -154,7 +103,7 @@ public class RedmineIssueModel {
 	}
 
 	public RedmineIssue fetchById(int connection, int issueId) throws SQLException{
-		PreparedQuery<RedmineIssue> query = builderByIssue(connection,issueId).prepare();
+		PreparedQuery<RedmineIssue> query = builderByIssue(dao, connection,issueId).prepare();
 		Log.d("RedmineIssue",query.getStatement());
 		RedmineIssue item = dao.queryForFirst(query);
 		if(item == null)
@@ -163,7 +112,7 @@ public class RedmineIssueModel {
 	}
 	
 	public Long getIdByIssue(int connection, int issueId) throws SQLException{
-		QueryBuilder<RedmineIssue, Long> builder = builderByIssue(connection,issueId);
+		QueryBuilder<RedmineIssue, Long> builder = builderByIssue(dao, connection,issueId);
 
 		builder.selectRaw(RedmineIssue.ID);
 		GenericRawResults<String[]> result = builder.queryRaw();

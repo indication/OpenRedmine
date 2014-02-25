@@ -4,6 +4,8 @@ Release history
 
 Next Release
 ===========
+- Fix crash on fetch remote first time (#68)
+- (内部変更) Move DAO into adapter (#61)
 
 v3.6 - 38 - 2014/02/15
 ===========

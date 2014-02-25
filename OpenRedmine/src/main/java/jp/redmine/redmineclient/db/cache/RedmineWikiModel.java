@@ -4,18 +4,15 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 
 
-public class RedmineWikiModel implements IMasterModel<RedmineWiki> {
+public class RedmineWikiModel {
 	private final static String TAG = RedmineWikiModel.class.getSimpleName();
 	protected Dao<RedmineWiki, Long> dao;
 	public RedmineWikiModel(DatabaseCacheHelper helper) {
@@ -24,18 +21,6 @@ public class RedmineWikiModel implements IMasterModel<RedmineWiki> {
 		} catch (SQLException e) {
 			Log.e(TAG,"getDao",e);
 		}
-	}
-
-	public List<RedmineWiki> fetchAll() throws SQLException{
-		return dao.queryForAll();
-	}
-
-	public List<RedmineWiki> fetchAll(int connection) throws SQLException{
-		List<RedmineWiki> item = dao.queryForEq(RedmineWiki.CONNECTION, connection);
-		if(item == null){
-			item = new ArrayList<RedmineWiki>();
-		}
-		return item;
 	}
 
 	public RedmineWiki fetchById(int connection, long project_id, String title) throws SQLException{
@@ -55,39 +40,6 @@ public class RedmineWikiModel implements IMasterModel<RedmineWiki> {
 
 	public RedmineWiki fetchById(long id) throws SQLException{
 		RedmineWiki item = dao.queryForId(id);
-		if(item == null)
-			item = new RedmineWiki();
-		return item;
-	}
-
-
-	@Override
-	public long countByProject(int connection_id, long project_id) throws SQLException {
-		QueryBuilder<RedmineWiki, ?> builder = dao.queryBuilder();
-		builder
-			.setCountOf(true)
-			.where()
-				.eq(RedmineWiki.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineWiki.PROJECT_ID, project_id)
-				;
-		return dao.countOf(builder.prepare());
-	}
-
-	@Override
-	public RedmineWiki fetchItemByProject(int connection_id,
-			long project_id, long offset, long limit) throws SQLException {
-		QueryBuilder<RedmineWiki, ?> builder = dao.queryBuilder();
-		builder
-			.limit(limit)
-			.offset(offset)
-			.orderBy(RedmineWiki.TITLE, true)
-			.where()
-				.eq(RedmineWiki.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineWiki.PROJECT_ID, project_id)
-				;
-		RedmineWiki item = builder.queryForFirst();
 		if(item == null)
 			item = new RedmineWiki();
 		return item;

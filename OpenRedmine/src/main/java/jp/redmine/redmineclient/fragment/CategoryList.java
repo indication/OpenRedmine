@@ -60,7 +60,7 @@ public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineCategoryListAdapter(getHelper());
+		adapter = new RedmineCategoryListAdapter(getHelper(), getActivity().getApplicationContext());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());

@@ -5,30 +5,30 @@ import java.sql.SQLException;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
 import jp.redmine.redmineclient.form.RedmineJournalListItemHeaderForm;
 import android.content.Context;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> implements StickyListHeadersAdapter {
-	private RedmineIssueModel mIssue;
+public class RedmineIssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
+	private static final String TAG = RedmineIssueDetailAdapter.class.getSimpleName();
 	private RedmineTimeEntryModel mTimeEntry;
 	protected Integer connection_id;
 	protected Long issue_id;
 	protected WebviewActionInterface action;
 
-
-	public RedmineIssueDetailAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
-		super();
-		mIssue = new RedmineIssueModel(m);
-		mTimeEntry = new RedmineTimeEntryModel(m);
+	public RedmineIssueDetailAdapter(DatabaseCacheHelper helper, Context context, WebviewActionInterface act) {
+		super(helper, context, RedmineIssue.class);
+		mTimeEntry = new RedmineTimeEntryModel(helper);
 		action = act;
 	}
 
@@ -52,21 +52,27 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 
 	@Override
 	protected void setupView(View view, RedmineIssue data) {
-		RedmineIssueViewDetailForm form = new RedmineIssueViewDetailForm(view);
-		form.setupWebView(action);
+		RedmineIssueViewDetailForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineIssueViewDetailForm){
+			form = (RedmineIssueViewDetailForm)view.getTag();
+		} else {
+			form = new RedmineIssueViewDetailForm(view);
+			form.setupWebView(action);
+		}
 		form.setValue(data);
 		form.setValueTimeEntry(data.getDoneHours());
 	}
 
-	@Override
-	protected int getDbCount() throws SQLException {
-		return getDbItem(0) == null ? 0 : 1;
-	}
 
 	@Override
-	protected RedmineIssue getDbItem(int position) throws SQLException {
-		RedmineIssue issue = mIssue.fetchById(issue_id.intValue());
-		issue.setDoneHours(mTimeEntry.sumByIssueId(connection_id, issue.getIssueId()));
+	protected RedmineIssue getDbItem(int position){
+		RedmineIssue issue = super.getDbItem(position);
+		try {
+			if(issue != null)
+				issue.setDoneHours(mTimeEntry.sumByIssueId(connection_id, issue.getIssueId()));
+		} catch (SQLException e) {
+			Log.e(TAG, "getDbItem", e);
+		}
 		return issue;
 	}
 
@@ -88,13 +94,11 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 			convertView = null;
 		}
 		if (convertView == null) {
-			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.journalitemheader, null);
+			convertView = infrator.inflate(R.layout.journalitemheader, null);
 			convertView.setTag(R.layout.journalitemheader);
 		}
 		if(convertView != null){
-			RedmineIssue rec = getItemWithCache(position);
+			RedmineIssue rec = super.getDbItem(position);
 			RedmineJournalListItemHeaderForm form = new RedmineJournalListItemHeaderForm(convertView);
 			form.setValue(rec);
 		}
@@ -106,4 +110,15 @@ public class RedmineIssueDetailAdapter extends RedmineBaseAdapter<RedmineIssue> 
 		return getItemId(position);
 	}
 
+	@Override
+	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
+		Where<RedmineIssue,Long> where = builder.where()
+				//.eq(RedmineIssue.CONNECTION, connection_id)
+				//.and()
+				.eq(RedmineIssue.ID, issue_id)
+				;
+		builder.setWhere(where);
+		return builder;
+	}
 }

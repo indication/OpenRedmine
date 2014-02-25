@@ -86,7 +86,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineProjectListAdapter(getHelper());
+		adapter = new RedmineProjectListAdapter(getHelper(), getActivity());
 
 		final ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());

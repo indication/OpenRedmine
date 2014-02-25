@@ -38,7 +38,12 @@ public class RedmineVersionListAdapter extends RedmineBaseAdapter<RedmineProject
 
 	@Override
 	protected void setupView(View view, RedmineProjectVersion data) {
-		IMasterRecordListItemForm form = new IMasterRecordListItemForm(view);
+		IMasterRecordListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof IMasterRecordListItemForm){
+			form = (IMasterRecordListItemForm)view.getTag();
+		} else {
+			form = new IMasterRecordListItemForm(view);
+		}
 		form.setValue(data);
 	}
 

@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.adapter;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -28,10 +29,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal>  implements StickyListHeadersAdapter {
-	private final static String TAG = "RedmineJournalListAdapter";
+public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, DatabaseCacheHelper>  implements StickyListHeadersAdapter {
+	private final static String TAG = RedmineJournalListAdapter.class.getSimpleName();
 
 	private RedmineJournalModel mJournal;
 	private RedmineVersionModel mVersion;
@@ -227,10 +231,8 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 			return getRawItem(input);
 		}
 	}
-
-
-	public RedmineJournalListAdapter(DatabaseCacheHelper m,WebviewActionInterface act){
-		super();
+	public RedmineJournalListAdapter(DatabaseCacheHelper m, Context context ,WebviewActionInterface act) {
+		super(m, context, RedmineJournal.class);
 		mJournal = new RedmineJournalModel(m);
 		mVersion = new RedmineVersionModel(m);
 		mUser = new RedmineUserModel(m);
@@ -242,6 +244,7 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 		action = act;
 		setupHashmap();
 	}
+
 
 	public void setupParameter(int connection, long project , long issue){
 		connection_id = connection;
@@ -264,28 +267,48 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 
 	@Override
 	protected void setupView(View view, RedmineJournal data) {
-		RedmineJournalListItemForm form = new RedmineJournalListItemForm(view);
-		form.setupWebView(action);
+		RedmineJournalListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineJournalListItemForm){
+			form = (RedmineJournalListItemForm)view.getTag();
+		} else {
+			form = new RedmineJournalListItemForm(view);
+			form.setupWebView(action);
+		}
 		form.setValue(data, project_id);
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		return (int) mJournal.countByIssue(connection_id, issue_id);
-	}
-
-	@Override
-	protected RedmineJournal getDbItem(int position) throws SQLException {
-		RedmineJournal jr = mJournal.fetchItemByIssue(connection_id, issue_id,(long) position, 1);
-		for(RedmineJournalChanges cg : jr.changes){
-			if("attr".equalsIgnoreCase(cg.getProperty()))
-				getAttributeDetail(cg);
-			else if("attachment".equalsIgnoreCase(cg.getProperty()))
-				getAttachmentDetail(cg);
-			else
-				Log.w(TAG,"Changes: " + cg.getName() + "," + cg.getProperty());
+	protected RedmineJournal getDbItem(int position) {
+		RedmineJournal item = super.getDbItem(position);
+		try {
+			for(RedmineJournalChanges cg : item.getDetails()){
+				if("attr".equalsIgnoreCase(cg.getProperty()))
+					getAttributeDetail(cg);
+				else if("attachment".equalsIgnoreCase(cg.getProperty()))
+					getAttachmentDetail(cg);
+				else
+					Log.w(TAG,"Changes: " + cg.getName() + "," + cg.getProperty());
+			}
+		} catch (IOException e) {
+			Log.e(TAG,"getDbItem",e);
+		} catch (ClassNotFoundException e) {
+			Log.e(TAG,"getDbItem",e);
+		} catch (SQLException e) {
+			Log.e(TAG, "getDbItem", e);
 		}
-		return jr;
+		return item;
+	}
+	@Override
+	protected QueryBuilder<RedmineJournal, Long> getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineJournal, Long> builder = dao.queryBuilder();
+		Where<RedmineJournal,Long> where = builder.where()
+				.eq(RedmineJournal.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineJournal.ISSUE_ID, issue_id)
+				;
+		builder.setWhere(where);
+		builder.orderBy(RedmineJournal.JOURNAL_ID, true);
+		return builder;
 	}
 
 	protected void getAttributeDetail(RedmineJournalChanges cg) throws SQLException{
@@ -328,13 +351,11 @@ public class RedmineJournalListAdapter extends RedmineBaseAdapter<RedmineJournal
 			convertView = null;
 		}
 		if (convertView == null) {
-			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.journalitemheader, null);
+			convertView = infrator.inflate(R.layout.journalitemheader, null);
 			convertView.setTag(R.layout.journalitemheader);
 		}
 		if(convertView != null){
-			RedmineJournal rec = getItemWithCache(position);
+			RedmineJournal rec = getDbItem(position);
 			RedmineJournalListItemHeaderForm form = new RedmineJournalListItemHeaderForm(convertView);
 			form.setValue(rec);
 		}

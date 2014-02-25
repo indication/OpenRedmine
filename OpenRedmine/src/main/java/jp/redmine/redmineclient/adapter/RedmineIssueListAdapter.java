@@ -67,12 +67,6 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 	}
 
 	@Override
-	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder() throws SQLException {
-		RedmineFilter filter = getParameter();
-		return getQueryBuilder(filter);
-	}
-
-	@Override
 	protected long getDbItemId(RedmineIssue item) {
 		if(item == null){
 			return -1;
@@ -96,7 +90,52 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 		return filter;
 	}
 
-	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder(RedmineFilter filter) throws SQLException{
+	@Override
+	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder() throws SQLException {
+		RedmineFilter filter = getParameter();
+		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
+		Where<RedmineIssue, Long> where = builder.where();
+		setupWhere(filter,where);
+		builder.setWhere(where);
+		if(TextUtils.isEmpty(filter.getSort())){
+			builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		} else {
+			for(RedmineFilterSortItem key : filter.getSortList()){
+				builder.orderBy(key.getDbKey(),key.isAscending());
+			}
+		}
+		return builder;
+	}
+	@Override
+	protected QueryBuilder<RedmineIssue, Long> getSearchQueryBuilder(String search) throws SQLException {
+		RedmineFilter filter = getParameter();
+		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
+		Where<RedmineIssue, Long> where = builder.where();
+		where
+				.like(RedmineIssue.SUBJECT, "%" + search + "%")
+				.or()
+				.like(RedmineIssue.DESCRIPTION, "%" + search + "%")
+		;
+		if(TextUtils.isDigitsOnly(search)){
+			where.or().eq(RedmineIssue.ISSUE_ID, search);
+		}
+		where.and();
+
+		setupWhere(filter, where);
+		builder.setWhere(where);
+		if(TextUtils.isEmpty(filter.getSort())){
+			builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		} else {
+			for(RedmineFilterSortItem key : filter.getSortList()){
+				builder.orderBy(key.getDbKey(),key.isAscending());
+			}
+		}
+		Log.d(TAG, builder.prepareStatementString());
+		return builder;
+	}
+
+	protected void setupWhere(RedmineFilter filter,
+								Where<RedmineIssue, Long> where) throws SQLException {
 		Hashtable<String, Object> dic = new Hashtable<String, Object>();
 		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
 		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
@@ -107,9 +146,7 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 		if(filter.getStatus()	 != null) dic.put(RedmineFilter.STATUS,			filter.getStatus()		);
 		if(filter.getVersion()	 != null) dic.put(RedmineFilter.VERSION,		filter.getVersion()		);
 		if(filter.getPriority()	 != null) dic.put(RedmineFilter.PRIORITY,		filter.getPriority()	);
-
-		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
-		Where<RedmineIssue, Long> where = builder.where();
+	
 		boolean isFirst = true;
 		for(Enumeration<String> e = dic.keys() ; e.hasMoreElements() ;){
 			String key = e.nextElement();
@@ -126,14 +163,5 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 		if(dic.size() < 1){
 			where.eq(RedmineFilter.CONNECTION, -1);
 		}
-		builder.setWhere(where);
-		if(TextUtils.isEmpty(filter.getSort())){
-			builder.orderBy(RedmineIssue.ISSUE_ID, false);
-		} else {
-			for(RedmineFilterSortItem key : filter.getSortList()){
-				builder.orderBy(key.getDbKey(),key.isAscending());
-			}
-		}
-		return builder;
 	}
 }

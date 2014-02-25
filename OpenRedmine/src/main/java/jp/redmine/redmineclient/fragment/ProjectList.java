@@ -1,5 +1,8 @@
 package jp.redmine.redmineclient.fragment;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
@@ -21,6 +24,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -85,6 +89,9 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
+
+		getListView().setTextFilterEnabled(true);
+
 
 		adapter = new RedmineProjectListAdapter(getHelper(), getActivity());
 
@@ -215,6 +222,33 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
+
+		if(getActivity() instanceof SherlockFragmentActivity){
+			ActionBar bar = ((SherlockFragmentActivity)getActivity()).getSupportActionBar();
+			SearchView search = new SearchView(bar.getThemedContext());
+			search.setIconifiedByDefault(false);
+			search.setSubmitButtonEnabled(true);
+			search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+				@Override
+				public boolean onQueryTextSubmit(String s) {
+					return false;
+				}
+
+				@Override
+				public boolean onQueryTextChange(String s) {
+					if (TextUtils.isEmpty(s)) {
+						getListView().clearTextFilter();
+					} else {
+						getListView().setFilterText(s);
+					}
+					return true;
+				}
+			});
+			menu.add(android.R.string.search_go)
+					.setIcon(android.R.drawable.ic_menu_search)
+					.setActionView(search)
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+		}
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 

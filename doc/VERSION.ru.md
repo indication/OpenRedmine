@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- Add search interface on issues, projects
 - Fix crash on fetch remote first time (#68)
 - (Внутренние изменения) Move DAO into adapter (#61)
 

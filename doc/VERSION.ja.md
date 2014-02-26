@@ -4,6 +4,9 @@ Release history
 
 Next Release
 ===========
+
+v3.7 - 39 - 2014/02/28
+===========
 - Fix crash on fetch remote first time (#68)
 - (内部変更) Move DAO into adapter (#61)
 - Add URL validation (start with schema) to avoid to crash (#67)

@@ -1,41 +1,34 @@
 package jp.redmine.redmineclient.adapter;
 
 import java.sql.SQLException;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
-public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
-	private RedmineIssueModel model;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
+public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> {
+	private static final String TAG = RedmineIssueListAdapter.class.getSimpleName();
 	private RedmineFilterModel mFilter;
-	private RedmineFilter filter;
 	protected Integer connection_id;
 	protected Long project_id;
 	protected Integer filter_id;
-	@Override
-	public void notifyDataSetChanged() {
-		if(!isValidParameter())
-			return;
-		try {
-			if(filter_id != null)
-				filter = mFilter.fetchById(filter_id);
-			else
-				filter = mFilter.fetchByCurrent(connection_id, project_id);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		super.notifyDataSetChanged();
-	}
-	public RedmineIssueListAdapter(DatabaseCacheHelper helper) {
-		super();
-		model = new RedmineIssueModel(helper);
-
+	public RedmineIssueListAdapter(DatabaseCacheHelper helper, Context context) {
+		super(helper, context, RedmineIssue.class);
 		mFilter = new RedmineFilterModel(helper);
 	}
 
@@ -64,22 +57,19 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 
 	@Override
 	protected void setupView(View view, RedmineIssue data) {
-		RedmineIssueListItemForm form = new RedmineIssueListItemForm(view);
+		RedmineIssueListItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof RedmineIssueListItemForm){
+			form = (RedmineIssueListItemForm)view.getTag();
+		} else {
+			form = new RedmineIssueListItemForm(view);
+		}
 		form.setValue(data);
 	}
 
 	@Override
-	protected int getDbCount() throws SQLException {
-		if(filter == null)
-			return 0;
-		return (int) model.countByFilter(filter);
-	}
-
-	@Override
-	protected RedmineIssue getDbItem(int position) throws SQLException {
-		if(filter == null)
-			return new RedmineIssue();
-		return model.fetchItemByFilter(filter,(long) position, 1L);
+	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder() throws SQLException {
+		RedmineFilter filter = getParameter();
+		return getQueryBuilder(filter);
 	}
 
 	@Override
@@ -91,7 +81,59 @@ public class RedmineIssueListAdapter extends RedmineBaseAdapter<RedmineIssue> {
 		}
 	}
 
-	public RedmineFilter getParameter(){
+	public RedmineFilter getParameter() {
+		RedmineFilter filter = null;
+		try {
+			if(filter_id != null)
+				filter = mFilter.fetchById(filter_id);
+			else
+				filter = mFilter.fetchByCurrent(connection_id, project_id);
+		} catch (SQLException e) {
+			Log.e(TAG, "getParameter", e);
+		}
+		if(filter == null)
+			filter = new RedmineFilter();
 		return filter;
+	}
+
+	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder(RedmineFilter filter) throws SQLException{
+		Hashtable<String, Object> dic = new Hashtable<String, Object>();
+		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
+		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
+		if(filter.getTracker()	 != null) dic.put(RedmineFilter.TRACKER,		filter.getTracker()		);
+		if(filter.getAssigned()	 != null) dic.put(RedmineFilter.ASSIGNED,		filter.getAssigned()	);
+		if(filter.getAuthor()	 != null) dic.put(RedmineFilter.AUTHOR,			filter.getAuthor()		);
+		if(filter.getCategory()	 != null) dic.put(RedmineFilter.CATEGORY,		filter.getCategory()	);
+		if(filter.getStatus()	 != null) dic.put(RedmineFilter.STATUS,			filter.getStatus()		);
+		if(filter.getVersion()	 != null) dic.put(RedmineFilter.VERSION,		filter.getVersion()		);
+		if(filter.getPriority()	 != null) dic.put(RedmineFilter.PRIORITY,		filter.getPriority()	);
+
+		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
+		Where<RedmineIssue, Long> where = builder.where();
+		boolean isFirst = true;
+		for(Enumeration<String> e = dic.keys() ; e.hasMoreElements() ;){
+			String key = e.nextElement();
+			if(dic.get(key) == null)
+				continue;
+			if(isFirst){
+				isFirst = false;
+			} else {
+				where.and();
+			}
+			where.eq(key, dic.get(key));
+		}
+		// return no data
+		if(dic.size() < 1){
+			where.eq(RedmineFilter.CONNECTION, -1);
+		}
+		builder.setWhere(where);
+		if(TextUtils.isEmpty(filter.getSort())){
+			builder.orderBy(RedmineIssue.ISSUE_ID, false);
+		} else {
+			for(RedmineFilterSortItem key : filter.getSortList()){
+				builder.orderBy(key.getDbKey(),key.isAscending());
+			}
+		}
+		return builder;
 	}
 }

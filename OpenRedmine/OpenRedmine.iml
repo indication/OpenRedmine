@@ -75,13 +75,13 @@
     <orderEntry type="library" exported="" name="ormlite-android-4.48" level="project" />
     <orderEntry type="library" exported="" name="stickylistheaders-2.1.5" level="project" />
     <orderEntry type="library" exported="" name="ormlite-core-4.48" level="project" />
-    <orderEntry type="module" module-name="Transdroid" exported="" />
     <orderEntry type="library" exported="" name="android-form-edittext-1.0.4" level="project" />
     <orderEntry type="library" exported="" name="textile-j-2.2" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.0.1" level="project" />
     <orderEntry type="library" exported="" name="actionbarsherlock-4.4.0" level="project" />
     <orderEntry type="library" exported="" name="commons-lang3-3.1" level="project" />
     <orderEntry type="library" exported="" name="extra-abs-0.9.2" level="project" />
+    <orderEntry type="module" module-name="Transdroid" exported="" />
   </component>
 </module>
 

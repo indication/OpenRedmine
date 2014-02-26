@@ -5,6 +5,12 @@ Release history
 Next Release
 ===========
 
+v3.7 - 39 - 2014/02/28
+===========
+- Fix crash on fetch remote first time (#68)
+- (Internal changes) Move DAO into adapter (#61)
+- Add URL validation (start with schema) to avoid to crash (#67)
+
 v3.6 - 38 - 2014/02/15
 ===========
 - Add russian translation by box789

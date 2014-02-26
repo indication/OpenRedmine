@@ -4,6 +4,7 @@
 	<string name="menu_access_to">接続</string>
 	<string name="menu_setting_label_accessurl">Redmine URL</string>
 	<string name="menu_setting_edit_accessurl">http://www.redmine.org/redmine</string>
+	<string name="menu_setting_accessurl_set_schema">URLは http:// もしくは https:// で始める必要があります</string>
 	<string name="menu_setting_label_accesstoken">アクセストークン</string>
 	<string name="menu_setting_edit_accesstoken">0e7c82.... 40文字</string>
 	<string name="menu_setting_label_authid">ID</string>

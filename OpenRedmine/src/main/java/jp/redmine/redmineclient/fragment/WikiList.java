@@ -14,8 +14,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
-import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.adapter.RedmineWikiListAdapter;
@@ -84,16 +82,23 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineWikiListAdapter(getHelper());
+		adapter = new RedmineWikiListAdapter(getHelper(), getActivity());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		adapter.notifyDataSetChanged();
 		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 
         if(adapter.getCount() == 0)
             onRefresh();
 
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(adapter != null)
+			adapter.notifyDataSetChanged();
 	}
 
 	@Override

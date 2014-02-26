@@ -1,21 +1,17 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineJournal;
-import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 
 public class RedmineJournalModel {
-	private final static String TAG = "RedmineJournalModel";
 	protected Dao<RedmineJournal, Long> dao;
 	public RedmineJournalModel(DatabaseCacheHelper helper) {
 		try {
@@ -44,7 +40,6 @@ public class RedmineJournalModel {
 		.and()
 		.eq(RedmineJournal.JOURNAL_ID, journalId)
 		.prepare();
-		Log.d("RedmineProject",query.getStatement());
 		RedmineJournal item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineJournal();
@@ -56,48 +51,6 @@ public class RedmineJournalModel {
 		item = dao.queryForId(id);
 		if(item == null)
 			item = new RedmineJournal();
-		return item;
-	}
-
-	public long countByIssue(int connection_id, long issue_id) throws SQLException {
-		QueryBuilder<RedmineJournal, ?> builder = dao.queryBuilder();
-		builder
-			.setCountOf(true)
-			.where()
-				.eq(RedmineJournal.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineJournal.ISSUE_ID, issue_id)
-				;
-		return dao.countOf(builder.prepare());
-	}
-
-	public RedmineJournal fetchItemByIssue(int connection_id, long issue_id,
-			long offset, long limit) throws SQLException {
-		QueryBuilder<RedmineJournal, ?> builder = dao.queryBuilder();
-		builder
-			.limit(limit)
-			.offset(offset)
-			.orderBy(RedmineJournal.JOURNAL_ID, true)
-			.where()
-				.eq(RedmineJournal.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineJournal.ISSUE_ID, issue_id)
-				;
-		RedmineJournal item = builder.queryForFirst();
-		if(item == null){
-			item = new RedmineJournal();
-		} else {
-			try {
-				item.changes = item.getDetails();
-			} catch (IOException e) {
-				Log.e(TAG,"getDetails",e);
-			} catch (ClassNotFoundException e) {
-				Log.e(TAG,"getDetails",e);
-			}
-		}
-		if(item.changes == null){
-			item.changes = new ArrayList<RedmineJournalChanges>();
-		}
 		return item;
 	}
 

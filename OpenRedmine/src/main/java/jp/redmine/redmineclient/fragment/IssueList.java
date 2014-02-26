@@ -56,6 +56,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private View mFooter;
 	private View mHeader;
 	private long lastPos = -1;
+	private boolean isBlockFetch = false;
 
 	private IssueActionInterface mListener;
 
@@ -151,6 +152,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 			}
 		});
+		isBlockFetch = false;
 	}
 
 	@Override
@@ -226,6 +228,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		}
 		onRefreshList();
+		if(isBlockFetch)
+			return;
 		if(lastPos != getListView().getChildCount()){
 			lastPos = -1; //reset
 		}
@@ -328,8 +332,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 				@Override
 				public boolean onQueryTextChange(String s) {
 					if (TextUtils.isEmpty(s)) {
+						isBlockFetch = false;
 						getListView().clearTextFilter();
 					} else {
+						isBlockFetch = true;
 						getListView().setFilterText(s);
 					}
 					return true;

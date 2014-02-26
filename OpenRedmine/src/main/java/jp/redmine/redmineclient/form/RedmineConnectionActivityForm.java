@@ -101,11 +101,25 @@ public class RedmineConnectionActivityForm extends FormHelper {
 
 	@Override
 	public boolean Validate(){
-		return ValidateForms(
+		boolean isValidForm =  ValidateForms(
 				editName
 				,editUrl
 				,editToken
 				);
+		boolean isValidUrl = validateUrl();
+		return isValidForm && isValidUrl;
+	}
+
+	protected boolean validateUrl(){
+		if(TextUtils.isEmpty(editUrl.getText()))
+			return true;
+		String url = editUrl.getText().toString();
+		if(url.matches("^https?://.+")){
+			return true;
+		} else {
+			editUrl.setError(editUrl.getContext().getString(R.string.menu_setting_accessurl_set_schema), null);
+			return false;
+		}
 	}
 
 	public String getUrl(){

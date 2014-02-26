@@ -6,6 +6,7 @@ Next Release
 ===========
 - Fix crash on fetch remote first time (#68)
 - (Внутренние изменения) Move DAO into adapter (#61)
+- Add URL validation (start with schema) to avoid to crash (#67)
 
 v3.6 - 38 - 2014/02/15
 ===========

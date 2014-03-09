@@ -22,6 +22,9 @@ android {
         versionCode 39
         versionName '3.7'
     }
+    lintOptions {
+        abortOnError false
+    }
     signingConfigs {
         release
     }

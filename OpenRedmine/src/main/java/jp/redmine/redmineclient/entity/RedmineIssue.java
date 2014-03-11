@@ -24,7 +24,7 @@ public class RedmineIssue implements IPostingRecord {
 	public final static String DATE_CLOSED = "closed";
 	public final static String MODIFIED = "modified";
 	public final static String CREATED = "created";
-	public final static String NAME = "name";
+	public final static String SUBJECT = "subject";
 	public final static String PRIORITY = "priority_id";
 	public final static String STATUS = "status_id";
 	public final static String TRACKER = "tracker_id";
@@ -33,6 +33,7 @@ public class RedmineIssue implements IPostingRecord {
 	public final static String ASSIGN = "assign_id";
 	public final static String AUTHOR = "author_id";
 	public final static String PROGRESS = "progress_rate";
+	public final static String DESCRIPTION = "description";
 
     @DatabaseField(generatedId = true)
     private Long id;

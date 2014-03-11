@@ -2,6 +2,9 @@ package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.FilterViewActivity;
@@ -30,6 +33,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.AsyncTask.Status;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import com.actionbarsherlock.view.Menu;
@@ -52,6 +56,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private View mFooter;
 	private View mHeader;
 	private long lastPos = -1;
+	private boolean isBlockFetch = false;
 
 	private IssueActionInterface mListener;
 
@@ -97,6 +102,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().addHeaderView(mHeader);
 
 		getListView().setFastScrollEnabled(true);
+		getListView().setTextFilterEnabled(true);
 
 		adapter = new RedmineIssueListAdapter(getHelper(), getActivity());
 		FilterArgument intent = new FilterArgument();
@@ -146,6 +152,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 			}
 		});
+		isBlockFetch = false;
 	}
 
 	@Override
@@ -221,6 +228,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			return;
 		}
 		onRefreshList();
+		if(isBlockFetch)
+			return;
 		if(lastPos != getListView().getChildCount()){
 			lastPos = -1; //reset
 		}
@@ -308,6 +317,35 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
+
+		if(getActivity() instanceof SherlockFragmentActivity){
+			ActionBar bar = ((SherlockFragmentActivity)getActivity()).getSupportActionBar();
+			SearchView search = new SearchView(bar.getThemedContext());
+			search.setIconifiedByDefault(false);
+			search.setSubmitButtonEnabled(true);
+			search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+				@Override
+				public boolean onQueryTextSubmit(String s) {
+					return false;
+				}
+
+				@Override
+				public boolean onQueryTextChange(String s) {
+					if (TextUtils.isEmpty(s)) {
+						isBlockFetch = false;
+						getListView().clearTextFilter();
+					} else {
+						isBlockFetch = true;
+						getListView().setFilterText(s);
+					}
+					return true;
+				}
+			});
+			menu.add(android.R.string.search_go)
+					.setIcon(android.R.drawable.ic_menu_search)
+					.setActionView(search)
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+		}
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 

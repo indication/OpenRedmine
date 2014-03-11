@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- Add search interface on issues, projects
 - (Internal changes) Update Android Studio from 0.4.2 to 0.5.1
 
 v3.7 - 39 - 2014/02/28

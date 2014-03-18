@@ -281,7 +281,8 @@ public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal,
 	protected RedmineJournal getDbItem(int position) {
 		RedmineJournal item = super.getDbItem(position);
 		try {
-			for(RedmineJournalChanges cg : item.getDetails()){
+			item.changes = item.getDetails();
+			for(RedmineJournalChanges cg : item.changes){
 				if("attr".equalsIgnoreCase(cg.getProperty()))
 					getAttributeDetail(cg);
 				else if("attachment".equalsIgnoreCase(cg.getProperty()))

@@ -9,6 +9,7 @@ import java.util.Date;
 public class RedmineNews implements IUserRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
+	public final static String PROJECT = "project_id";
 	public final static String NEWS_ID = "news_id";
 
 	@DatabaseField(generatedId = true)
@@ -17,6 +18,8 @@ public class RedmineNews implements IUserRecord {
 	private Integer connection_id;
 	@DatabaseField(uniqueIndexName="news_target")
 	private int news_id;
+	@DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
+	private RedmineProject project;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "author_id", foreignAutoRefresh = true)
 	private RedmineUser author;
 	@DatabaseField
@@ -45,6 +48,14 @@ public class RedmineNews implements IUserRecord {
 	}
 	public void setNewsId(int news_id) {
 		this.news_id = news_id;
+	}
+
+
+	public RedmineProject getProject() {
+		return project;
+	}
+	public void setProject(RedmineProject project) {
+		this.project = project;
 	}
 
 	public RedmineUser getUser() {

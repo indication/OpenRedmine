@@ -93,8 +93,7 @@
 				android:ems="10"
 				android:hint="@string/menu_setting_edit_accessurl"
 				android:inputType="textUri"
-				android:singleLine="true"
-				validate:testType="webUrl" />
+				android:singleLine="true" />
 
 			<LinearLayout
 				android:layout_width="fill_parent"

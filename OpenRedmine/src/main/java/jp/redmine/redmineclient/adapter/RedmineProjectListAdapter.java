@@ -75,6 +75,17 @@ public class RedmineProjectListAdapter extends  RedmineDaoAdapter<RedmineProject
 		builder.orderBy(RedmineProject.PROJECT_ID, true);
 		return builder;
 	}
+	@Override
+	protected QueryBuilder<RedmineProject, Long> getSearchQueryBuilder(String search) throws SQLException {
+		QueryBuilder<RedmineProject, Long> builder = getQueryBuilder();
+		builder.where()
+				.like(RedmineProject.NAME, "%"+search+"%")
+				.and()
+				.eq(RedmineProject.CONNECTION, connection_id)
+		;
+		builder.orderBy(RedmineProject.NAME, true);
+		return builder;
+	}
 
 	@Override
 	protected long getDbItemId(RedmineProject item) {

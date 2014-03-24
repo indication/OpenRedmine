@@ -19,8 +19,8 @@ android {
         minSdkVersion 8
         targetSdkVersion 18
 
-        versionCode 39
-        versionName '3.7'
+        versionCode 40
+        versionName '3.8'
     }
     lintOptions {
         abortOnError false

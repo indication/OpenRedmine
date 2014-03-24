@@ -4,10 +4,14 @@ Release history
 
 Next Release
 ===========
+
+v3.8 - 40 - 2014/03/27
+===========
 - Add search interface on issues, projects
 - (Internal changes) Update Android Studio from 0.4.2 to 0.5.1
 - Bug fix crash on android 2.2 (#79,#56)
 - Bug fix show journal changes (#81)
+- Reduce URL validation on add connection (#84)
 
 v3.7 - 39 - 2014/02/28
 ===========

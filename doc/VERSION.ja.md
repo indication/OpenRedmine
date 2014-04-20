@@ -7,17 +7,17 @@ Next Release
 
 v3.8 - 40 - 2014/03/27
 ===========
-- Add search interface on issues, projects
-- (Internal changes) Update Android Studio from 0.4.2 to 0.5.1
-- Bug fix crash on android 2.2 (#79,#56)
-- Bug fix show journal changes (#81)
-- Reduce URL validation on add connection (#84)
+- チケット、プロジェクトに検索インターフェイスを追加
+- (内部変更) Android Studio 0.4.2から0.5.1へ更新
+- Android 2.2 でのクラッシュを修正 (#79,#56)
+- 注釈の変更を表示するように修正 (#81)
+- 接続の追加で、URL検証を削除 (#84)
 
 v3.7 - 39 - 2014/02/28
 ===========
-- Fix crash on fetch remote first time (#68)
-- (内部変更) Move DAO into adapter (#61)
-- Add URL validation (start with schema) to avoid to crash (#67)
+- 初回取得時のクラッシュを修正 (#68)
+- (内部変更) アダプターにDAOを移動 (#61)
+- クラッシュしないようにURL検証(スキーマで始まる)を追加 (#67)
 
 v3.6 - 38 - 2014/02/15
 ===========
@@ -82,11 +82,11 @@ v2.3 - 27 - 2013/05/29
 - コメントの投稿
 - チケットの更新でのバージョン/時間について修正
 - ソートキーを追加
- - 開始日/期日/終了日
- - 優先度/状態/トラッカ
- - バージョン/カテゴリ
- - 担当者/作成者
- - 進捗率
+  - 開始日/期日/終了日
+  - 優先度/状態/トラッカ
+  - バージョン/カテゴリ
+  - 担当者/作成者
+  - 進捗率
 
 v2.2 - 26 - 2013/05/25
 ===========

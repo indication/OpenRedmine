@@ -161,6 +161,12 @@ public class RedmineIssueModel {
 			data.setId(issue.getId());
 		} else {
 			data.setId(issue.getId());
+			if(issue.getModified() == null){
+				issue.setModified(new java.util.Date());
+			}
+			if(data.getModified() == null){
+				data.setModified(new java.util.Date());
+			}
 			if(!data.getModified().before(issue.getModified())){
 				this.update(data);
 			}

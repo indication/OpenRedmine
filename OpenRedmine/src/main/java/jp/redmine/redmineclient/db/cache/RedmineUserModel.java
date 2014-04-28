@@ -139,7 +139,7 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 			if(data.getModified() == null){
 				data.setModified(new java.util.Date());
 			}
-			if(project.getModified().after(data.getModified()) || isForce){
+			if(!project.getModified().before(data.getModified()) || isForce){
 				this.update(data);
 			}
 		}

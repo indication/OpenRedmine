@@ -88,7 +88,13 @@ public class RedmineProjectModel{
 		} else {
 			data.setId(project.getId());
 			data.setFavorite(project.getFavorite());
-			if(data.getModified() != null && project.getModified().after(data.getModified())){
+			if(project.getModified() == null){
+				project.setModified(new java.util.Date());
+			}
+			if(data.getModified() == null){
+				data.setModified(new java.util.Date());
+			}
+			if(!project.getModified().before(data.getModified())){
 				this.update(data);
 			}
 		}

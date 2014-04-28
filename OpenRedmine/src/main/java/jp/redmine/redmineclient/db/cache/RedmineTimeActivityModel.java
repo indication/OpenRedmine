@@ -120,13 +120,12 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 			return null;
 
 		RedmineTimeActivity timeentry = this.fetchById(connection_id, data.getActivityId());
+		data.setConnectionId(connection_id);
 		if(timeentry.getId() == null){
-			data.setConnectionId(connection_id);
 			this.insert(data);
 			timeentry = fetchById(connection_id, data.getActivityId());
 		} else {
 			data.setId(timeentry.getId());
-			data.setConnectionId(connection_id);
 			if(timeentry.getModified() == null){
 				timeentry.setModified(new java.util.Date());
 			}

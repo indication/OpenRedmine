@@ -4,6 +4,7 @@ Release history
 
 Next Release
 ===========
+- Fix issue view icons
 
 v3.8 - 40 - 2014/03/27
 ===========

@@ -1,30 +1,29 @@
 package jp.redmine.redmineclient.form.helper;
 
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.webkit.WebSettings.PluginState;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
-import jp.redmine.redmineclient.entity.TypeConverter;
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.TypedValue;
-import android.webkit.WebView;
-import android.webkit.WebSettings.PluginState;
-import android.webkit.WebViewClient;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class TextileHelper {
-	protected WebView view;
 	static public final String URL_PREFIX = "redmine://";
 	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
 	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
@@ -58,23 +57,20 @@ public class TextileHelper {
 			);
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
 	private WebviewActionInterface action;
-	public TextileHelper(WebView web){
-		view = web;
-	}
 	public void setAction(WebviewActionInterface act){
 		action = act;
 	}
-	public void setup(){
-		setupWebView();
-		setupHandler();
+	public void setup(WebView view){
+		setupWebView(view);
+		setupHandler(view);
 	}
 
-	protected void setupWebView(){
+	protected void setupWebView(WebView view){
 		view.getSettings().setPluginState(PluginState.OFF);
 		view.getSettings().setBlockNetworkLoads(true);
 	}
 
-	protected void setupHandler(){
+	protected void setupHandler(WebView view){
 		view.setWebViewClient(new WebViewClient(){
 
 			@Override
@@ -140,7 +136,7 @@ public class TextileHelper {
 		return sb.toString();
 	}
 
-	public void setContent(int connectionid,long project,String text){
+	public void setContent(WebView view, int connectionid,long project,String text){
 		if (text == null)
 			return;
 		String inner = extendHtml(connectionid,project,convertTextileToHtml(text));
@@ -148,7 +144,7 @@ public class TextileHelper {
 
 	}
 
-	public void setContent(String text){
+	public void setContent(WebView view, String text){
 		String inner = convertTextileToHtml(text);
 		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}

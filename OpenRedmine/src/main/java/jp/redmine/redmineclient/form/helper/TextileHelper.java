@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.form.helper;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
@@ -11,12 +10,9 @@ import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -160,39 +156,13 @@ public class TextileHelper {
 	}
 
 
-	static protected String reduceExternalHtml(String input, HashMap<String,String> export){
-		Pattern p = Pattern.compile("<\\s*pre\\s*>(.+?)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);
-		String texttile = input;
-		Matcher m = p.matcher(texttile);
-
-		while(m.find()){
-			String target = m.group(1);
-			StringBuffer sb = new StringBuffer();
-			if(!TextUtils.isEmpty(target)){
-				sb.append("<div class=\"pre\">");
-				sb.append(target
-						.replaceAll("&", "&amp;")
-						.replaceAll("<", "&lt;")
-						.replaceAll(">", "&gt;")
-						.replaceAll("[\\r\\n]+", "<br>\r\n")
-						.replaceAll(" ", "&nbsp;")
-						.replaceAll("	", "&#009;")
-						);
-				sb.append("</div>");
-			}
-			String key = RandomStringUtils.randomAlphabetic(10);
-			export.put(key, sb.toString());
-			texttile = m.replaceFirst(key);
-			m = p.matcher(texttile);
-		}
-		return texttile;
-	}
 	static public String convertTextileToHtml(String text, ConvertToHtmlHelper helper){
 		return convertTextileToHtml(text, false, helper);
 	}
 	static public String convertTextileToHtml(String text, boolean isDocument, ConvertToHtmlHelper helper){
-		HashMap<String,String> restore = new HashMap<String,String>();
-		String textile = reduceExternalHtml(text,restore);
+		RefugeText refugePre = new RefugeTextPre();
+
+		String textile = refugePre.refuge(text);
 		if(helper != null)
 			textile = helper.beforeParse(textile);
 		StringWriter sw = new StringWriter();
@@ -205,10 +175,7 @@ public class TextileHelper {
 		textile = sw.toString();
 		if(helper != null)
 			textile = helper.afterParse(textile);
-		for(String item : restore.keySet()){
-			textile = textile.replace(item, restore.get(item));
-		}
-		return  textile;
+		return  refugePre.restore(textile);
 	}
 	public interface ConvertToHtmlHelper {
 		/**

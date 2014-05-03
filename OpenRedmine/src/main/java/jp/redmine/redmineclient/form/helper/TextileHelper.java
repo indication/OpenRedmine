@@ -136,16 +136,26 @@ public class TextileHelper {
 		return sb.toString();
 	}
 
-	public void setContent(WebView view, int connectionid,long project,String text){
+	public void setContent(WebView view, final int connectionid, final long project, final String text){
 		if (text == null)
 			return;
-		String inner = extendHtml(connectionid,project,convertTextileToHtml(text));
+		String inner = convertTextileToHtml(text, new ConvertToHtmlHelper() {
+			@Override
+			public String beforeParse(String input) {
+				return extendHtml(connectionid,project,input);
+			}
+
+			@Override
+			public String afterParse(String input) {
+				return input;
+			}
+		});
 		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 
 	}
 
 	public void setContent(WebView view, String text){
-		String inner = convertTextileToHtml(text);
+		String inner = convertTextileToHtml(text, null);
 		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
 
@@ -177,12 +187,14 @@ public class TextileHelper {
 		}
 		return texttile;
 	}
-	static public String convertTextileToHtml(String text){
-		return convertTextileToHtml(text, false);
+	static public String convertTextileToHtml(String text, ConvertToHtmlHelper helper){
+		return convertTextileToHtml(text, false, helper);
 	}
-	static public String convertTextileToHtml(String text, boolean isDocument){
+	static public String convertTextileToHtml(String text, boolean isDocument, ConvertToHtmlHelper helper){
 		HashMap<String,String> restore = new HashMap<String,String>();
 		String textile = reduceExternalHtml(text,restore);
+		if(helper != null)
+			textile = helper.beforeParse(textile);
 		StringWriter sw = new StringWriter();
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(sw);
 		builder.setEmitAsDocument(isDocument);
@@ -191,10 +203,27 @@ public class TextileHelper {
 		parser.setBuilder(builder);
 		parser.parse(textile);
 		textile = sw.toString();
+		if(helper != null)
+			textile = helper.afterParse(textile);
 		for(String item : restore.keySet()){
 			textile = textile.replace(item, restore.get(item));
 		}
 		return  textile;
+	}
+	public interface ConvertToHtmlHelper {
+		/**
+		 *
+		 * @param input TEXT string without reduced text (eg. pre)
+		 * @return formatted string
+		 */
+		public String beforeParse(String input);
+
+		/**
+		 *
+		 * @param input HTML string without reduced text (eg. pre)
+		 * @return formatted string
+		 */
+		public String afterParse(String input);
 	}
 	static public String getHtml(Context context,String innerhtml,String headerhtml){
 		StringBuffer sb = new StringBuffer();

@@ -20,11 +20,12 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class TextileHelper {
-	static public final String URL_PREFIX = "redmine://";
+	static public final String URL_PREFIX = BuildConfig.PACKAGE_NAME + BuildConfig.VERSION_CODE +"://";
 	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
 	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
 	private Pattern patternWiki = Pattern.compile("\\[\\[([^\\]\\|]+?)\\]\\]");

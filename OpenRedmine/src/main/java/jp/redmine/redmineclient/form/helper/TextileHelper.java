@@ -117,17 +117,16 @@ public class TextileHelper {
 	}
 	protected String  extendHtml(String connection,String project,String input){
 		String result = "";
-		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1")+"$2");
-		result = patternWikiAnchor.matcher(result).replaceAll(getAnchor("$2","wiki/",connection,"/",project,"/","$1"));
-		result = patternWiki.matcher(result).replaceAll(getAnchor("$1","wiki/",connection,"/",project,"/","$1"));
-		result = patternInlineUrl.matcher(result).replaceAll("<a href=\"$1\">$1</a>");
+		result = patternInlineUrl.matcher(input).replaceAll(getAnchor("$1","$1"));
+		result = patternIssue.matcher(result).replaceAll(getAnchor("#$1",URL_PREFIX,"issue/",connection,"/","$1")+"$2");
+		result = patternWikiAnchor.matcher(result).replaceAll(getAnchor("$2",URL_PREFIX,"wiki/",connection,"/",project,"/","$1"));
+		result = patternWiki.matcher(result).replaceAll(getAnchor("$1",URL_PREFIX,"wiki/",connection,"/",project,"/","$1"));
 		return result;
 	}
 
 	protected String getAnchor(String name,String... params){
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href=\"");
-		sb.append(URL_PREFIX);
 		for(String item : params){
 			sb.append(item);
 		}

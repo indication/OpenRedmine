@@ -95,6 +95,7 @@ public class TextileHelper {
 		if (text == null)
 			return;
 		String inner = convertTextileToHtml(text, new ConvertToHtmlHelper() {
+			RefugeText pre = new RefugeTextPre();
 			RefugeTextInlineUrl url = new RefugeTextInlineUrl(){
 				@Override
 				protected String pull(String input) {
@@ -118,6 +119,7 @@ public class TextileHelper {
 			};
 			@Override
 			public String beforeParse(String input) {
+				input = pre.refuge(input); //must first
 				input = url.refuge(input);
 				input = wiki.refuge(input);
 				input = issue.refuge(input);
@@ -129,6 +131,7 @@ public class TextileHelper {
 				input = url.restore(input);
 				input = wiki.restore(input);
 				input = issue.restore(input);
+				input = pre.restore(input); //must last
 				return input;
 			}
 		});
@@ -146,9 +149,8 @@ public class TextileHelper {
 		return convertTextileToHtml(text, false, helper);
 	}
 	static public String convertTextileToHtml(String text, boolean isDocument, ConvertToHtmlHelper helper){
-		RefugeText refugePre = new RefugeTextPre();
 
-		String textile = refugePre.refuge(text);
+		String textile = text;
 		if(helper != null)
 			textile = helper.beforeParse(textile);
 		StringWriter sw = new StringWriter();
@@ -161,7 +163,7 @@ public class TextileHelper {
 		textile = sw.toString();
 		if(helper != null)
 			textile = helper.afterParse(textile);
-		return  refugePre.restore(textile);
+		return  textile;
 	}
 	public interface ConvertToHtmlHelper {
 		/**

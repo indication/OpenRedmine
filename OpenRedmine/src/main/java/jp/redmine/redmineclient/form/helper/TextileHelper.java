@@ -26,32 +26,6 @@ public class TextileHelper {
 	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
 	private Pattern patternWiki = Pattern.compile("\\[\\[([^\\]\\|]+?)\\]\\]");
 	private Pattern patternWikiAnchor = Pattern.compile("\\[\\[([^\\]\\|]+?)\\|([^\\]\\|]+?)\\]\\]");
-	private Pattern patternInlineUrl = Pattern.compile(
-			"\\b((" +
-			//START inherits from http://www.din.or.jp/~ohzaki/perl.htm#URI
-			"(?:https?|shttp)://(?:(?:[-_.!~*'()a-zA-Z0-9;:&=+$,]|%[0-9A-Fa-f" +
-			"][0-9A-Fa-f])*@)?(?:(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.)" +
-			"*[a-zA-Z](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\." +
-			"[0-9]+)(?::[0-9]*)?(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f]" +
-			"[0-9A-Fa-f])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-" +
-			"Fa-f])*)*(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f" +
-			"])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*)" +
-			"*)?(?:\\?(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])" +
-			"*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*" +
-			")?" +
-			")|(" +	 // ftp section
-			"s?ftps?://(?:(?:[-_.!~*'()a-zA-Z0-9;&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*" +
-			"(?::(?:[-_.!~*'()a-zA-Z0-9;&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)?@)?(?" +
-			":(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.)*[a-zA-Z](?:[-a-zA-" +
-			"Z0-9]*[a-zA-Z0-9])?\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(?::[0-9]*)?" +
-			"(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*(?:/(?" +
-			":[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*(?:;type=[" +
-			"AIDaid])?)?(?:\\?(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9" +
-			"A-Fa-f])*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A" +
-			"-Fa-f])*)?" +
-			//END
-			"))"
-			);
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
 	private WebviewActionInterface action;
 	public void setAction(WebviewActionInterface act){
@@ -112,8 +86,7 @@ public class TextileHelper {
 		return extendHtml(String.valueOf(connection_id),String.valueOf(projectid),input);
 	}
 	protected String  extendHtml(String connection,String project,String input){
-		String result = "";
-		result = patternInlineUrl.matcher(input).replaceAll(getAnchor("$1","$1"));
+		String result = input;
 		result = patternIssue.matcher(result).replaceAll(getAnchor("#$1",URL_PREFIX,"issue/",connection,"/","$1")+"$2");
 		result = patternWikiAnchor.matcher(result).replaceAll(getAnchor("$2",URL_PREFIX,"wiki/",connection,"/",project,"/","$1"));
 		result = patternWiki.matcher(result).replaceAll(getAnchor("$1",URL_PREFIX,"wiki/",connection,"/",project,"/","$1"));
@@ -136,13 +109,21 @@ public class TextileHelper {
 		if (text == null)
 			return;
 		String inner = convertTextileToHtml(text, new ConvertToHtmlHelper() {
+			RefugeTextInlineUrl url = new RefugeTextInlineUrl(){
+				@Override
+				protected String pull(String input) {
+					return getAnchor(input,input);
+				}
+			};
 			@Override
 			public String beforeParse(String input) {
+				input = url.refuge(input);
 				return extendHtml(connectionid,project,input);
 			}
 
 			@Override
 			public String afterParse(String input) {
+				input = url.restore(input);
 				return input;
 			}
 		});

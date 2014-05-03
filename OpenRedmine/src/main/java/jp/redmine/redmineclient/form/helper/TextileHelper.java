@@ -24,8 +24,6 @@ public class TextileHelper {
 	static public final String URL_PREFIX = BuildConfig.PACKAGE_NAME + BuildConfig.VERSION_CODE +"://";
 	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
 	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
-	private Pattern patternWiki = Pattern.compile("\\[\\[([^\\]\\|]+?)\\]\\]");
-	private Pattern patternWikiAnchor = Pattern.compile("\\[\\[([^\\]\\|]+?)\\|([^\\]\\|]+?)\\]\\]");
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
 	private WebviewActionInterface action;
 	public void setAction(WebviewActionInterface act){
@@ -88,8 +86,6 @@ public class TextileHelper {
 	protected String  extendHtml(String connection,String project,String input){
 		String result = input;
 		result = patternIssue.matcher(result).replaceAll(getAnchor("#$1",URL_PREFIX,"issue/",connection,"/","$1")+"$2");
-		result = patternWikiAnchor.matcher(result).replaceAll(getAnchor("$2",URL_PREFIX,"wiki/",connection,"/",project,"/","$1"));
-		result = patternWiki.matcher(result).replaceAll(getAnchor("$1",URL_PREFIX,"wiki/",connection,"/",project,"/","$1"));
 		return result;
 	}
 
@@ -115,15 +111,24 @@ public class TextileHelper {
 					return getAnchor(input,input);
 				}
 			};
+			RefugeTextWiki wiki = new RefugeTextWiki(){
+				@Override
+				protected String pull(WikiAnchor input) {
+					return getAnchor(input.label
+							,URL_PREFIX,"wiki/",String.valueOf(connectionid),"/",String.valueOf(project),"/",input.title);
+				}
+			};
 			@Override
 			public String beforeParse(String input) {
 				input = url.refuge(input);
+				input = wiki.refuge(input);
 				return extendHtml(connectionid,project,input);
 			}
 
 			@Override
 			public String afterParse(String input) {
 				input = url.restore(input);
+				input = wiki.restore(input);
 				return input;
 			}
 		});

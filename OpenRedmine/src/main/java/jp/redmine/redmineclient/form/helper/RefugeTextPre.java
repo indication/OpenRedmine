@@ -3,7 +3,7 @@ package jp.redmine.redmineclient.form.helper;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RefugeTextPre extends RefugeText{
+public class RefugeTextPre extends RefugeText<String>{
 	@Override
 	protected Pattern getPattern() {
 		return Pattern.compile("<\\s*pre\\s*>(.+?)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);

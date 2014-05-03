@@ -1,8 +1,9 @@
 package jp.redmine.redmineclient.form.helper;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RefugeTextInlineUrl extends RefugeText{
+public class RefugeTextInlineUrl extends RefugeText<String>{
 	@Override
 	protected Pattern getPattern() {
 		return Pattern.compile(
@@ -31,6 +32,16 @@ public class RefugeTextInlineUrl extends RefugeText{
 						//END
 						"))"
 		);
+	}
+
+	@Override
+	protected String pull(String input) {
+		return input;
+	}
+
+	@Override
+	protected String push(Matcher m) {
+		return m.group();
 	}
 
 }

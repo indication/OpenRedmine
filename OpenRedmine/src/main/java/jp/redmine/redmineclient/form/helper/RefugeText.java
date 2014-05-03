@@ -6,16 +6,12 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class RefugeText {
-	HashMap<String,String> export = new HashMap<String, String>();
+public abstract class RefugeText<T> {
+	HashMap<String,T> export = new HashMap<String, T>();
 
 	abstract protected Pattern getPattern();
-	protected String pull(String input){
-		return input;
-	}
-	protected String push(Matcher m){
-		return m.group();
-	}
+	abstract protected String pull(T input);
+	abstract protected T push(Matcher m);
 
 	public String refuge(String input){
 		export.clear();

@@ -23,7 +23,6 @@ import jp.redmine.redmineclient.entity.TypeConverter;
 public class TextileHelper {
 	static public final String URL_PREFIX = BuildConfig.PACKAGE_NAME + BuildConfig.VERSION_CODE +"://";
 	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
-	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
 	private WebviewActionInterface action;
 	public void setAction(WebviewActionInterface act){
@@ -80,15 +79,6 @@ public class TextileHelper {
 		return false;
 	}
 
-	protected String  extendHtml(int connection_id,long projectid,String input){
-		return extendHtml(String.valueOf(connection_id),String.valueOf(projectid),input);
-	}
-	protected String  extendHtml(String connection,String project,String input){
-		String result = input;
-		result = patternIssue.matcher(result).replaceAll(getAnchor("#$1",URL_PREFIX,"issue/",connection,"/","$1")+"$2");
-		return result;
-	}
-
 	protected String getAnchor(String name,String... params){
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href=\"");
@@ -118,17 +108,27 @@ public class TextileHelper {
 							,URL_PREFIX,"wiki/",String.valueOf(connectionid),"/",String.valueOf(project),"/",input.title);
 				}
 			};
+			RefugeTextIssue issue = new RefugeTextIssue(){
+				@Override
+				protected String pull(IssueAnchor input) {
+					return getAnchor(input.label
+							,URL_PREFIX,"issue/",String.valueOf(connectionid),"/",input.id);
+				}
+
+			};
 			@Override
 			public String beforeParse(String input) {
 				input = url.refuge(input);
 				input = wiki.refuge(input);
-				return extendHtml(connectionid,project,input);
+				input = issue.refuge(input);
+				return input;
 			}
 
 			@Override
 			public String afterParse(String input) {
 				input = url.restore(input);
 				input = wiki.restore(input);
+				input = issue.restore(input);
 				return input;
 			}
 		});

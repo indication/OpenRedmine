@@ -5,6 +5,7 @@ Release history
 Next Release
 ===========
 - Fix issue view icons
+- Fix wiki link expressions
 
 v3.8 - 40 - 2014/03/27
 ===========

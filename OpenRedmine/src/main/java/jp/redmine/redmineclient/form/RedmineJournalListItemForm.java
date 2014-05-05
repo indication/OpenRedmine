@@ -13,12 +13,12 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.form.helper.FormHelper;
-import jp.redmine.redmineclient.form.helper.TextileHelper;
+import jp.redmine.redmineclient.form.helper.WebViewHelper;
 
 public class RedmineJournalListItemForm extends FormHelper {
 	public WebView webView;
 	public LinearLayout formChanges;
-	public TextileHelper webViewHelper;
+	public WebViewHelper webViewHelper;
 	public RedmineJournalListItemForm(View activity){
 		this.setup(activity);
 	}
@@ -31,7 +31,7 @@ public class RedmineJournalListItemForm extends FormHelper {
 	}
 
 	public void setupWebView(WebviewActionInterface act){
-		webViewHelper = new TextileHelper();
+		webViewHelper = new WebViewHelper();
 		webViewHelper.setup(webView);
 		webViewHelper.setAction(act);
 	}

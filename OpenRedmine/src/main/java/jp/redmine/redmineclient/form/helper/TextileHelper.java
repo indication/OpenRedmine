@@ -2,9 +2,6 @@ package jp.redmine.redmineclient.form.helper;
 
 import android.content.Context;
 import android.util.TypedValue;
-import android.webkit.WebSettings.PluginState;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
@@ -13,8 +10,6 @@ import net.java.textilej.parser.markup.textile.TextileDialect;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
@@ -22,40 +17,8 @@ import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class TextileHelper {
 	static public final String URL_PREFIX = BuildConfig.PACKAGE_NAME + BuildConfig.VERSION_CODE +"://";
-	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
-	private WebviewActionInterface action;
-	public void setAction(WebviewActionInterface act){
-		action = act;
-	}
-	public void setup(WebView view){
-		setupWebView(view);
-		setupHandler(view);
-	}
-
-	protected void setupWebView(WebView view){
-		view.getSettings().setPluginState(PluginState.OFF);
-		view.getSettings().setBlockNetworkLoads(true);
-	}
-
-	protected void setupHandler(WebView view){
-		view.setWebViewClient(new WebViewClient(){
-
-			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				Matcher m = patternIntent.matcher(url);
-				if(m.find()){
-					return kickAction(m.replaceAll(""));
-				} else if (action != null) {
-					return action.url(url);
-				} else {
-					return super.shouldOverrideUrlLoading(view, url);
-				}
-			}
-		});
-	}
-
-	protected boolean kickAction(String urlpath){
+	static protected boolean kickAction(WebviewActionInterface action, String urlpath){
 		String encodeStr = urlpath;
 		try {
 			encodeStr = URLDecoder.decode(urlpath, "utf-8");
@@ -79,7 +42,7 @@ public class TextileHelper {
 		return false;
 	}
 
-	protected String getAnchor(String name,String... params){
+	static protected String getAnchor(String name,String... params){
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href=\"");
 		for(String item : params){
@@ -91,9 +54,9 @@ public class TextileHelper {
 		return sb.toString();
 	}
 
-	public void setContent(WebView view, final int connectionid, final long project, final String text){
+	static public String getHtml(final int connectionid, final long project, final String text){
 		if (text == null)
-			return;
+			return "";
 		String inner = convertTextileToHtml(text, new ConvertToHtmlHelper() {
 			RefugeText pre = new RefugeTextPre();
 			RefugeTextInlineUrl url = new RefugeTextInlineUrl(){
@@ -135,13 +98,7 @@ public class TextileHelper {
 				return input;
 			}
 		});
-		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
-
-	}
-
-	public void setContent(WebView view, String text){
-		String inner = convertTextileToHtml(text, null);
-		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
+		return inner;
 	}
 
 

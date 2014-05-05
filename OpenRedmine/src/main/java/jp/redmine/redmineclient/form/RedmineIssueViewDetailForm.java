@@ -13,7 +13,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.form.helper.TextileHelper;
+import jp.redmine.redmineclient.form.helper.WebViewHelper;
 
 public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TextView textProject;
@@ -30,7 +30,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TableRow rowTimeEntry;
 	public TableRow rowProject;
 	public WebView webView;
-	public TextileHelper webViewHelper;
+	public WebViewHelper webViewHelper;
 	public RedmineIssueViewDetailForm(View activity){
 		super(activity);
 		this.setup(activity);
@@ -38,7 +38,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 
 
 	public void setupWebView(WebviewActionInterface act){
-		webViewHelper = new TextileHelper();
+		webViewHelper = new WebViewHelper();
 		webViewHelper.setup(webView);
 		webViewHelper.setAction(act);
 	}

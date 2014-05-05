@@ -98,22 +98,22 @@ public class TextileHelper {
 			RefugeText pre = new RefugeTextPre();
 			RefugeTextInlineUrl url = new RefugeTextInlineUrl(){
 				@Override
-				protected String pull(String input) {
-					return getAnchor(input,input);
+				protected String pull(Anchor input) {
+					return getAnchor(input.label,input.url);
 				}
 			};
 			RefugeTextWiki wiki = new RefugeTextWiki(){
 				@Override
-				protected String pull(WikiAnchor input) {
+				protected String pull(Anchor input) {
 					return getAnchor(input.label
-							,URL_PREFIX,"wiki/",String.valueOf(connectionid),"/",String.valueOf(project),"/",input.title);
+							,URL_PREFIX,"wiki/",String.valueOf(connectionid),"/",String.valueOf(project),"/",input.url);
 				}
 			};
 			RefugeTextIssue issue = new RefugeTextIssue(){
 				@Override
-				protected String pull(IssueAnchor input) {
+				protected String pull(Anchor input) {
 					return getAnchor(input.label
-							,URL_PREFIX,"issue/",String.valueOf(connectionid),"/",input.id);
+							,URL_PREFIX,"issue/",String.valueOf(connectionid),"/",input.url);
 				}
 
 			};

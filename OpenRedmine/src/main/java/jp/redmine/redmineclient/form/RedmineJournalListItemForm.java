@@ -1,5 +1,11 @@
 package jp.redmine.redmineclient.form;
 
+import android.text.Html;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import java.util.List;
 
 import jp.redmine.redmineclient.R;
@@ -8,11 +14,6 @@ import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import jp.redmine.redmineclient.form.helper.TextileHelper;
-import android.text.Html;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class RedmineJournalListItemForm extends FormHelper {
 	public WebView webView;
@@ -30,13 +31,13 @@ public class RedmineJournalListItemForm extends FormHelper {
 	}
 
 	public void setupWebView(WebviewActionInterface act){
-		webViewHelper = new TextileHelper(webView);
-		webViewHelper.setup();
+		webViewHelper = new TextileHelper();
+		webViewHelper.setup(webView);
 		webViewHelper.setAction(act);
 	}
 
 	public void setValue(RedmineJournal jr, long projectid){
-		webViewHelper.setContent(jr.getConnectionId(), projectid, jr.getNotes());
+		webViewHelper.setContent(webView, jr.getConnectionId(), projectid, jr.getNotes());
 		setChangesets(formChanges, jr.changes);
 	}
 

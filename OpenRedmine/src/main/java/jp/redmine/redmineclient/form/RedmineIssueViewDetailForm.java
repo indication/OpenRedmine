@@ -1,5 +1,10 @@
 package jp.redmine.redmineclient.form;
 
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.TableRow;
+import android.widget.TextView;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -9,10 +14,6 @@ import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.form.helper.TextileHelper;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TextView textProject;
@@ -37,8 +38,8 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 
 
 	public void setupWebView(WebviewActionInterface act){
-		webViewHelper = new TextileHelper(webView);
-		webViewHelper.setup();
+		webViewHelper = new TextileHelper();
+		webViewHelper.setup(webView);
 		webViewHelper.setAction(act);
 	}
 
@@ -66,7 +67,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public void setValue(RedmineIssue rd){
 		super.setValue(rd);
 		if(rd.getConnectionId() != null)
-			webViewHelper.setContent(rd.getConnectionId(), rd.getProject().getProjectId(), rd.getDescription());
+			webViewHelper.setContent(webView, rd.getConnectionId(), rd.getProject().getProjectId(), rd.getDescription());
 		setUserNameDateTime(textCreated,R.string.ticket_created_by,rd.getAuthor(),rd.getCreated());
 		setUserNameDateTime(textModified,R.string.ticket_modified_by,null,rd.getModified());
 		setUserName(textAssignedTo,rd.getAssigned());

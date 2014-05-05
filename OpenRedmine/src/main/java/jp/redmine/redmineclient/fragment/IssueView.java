@@ -1,5 +1,21 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask.Status;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
+
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
@@ -11,35 +27,27 @@ import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
+import jp.redmine.redmineclient.form.RedmineIssueCommentForm;
+import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
+import jp.redmine.redmineclient.task.SelectIssueJournalPost;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import se.emilsjolander.stickylistheaders.PtrStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
-import android.app.Activity;
-import android.os.AsyncTask.Status;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-
-import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private final String TAG = IssueView.class.getSimpleName();
@@ -52,6 +60,9 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private IssueActionInterface mListener;
 	private TimeentryActionInterface mTimeEntryListener;
 	private AttachmentActionInterface mAttachmentListener;
+	private RedmineIssueViewForm formTitle;
+	private RedmineIssueCommentForm formComment;
+	private ProgressDialog dialog;
 
 	public IssueView(){
 		super();
@@ -110,8 +121,67 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 		
         list.setFastScrollEnabled(true);
 
+		//setup title view
+		formTitle = new RedmineIssueViewForm(getView());
+
+		//setup comment form
+		formComment = new RedmineIssueCommentForm(getView());
+
 		onRefresh(true);
 
+		formComment.buttonOK.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!formComment.Validate())
+					return;
+				IssueArgument intent = new IssueArgument();
+				intent.setArgument(getArguments());
+
+				RedmineConnection connection = null;
+				ConnectionModel mConnection = new ConnectionModel(getActivity());
+				connection = mConnection.getItem(intent.getConnectionId());
+				mConnection.finalize();
+
+				RedmineJournal journal = new RedmineJournal();
+				journal.setIssueId((long) intent.getIssueId());
+				formComment.getValue(journal);
+
+				SelectIssueJournalPost post = new SelectIssueJournalPost(getHelper(), connection){
+					private boolean isSuccess = true;
+					@Override
+					protected void onError(Exception lasterror) {
+						isSuccess = false;
+						ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
+						super.onError(lasterror);
+					}
+					@Override
+					protected void onErrorRequest(int statuscode) {
+						isSuccess = false;
+						ActivityHelper.toastRemoteError(getActivity(), statuscode);
+						super.onErrorRequest(statuscode);
+					}
+					@Override
+					protected void onPreExecute() {
+						dialog.show();
+						super.onPreExecute();
+					}
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);
+						if (dialog.isShowing())
+							dialog.dismiss();
+						if(isSuccess){
+							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							formComment.clear();
+						}
+					}
+				};
+				post.execute(journal);
+			}
+		});
+
+		dialog = new ProgressDialog(getActivity());
+		dialog.setMessage(getString(R.string.menu_settings_uploading));
 
 	}
 	@Override
@@ -125,7 +195,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-        View current = inflater.inflate(R.layout.stickylistheaderslist, container, false);
+        View current = inflater.inflate(R.layout.issuedetail, container, false);
         list = (StickyListHeadersListView)current.findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -197,15 +267,15 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());
 		RedmineIssueModel mIssue = new RedmineIssueModel(getHelper());
-		Long issue_id = null;
+		RedmineIssue issue = null;
 		try {
-			issue_id = mIssue.getIdByIssue(intent.getConnectionId(),intent.getIssueId());
+			issue = mIssue.fetchById(intent.getConnectionId(), intent.getIssueId());
 		} catch (SQLException e) {
 			Log.e(TAG,"onRefresh",e);
 		}
-		if(issue_id != null){
-			adapter.setupParameter(intent.getConnectionId(),issue_id);
-			adapter.notifyDataSetInvalidated();
+		if(issue != null && issue.getId() != null){
+			formTitle.setValue(issue);
+			adapter.setupParameter(intent.getConnectionId(), issue.getId());
 			adapter.notifyDataSetChanged();
 		}
 

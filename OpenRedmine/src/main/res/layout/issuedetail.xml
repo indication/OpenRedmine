@@ -47,6 +47,7 @@
 	<se.emilsjolander.stickylistheaders.PtrStickyListHeadersListView
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/list"
+		android:focusable="false"
 		android:layout_weight="1"
 		android:layout_width="fill_parent"
 		android:layout_height="0dp"

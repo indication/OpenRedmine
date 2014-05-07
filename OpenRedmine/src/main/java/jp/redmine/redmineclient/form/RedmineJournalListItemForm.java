@@ -2,7 +2,6 @@ package jp.redmine.redmineclient.form;
 
 import android.text.Html;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,31 +12,30 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.form.helper.FormHelper;
-import jp.redmine.redmineclient.form.helper.WebViewHelper;
+import jp.redmine.redmineclient.form.helper.TextViewHelper;
 
 public class RedmineJournalListItemForm extends FormHelper {
-	public WebView webView;
+	public TextView textView;
 	public LinearLayout formChanges;
-	public WebViewHelper webViewHelper;
+	public TextViewHelper textViewHelper;
 	public RedmineJournalListItemForm(View activity){
 		this.setup(activity);
 	}
 
 
 	public void setup(View view){
-		webView = (WebView)view.findViewById(R.id.webView);
+		textView = (TextView)view.findViewById(R.id.textView);
 		formChanges = (LinearLayout)view.findViewById(R.id.formChanges);
-
 	}
 
 	public void setupWebView(WebviewActionInterface act){
-		webViewHelper = new WebViewHelper();
-		webViewHelper.setup(webView);
-		webViewHelper.setAction(act);
+		textViewHelper = new TextViewHelper();
+		textViewHelper.setup(textView);
+		textViewHelper.setAction(act);
 	}
 
 	public void setValue(RedmineJournal jr, long projectid){
-		webViewHelper.setContent(webView, jr.getConnectionId(), projectid, jr.getNotes());
+		textViewHelper.setContent(textView, jr.getConnectionId(), projectid, jr.getNotes());
 		setChangesets(formChanges, jr.changes);
 	}
 

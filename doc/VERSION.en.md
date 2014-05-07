@@ -6,6 +6,7 @@ Next Release
 ===========
 - Fix issue view icons
 - Fix wiki link expressions
+- Improved performance by changing issue detail from WebView to TextView
 
 v3.8 - 40 - 2014/03/27
 ===========

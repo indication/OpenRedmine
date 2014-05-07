@@ -73,6 +73,9 @@ Used references
 - Add feature about FragmentBreadCrumbs from "techbooster"
   http://techbooster.org/android/application/15499/
 
+- Support Link on TextView from "StackOverFlow"
+  http://stackoverflow.com/questions/12418279/android-textview-with-clickable-links-how-to-capture-clicks
+
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs

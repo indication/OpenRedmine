@@ -14,3 +14,8 @@ android:
     - android-sdk-license-bcbbd656
     - '.*intel.+'
 
+before_install:
+  # environment info
+  - gradle -v
+  - uname -a
+  - cat /home/travis/build.sh

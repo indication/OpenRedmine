@@ -6,10 +6,12 @@ notifications:
 android:
   components:
     - tools
+    - platform-tools
     - build-tools-19.0.3
     - android-18
     - sysimg-18
     - extra-android-support
+    - extra-android-m2repository
   licenses:
     - android-sdk-license-bcbbd656
     - '.*intel.+'

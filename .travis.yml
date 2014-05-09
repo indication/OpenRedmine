@@ -1,48 +1,26 @@
-language: java
+language: android
+jdk: oraclejdk7
 
 notifications:
   email: false
 
-jdk:
-  - openjdk7
 env:
   matrix:
-    - GRADLE_VERSION=1.11 SDK_VERSION=22.0.5 BUILD_TOOL_VERSION=19.0.3 TARGET_ANDROID_API=18
-# powered by http://www.msebera.cz/en/2013/09/27/android-gradle-config-for-travis-ci/ 
-before_install:
-  # environment info
-  - gradle -v
-  - uname -a
-  # fix gradlew: Permission denied
-  - chmod +x gradlew
-  # required libs for android build tools
-  - if [ `uname -m` = x86_64 ]; then sudo apt-get update; fi
-  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
-  # for gradle output style
-  # only needed for Travis, not for standard xterm
-  - export TERM=dumb
-  # newer version of gradle
-  - wget http://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip
-  - unzip -qq gradle-$GRADLE_VERSION-bin.zip
-  # Having GRADLE_HOME property will make Travis CI use it for build
-  - export GRADLE_HOME=$PWD/gradle-$GRADLE_VERSION
-  - export PATH=$GRADLE_HOME/bin:$PATH
-  # newest android SDK 22.0.5
-  - wget http://dl.google.com/android/android-sdk_r$SDK_VERSION-linux.tgz
-  - tar -zxf android-sdk_r$SDK_VERSION-linux.tgz
-  - export ANDROID_HOME=`pwd`/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-  # manually set sdk.dir variable, according to local paths
-  - echo "sdk.dir=$ANDROID_HOME" > local.properties
-  # "echo yes |" part is to accept license from android sdk manager tool
-  - echo yes | android update sdk -t tools,platform-tools,extra-android-support,extra-android-m2repository,android-$TARGET_ANDROID_API --force --no-ui
-  # build tools cannot be installed through "android update sdk" as of now
-  - wget http://dl.google.com/android/repository/build-tools_r$BUILD_TOOL_VERSION-linux.zip
-  - mkdir -p $ANDROID_HOME/build-tools
-  - unzip -qq build-tools_r$BUILD_TOOL_VERSION-linux.zip -d $ANDROID_HOME/build-tools/
-  - mv $ANDROID_HOME/build-tools/android-* $ANDROID_HOME/build-tools/$BUILD_TOOL_VERSION
-  # verify files exist in right paths
-  - find $ANDROID_HOME/build-tools
-  - file $ANDROID_HOME/build-tools/$BUILD_TOOL_VERSION/aapt
+    - ANDROID_SDKS=android-18,sysimg-19 ANDROID_TARGET=android-18 ANDROID_ABI=armeabi-v7a
 
+android:
+  components:
+    - build-tools-19.0.3
 
+before_script:
+  # Create and start emulator
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - adb wait-for-device
+  - adb shell input keyevent 82 &
+
+script:
+  - ./gradlew assembleDebug
+  - ./gradlew connectedAndroidTest
+  - ./gradlew assembleRelease
+  - ./gradlew lint

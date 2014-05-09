@@ -76,6 +76,9 @@ Used references
 - Support Link on TextView from "StackOverFlow"
   http://stackoverflow.com/questions/12418279/android-textview-with-clickable-links-how-to-capture-clicks
 
+- Support Travis CI integration test(MIT)
+  https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml
+
 Using Libraries
 ==========
 - android-form-edittext (MIT) - needs verification about inputs

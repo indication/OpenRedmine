@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.form.helper;
 
+import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -8,6 +9,8 @@ import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.TextView;
+
+import org.xml.sax.XMLReader;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,7 +60,40 @@ public class TextViewHelper {
 	 */
 	static void setTextViewHTML(TextView text, String html, final ClickLink handler)
 	{
-		CharSequence sequence = Html.fromHtml(html);
+		CharSequence sequence = Html.fromHtml(html, null, new Html.TagHandler() {
+			boolean first= true;
+			String parent="";
+			int index=1;
+
+			/**
+			 * Inherits from: http://stackoverflow.com/questions/3150400/html-list-tag-not-working-in-android-textview-what-can-i-do
+			 * Author: Lord Voldemort
+			 */
+				@Override
+				public void handleTag(boolean opening, String tag, Editable output,
+						XMLReader xmlReader) {
+					if(tag.equals("ul")) parent="ul";
+					else if(tag.equals("ol")) parent="ol";
+					if(tag.equals("li")){
+						if(parent.equals("ul")){
+							if(first){
+								output.append("\n\t•");
+								first= false;
+							} else {
+								first = true;
+							}
+						} else {
+							if(first){
+								output.append("\n\t"+index+". ");
+								first= false;
+								index++;
+							} else {
+								first = true;
+							}
+						}
+					}
+				}
+			});
 		SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
 		for(final URLSpan span :  strBuilder.getSpans(0, sequence.length(), URLSpan.class)) {
 			int start = strBuilder.getSpanStart(span);

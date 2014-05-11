@@ -14,13 +14,18 @@ repositories {
 
 android {
     compileSdkVersion 18
-    buildToolsVersion '19.0.0'
+    buildToolsVersion '19.0.3'
+    testBuildType "debug"
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 18
 
-        versionCode 40
-        versionName '3.8'
+        versionCode 41
+        versionName '3.9'
+        testPackageName "jp.redmine.redmineclienttest"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testHandleProfiling true
+        testFunctionalTest true
     }
     lintOptions {
         abortOnError false
@@ -44,7 +49,6 @@ android {
                 signingConfig signingConfigs.release
             }
         }
-
     }
 }
 
@@ -60,6 +64,8 @@ dependencies {
     //compile 'com.jakewharton:hanselandgretel:1.0.2'
 compile 'net.java:textile-j:2.2'
 compile project(':Transdroid')
+    androidTestCompile 'com.google.guava:guava:11.0.2'
+    androidTestCompile 'junit:junit:4.8.2'
 }
 
 if (project.hasProperty('keyAlias')) {
@@ -74,3 +80,5 @@ if (project.hasProperty('storeFile')) {
 if (project.hasProperty('storePassword')) {
     android.signingConfigs.release.storePassword = storePassword
 }
+
+

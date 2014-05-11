@@ -11,7 +11,7 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 * APIアクセスキー (個人用設定から変更可能)
 
 注意:
-* キャッシュデータ(ダウンロードされたチケット)は暗号化されずに保存されます。 すぐに削除する場合は接続リストでメニューを表示し、すべてのキャッシュを削除　してください。
+* キャッシュデータ(ダウンロードされたチケット)は暗号化されずに保存されます。 すぐに削除する場合は接続リストでメニューを表示し、すべてのキャッシュを削除　してください。 
 * すべてに対して安全ではない、ガンマリリースです。Android 2.xでは表示がおかしくなることがあります。
 
 接続:
@@ -39,6 +39,10 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 * 活動の表示
 * ストップウォッチ(未計画)
 
+報告:
+クラッシュに気づいたら、twitterもしくはgithub、星1でレビューすることによってご祝福してください
+
 ノート:
 * このアプリはオープンソース(ライブラリ等を除きGPL)です。あなたが参加できます。(例: 翻訳)
-* Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
+* あなたの言語に翻訳することが可能です: https://www.transifex.com/projects/p/openredmine/ .
+* このアプリについてなにか思うことがありましたら、https://github.com/indication/OpenRedmine や twitter @OpenRedmine を通じて知らせてください。

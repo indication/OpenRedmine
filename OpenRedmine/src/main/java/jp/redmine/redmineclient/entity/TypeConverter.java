@@ -1,14 +1,14 @@
 package jp.redmine.redmineclient.entity;
 
-import java.util.Date;
-import java.util.TimeZone;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.util.Log;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 public class TypeConverter {
@@ -17,6 +17,7 @@ public class TypeConverter {
 	//public static final String FORMAT_DATETIME = "E M d H:m:s Z y";
 	public static final String FORMAT_DATETIMEZ = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 	public static final String FORMAT_DATETIME = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ";
+	public static final String FORMAT_DATETIMEMS = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSSZ";
 	public static final String FORMAT_DATE = "yyyy-MM-dd";
 	public static Date parseDate(String datetime){
 		return parseDateTimeFormat(datetime,FORMAT_DATE, false);
@@ -26,6 +27,8 @@ public class TypeConverter {
 			return null;
 		if (datetime.endsWith("Z"))
 			return parseDateTimeFormat(datetime,FORMAT_DATETIMEZ, true);
+		else if(datetime.contains("."))
+			return parseDateTimeFormat(datetime,FORMAT_DATETIMEMS, false);
 		else
 			return parseDateTimeFormat(datetime,FORMAT_DATETIME, false);
 	}

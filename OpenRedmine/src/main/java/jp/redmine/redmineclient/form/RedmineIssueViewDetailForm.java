@@ -1,5 +1,9 @@
 package jp.redmine.redmineclient.form;
 
+import android.view.View;
+import android.widget.TableRow;
+import android.widget.TextView;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -8,11 +12,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.form.helper.TextileHelper;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.TableRow;
-import android.widget.TextView;
+import jp.redmine.redmineclient.form.helper.TextViewHelper;
 
 public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TextView textProject;
@@ -28,8 +28,8 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TableRow rowAssigned;
 	public TableRow rowTimeEntry;
 	public TableRow rowProject;
-	public WebView webView;
-	public TextileHelper webViewHelper;
+	public TextView textView;
+	public TextViewHelper textViewHelper;
 	public RedmineIssueViewDetailForm(View activity){
 		super(activity);
 		this.setup(activity);
@@ -37,9 +37,9 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 
 
 	public void setupWebView(WebviewActionInterface act){
-		webViewHelper = new TextileHelper(webView);
-		webViewHelper.setup();
-		webViewHelper.setAction(act);
+		textViewHelper = new TextViewHelper();
+		textViewHelper.setup(textView);
+		textViewHelper.setAction(act);
 	}
 
 	public void setup(View view){
@@ -57,8 +57,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 		rowAssigned = (TableRow)view.findViewById(R.id.rowAssigned);
 		rowTimeEntry = (TableRow)view.findViewById(R.id.rowTimeEntry);
 		rowProject = (TableRow)view.findViewById(R.id.rowProject);
-		webView = (WebView)view.findViewById(R.id.webView);
-		webView.getSettings().setBlockNetworkLoads(true);
+		textView = (TextView)view.findViewById(R.id.textView);
 	}
 
 
@@ -66,7 +65,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public void setValue(RedmineIssue rd){
 		super.setValue(rd);
 		if(rd.getConnectionId() != null)
-			webViewHelper.setContent(rd.getConnectionId(), rd.getProject().getProjectId(), rd.getDescription());
+			textViewHelper.setContent(textView, rd.getConnectionId(), rd.getProject().getProjectId(), rd.getDescription());
 		setUserNameDateTime(textCreated,R.string.ticket_created_by,rd.getAuthor(),rd.getCreated());
 		setUserNameDateTime(textModified,R.string.ticket_modified_by,null,rd.getModified());
 		setUserName(textAssignedTo,rd.getAssigned());

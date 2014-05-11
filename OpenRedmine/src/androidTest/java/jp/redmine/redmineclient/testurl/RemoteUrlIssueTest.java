@@ -1,23 +1,21 @@
-package jp.redmine.redmineclient.url.test;
+package jp.redmine.redmineclient.testurl;
+
+import android.test.AndroidTestCase;
 
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
-import junit.framework.TestCase;
 
-public class RemoteUrlIssueTest extends TestCase {
+
+public class RemoteUrlIssueTest extends AndroidTestCase {
 
 	private final String testurl = "http://test/";
 	public RemoteUrlIssueTest() {
 	}
 
-	public RemoteUrlIssueTest(String name) {
-		super(name);
-	}
-
 	public void testRaw(){
 		RemoteUrlIssue issue = new RemoteUrlIssue();
 		issue.setupRequest(requests.xml);
-		assertEquals(testurl + "/issues.json",
+		assertEquals(testurl + "issues.xml",
 				issue.getUrl(testurl).toString());
 	}
 }

@@ -5,6 +5,12 @@ Release history
 Next Release
 ===========
 
+v3.9 - 41 - 2014/05/17
+===========
+- Fix issue view icons
+- Fix wiki link expressions
+- Improved performance by changing issue detail from WebView to TextView
+
 v3.8 - 40 - 2014/03/27
 ===========
 - Add search interface on issues, projects

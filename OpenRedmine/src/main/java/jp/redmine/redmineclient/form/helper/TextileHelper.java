@@ -1,97 +1,24 @@
 package jp.redmine.redmineclient.form.helper;
 
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.content.Context;
+import android.util.TypedValue;
 
-import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
-import jp.redmine.redmineclient.entity.TypeConverter;
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.TypedValue;
-import android.webkit.WebView;
-import android.webkit.WebSettings.PluginState;
-import android.webkit.WebViewClient;
+import jp.redmine.redmineclient.BuildConfig;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class TextileHelper {
-	protected WebView view;
-	static public final String URL_PREFIX = "redmine://";
-	private Pattern patternIntent = Pattern.compile(URL_PREFIX);
-	private Pattern patternIssue = Pattern.compile("#(\\d+)([^;\\d]|$)");
-	private Pattern patternWiki = Pattern.compile("\\[\\[([^\\]\\|]+?)\\]\\]");
-	private Pattern patternWikiAnchor = Pattern.compile("\\[\\[([^\\]\\|]+?)\\|([^\\]\\|]+?)\\]\\]");
-	private Pattern patternInlineUrl = Pattern.compile(
-			"\\b((" +
-			//START inherits from http://www.din.or.jp/~ohzaki/perl.htm#URI
-			"(?:https?|shttp)://(?:(?:[-_.!~*'()a-zA-Z0-9;:&=+$,]|%[0-9A-Fa-f" +
-			"][0-9A-Fa-f])*@)?(?:(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.)" +
-			"*[a-zA-Z](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\." +
-			"[0-9]+)(?::[0-9]*)?(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f]" +
-			"[0-9A-Fa-f])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-" +
-			"Fa-f])*)*(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f" +
-			"])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*)" +
-			"*)?(?:\\?(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])" +
-			"*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*" +
-			")?" +
-			")|(" +	 // ftp section
-			"s?ftps?://(?:(?:[-_.!~*'()a-zA-Z0-9;&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*" +
-			"(?::(?:[-_.!~*'()a-zA-Z0-9;&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)?@)?(?" +
-			":(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\\.)*[a-zA-Z](?:[-a-zA-" +
-			"Z0-9]*[a-zA-Z0-9])?\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(?::[0-9]*)?" +
-			"(?:/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*(?:/(?" +
-			":[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*(?:;type=[" +
-			"AIDaid])?)?(?:\\?(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9" +
-			"A-Fa-f])*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;/?:@&=+$,]|%[0-9A-Fa-f][0-9A" +
-			"-Fa-f])*)?" +
-			//END
-			"))"
-			);
+	static public final String URL_PREFIX = BuildConfig.PACKAGE_NAME + BuildConfig.VERSION_CODE +"://";
 	//private Pattern patternDocuments = Pattern.compile("document:\\d+");
-	private WebviewActionInterface action;
-	public TextileHelper(WebView web){
-		view = web;
-	}
-	public void setAction(WebviewActionInterface act){
-		action = act;
-	}
-	public void setup(){
-		setupWebView();
-		setupHandler();
-	}
-
-	protected void setupWebView(){
-		view.getSettings().setPluginState(PluginState.OFF);
-		view.getSettings().setBlockNetworkLoads(true);
-	}
-
-	protected void setupHandler(){
-		view.setWebViewClient(new WebViewClient(){
-
-			@Override
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				Matcher m = patternIntent.matcher(url);
-				if(m.find()){
-					return kickAction(m.replaceAll(""));
-				} else if (action != null) {
-					return action.url(url);
-				} else {
-					return super.shouldOverrideUrlLoading(view, url);
-				}
-			}
-		});
-	}
-
-	protected boolean kickAction(String urlpath){
+	static protected boolean kickAction(WebviewActionInterface action, String urlpath){
 		String encodeStr = urlpath;
 		try {
 			encodeStr = URLDecoder.decode(urlpath, "utf-8");
@@ -115,22 +42,9 @@ public class TextileHelper {
 		return false;
 	}
 
-	protected String  extendHtml(int connection_id,long projectid,String input){
-		return extendHtml(String.valueOf(connection_id),String.valueOf(projectid),input);
-	}
-	protected String  extendHtml(String connection,String project,String input){
-		String result = "";
-		result = patternIssue.matcher(input).replaceAll(getAnchor("#$1","issue/",connection,"/","$1")+"$2");
-		result = patternWikiAnchor.matcher(result).replaceAll(getAnchor("$2","wiki/",connection,"/",project,"/","$1"));
-		result = patternWiki.matcher(result).replaceAll(getAnchor("$1","wiki/",connection,"/",project,"/","$1"));
-		result = patternInlineUrl.matcher(result).replaceAll("<a href=\"$1\">$1</a>");
-		return result;
-	}
-
-	protected String getAnchor(String name,String... params){
+	static protected String getAnchor(String name,String... params){
 		StringBuffer sb = new StringBuffer();
 		sb.append("<a href=\"");
-		sb.append(URL_PREFIX);
 		for(String item : params){
 			sb.append(item);
 		}
@@ -140,53 +54,62 @@ public class TextileHelper {
 		return sb.toString();
 	}
 
-	public void setContent(int connectionid,long project,String text){
+	static public String getHtml(final int connectionid, final long project, final String text){
 		if (text == null)
-			return;
-		String inner = extendHtml(connectionid,project,convertTextileToHtml(text));
-		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
+			return "";
+		String inner = convertTextileToHtml(text, new ConvertToHtmlHelper() {
+			RefugeText pre = new RefugeTextPre();
+			RefugeTextInlineUrl url = new RefugeTextInlineUrl(){
+				@Override
+				protected String pull(Anchor input) {
+					return getAnchor(input.label,input.url);
+				}
+			};
+			RefugeTextWiki wiki = new RefugeTextWiki(){
+				@Override
+				protected String pull(Anchor input) {
+					return getAnchor(input.label
+							,URL_PREFIX,"wiki/",String.valueOf(connectionid),"/",String.valueOf(project),"/",input.url);
+				}
+			};
+			RefugeTextIssue issue = new RefugeTextIssue(){
+				@Override
+				protected String pull(Anchor input) {
+					return getAnchor(input.label
+							,URL_PREFIX,"issue/",String.valueOf(connectionid),"/",input.url);
+				}
 
-	}
-
-	public void setContent(String text){
-		String inner = convertTextileToHtml(text);
-		view.loadDataWithBaseURL("", getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
-	}
-
-
-	static protected String reduceExternalHtml(String input, HashMap<String,String> export){
-		Pattern p = Pattern.compile("<\\s*pre\\s*>(.+?)<\\s*/\\s*pre\\s*>", Pattern.DOTALL);
-		String texttile = input;
-		Matcher m = p.matcher(texttile);
-
-		while(m.find()){
-			String target = m.group(1);
-			StringBuffer sb = new StringBuffer();
-			if(!TextUtils.isEmpty(target)){
-				sb.append("<div class=\"pre\">");
-				sb.append(target
-						.replaceAll("&", "&amp;")
-						.replaceAll("<", "&lt;")
-						.replaceAll(">", "&gt;")
-						.replaceAll("[\\r\\n]+", "<br>\r\n")
-						.replaceAll(" ", "&nbsp;")
-						.replaceAll("	", "&#009;")
-						);
-				sb.append("</div>");
+			};
+			@Override
+			public String beforeParse(String input) {
+				input = pre.refuge(input); //must first
+				input = url.refuge(input);
+				input = wiki.refuge(input);
+				input = issue.refuge(input);
+				return input;
 			}
-			String key = RandomStringUtils.randomAlphabetic(10);
-			export.put(key, sb.toString());
-			texttile = m.replaceFirst(key);
-			m = p.matcher(texttile);
-		}
-		return texttile;
+
+			@Override
+			public String afterParse(String input) {
+				input = url.restore(input);
+				input = wiki.restore(input);
+				input = issue.restore(input);
+				input = pre.restore(input); //must last
+				return input;
+			}
+		});
+		return inner;
 	}
-	static public String convertTextileToHtml(String text){
-		return convertTextileToHtml(text, false);
+
+
+	static public String convertTextileToHtml(String text, ConvertToHtmlHelper helper){
+		return convertTextileToHtml(text, false, helper);
 	}
-	static public String convertTextileToHtml(String text, boolean isDocument){
-		HashMap<String,String> restore = new HashMap<String,String>();
-		String textile = reduceExternalHtml(text,restore);
+	static public String convertTextileToHtml(String text, boolean isDocument, ConvertToHtmlHelper helper){
+
+		String textile = text;
+		if(helper != null)
+			textile = helper.beforeParse(textile);
 		StringWriter sw = new StringWriter();
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(sw);
 		builder.setEmitAsDocument(isDocument);
@@ -195,10 +118,24 @@ public class TextileHelper {
 		parser.setBuilder(builder);
 		parser.parse(textile);
 		textile = sw.toString();
-		for(String item : restore.keySet()){
-			textile = textile.replace(item, restore.get(item));
-		}
+		if(helper != null)
+			textile = helper.afterParse(textile);
 		return  textile;
+	}
+	public interface ConvertToHtmlHelper {
+		/**
+		 *
+		 * @param input TEXT string without reduced text (eg. pre)
+		 * @return formatted string
+		 */
+		public String beforeParse(String input);
+
+		/**
+		 *
+		 * @param input HTML string without reduced text (eg. pre)
+		 * @return formatted string
+		 */
+		public String afterParse(String input);
 	}
 	static public String getHtml(Context context,String innerhtml,String headerhtml){
 		StringBuffer sb = new StringBuffer();

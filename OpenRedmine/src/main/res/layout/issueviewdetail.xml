@@ -315,8 +315,10 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="1dp" />
 
-	<WebView
-	    android:id="@+id/webView"
+	<TextView
+	    android:id="@+id/textView"
+		android:focusable="false"
+		android:linksClickable="true"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content" />
 

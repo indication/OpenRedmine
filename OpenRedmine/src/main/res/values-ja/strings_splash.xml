@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-	<!-- The content of app_description is out of GPL. Those paragraph is own by author -->
-	<string name="app_description"><![CDATA[
+  <!--The content of app_description is out of GPL. Those paragraph is own by author-->
+  <string name="app_description"><![CDATA[
 「企業生活を振り返って」
 
 
@@ -74,11 +74,11 @@
 
 
 ]]></string>
-	<string name="app_name">OpenRedmine</string>
-	<string name="product">製品</string>
-	<string name="production">製作</string>
-	<string name="app_production">やはり俺のレッドマインはまちがっている。</string>
-	<string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
+  <string name="app_name">OpenRedmine</string>
+  <string name="product">製品</string>
+  <string name="production">製作</string>
+  <string name="app_production">やはり俺のレッドマインはまちがっている。</string>
+  <string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
 
  ]]></string>
 </resources>

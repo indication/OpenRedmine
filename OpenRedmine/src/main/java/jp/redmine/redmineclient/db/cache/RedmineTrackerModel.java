@@ -99,7 +99,7 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 			if(data.getModified() == null){
 				data.setModified(new java.util.Date());
 			}
-			if (project.getModified().after(data.getModified())){
+			if (!project.getModified().before(data.getModified())){
 				this.update(data);
 			}
 		}

@@ -124,8 +124,8 @@ public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> 
 		if(data == null)
 			return null;
 		RedmineProjectVersion version = this.fetchById(id, data.getVersionId());
+		data.setConnectionId(id);
 		if(version.getId() == null){
-			data.setConnectionId(id);
 			this.insert(data);
 			version = fetchById(id, data.getVersionId());
 		} else {
@@ -137,7 +137,6 @@ public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> 
 			}
 			if(version.getModified().after(data.getModified())){
 				data.setId(version.getId());
-				data.setConnectionId(id);
 				this.update(data);
 			}
 		}

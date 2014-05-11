@@ -24,7 +24,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineWiki;
-import jp.redmine.redmineclient.form.helper.TextileHelper;
+import jp.redmine.redmineclient.form.helper.WebViewHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.WikiArgument;
 import jp.redmine.redmineclient.task.SelectWikiTask;
@@ -36,7 +36,8 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 	private static final String TAG = WikiDetail.class.getSimpleName();
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
-	private TextileHelper webViewHelper;
+	private WebViewHelper webViewHelper;
+	private WebView webView;
 
 	private WebviewActionInterface mListener;
 
@@ -84,7 +85,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 		super.onActivityCreated(savedInstanceState);
 
 		webViewHelper.setAction(mListener);
-		webViewHelper.setup();
+		webViewHelper.setup(webView);
 		loadWebView(true);
 
 	}
@@ -101,7 +102,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 			} else {
 				content = wiki.getBody();
 			}
-			webViewHelper.setContent(intent.getConnectionId(),intent.getProjectId(), content);
+			webViewHelper.setContent(webView, intent.getConnectionId(),intent.getProjectId(), content);
 		} catch (SQLException e) {
 			Log.e(TAG, "loadWebView", e);
 		}
@@ -137,8 +138,8 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.webview, container, false);
-		WebView mWebView = (WebView) view.findViewById(R.id.webView);
-		webViewHelper = new TextileHelper(mWebView);
+		webView = (WebView) view.findViewById(R.id.webView);
+		webViewHelper = new WebViewHelper();
 		return view;
 	}
 

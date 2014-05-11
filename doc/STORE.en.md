@@ -39,6 +39,9 @@ Release planing:
 * Show activities
 * TimeEntry like stop watch (no plan...)
 
+Reports:
+If you detect the crash, bless us by the report via twitter, github, reviews with 1 star.
+
 Note:
 * This app is open source(GPL exclude libraries), you can contribute.
 * You can translate your language via https://www.transifex.com/projects/p/openredmine/ .

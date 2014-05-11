@@ -12,6 +12,7 @@
 bin/
 gen/
 target/
+transifex/
 
 # Local configuration file (sdk path, etc)
 local.properties

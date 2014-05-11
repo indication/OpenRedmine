@@ -5,19 +5,25 @@ Release history
 Next Release
 ===========
 
+v3.9 - 41 - 2014/05/17
+===========
+Вид Исправлена ​​проблема иконки
+- Исправлена ​​вики ссылка выражения
+- Улучшенная производительность, изменив вопрос подробно с WebView в TextView
+
 v3.8 - 40 - 2014/03/27
 ===========
-- Add search interface on issues, projects
-- (Internal changes) Update Android Studio from 0.4.2 to 0.5.1
-- Bug fix crash on android 2.2 (#79,#56)
-- Bug fix show journal changes (#81)
-- Reduce URL validation on add connection (#84)
+- Добавлен поиск интерфейс на вопросы, проектов
+- (Внутренние изменения) Обновлено Android Студия от 0.4.2 до 0.5.1
+- Исправлена ​​ошибка аварии на Android 2.2 (#79,#56)
+- Изменения Исправлена ​​ошибка шоу журнал (#81)
+- Уменьшите проверку URL на надстройке связи (#84)
 
 v3.7 - 39 - 2014/02/28
 ===========
-- Fix crash on fetch remote first time (#68)
-- (Internal changes) Move DAO into adapter (#61)
-- Add URL validation (start with schema) to avoid to crash (#67)
+- Исправлен вылет при принести дистанционного первый раз (#68)
+- (Внутренние изменения) перемещена DAO в адапте (#61)
+- Добавление проверки URL (начать со схемой), чтобы избежать к краху (#67)
 
 v3.6 - 38 - 2014/02/15
 ===========

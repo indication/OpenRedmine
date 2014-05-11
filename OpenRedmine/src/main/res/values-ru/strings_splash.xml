@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-<!-- The content of app_description is out of GPL. Those paragraph is own by author -->
-<string name="app_description"><![CDATA[
+  <!--The content of app_description is out of GPL. Those paragraph is own by author-->
+  <string name="app_description"><![CDATA[
 "С оглядкой на корпоративную жизнь"
 
 
@@ -75,11 +75,11 @@
 
 
 ]]></string>
-	<string name="app_name">OpenRedmine</string>
-	<string name="product">продукт</string>
-	<string name="production">производство</string>
-	<string name="app_production">Красный шахте я ошибаюсь снова.</string>
-	<string name="message_first_time"><![CDATA[Я скачал, спасибо.
+  <string name="app_name">OpenRedmine</string>
+  <string name="product">продукт</string>
+  <string name="production">производство</string>
+  <string name="app_production">Красный шахте я ошибаюсь снова.</string>
+  <string name="message_first_time"><![CDATA[Я скачал, спасибо.
 
  ]]></string>
 </resources>

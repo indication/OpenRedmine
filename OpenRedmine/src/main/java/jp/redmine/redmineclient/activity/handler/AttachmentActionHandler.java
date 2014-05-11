@@ -1,11 +1,9 @@
 package jp.redmine.redmineclient.activity.handler;
 
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.fragment.FileDownload;
-import jp.redmine.redmineclient.param.AttachmentArgument;
+import android.content.Intent;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import jp.redmine.redmineclient.AttachmentActivity;
+import jp.redmine.redmineclient.param.AttachmentArgument;
 
 public class AttachmentActionHandler extends Core implements AttachmentActionInterface {
 
@@ -14,22 +12,16 @@ public class AttachmentActionHandler extends Core implements AttachmentActionInt
 	}
 
 	@Override
-	public void onAttachmentSelected(int connectionid, int attachmentid) {
-
-		final AttachmentArgument arg = new AttachmentArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setAttachmentId(attachmentid);
-
-		runTransaction(new TransitFragment() {
+	public void onAttachmentSelected(final int connectionid, final int attachmentid) {
+		kickActivity(AttachmentActivity.class, new IntentFactory() {
 			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, FileDownload.newInstance(arg));
-				Fragment frag = manager.getFragment().findFragmentById(R.id.fragmentOneFooter);
-				if(frag != null)
-					tran.remove(frag);
+			public void generateIntent(Intent intent) {
+				AttachmentArgument arg = new AttachmentArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
+				arg.setAttachmentId(attachmentid);
 			}
-		}, null);
+		});
 	}
 
 }

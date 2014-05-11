@@ -75,6 +75,7 @@ Used references
 
 - Support Link on TextView from "StackOverFlow"
   http://stackoverflow.com/questions/12418279/android-textview-with-clickable-links-how-to-capture-clicks
+  http://stackoverflow.com/questions/3150400/html-list-tag-not-working-in-android-textview-what-can-i-do
 
 - Support Travis CI integration test(MIT)
   https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml

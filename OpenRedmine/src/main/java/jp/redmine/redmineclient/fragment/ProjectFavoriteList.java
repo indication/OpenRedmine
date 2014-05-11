@@ -58,7 +58,7 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		list.setFastScrollEnabled(true);
 
-		RedmineProjectFavoriteAdapter adapter = new RedmineProjectFavoriteAdapter(getHelper(), getActivity().getApplicationContext());
+		RedmineProjectFavoriteAdapter adapter = new RedmineProjectFavoriteAdapter(getHelper(), getActivity());
 
 		list.setAdapter(adapter);
 		adapter.notifyDataSetChanged();

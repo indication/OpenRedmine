@@ -1,10 +1,11 @@
 package jp.redmine.redmineclient.activity.handler;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.fragment.Empty;
-import jp.redmine.redmineclient.fragment.TimeEntryEdit;
+import jp.redmine.redmineclient.TimeEntryActivity;
 import jp.redmine.redmineclient.fragment.TimeEntryList;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
@@ -43,23 +44,18 @@ public class TimeEntryHandler extends Core implements TimeentryActionInterface {
 
 
 	@Override
-	public void onTimeEntryEdit(int connectionid, int issueid, Integer timeentryid) {
-		final TimeEntryArgument arg = new TimeEntryArgument();
-		arg.setArgument();
-		arg.setConnectionId(connectionid);
-		arg.setIssueId(issueid);
-		if(timeentryid != null)
-			arg.setTimeEntryId(timeentryid);
-
-		runTransaction(new TransitFragment() {
+	public void onTimeEntryEdit(final int connectionid, final int issueid, final Integer timeentryid) {
+		kickActivity(TimeEntryActivity.class, new IntentFactory() {
 			@Override
-			public void action(FragmentTransaction tran) {
-				tran.replace(R.id.fragmentOne, TimeEntryEdit.newInstance(arg));
-				Fragment frag = manager.getFragment().findFragmentById(R.id.fragmentOneFooter);
-				if(frag != null)
-					tran.remove(frag);
+			public void generateIntent(Intent intent) {
+				TimeEntryArgument arg = new TimeEntryArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
+				arg.setIssueId(issueid);
+				if(timeentryid != null)
+					arg.setTimeEntryId(timeentryid);
 			}
-		}, null);
+		});
 	}
 
 

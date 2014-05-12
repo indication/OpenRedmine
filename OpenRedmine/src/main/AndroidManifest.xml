@@ -49,6 +49,8 @@
         	  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
 		<activity android:name=".AttachmentActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+		<activity android:name=".TimeEntryActivity"
+				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
     </application>
 
 </manifest>

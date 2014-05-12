@@ -18,7 +18,6 @@ import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
-import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
@@ -60,7 +59,7 @@ public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineCategoryListAdapter(getHelper(), getActivity().getApplicationContext());
+		adapter = new RedmineCategoryListAdapter(getHelper(), getActivity());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());

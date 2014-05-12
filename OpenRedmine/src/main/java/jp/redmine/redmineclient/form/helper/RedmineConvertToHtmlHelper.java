@@ -14,6 +14,7 @@ class RedmineConvertToHtmlHelper {
 	private long project_id;
 	HashMap<WikiType, ConvertToHtmlHelper> helpers = new HashMap<WikiType, ConvertToHtmlHelper>();
 	RefugeText pre = new RefugeTextPre();
+	RefugeTextMacroInclude macroInclude = new RefugeTextMacroInclude();
 
 	RefugeTextInlineUrl url = new RefugeTextInlineUrl() {
 		@Override
@@ -66,6 +67,9 @@ class RedmineConvertToHtmlHelper {
 
 	public String beforeParse(String input) {
 		input = pre.refuge(input); //must first
+		input = macroInclude.refuge(input);
+		input = macroInclude.restore(input);
+		input = pre.refugeadd(input); //support for expand include
 		input = url.refuge(input);
 		input = issue.refuge(input);
 		input = wiki.refuge(input);

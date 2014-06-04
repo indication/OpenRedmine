@@ -2,15 +2,12 @@ package jp.redmine.redmineclient.activity.handler;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentTransaction;
 
 import jp.redmine.redmineclient.IssueActivity;
 import jp.redmine.redmineclient.IssueFilterActivity;
+import jp.redmine.redmineclient.KanbanActivity;
 import jp.redmine.redmineclient.ProjectActivity;
-import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.WikiViewActivity;
-import jp.redmine.redmineclient.fragment.Empty;
-import jp.redmine.redmineclient.fragment.IssueEdit;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -39,6 +36,19 @@ public class IssueViewHandler extends Core
 	@Override
 	public void onIssueList(final int connectionid, final long projectid) {
 		kickActivity(ProjectActivity.class, new IntentFactory() {
+			@Override
+			public void generateIntent(Intent intent) {
+				ProjectArgument arg = new ProjectArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
+				arg.setProjectId(projectid);
+			}
+		});
+	}
+
+	@Override
+	public void onKanbanList(final int connectionid, final long projectid) {
+		kickActivity(KanbanActivity.class, new IntentFactory() {
 			@Override
 			public void generateIntent(Intent intent) {
 				ProjectArgument arg = new ProjectArgument();

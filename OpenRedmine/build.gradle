@@ -1,20 +1,9 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
-    }
-}
-apply plugin: 'android'
 
-repositories {
-    mavenCentral()
-}
+apply plugin: 'android'
 
 android {
     compileSdkVersion 18
-    buildToolsVersion '19.0.3'
+    buildToolsVersion '19.1.0'
     testBuildType "debug"
     defaultConfig {
         minSdkVersion 8

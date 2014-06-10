@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 import jp.redmine.redmineclient.entity.RedmineAttachment;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineNews;
 
 
@@ -83,6 +84,9 @@ public class RedmineNewsModel {
 			this.update(data);
 		}
 		return data;
+	}
+	public RedmineNews refreshItem(RedmineConnection con, RedmineNews news) throws SQLException {
+		return refreshItem(con.getId(), news);
 	}
 
 	public RedmineNews refreshItem(RedmineNews news) throws SQLException {

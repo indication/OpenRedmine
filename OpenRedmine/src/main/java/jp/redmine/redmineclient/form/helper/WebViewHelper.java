@@ -51,4 +51,8 @@ public class WebViewHelper {
 		String inner = TextileHelper.convertTextileToHtml(text, null);
 		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
+	public void setContentMarkdown(WebView view, String text){
+		String inner = MarkdownHelper.convertMarkdownToHtml(text, null);
+		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
+	}
 }

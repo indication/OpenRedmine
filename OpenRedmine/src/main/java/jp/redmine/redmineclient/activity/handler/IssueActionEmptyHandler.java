@@ -6,6 +6,8 @@ public class IssueActionEmptyHandler implements IssueActionInterface {
 	@Override
 	public void onIssueList(int connectionId, long projectId) {}
 	@Override
+	public void onKanbanList(int connectionId, long projectId) {}
+	@Override
 	public void onIssueSelected(int connectionid, int issueid) {}
 	@Override
 	public void onIssueEdit(int connectionid, int issueid) {}

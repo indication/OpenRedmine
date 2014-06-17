@@ -1,0 +1,96 @@
+package jp.redmine.redmineclient;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.redmine.redmineclient.activity.TabActivity;
+import jp.redmine.redmineclient.activity.pager.CorePage;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.fragment.ActivityInterface;
+import jp.redmine.redmineclient.fragment.ResourceMarkdown;
+import jp.redmine.redmineclient.param.ResourceArgument;
+
+public class AboutActivity extends TabActivity<DatabaseCacheHelper>
+	implements ActivityInterface {
+	private static final String TAG = AboutActivity.class.getSimpleName();
+	public AboutActivity(){
+		super();
+	}
+
+	@Override
+	protected List<CorePage> getTabs(){
+
+		List<CorePage> list = new ArrayList<CorePage>();
+
+		list.add((new CorePage<Void>() {
+			@Override
+			public Fragment getRawFragment() {
+				return new Fragment(){
+
+					@Override
+					public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+						return inflater.inflate(R.layout.splash, container, false);
+					}
+				};
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.information);
+			}
+
+			@Override
+			public Integer getIcon() {
+				return android.R.drawable.ic_menu_gallery;
+			}
+		}).setParam(null));
+
+		ResourceArgument intent = new ResourceArgument();
+		intent.setArgument();
+		intent.setResource(R.raw.version);
+		list.add((new CorePage<ResourceArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return ResourceMarkdown.newInstance(getParam());
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.ticket_version);
+			}
+
+			@Override
+			public Integer getIcon() {
+				return android.R.drawable.ic_menu_recent_history;
+			}
+		}).setParam(intent));
+
+		intent = new ResourceArgument();
+		intent.setArgument();
+		intent.setResource(R.raw.store);
+		list.add((new CorePage<ResourceArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return ResourceMarkdown.newInstance(getParam());
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.product);
+			}
+
+			@Override
+			public Integer getIcon() {
+				return android.R.drawable.ic_menu_slideshow;
+			}
+		}).setParam(intent));
+		return list;
+	}
+
+}

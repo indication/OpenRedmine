@@ -11,6 +11,9 @@
 	    android:showAsAction="ifRoom"
 	    android:title="@string/menu_settings"
 	    android:icon="@android:drawable/ic_menu_preferences" />
+	<item android:id="@+id/menu_about"
+		  android:title="@string/information"
+		  android:icon="@android:drawable/ic_dialog_info" />
 
 
 </menu>

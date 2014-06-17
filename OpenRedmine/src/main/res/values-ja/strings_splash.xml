@@ -1,83 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <!--The content of app_description is out of GPL. Those paragraph is own by author-->
-  <string name="app_description"><![CDATA[
-「企業生活を振り返って」
-
-
-
-
-
-
-
-
-
-
-
-
-
-管理とは嘘であり
-
-
-
-
-
-
-
-
-
-
-
-悪である。
-
-
-
-
-
-
-
-
-
-
-
-管理を謳歌せし者たちは常に自己と周囲を欺き自己のを取り巻く環境のすべてを肯定的に捉える。
-
-
-
-
-彼らは管理の二文字の前ならばどんな一般的な解釈も社会通念も捻じ曲げて見てる。
-
-彼らにかかれば嘘も秘密も罪とがも失敗さえも管理のスパイスでしかないのだ。
-
-
-
-
-仮に失敗することが管理の証であるなら、
-
-プロジェクト作りに失敗した人間もまた
-
-管理ど真ん中でなければおかしいではないか。
-
-
-
-
-しかし、彼らはそれを認めないだろう。すべては彼らのご都合主義でしかない。
-
-
-結論を言おう。管理を楽しむ愚か者ども、砕け散れ。
-
-
-
-
-引用元: "やはり俺の青春ラブコメはまちがっている。" 第1話より引用(改変)
-©2013 渡 航、小学館／やはりこの製作委員会はまちがっている。
-
-
-]]></string>
   <string name="app_name">OpenRedmine</string>
+	<string name="app_description"><![CDATA[
+OpenRedmine はアンドロイド用Redmineクライアントです。
+]]></string>
   <string name="product">製品</string>
-  <string name="production">製作</string>
-  <string name="app_production">やはり俺のレッドマインはまちがっている。</string>
   <string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
 
  ]]></string>

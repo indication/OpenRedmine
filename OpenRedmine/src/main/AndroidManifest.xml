@@ -53,6 +53,8 @@
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
 		<activity android:name=".KanbanActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+		<activity android:name=".AboutActivity"
+				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
     </application>
 
 </manifest>

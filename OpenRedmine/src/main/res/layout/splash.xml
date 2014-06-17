@@ -36,50 +36,6 @@
 
 			</LinearLayout>
 
-			<LinearLayout
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="20dp"
-				android:layout_marginTop="500dp"
-				android:orientation="vertical" >
-
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="50dp"
-					android:text="@string/product" />
-
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="20dp"
-					android:text="@string/app_name" />
-
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="50dp"
-					android:text="@string/app_name" />
-
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_margin="20dp"
-					android:text="@string/app_description" />
-
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="50dp"
-					android:text="@string/production" />
-
-				<TextView
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginLeft="20dp"
-					android:text="@string/app_production" />
-				
-			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>
 

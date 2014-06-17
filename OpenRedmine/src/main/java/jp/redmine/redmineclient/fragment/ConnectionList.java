@@ -1,23 +1,13 @@
 package jp.redmine.redmineclient.fragment;
 
-import java.io.File;
-
-import jp.redmine.redmineclient.CommonPreferenceActivity;
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
-import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
-import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.store.DatabaseHelper;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
@@ -26,6 +16,18 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
+import java.io.File;
+
+import jp.redmine.redmineclient.AboutActivity;
+import jp.redmine.redmineclient.CommonPreferenceActivity;
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
+import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.store.DatabaseHelper;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 
 public class ConnectionList extends SherlockListFragment {
 	private DatabaseHelper helperStore;
@@ -150,6 +152,13 @@ public class ConnectionList extends SherlockListFragment {
 			case R.id.menu_settings:
 			{
 				Intent intent = new Intent( getActivity().getApplicationContext(), CommonPreferenceActivity.class );
+				startActivity( intent );
+
+				return true;
+			}
+			case R.id.menu_about:
+			{
+				Intent intent = new Intent( getActivity().getApplicationContext(), AboutActivity.class );
 				startActivity( intent );
 
 				return true;

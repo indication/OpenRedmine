@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
@@ -15,7 +14,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.helper.TextileHelper;
+import jp.redmine.redmineclient.form.helper.HtmlHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
@@ -38,7 +37,7 @@ public class RedmineProjectFavoriteAdapter extends RedmineDaoAdapter<RedmineProj
 		if(text != null)
 			text.setText((TextUtils.isEmpty(connection.getName())) ? "" : connection.getName());
 		//fix background to hide transparent headers
-		convertView.setBackgroundColor(TextileHelper.getBackgroundColor(convertView.getContext()));
+		convertView.setBackgroundColor(HtmlHelper.getBackgroundColor(convertView.getContext()));
 		return convertView;
 	}
 

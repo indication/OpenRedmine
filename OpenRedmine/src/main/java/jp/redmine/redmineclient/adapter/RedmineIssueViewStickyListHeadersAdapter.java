@@ -1,12 +1,5 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.entity.RedmineIssue;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import jp.redmine.redmineclient.form.helper.TextileHelper;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.form.helper.HtmlHelper;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 /**
@@ -141,7 +141,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 			}
 		}
         //fix background to hide transparent headers
-        convertView.setBackgroundColor(TextileHelper.getBackgroundColor(convertView.getContext()));
+        convertView.setBackgroundColor(HtmlHelper.getBackgroundColor(convertView.getContext()));
 		return convertView;
 	}
 

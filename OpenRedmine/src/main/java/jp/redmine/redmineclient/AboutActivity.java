@@ -51,7 +51,28 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 			}
 		}).setParam(null));
 
-		ResourceArgument intent = new ResourceArgument();
+		ResourceArgument intent;
+		intent = new ResourceArgument();
+		intent.setArgument();
+		intent.setResource(R.raw.lisence);
+		list.add((new CorePage<ResourceArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return ResourceMarkdown.newInstance(getParam());
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.license);
+			}
+
+			@Override
+			public Integer getIcon() {
+				return android.R.drawable.ic_menu_share;
+			}
+		}).setParam(intent));
+
+		intent = new ResourceArgument();
 		intent.setArgument();
 		intent.setResource(R.raw.version);
 		list.add((new CorePage<ResourceArgument>() {

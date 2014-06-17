@@ -8,4 +8,5 @@ OpenRedmine Android является клиентом .
   <string name="message_first_time"><![CDATA[Я скачал, спасибо.
 
  ]]></string>
+  <string name="license">лицензия</string>
 </resources>

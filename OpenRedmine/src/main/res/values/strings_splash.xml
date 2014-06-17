@@ -8,4 +8,6 @@ OpenRedmine is an android Redmine client.
 	<string name="message_first_time"><![CDATA[Thank you for downloading.
 
 ]]></string>
+	<string name="license">License</string>
+
 </resources>

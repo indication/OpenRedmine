@@ -8,4 +8,5 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
   <string name="message_first_time"><![CDATA[ダウンロードしていただき、ありがとうございます。
 
  ]]></string>
+  <string name="license">ライセンス</string>
 </resources>

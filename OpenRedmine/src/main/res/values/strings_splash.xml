@@ -1,83 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- The content of app_description is out of GPL. Those paragraph is own by author -->
-	<string name="app_description"><![CDATA[
-"Looking back on corporate life"
-
-
-
-
-
-
-
-
-
-
-
-
-
-Management is a hoax.
-
-
-
-
-
-
-
-
-
-
-
-It is evil.
-
-
-
-
-
-
-
-
-
-
-
-People who make a big deal their "management", are just inviting trouble.
-
-They try to keep up with everything going on around them.
-
-
-For them, if there is something that is to do with their "management", they jump at it without second thought. 
-
-If you fail in with them, lies, secrets, failure, and even crime await you.
-
-But for them, it is just the spice of working.
-
-
-And if failure is also the mark of "management", then 
-
-is not it ironic, that a person who has failed to make project,
-
-is also technically leading his "management".
-
-
-
-
-Though I wonder if they would agree. Everything runs on their schedule.
-
-
-Let me be clear. The people who enjoy their "management", will eventually fall apart.
-
-
-
-
-""My Youth Romantic Comedy Is Wrong As I Expected."": (modified) quoted source. Quote from the first story
-Copyright 2013 Watari Wataru, shogakukan/This Production Committee Is Wrong As I Expected.
-
-]]></string>
 	<string name="app_name">OpenRedmine</string>
+	<string name="app_description"><![CDATA[
+OpenRedmine is an android Redmine client.
+]]></string>
 	<string name="product">Product</string>
-	<string name="production">Production</string>
-	<string name="app_production">My Youth Redmine Is Wrong As I Expected.</string>
 	<string name="message_first_time"><![CDATA[Thank you for downloading.
 
 ]]></string>
+	<string name="license">License</string>
+	<string name="footer_version">%1$s v%2$s[%3$d] - %4$s</string>
+
 </resources>

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,17 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 					@Override
 					public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 						return inflater.inflate(R.layout.splash, container, false);
+					}
+
+					@Override
+					public void onActivityCreated(Bundle savedInstanceState) {
+						super.onActivityCreated(savedInstanceState);
+						TextView view = (TextView)findViewById(R.id.footer);
+						if (view != null)
+							view.setText(getString(R.string.footer_version,
+									BuildConfig.PACKAGE_NAME, BuildConfig.VERSION_NAME,
+									BuildConfig.VERSION_CODE, BuildConfig.BUILD_TYPE
+							));
 					}
 				};
 			}

@@ -9,4 +9,5 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 
  ]]></string>
   <string name="license">ライセンス</string>
+  <string name="footer_version">%1$s v%2$s[%3$d] - %4$s</string>
 </resources>

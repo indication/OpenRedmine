@@ -9,5 +9,6 @@ OpenRedmine is an android Redmine client.
 
 ]]></string>
 	<string name="license">License</string>
+	<string name="footer_version">%1$s v%2$s[%3$d] - %4$s</string>
 
 </resources>

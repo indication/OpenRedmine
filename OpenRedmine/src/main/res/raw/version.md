@@ -4,6 +4,9 @@ Release history
 
 Next Release
 ===========
+- Add kanban view by long tap project (#108)
+- Fix crashed when tap the recorded time (#103)
+- Category list is not applied theme (#102)
 
 v3.9 - 41 - 2014/05/17
 ===========

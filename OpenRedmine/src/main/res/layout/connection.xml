@@ -191,7 +191,6 @@
 				android:paddingLeft="10dp" >
 
 				<TextView
-					android:id="@+id/textView6"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/menu_setting_label_certkey"
@@ -202,7 +201,14 @@
 					android:layout_width="match_parent"
 					android:layout_height="82dp"
 					android:ems="10"
+					android:hint="A7:08:7B:2F:9E:03:52:D8:65:75:6A:04:AF:A2:37:B6"
+					tools:ignore="HardcodedText"
 					android:inputType="textMultiLine" />
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="10dp"
+					android:text="@string/menu_setting_message_certkey" />
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>

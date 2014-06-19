@@ -1,10 +1,5 @@
 package jp.redmine.redmineclient.form;
 
-import com.andreabaccega.widget.FormEditText;
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +8,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import com.andreabaccega.widget.FormEditText;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.form.helper.FormHelper;
 
 public class RedmineConnectionActivityForm extends FormHelper {
 	public FormEditText editName;
@@ -23,7 +24,6 @@ public class RedmineConnectionActivityForm extends FormHelper {
 	public Button buttonSave;
 	public CheckBox checkHttpAuth;
 	public LinearLayout formHttpAuth;
-	public LinearLayout formPermitUnsafe;
 	public CheckBox checkUnsafeConnection;
 	public EditText editCertKey;
 	public Button buttonAccess;
@@ -47,7 +47,6 @@ public class RedmineConnectionActivityForm extends FormHelper {
 		buttonAccess = (Button)activity.findViewById(R.id.buttonAccess);
 		formHttpAuth = (LinearLayout)activity.findViewById(R.id.formHttpAuth);
 		checkHttpAuth = (CheckBox)activity.findViewById(R.id.checkHttpAuth);
-		formPermitUnsafe = (LinearLayout)activity.findViewById(R.id.formPermitUnsafe);
 		checkUnsafeConnection = (CheckBox)activity.findViewById(R.id.checkPermitUnsafe);
 		editCertKey = (EditText)activity.findViewById(R.id.editCertKey);
 
@@ -61,11 +60,6 @@ public class RedmineConnectionActivityForm extends FormHelper {
 		checkHttpAuth.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton compoundbutton, boolean flag) {
 				performSetEnabled(formHttpAuth,flag);
-			}
-		});
-		checkUnsafeConnection.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton compoundbutton, boolean flag) {
-				performSetEnabled(formPermitUnsafe,flag);
 			}
 		});
 		OnClickListener onClick1 = new OnClickListener(){
@@ -96,7 +90,6 @@ public class RedmineConnectionActivityForm extends FormHelper {
 
 	public void setupDefaults(){
 		performSetEnabled(formHttpAuth,checkHttpAuth.isChecked());
-		performSetEnabled(formPermitUnsafe,checkUnsafeConnection.isChecked());
 	}
 
 	@Override
@@ -137,7 +130,6 @@ public class RedmineConnectionActivityForm extends FormHelper {
 	}
 	public void setUnsafeConnection(boolean flag){
 		checkUnsafeConnection.setChecked(flag);
-		performSetEnabled(formPermitUnsafe,flag);
 	}
 	public boolean isUnsafeConnection(){
 		return checkUnsafeConnection.isChecked();

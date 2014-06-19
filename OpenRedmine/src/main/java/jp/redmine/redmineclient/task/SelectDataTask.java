@@ -1,5 +1,27 @@
 package jp.redmine.redmineclient.task;
 
+import android.net.Uri;
+import android.net.Uri.Builder;
+import android.os.AsyncTask;
+import android.text.TextUtils;
+import android.util.Log;
+import android.util.Xml;
+import android.widget.ArrayAdapter;
+
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,27 +42,6 @@ import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrl.versions;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.net.Uri;
-import android.net.Uri.Builder;
-import android.os.AsyncTask;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Xml;
-import android.widget.ArrayAdapter;
 
 public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	public final String CHARSET = "UTF-8";
@@ -162,6 +163,8 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 				msg = get;
 				break;
 			case delete:
+				HttpDelete del = new HttpDelete();
+				msg = del;
 				break;
 			case post:
 				HttpPost post = new HttpPost(new URI(remoteurl.toString()));
@@ -277,6 +280,6 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		}
 		if(!isOk)
 			connectionhandler.close();
-		return (isOk == true);
+		return isOk;
 	}
 }

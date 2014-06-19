@@ -2,8 +2,23 @@ OpenRedmine
 ===========
 Release history
 
+TODO
+===========
+- Check date to update bug (#83)
+- Add share button on issue (#18)
+- Show project news (#17)
+
 Next Release
 ===========
+- Support parse Project Status on Redmine 2.5.0 (#71)
+
+v3.10 - 42 - 2014/06/28
+===========
+- ロングタッププロジェクトによってかんばんビューを追加 (#108)
+- それが記録された時間をタップするとクラッシュして修正する (#103)
+- カテゴリリストは、テーマを適用されません (#102)
+- 引っ張って更新...でチケットを取得しない不具合を修正、ほか多数のマイナーバグを修正 (#112)
+- 接続で証明書のfingerprintの入力を許可 (#112)
 
 v3.9 - 41 - 2014/05/17
 ===========

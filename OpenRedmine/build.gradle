@@ -11,7 +11,7 @@ android {
 
         versionCode 41
         versionName '3.9'
-        testPackageName "jp.redmine.redmineclienttest"
+        testApplicationId "jp.redmine.redmineclienttest"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
         testHandleProfiling true
         testFunctionalTest true

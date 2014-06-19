@@ -2,7 +2,16 @@ OpenRedmine
 ===========
 Release history
 
+TODO
+===========
+- Check date to update bug (#83)
+- Add share button on issue (#18)
+- Show project news (#17)
+
 Next Release
+===========
+
+v3.10 - 42
 ===========
 - Add kanban view by long tap project (#108)
 - Fix crashed when tap the recorded time (#103)

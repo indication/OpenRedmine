@@ -34,11 +34,6 @@ Permissions:
 * VIBRATE - notify with vibrate on tap the list item
 * WRITE EXTERNAL STORAGE - download item and share to other app
 
-Release planing:
-* Get nested tickets
-* Show activities
-* TimeEntry like stop watch (no plan...)
-
 Reports:
 If you detect the crash, bless us by the report via twitter, github, reviews with 1 star.
 
@@ -46,3 +41,4 @@ Note:
 * This app is open source(GPL exclude libraries), you can contribute.
 * You can translate your language via https://www.transifex.com/projects/p/openredmine/ .
 * Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
+* Beta would be released on https://plus.google.com/u/0/communities/118409948481316268572

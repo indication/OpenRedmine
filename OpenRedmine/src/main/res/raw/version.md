@@ -10,12 +10,15 @@ TODO
 
 Next Release
 ===========
+- Support parse Project Status on Redmine 2.5.0 (#71)
 
-v3.10 - 42
+v3.10 - 42 - 2014/06/28
 ===========
 - Add kanban view by long tap project (#108)
 - Fix crashed when tap the recorded time (#103)
 - Category list is not applied theme (#102)
+- Fix not fetch issue detail from remote by pulling ... and more minor bug fix (#112)
+- Allow input certification fingerprint to connection (#112)
 
 v3.9 - 41 - 2014/05/17
 ===========

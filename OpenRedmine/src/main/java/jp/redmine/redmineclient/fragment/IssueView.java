@@ -254,7 +254,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 				.listener(new OnRefreshListener() {
 					@Override
 					public void onRefreshStarted(View view) {
-						onRefresh(true);
+						onFetchRemote();
 					}
 				})
 

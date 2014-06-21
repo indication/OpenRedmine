@@ -22,19 +22,7 @@ Some feature is not complete or incorrect.
 
 License
 ==========
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+See [lisence.md](OpenRedmine/src/main/res/raw/lisence.md)
 
 Contributors
 ==========
@@ -79,47 +67,3 @@ Used references
 
 - Support Travis CI integration test(MIT)
   https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml
-
-Using Libraries
-==========
-- android-form-edittext (MIT) - needs verification about inputs
- https://github.com/vekexasia/android-form-edittext
-
-- Transdroid (GPL) - needs to access untrusted ca.
- http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeSocketFactory.java	r1de55ccfce7b
- http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeTrustManager.java	rfa98b5bb5624
-
-- MyWebViewClient (unknown) - needs to access redmine by webview
- https://github.com/potaka001/WebViewBasicAuthTest/blob/master/src/com/webviewbasicauthtest/MyWebViewClient.java
-
-- LRUCache (unknown) from "Play History of development" - cache access by listview
-  http://ttimez.blogspot.jp/2011/07/java.html
-
-- textile-j (LGPL) - show the descriptions in rich text
-  http://java.net/projects/textile-j/sources/svn/show/trunk/www/builds/net.java.textilej/latest
-
-- httpmime (Apache License, Version 2.0) - This module provides support for MIME multipart encoded entities
-  http://hc.apache.org/httpcomponents-client-ga/httpmime/
-
-- StickyListHeaders (Apache License, Version 2.0) - section headers that stick to the top
-  https://github.com/emilsjolander/StickyListHeaders
-
-- ActionBarSherlock (Apache License, Version 2.0) - support actionbar
-  https://github.com/JakeWharton/ActionBarSherlock
-
-- actionbarpulltorefresh (Apache License, Version 2.0) - support pull to refresh
-  https://github.com/chrisbanes/ActionBar-PullToRefresh
-
-- PtrStickyListHeadersListView (unknown)  - support pull to refresh on StickyListHeaders
-  http://stackoverflow.com/questions/20143008/is-it-possible-to-merge-stickylistviewheader-with-crisbanes-pulltorefresh
-
-Using Icons
-==========
-- redmine (by-sa/2.5)
- http://www.redmine.org/projects/redmine/wiki/Logo
- Redmine Logo is Copyright (C) 2009 Martin Herr and is licensed under the Creative Commons Attribution-Share Alike 2.5 Generic license.
- See http://creativecommons.org/licenses/by-sa/2.5/ for more details.
-
-- Action Bar Icon Pack (by/2.5)
- http://developer.android.com/design/downloads/
- See http://creativecommons.org/licenses/by/2.5/ for more details.

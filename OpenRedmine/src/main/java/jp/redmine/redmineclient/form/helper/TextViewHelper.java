@@ -18,14 +18,14 @@ import java.util.regex.Pattern;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 
 public class TextViewHelper {
-	private Pattern patternIntent = Pattern.compile(TextileHelper.URL_PREFIX);
+	private Pattern patternIntent = Pattern.compile(RedmineConvertToHtmlHelper.URL_PREFIX);
 	private WebviewActionInterface action;
 	public void setAction(WebviewActionInterface act){
 		action = act;
 	}
 
 	public void setContent(TextView view, final int connectionid, final long project, final String text){
-		String content = TextileHelper.getHtml(connectionid, project, text);
+		String content = TextileHelper.convertTextileToHtml(text, new RedmineConvertToHtmlHelper(connectionid, project));
 		setTextViewHTML(view, content, new ClickLink() {
 			@Override
 			public void onClick(View view, URLSpan span) {
@@ -34,7 +34,7 @@ public class TextViewHelper {
 					return;
 				Matcher m = patternIntent.matcher(url);
 				if (m.find()) {
-					TextileHelper.kickAction(action, m.replaceAll(""));
+					RedmineConvertToHtmlHelper.kickAction(action, m.replaceAll(""));
 				} else if (action != null) {
 					action.url(url);
 				}

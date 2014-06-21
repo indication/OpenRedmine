@@ -82,8 +82,8 @@ if(!objFSO.FolderExists(pathTranslation)){
 map(objFSO,pathTranslation+"/openredmine.strings_splashxml",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings_splash.xml");
 map(objFSO,pathTranslation+"/openredmine.strings_themesxml",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings_themes.xml");
 map(objFSO,pathTranslation+"/openredmine.stringsxml-49",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings.xml");
-map(objFSO,pathTranslation+"/openredmine.storemd",pathRoot+"/doc","STORE.XX.md");
-map(objFSO,pathTranslation+"/openredmine.versionmd",pathRoot+"/doc","VERSION.XX.md");
+map(objFSO,pathTranslation+"/openredmine.storemd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","store.md");
+map(objFSO,pathTranslation+"/openredmine.versionmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","version.md");
 
 WScript.Echo("DONE!");
 

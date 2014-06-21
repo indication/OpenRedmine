@@ -63,6 +63,17 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 		list.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 
+		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Object item =  adapterView.getItemAtPosition(i);
+				if(item == null || !(item instanceof RedmineProject))
+					return false;
+				RedmineProject project = (RedmineProject)item;
+				mListener.onKanbanList(project.getConnectionId(), project.getId());
+				return true;
+			}
+		});
 	}
 
 	@Override

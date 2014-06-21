@@ -34,15 +34,11 @@ Permissions:
 * вибрировать - оповещать вибрируют на кране элемент списка
 * ПИШИТЕ Устройства хранения данных - скачать пункта и долю в другом приложении
 
-Год выхода:
-* Get nested tickets
-* Show activities
-* Секундомер ( незапланированные )
-
 Доклады:
 При обнаружении аварии, благослови нас в докладе через твиттер, GitHub, Отзывы с 1 звездой.
 
 Примечание:
 * Данное приложение является (GPL , за исключением библиотек и т.д.) с открытым исходным кодом . Вы можете принять участие . (Например, перевод)
-* You can translate your language via https://www.transifex.com/projects/p/openredmine/ .
-* Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
+* Вы можете перевести свой ​​язык через https://www.transifex.com/projects/p/openredmine/ .
+* Обратите внимание, с помощью https://github.com/indication/OpenRedmine или щебет @OpenRedmine если вы чувствуете что-то хорошее или плохое.
+* Бета будет выпущен есть https://plus.google.com/u/0/communities/118409948481316268572

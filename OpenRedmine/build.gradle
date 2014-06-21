@@ -1,28 +1,17 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
-    }
-}
-apply plugin: 'android'
 
-repositories {
-    mavenCentral()
-}
+apply plugin: 'android'
 
 android {
     compileSdkVersion 18
-    buildToolsVersion '19.0.3'
+    buildToolsVersion '19.1.0'
     testBuildType "debug"
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 18
 
-        versionCode 41
-        versionName '3.9'
-        testPackageName "jp.redmine.redmineclienttest"
+        versionCode 42
+        versionName '3.10'
+        testApplicationId "jp.redmine.redmineclienttest"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
         testHandleProfiling true
         testFunctionalTest true
@@ -63,6 +52,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.1@jar'
     //compile 'com.jakewharton:hanselandgretel:1.0.2'
 compile 'net.java:textile-j:2.2'
+    compile 'org.commonjava.googlecode.markdown4j:markdown4j:+'
 compile project(':Transdroid')
     androidTestCompile 'com.google.guava:guava:11.0.2'
     androidTestCompile 'junit:junit:4.8.2'

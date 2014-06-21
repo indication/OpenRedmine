@@ -1,7 +1,20 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.app.Activity;
+import android.os.AsyncTask.Status;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
@@ -17,21 +30,9 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.AsyncTask.Status;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
 
 public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = ProjectList.class.getSimpleName();
@@ -105,6 +106,18 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(adapter.getCount() < 1){
 			onRefresh();
 		}
+
+		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+				Object item =  adapterView.getItemAtPosition(i);
+				if(item == null || !(item instanceof RedmineProject))
+					return false;
+				RedmineProject project = (RedmineProject)item;
+				mListener.onKanbanList(project.getConnectionId(), project.getId());
+				return true;
+			}
+		});
 	}
 
 	@Override

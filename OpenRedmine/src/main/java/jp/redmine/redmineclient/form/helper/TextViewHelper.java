@@ -20,12 +20,13 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 public class TextViewHelper {
 	private Pattern patternIntent = Pattern.compile(RedmineConvertToHtmlHelper.URL_PREFIX);
 	private WebviewActionInterface action;
+	private RedmineConvertToHtmlHelper converter = new RedmineConvertToHtmlHelper();
 	public void setAction(WebviewActionInterface act){
 		action = act;
 	}
 
 	public void setContent(TextView view, final int connectionid, final long project, final String text){
-		String content = TextileHelper.convertTextileToHtml(text, new RedmineConvertToHtmlHelper(connectionid, project));
+		String content = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Texttile, connectionid, project);
 		setTextViewHTML(view, content, new ClickLink() {
 			@Override
 			public void onClick(View view, URLSpan span) {

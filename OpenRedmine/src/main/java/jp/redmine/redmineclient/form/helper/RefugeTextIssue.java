@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class RefugeTextIssue extends RefugeText<Anchor>{
 	@Override
 	protected Pattern getPattern() {
-		return Pattern.compile("#(\\d+)");
+		return Pattern.compile("\\[\\[#(\\d+)\\]\\]|#(\\d+)");
 	}
 
 	@Override

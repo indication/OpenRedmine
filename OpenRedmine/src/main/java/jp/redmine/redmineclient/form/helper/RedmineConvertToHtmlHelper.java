@@ -67,8 +67,8 @@ class RedmineConvertToHtmlHelper {
 	public String beforeParse(String input) {
 		input = pre.refuge(input); //must first
 		input = url.refuge(input);
-		input = wiki.refuge(input);
 		input = issue.refuge(input);
+		input = wiki.refuge(input);
 		return input;
 	}
 

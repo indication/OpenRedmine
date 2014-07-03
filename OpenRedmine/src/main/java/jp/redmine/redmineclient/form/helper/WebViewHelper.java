@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.form.helper;
 
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -11,6 +10,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 
 public class WebViewHelper {
 	private WebviewActionInterface action;
+	private RedmineConvertToHtmlHelper converter = new RedmineConvertToHtmlHelper();
 	private Pattern patternIntent = Pattern.compile(RedmineConvertToHtmlHelper.URL_PREFIX);
 	public void setup(WebView view){
 		setupWebView(view);
@@ -18,7 +18,6 @@ public class WebViewHelper {
 	}
 
 	protected void setupWebView(WebView view){
-		view.getSettings().setPluginState(WebSettings.PluginState.OFF);
 		view.getSettings().setBlockNetworkLoads(true);
 	}
 	public void setAction(WebviewActionInterface act){
@@ -43,16 +42,16 @@ public class WebViewHelper {
 	}
 
 	public void setContent(WebView view, final int connectionid, final long project, final String text){
-		String inner = TextileHelper.convertTextileToHtml(text, new RedmineConvertToHtmlHelper(connectionid,project));
+		String inner = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Texttile, connectionid, project);
 		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
 
 	public void setContent(WebView view, String text){
-		String inner = TextileHelper.convertTextileToHtml(text, null);
+		String inner = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Texttile);
 		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
 	public void setContentMarkdown(WebView view, String text){
-		String inner = MarkdownHelper.convertMarkdownToHtml(text, null);
+		String inner = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Markdown);
 		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
 }

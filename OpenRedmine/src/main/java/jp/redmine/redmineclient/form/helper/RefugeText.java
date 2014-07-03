@@ -15,6 +15,10 @@ public abstract class RefugeText<T> {
 
 	public String refuge(String input){
 		export.clear();
+		return refugeadd(input);
+	}
+
+	public String refugeadd(String input){
 		Pattern p = getPattern();
 		String texttile = input;
 		Matcher m = p.matcher(texttile);

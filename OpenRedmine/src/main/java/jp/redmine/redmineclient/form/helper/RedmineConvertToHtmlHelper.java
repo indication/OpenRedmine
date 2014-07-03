@@ -2,64 +2,91 @@ package jp.redmine.redmineclient.form.helper;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 
 import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
-class RedmineConvertToHtmlHelper implements ConvertToHtmlHelper {
+class RedmineConvertToHtmlHelper {
 	static public final String URL_PREFIX = BuildConfig.PACKAGE_NAME + BuildConfig.VERSION_CODE +"://";
-	private final int connection_id;
-	private final long project_id;
-	RefugeText pre;
-	RefugeTextInlineUrl url;
-	RefugeTextWiki wiki;
-	RefugeTextIssue issue;
+	private int connection_id;
+	private long project_id;
+	HashMap<WikiType, ConvertToHtmlHelper> helpers = new HashMap<WikiType, ConvertToHtmlHelper>();
+	RefugeText pre = new RefugeTextPre();
+	RefugeTextMacroInclude macroInclude = new RefugeTextMacroInclude();
 
-	public RedmineConvertToHtmlHelper(int connectionid, long project) {
-		this.connection_id = connectionid;
-		this.project_id = project;
-		pre = new RefugeTextPre();
-		url = new RefugeTextInlineUrl() {
-			@Override
-			protected String pull(Anchor input) {
-				return HtmlHelper.getAnchor(input.label, input.url);
-			}
-		};
-		wiki = new RefugeTextWiki() {
-			@Override
-			protected String pull(Anchor input) {
-				return HtmlHelper.getAnchor(input.label
-						, URL_PREFIX, "wiki/", String.valueOf(connection_id), "/", String.valueOf(project_id), "/", input.url);
-			}
-		};
-		issue = new RefugeTextIssue() {
-			@Override
-			protected String pull(Anchor input) {
-				return HtmlHelper.getAnchor(input.label
-						, URL_PREFIX, "issue/", String.valueOf(connection_id), "/", input.url);
-			}
+	RefugeTextInlineUrl url = new RefugeTextInlineUrl() {
+		@Override
+		protected String pull(Anchor input) {
+			return HtmlHelper.getAnchor(input.label, input.url);
+		}
+	};
+	RefugeTextWiki wiki = new RefugeTextWiki() {
+		@Override
+		protected String pull(Anchor input) {
+			return HtmlHelper.getAnchor(input.label
+					, URL_PREFIX, "wiki/", String.valueOf(connection_id), "/", String.valueOf(project_id), "/", input.url);
+		}
+	};
+	RefugeTextIssue issue = new RefugeTextIssue() {
+		@Override
+		protected String pull(Anchor input) {
+			return HtmlHelper.getAnchor(input.label
+					, URL_PREFIX, "issue/", String.valueOf(connection_id), "/", input.url);
+		}
 
-		};
+	};
+	public enum WikiType{
+		Texttile,
+		Markdown,
+		None
 	}
 
-	@Override
+	public RedmineConvertToHtmlHelper(){
+		helpers.put(WikiType.Markdown, new MarkdownHelper());
+		helpers.put(WikiType.Texttile, new TextileHelper());
+		helpers.put(WikiType.None, new ConvertToHtmlHelper() {
+			@Override
+			public String getHtml(String input) {
+				return input;
+			}
+		});
+	}
+
+	public String parse(String input, WikiType type, int connectionid, long project){
+		String export = beforeParse(input);
+		export = parse(export,type);
+		export = afterParse(export, connectionid, project);
+		return export;
+	}
+
+	public String parse(String input, WikiType type){
+		return helpers.get(type).getHtml(input);
+	}
+
 	public String beforeParse(String input) {
 		input = pre.refuge(input); //must first
+		input = macroInclude.refuge(input);
+		input = macroInclude.restore(input);
+		input = pre.refugeadd(input); //support for expand include
 		input = url.refuge(input);
-		input = wiki.refuge(input);
 		input = issue.refuge(input);
+		input = wiki.refuge(input);
 		return input;
 	}
 
-	@Override
-	public String afterParse(String input) {
+	public String afterParse(String input, int connectionid, long project) {
+		this.connection_id = connectionid;
+		this.project_id = project;
 		input = url.restore(input);
 		input = wiki.restore(input);
 		input = issue.restore(input);
 		input = pre.restore(input); //must last
+		input = input.replace("{{fnlist}}",""); //support for wiki extention
 		return input;
 	}
+
 	static public boolean kickAction(WebviewActionInterface action, String urlpath){
 		String encodeStr = urlpath;
 		try {

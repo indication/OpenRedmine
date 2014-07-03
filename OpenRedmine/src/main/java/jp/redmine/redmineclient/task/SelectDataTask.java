@@ -5,7 +5,6 @@ import android.net.Uri.Builder;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Xml;
 import android.widget.ArrayAdapter;
 
 import org.apache.http.Header;
@@ -21,6 +20,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -111,7 +111,9 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	}
 
 	protected void helperSetupParserStream(InputStream stream,BaseParser<?,?> parser) throws XmlPullParserException{
-		XmlPullParser xmlPullParser = Xml.newPullParser();
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		XmlPullParser xmlPullParser = factory.newPullParser();
 		xmlPullParser.setInput(stream, CHARSET);
 		parser.setXml(xmlPullParser);
 	}

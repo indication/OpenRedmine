@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.form.helper;
 
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -19,7 +18,6 @@ public class WebViewHelper {
 	}
 
 	protected void setupWebView(WebView view){
-		view.getSettings().setPluginState(WebSettings.PluginState.OFF);
 		view.getSettings().setBlockNetworkLoads(true);
 	}
 	public void setAction(WebviewActionInterface act){

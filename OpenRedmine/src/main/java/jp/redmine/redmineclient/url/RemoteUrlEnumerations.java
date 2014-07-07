@@ -21,10 +21,6 @@ public class RemoteUrlEnumerations extends RemoteUrl {
 	public void setType(EnumerationType type) {
 		this.type = type;
 	}
-	@Override
-	public versions getMinVersion(){
-		return versions.v220;
-	}
 	protected String getTypeString(){
 		switch(type){
 		case IssuePriorities:

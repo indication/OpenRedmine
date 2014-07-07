@@ -9,10 +9,6 @@ public class RemoteUrlUsers extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
 	private boolean isCurrent = false;
 
-	@Override
-	public versions getMinVersion(){
-		return versions.v130;
-	}
 	public void filterId(int id){
 		params.put("id", Integer.toString(id));
 	}

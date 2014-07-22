@@ -20,13 +20,13 @@ import android.view.View;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> {
-	private static final String TAG = RedmineIssueListAdapter.class.getSimpleName();
+public class IssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> {
+	private static final String TAG = IssueListAdapter.class.getSimpleName();
 	private RedmineFilterModel mFilter;
 	protected Integer connection_id;
 	protected Long project_id;
 	protected Integer filter_id;
-	public RedmineIssueListAdapter(DatabaseCacheHelper helper, Context context) {
+	public IssueListAdapter(DatabaseCacheHelper helper, Context context) {
 		super(helper, context, RedmineIssue.class);
 		mFilter = new RedmineFilterModel(helper);
 	}

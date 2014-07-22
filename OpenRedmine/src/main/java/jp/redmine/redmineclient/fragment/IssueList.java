@@ -11,7 +11,7 @@ import jp.redmine.redmineclient.FilterViewActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
+import jp.redmine.redmineclient.adapter.IssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
@@ -50,7 +50,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
-	private RedmineIssueListAdapter adapter;
+	private IssueListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
@@ -104,7 +104,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().setFastScrollEnabled(true);
 		getListView().setTextFilterEnabled(true);
 
-		adapter = new RedmineIssueListAdapter(getHelper(), getActivity());
+		adapter = new IssueListAdapter(getHelper(), getActivity());
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument( getArguments() );
 		if(intent.hasFilterId()){

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
-import jp.redmine.redmineclient.form.IMasterRecordListItemForm;
+import jp.redmine.redmineclient.adapter.form.IMasterRecordForm;
 
 public class RedmineCategoryListAdapter extends RedmineDaoAdapter<RedmineProjectCategory, Long, DatabaseCacheHelper> {
 	protected Integer connection_id;
@@ -38,11 +38,11 @@ public class RedmineCategoryListAdapter extends RedmineDaoAdapter<RedmineProject
 
 	@Override
 	protected void setupView(View view, RedmineProjectCategory data) {
-		IMasterRecordListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof IMasterRecordListItemForm){
-			form = (IMasterRecordListItemForm)view.getTag();
+		IMasterRecordForm form;
+		if(view.getTag() != null && view.getTag() instanceof IMasterRecordForm){
+			form = (IMasterRecordForm)view.getTag();
 		} else {
-			form = new IMasterRecordListItemForm(view);
+			form = new IMasterRecordForm(view);
 		}
 		form.setValue(data);
 	}

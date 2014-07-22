@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
-import jp.redmine.redmineclient.form.IMasterRecordListItemForm;
+import jp.redmine.redmineclient.adapter.form.IMasterRecordForm;
 
 public class RedmineVersionListAdapter extends RedmineBaseAdapter<RedmineProjectVersion> {
 	private RedmineVersionModel model;
@@ -38,11 +38,11 @@ public class RedmineVersionListAdapter extends RedmineBaseAdapter<RedmineProject
 
 	@Override
 	protected void setupView(View view, RedmineProjectVersion data) {
-		IMasterRecordListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof IMasterRecordListItemForm){
-			form = (IMasterRecordListItemForm)view.getTag();
+		IMasterRecordForm form;
+		if(view.getTag() != null && view.getTag() instanceof IMasterRecordForm){
+			form = (IMasterRecordForm)view.getTag();
 		} else {
-			form = new IMasterRecordListItemForm(view);
+			form = new IMasterRecordForm(view);
 		}
 		form.setValue(data);
 	}

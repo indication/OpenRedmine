@@ -142,7 +142,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.webview, container, false);
+		View view = inflater.inflate(R.layout.page_webview, container, false);
 		webView = (WebView) view.findViewById(R.id.webView);
 		webViewHelper = new WebViewHelper();
 		return view;

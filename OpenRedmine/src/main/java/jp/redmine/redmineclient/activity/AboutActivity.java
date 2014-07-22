@@ -37,7 +37,7 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 
 					@Override
 					public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-						return inflater.inflate(R.layout.splash, container, false);
+						return inflater.inflate(R.layout.page_splash, container, false);
 					}
 
 					@Override

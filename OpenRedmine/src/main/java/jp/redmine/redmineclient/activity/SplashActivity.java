@@ -17,7 +17,7 @@ public class SplashActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.splash);
+		setContentView(R.layout.page_splash);
 		Handler hdl = new Handler();
 		hdl.postDelayed(new Runnable() {
 

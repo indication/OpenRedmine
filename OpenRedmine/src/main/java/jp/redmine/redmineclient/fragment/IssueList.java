@@ -17,7 +17,7 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.RedmineIssueFilterHeader;
+import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -265,7 +265,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(adapter == null)
 			return;
 		adapter.notifyDataSetChanged();
-		RedmineIssueFilterHeader form = new RedmineIssueFilterHeader(mHeader);
+		IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
 		form.setValue(adapter.getParameter());
 
 	}

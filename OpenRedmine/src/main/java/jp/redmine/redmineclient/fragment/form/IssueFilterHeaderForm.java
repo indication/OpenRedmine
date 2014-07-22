@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -13,10 +13,10 @@ import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 
-public class RedmineIssueFilterHeader {
+public class IssueFilterHeaderForm {
 	TableLayout layoutTable;
 
-	public RedmineIssueFilterHeader(View view){
+	public IssueFilterHeaderForm(View view){
 		setup(view);
 	}
 

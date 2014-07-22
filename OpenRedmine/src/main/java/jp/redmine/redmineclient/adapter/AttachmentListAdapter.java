@@ -13,12 +13,12 @@ import android.view.View;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-public class RedmineIssueAttachmentListAdapter extends RedmineDaoAdapter<RedmineAttachment, Long, DatabaseCacheHelper>  {
+public class AttachmentListAdapter extends RedmineDaoAdapter<RedmineAttachment, Long, DatabaseCacheHelper>  {
 	protected Integer connection_id;
 	protected Integer issue_id;
 
 
-	public RedmineIssueAttachmentListAdapter(DatabaseCacheHelper m, Context context) {
+	public AttachmentListAdapter(DatabaseCacheHelper m, Context context) {
 		super(m, context, RedmineAttachment.class);
 	}
 

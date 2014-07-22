@@ -36,7 +36,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	private RedmineIssueDetailAdapter adapterIssue;
 	private RedmineRelativeIssueListAdapter adapterRelation;
 	private RedmineTimeEntryListAdapter adapterTimeEntry;
-	private RedmineIssueAttachmentListAdapter adapterAttachment;
+	private AttachmentListAdapter adapterAttachment;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 
 	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,Context context,WebviewActionInterface act){
@@ -44,7 +44,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 		adapterIssue = new RedmineIssueDetailAdapter(m,context, act);
 		adapterRelation = new RedmineRelativeIssueListAdapter(m,context);
 		adapterTimeEntry = new RedmineTimeEntryListAdapter(m,context);
-		adapterAttachment = new RedmineIssueAttachmentListAdapter(m,context);
+		adapterAttachment = new AttachmentListAdapter(m,context);
 		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));
 		mapAdapters.add(new AggrigateAdapter(adapterRelation, R.string.ticket_relations));
 		mapAdapters.add(new AggrigateAdapter(adapterTimeEntry, R.string.ticket_time));

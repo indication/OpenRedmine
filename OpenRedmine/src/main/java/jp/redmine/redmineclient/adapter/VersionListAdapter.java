@@ -9,11 +9,11 @@ import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.adapter.form.IMasterRecordForm;
 
-public class RedmineVersionListAdapter extends RedmineBaseAdapter<RedmineProjectVersion> {
+public class VersionListAdapter extends RedmineBaseAdapter<RedmineProjectVersion> {
 	private RedmineVersionModel model;
 	protected Integer connection_id;
 	protected Long project_id;
-	public RedmineVersionListAdapter(DatabaseCacheHelper helper) {
+	public VersionListAdapter(DatabaseCacheHelper helper) {
 		super();
 		model = new RedmineVersionModel(helper);
 	}

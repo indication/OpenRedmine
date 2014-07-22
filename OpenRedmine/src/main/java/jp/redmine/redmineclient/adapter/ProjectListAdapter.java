@@ -39,7 +39,7 @@ public class ProjectListAdapter extends  RedmineDaoAdapter<RedmineProject, Long,
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.projectitem;
+		return R.layout.listitem_project;
 	}
 
 	@Override

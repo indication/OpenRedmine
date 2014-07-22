@@ -51,7 +51,7 @@ public class IssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Long, Data
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.issueitem;
+		return R.layout.listitem_issue;
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
+import jp.redmine.redmineclient.fragment.form.ConnectionForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
@@ -28,7 +28,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	private int idEditing = -1;
 	private static final int ACTIVITY_SUB = 1001;
-	private RedmineConnectionActivityForm form;
+	private ConnectionForm form;
 
 	private ConnectionModel modelConnection;
 	private ConnectionActionInterface mListener;
@@ -61,7 +61,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		super.onActivityCreated(savedInstanceState);
 		modelConnection = new ConnectionModel(getActivity());
 
-		form = new RedmineConnectionActivityForm(getView());
+		form = new ConnectionForm(getView());
 		form.setupEvents();
 
 		form.buttonSave.setOnClickListener(new Button.OnClickListener() {

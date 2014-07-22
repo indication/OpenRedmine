@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import android.text.TextUtils;
 import android.view.View;
@@ -15,7 +15,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 
-public class RedmineConnectionActivityForm extends FormHelper {
+public class ConnectionForm extends FormHelper {
 	public FormEditText editName;
 	public FormEditText editUrl;
 	public FormEditText editToken;
@@ -31,7 +31,7 @@ public class RedmineConnectionActivityForm extends FormHelper {
 	public Button buttonUrl2;
 	public Button buttonUrl3;
 	public Button buttonUrl4;
-	public RedmineConnectionActivityForm(View activity){
+	public ConnectionForm(View activity){
 		this.setup(activity);
 		this.setupDefaults();
 	}

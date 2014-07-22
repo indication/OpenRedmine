@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.adapter.FilterListAdapter;
-import jp.redmine.redmineclient.adapter.RedmineFilterSortListAdapter;
+import jp.redmine.redmineclient.adapter.FilterSortListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
@@ -109,7 +109,7 @@ public class RedmineIssueFilter {
 		}
 	}
 	public void addListSort(RedmineIssueFilterExpander ex,final Activity activity, int key ){
-		ex.adapter = new RedmineFilterSortListAdapter();
+		ex.adapter = new FilterSortListAdapter();
 		dic.put(key, ex);
 	}
 

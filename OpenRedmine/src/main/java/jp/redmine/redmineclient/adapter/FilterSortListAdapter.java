@@ -8,7 +8,7 @@ import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class RedmineFilterSortListAdapter extends RedmineBaseAdapter<RedmineFilterSortItem> {
+public class FilterSortListAdapter extends RedmineBaseAdapter<RedmineFilterSortItem> {
 
 	protected List<RedmineFilterSortItem> items = RedmineFilterSortItem.getFilters(true);
 

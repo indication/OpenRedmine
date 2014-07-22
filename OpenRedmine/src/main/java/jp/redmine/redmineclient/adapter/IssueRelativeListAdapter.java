@@ -49,7 +49,7 @@ class IssueRelativeListAdapter extends RedmineDaoAdapter<RedmineIssueRelation, L
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.issuerelationitem;
+		return R.layout.listitem_relation;
 	}
 
 	@Override

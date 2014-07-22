@@ -34,7 +34,7 @@ public class IssueJump extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.issuejump, container, false);
+		return inflater.inflate(R.layout.listheader_issuejump, container, false);
 	}
 
 	@Override

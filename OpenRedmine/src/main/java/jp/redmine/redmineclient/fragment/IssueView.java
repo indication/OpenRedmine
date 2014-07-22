@@ -28,7 +28,7 @@ import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
-import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
+import jp.redmine.redmineclient.adapter.IssueStickyListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
@@ -51,7 +51,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private final String TAG = IssueView.class.getSimpleName();
-	private RedmineIssueViewStickyListHeadersAdapter adapter;
+	private IssueStickyListAdapter adapter;
     private StickyListHeadersListView list;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
@@ -116,7 +116,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 
         list.addFooterView(mFooter);
 
-		adapter = new RedmineIssueViewStickyListHeadersAdapter(getHelper(),getActivity(), mActionListener);
+		adapter = new IssueStickyListAdapter(getHelper(),getActivity(), mActionListener);
         list.setAdapter(adapter);
 		
         list.setFastScrollEnabled(true);

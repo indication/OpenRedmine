@@ -31,7 +31,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
  * 	Journals
  * 		JournalListView
  */
-public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
+public class IssueStickyListAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 	private JournalListAdapter adapterJournal;
 	private IssueDetailAdapter adapterIssue;
 	private IssueRelativeListAdapter adapterRelation;
@@ -39,7 +39,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	private AttachmentListAdapter adapterAttachment;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 
-	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,Context context,WebviewActionInterface act){
+	public IssueStickyListAdapter(DatabaseCacheHelper m, Context context, WebviewActionInterface act){
 		adapterJournal = new JournalListAdapter(m,context, act);
 		adapterIssue = new IssueDetailAdapter(m,context, act);
 		adapterRelation = new IssueRelativeListAdapter(m,context);

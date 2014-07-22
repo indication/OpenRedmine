@@ -34,7 +34,7 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.issuefilter);
+		setContentView(R.layout.page_issuefilter);
 
 		form = new RedmineIssueFilter();
 		form.setup(this,getHelper());

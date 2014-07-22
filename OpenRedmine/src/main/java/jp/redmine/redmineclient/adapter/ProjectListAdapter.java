@@ -16,11 +16,11 @@ import android.widget.CompoundButton;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-public class RedmineProjectListAdapter extends  RedmineDaoAdapter<RedmineProject, Long, DatabaseCacheHelper> {
-	private static final String TAG = RedmineProjectListAdapter.class.getSimpleName();
+public class ProjectListAdapter extends  RedmineDaoAdapter<RedmineProject, Long, DatabaseCacheHelper> {
+	private static final String TAG = ProjectListAdapter.class.getSimpleName();
 	private RedmineProjectModel model;
 	protected Integer connection_id;
-	public RedmineProjectListAdapter(DatabaseCacheHelper helper, Context context) {
+	public ProjectListAdapter(DatabaseCacheHelper helper, Context context) {
 		super(helper, context, RedmineProject.class);
 		model = new RedmineProjectModel(helper);
 	}

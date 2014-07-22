@@ -37,7 +37,7 @@ class AttachmentListAdapter extends RedmineDaoAdapter<RedmineAttachment, Long, D
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.issueattachmentitem;
+		return R.layout.listitem_attachment;
 	}
 
 	@Override

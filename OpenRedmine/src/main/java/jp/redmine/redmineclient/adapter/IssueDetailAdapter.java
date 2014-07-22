@@ -19,14 +19,14 @@ import com.j256.ormlite.stmt.Where;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class RedmineIssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
-	private static final String TAG = RedmineIssueDetailAdapter.class.getSimpleName();
+public class IssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
+	private static final String TAG = IssueDetailAdapter.class.getSimpleName();
 	private RedmineTimeEntryModel mTimeEntry;
 	protected Integer connection_id;
 	protected Long issue_id;
 	protected WebviewActionInterface action;
 
-	public RedmineIssueDetailAdapter(DatabaseCacheHelper helper, Context context, WebviewActionInterface act) {
+	public IssueDetailAdapter(DatabaseCacheHelper helper, Context context, WebviewActionInterface act) {
 		super(helper, context, RedmineIssue.class);
 		mTimeEntry = new RedmineTimeEntryModel(helper);
 		action = act;

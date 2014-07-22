@@ -44,7 +44,7 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.timeentryedit, container, false);
+		return inflater.inflate(R.layout.input_timeentry, container, false);
 	}
 
 	@Override

@@ -33,8 +33,8 @@ import com.j256.ormlite.stmt.Where;
 
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, DatabaseCacheHelper>  implements StickyListHeadersAdapter {
-	private final static String TAG = RedmineJournalListAdapter.class.getSimpleName();
+public class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, DatabaseCacheHelper>  implements StickyListHeadersAdapter {
+	private final static String TAG = JournalListAdapter.class.getSimpleName();
 
 	private RedmineJournalModel mJournal;
 	private RedmineVersionModel mVersion;
@@ -48,7 +48,7 @@ public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal,
 	protected Long issue_id;
 	protected Long project_id;
 	protected WebviewActionInterface action;
-	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, RedmineJournalListAdapter.fetchHelper>();
+	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, JournalListAdapter.fetchHelper>();
 
 	protected void setupHashmap(){
 		fetchMap.put("is_private", new fetchHelper(){
@@ -230,7 +230,7 @@ public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal,
 			return getRawItem(input);
 		}
 	}
-	public RedmineJournalListAdapter(DatabaseCacheHelper m, Context context ,WebviewActionInterface act) {
+	public JournalListAdapter(DatabaseCacheHelper m, Context context, WebviewActionInterface act) {
 		super(m, context, RedmineJournal.class);
 		mJournal = new RedmineJournalModel(m);
 		mVersion = new RedmineVersionModel(m);

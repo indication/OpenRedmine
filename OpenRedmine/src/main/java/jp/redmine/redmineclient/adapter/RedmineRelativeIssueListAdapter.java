@@ -7,7 +7,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
-import jp.redmine.redmineclient.form.RedmineRelationListItemForm;
+import jp.redmine.redmineclient.adapter.form.RelationForm;
 
 import android.content.Context;
 import android.util.Log;
@@ -54,11 +54,11 @@ public class RedmineRelativeIssueListAdapter extends RedmineDaoAdapter<RedmineIs
 
 	@Override
 	protected void setupView(View view, RedmineIssueRelation data) {
-		RedmineRelationListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineRelationListItemForm){
-			form = (RedmineRelationListItemForm)view.getTag();
+		RelationForm form;
+		if(view.getTag() != null && view.getTag() instanceof RelationForm){
+			form = (RelationForm)view.getTag();
 		} else {
-			form = new RedmineRelationListItemForm(view);
+			form = new RelationForm(view);
 		}
 		form.setValue(data);
 	}

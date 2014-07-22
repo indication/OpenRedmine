@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -10,14 +10,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RedmineRelationListItemForm extends FormHelper {
+public class RelationForm extends FormHelper {
 	public TextView textSubject;
 	public TextView textTicketid;
 	public TextView textStatus;
 	public TextView textDelay;
 	public ProgressBar progressBar;
 	public ImageView imageIcon;
-	public RedmineRelationListItemForm(View activity){
+	public RelationForm(View activity){
 		this.setup(activity);
 	}
 

@@ -57,7 +57,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.issuedetailedit, container, false);
+		return inflater.inflate(R.layout.input_issue, container, false);
 	}
 
 	@Override

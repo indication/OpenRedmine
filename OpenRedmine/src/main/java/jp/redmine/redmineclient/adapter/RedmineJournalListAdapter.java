@@ -20,12 +20,11 @@ import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.entity.TypeConverter;
-import jp.redmine.redmineclient.form.RedmineJournalListItemForm;
-import jp.redmine.redmineclient.form.RedmineJournalListItemHeaderForm;
+import jp.redmine.redmineclient.adapter.form.IssueJournalItemForm;
+import jp.redmine.redmineclient.adapter.form.IssueJournalHeaderForm;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -267,11 +266,11 @@ public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal,
 
 	@Override
 	protected void setupView(View view, RedmineJournal data) {
-		RedmineJournalListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineJournalListItemForm){
-			form = (RedmineJournalListItemForm)view.getTag();
+		IssueJournalItemForm form;
+		if(view.getTag() != null && view.getTag() instanceof IssueJournalItemForm){
+			form = (IssueJournalItemForm)view.getTag();
 		} else {
-			form = new RedmineJournalListItemForm(view);
+			form = new IssueJournalItemForm(view);
 			form.setupWebView(action);
 		}
 		form.setValue(data, project_id);
@@ -357,7 +356,7 @@ public class RedmineJournalListAdapter extends RedmineDaoAdapter<RedmineJournal,
 		}
 		if(convertView != null){
 			RedmineJournal rec = getDbItem(position);
-			RedmineJournalListItemHeaderForm form = new RedmineJournalListItemHeaderForm(convertView);
+			IssueJournalHeaderForm form = new IssueJournalHeaderForm(convertView);
 			form.setValue(rec);
 		}
 		return convertView;

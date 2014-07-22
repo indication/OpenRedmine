@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -7,10 +7,10 @@ import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.TextView;
 
-public class RedmineJournalListItemHeaderForm extends FormHelper {
+public class IssueJournalHeaderForm extends FormHelper {
 	public TextView textUser;
 	public TextView textDate;
-	public RedmineJournalListItemHeaderForm(View activity){
+	public IssueJournalHeaderForm(View activity){
 		this.setup(activity);
 	}
 

@@ -8,7 +8,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
-import jp.redmine.redmineclient.form.RedmineJournalListItemHeaderForm;
+import jp.redmine.redmineclient.adapter.form.IssueJournalHeaderForm;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -99,7 +99,7 @@ public class RedmineIssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, L
 		}
 		if(convertView != null){
 			RedmineIssue rec = super.getDbItem(position);
-			RedmineJournalListItemHeaderForm form = new RedmineJournalListItemHeaderForm(convertView);
+			IssueJournalHeaderForm form = new IssueJournalHeaderForm(convertView);
 			form.setValue(rec);
 		}
 		return convertView;

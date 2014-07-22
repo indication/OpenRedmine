@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import android.text.Html;
 import android.view.View;
@@ -14,11 +14,11 @@ import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import jp.redmine.redmineclient.form.helper.TextViewHelper;
 
-public class RedmineJournalListItemForm extends FormHelper {
+public class IssueJournalItemForm extends FormHelper {
 	public TextView textView;
 	public LinearLayout formChanges;
 	public TextViewHelper textViewHelper;
-	public RedmineJournalListItemForm(View activity){
+	public IssueJournalItemForm(View activity){
 		this.setup(activity);
 	}
 

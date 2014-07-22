@@ -346,13 +346,13 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
 		if (convertView != null && (
 				 convertView.getTag() == null
-				|| ! ( (Integer)(convertView.getTag()) != R.layout.journalitemheader)
+				|| ! ( (Integer)(convertView.getTag()) != R.layout.listheader_journal)
 			)) {
 			convertView = null;
 		}
 		if (convertView == null) {
-			convertView = infrator.inflate(R.layout.journalitemheader, null);
-			convertView.setTag(R.layout.journalitemheader);
+			convertView = infrator.inflate(R.layout.listheader_journal, null);
+			convertView.setTag(R.layout.listheader_journal);
 		}
 		if(convertView != null){
 			RedmineJournal rec = getDbItem(position);

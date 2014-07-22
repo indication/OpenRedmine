@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import com.andreabaccega.widget.FormEditText;
 
@@ -13,11 +13,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class RedmineIssueJumpForm extends FormHelper {
+public class IssueJumpForm extends FormHelper {
 	public FormEditText textIssueId;
 	public Button buttonOK;
 	public Button buttonClear;
-	public RedmineIssueJumpForm(View activity){
+	public IssueJumpForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
 	}

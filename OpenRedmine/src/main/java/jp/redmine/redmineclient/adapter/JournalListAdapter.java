@@ -1,11 +1,22 @@
 package jp.redmine.redmineclient.adapter;
 
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.adapter.form.IssueJournalHeaderForm;
+import jp.redmine.redmineclient.adapter.form.IssueJournalItemForm;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
@@ -20,20 +31,9 @@ import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineJournalChanges;
 import jp.redmine.redmineclient.entity.TypeConverter;
-import jp.redmine.redmineclient.adapter.form.IssueJournalItemForm;
-import jp.redmine.redmineclient.adapter.form.IssueJournalHeaderForm;
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
-
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, DatabaseCacheHelper>  implements StickyListHeadersAdapter {
+class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, DatabaseCacheHelper>  implements StickyListHeadersAdapter {
 	private final static String TAG = JournalListAdapter.class.getSimpleName();
 
 	private RedmineJournalModel mJournal;

@@ -1,14 +1,5 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.sql.SQLException;
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.entity.RedmineIssueRelation;
-import jp.redmine.redmineclient.adapter.form.RelationForm;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +8,16 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-public class IssueRelativeListAdapter extends RedmineDaoAdapter<RedmineIssueRelation, Long, DatabaseCacheHelper>  {
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.adapter.form.RelationForm;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+
+class IssueRelativeListAdapter extends RedmineDaoAdapter<RedmineIssueRelation, Long, DatabaseCacheHelper>  {
 	private static final String TAG = IssueRelativeListAdapter.class.getSimpleName();
 	protected Integer connection_id;
 	protected Integer issue_id;

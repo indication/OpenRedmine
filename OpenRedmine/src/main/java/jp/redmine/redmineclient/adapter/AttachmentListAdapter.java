@@ -1,19 +1,19 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.sql.SQLException;
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.entity.RedmineAttachment;
-import jp.redmine.redmineclient.adapter.form.AttachmentForm;
-
 import android.content.Context;
 import android.view.View;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-public class AttachmentListAdapter extends RedmineDaoAdapter<RedmineAttachment, Long, DatabaseCacheHelper>  {
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.adapter.form.AttachmentForm;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.entity.RedmineAttachment;
+
+class AttachmentListAdapter extends RedmineDaoAdapter<RedmineAttachment, Long, DatabaseCacheHelper>  {
 	protected Integer connection_id;
 	protected Integer issue_id;
 

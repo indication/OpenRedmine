@@ -1,14 +1,5 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.sql.SQLException;
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.adapter.form.IssueDetailForm;
-import jp.redmine.redmineclient.adapter.form.IssueJournalHeaderForm;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -17,9 +8,18 @@ import android.view.ViewGroup;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.adapter.form.IssueDetailForm;
+import jp.redmine.redmineclient.adapter.form.IssueJournalHeaderForm;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class IssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
+class IssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
 	private static final String TAG = IssueDetailAdapter.class.getSimpleName();
 	private RedmineTimeEntryModel mTimeEntry;
 	protected Integer connection_id;

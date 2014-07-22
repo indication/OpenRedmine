@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import java.util.Calendar;
 
@@ -43,7 +43,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RedmineIssueEditForm extends FormHelper {
+public class IssueEditForm extends FormHelper {
 	public Spinner spinnerStatus;
 	public Spinner spinnerTracker;
 	public Spinner spinnerCategory;
@@ -74,7 +74,7 @@ public class RedmineIssueEditForm extends FormHelper {
 	protected RedmineFilterListAdapter adapterPriority;
 	protected RedmineFilterListAdapter adapterUser;
 	protected RedmineFilterListAdapter adapterVersion;
-	public RedmineIssueEditForm(View activity){
+	public IssueEditForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
 	}

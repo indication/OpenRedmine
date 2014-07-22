@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class RedmineIssueViewForm extends FormHelper {
+public class IssueViewForm extends FormHelper {
 	public TextView textIssueId;
 	public TextView textSubject;
 	public LinearLayout layoutTitleContent;
 	public ViewGroup layoutTitle1;
 	public ViewGroup layoutTitle2;
-	public RedmineIssueViewForm(View activity){
+	public IssueViewForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
 	}

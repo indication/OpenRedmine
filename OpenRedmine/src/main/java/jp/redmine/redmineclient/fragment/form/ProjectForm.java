@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import android.text.TextUtils;
 import android.view.View;

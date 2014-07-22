@@ -17,7 +17,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.ProjectForm;
+import jp.redmine.redmineclient.fragment.form.ProjectForm;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {

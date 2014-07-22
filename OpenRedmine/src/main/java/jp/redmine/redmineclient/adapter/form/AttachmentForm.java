@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,12 +10,12 @@ import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.TextView;
 
-public class RedmineAttachmentListItemForm extends FormHelper {
+public class AttachmentForm extends FormHelper {
 	public TextView textSubject;
 	public TextView textSize;
 	public TextView textCreated;
 	protected String[] sizes = new String[]{"","k","M","G","E"};
-	public RedmineAttachmentListItemForm(View activity){
+	public AttachmentForm(View activity){
 		this.setup(activity);
 	}
 

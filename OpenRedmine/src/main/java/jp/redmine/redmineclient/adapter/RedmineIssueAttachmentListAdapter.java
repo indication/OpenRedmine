@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
-import jp.redmine.redmineclient.form.RedmineAttachmentListItemForm;
+import jp.redmine.redmineclient.adapter.form.AttachmentForm;
 
 import android.content.Context;
 import android.view.View;
@@ -42,11 +42,11 @@ public class RedmineIssueAttachmentListAdapter extends RedmineDaoAdapter<Redmine
 
 	@Override
 	protected void setupView(View view, RedmineAttachment data) {
-		RedmineAttachmentListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineAttachmentListItemForm){
-			form = (RedmineAttachmentListItemForm)view.getTag();
+		AttachmentForm form;
+		if(view.getTag() != null && view.getTag() instanceof AttachmentForm){
+			form = (AttachmentForm)view.getTag();
 		} else {
-			form = new RedmineAttachmentListItemForm(view);
+			form = new AttachmentForm(view);
 		}
 		form.setValue(data);
 	}

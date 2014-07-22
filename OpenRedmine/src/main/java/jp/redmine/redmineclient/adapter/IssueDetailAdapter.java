@@ -47,7 +47,7 @@ class IssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseC
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.issueviewdetail;
+		return R.layout.page_issuedetail;
 	}
 
 	@Override

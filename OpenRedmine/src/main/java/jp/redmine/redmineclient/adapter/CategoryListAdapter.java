@@ -11,10 +11,10 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.adapter.form.IMasterRecordForm;
 
-public class RedmineCategoryListAdapter extends RedmineDaoAdapter<RedmineProjectCategory, Long, DatabaseCacheHelper> {
+public class CategoryListAdapter extends RedmineDaoAdapter<RedmineProjectCategory, Long, DatabaseCacheHelper> {
 	protected Integer connection_id;
 	protected Long project_id;
-	public RedmineCategoryListAdapter(DatabaseCacheHelper helper, Context context) {
+	public CategoryListAdapter(DatabaseCacheHelper helper, Context context) {
 		super(helper, context, RedmineProjectCategory.class);
 	}
 

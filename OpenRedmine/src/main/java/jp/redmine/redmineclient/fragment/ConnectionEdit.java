@@ -53,7 +53,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.connection, container, false);
+		return inflater.inflate(R.layout.input_connection, container, false);
 	}
 
 	@Override

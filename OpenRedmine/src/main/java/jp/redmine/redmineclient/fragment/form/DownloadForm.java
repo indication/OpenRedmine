@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class RedmineDownloadForm extends FormHelper {
+public class DownloadForm extends FormHelper {
 	public TextView textSize;
 	public TextView textSubject;
 	public TextView textCreated;
@@ -19,7 +19,7 @@ public class RedmineDownloadForm extends FormHelper {
 	public TableRow rowProgress;
 	public ProgressBar progressBar;
 	public Button buttonDownload;
-	public RedmineDownloadForm(View activity){
+	public DownloadForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
 	}

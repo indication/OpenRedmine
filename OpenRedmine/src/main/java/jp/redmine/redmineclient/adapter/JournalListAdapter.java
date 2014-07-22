@@ -261,7 +261,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.journalitem;
+		return R.layout.listitem_journal;
 	}
 
 	@Override

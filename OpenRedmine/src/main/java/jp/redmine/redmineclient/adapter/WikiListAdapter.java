@@ -11,10 +11,10 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.adapter.form.WikiForm;
 
-public class RedmineWikiListAdapter extends RedmineDaoAdapter<RedmineWiki, Long, DatabaseCacheHelper> {
+public class WikiListAdapter extends RedmineDaoAdapter<RedmineWiki, Long, DatabaseCacheHelper> {
 	protected Integer connection_id;
 	protected Long project_id;
-	public RedmineWikiListAdapter(DatabaseCacheHelper helper, Context context) {
+	public WikiListAdapter(DatabaseCacheHelper helper, Context context) {
 		super(helper, context, RedmineWiki.class);
 	}
 

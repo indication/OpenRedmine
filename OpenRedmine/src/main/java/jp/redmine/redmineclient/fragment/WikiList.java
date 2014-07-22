@@ -16,7 +16,7 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineWikiListAdapter;
+import jp.redmine.redmineclient.adapter.WikiListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineWiki;
@@ -29,7 +29,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = WikiList.class.getSimpleName();
-	private RedmineWikiListAdapter adapter;
+	private WikiListAdapter adapter;
 	private SelectDataTask task;
 	private View mFooter;
 	private MenuItem menu_refresh;
@@ -82,7 +82,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineWikiListAdapter(getHelper(), getActivity());
+		adapter = new WikiListAdapter(getHelper(), getActivity());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());

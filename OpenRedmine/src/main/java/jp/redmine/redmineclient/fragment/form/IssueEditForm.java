@@ -5,7 +5,7 @@ import java.util.Calendar;
 import com.andreabaccega.widget.FormEditText;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.adapter.RedmineFilterListAdapter;
+import jp.redmine.redmineclient.adapter.FilterListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
 import jp.redmine.redmineclient.db.cache.RedminePriorityModel;
@@ -68,12 +68,12 @@ public class IssueEditForm extends FormHelper {
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
 	public LinearLayout layoutComment;
-	protected RedmineFilterListAdapter adapterStatus;
-	protected RedmineFilterListAdapter adapterTracker;
-	protected RedmineFilterListAdapter adapterCategory;
-	protected RedmineFilterListAdapter adapterPriority;
-	protected RedmineFilterListAdapter adapterUser;
-	protected RedmineFilterListAdapter adapterVersion;
+	protected FilterListAdapter adapterStatus;
+	protected FilterListAdapter adapterTracker;
+	protected FilterListAdapter adapterCategory;
+	protected FilterListAdapter adapterPriority;
+	protected FilterListAdapter adapterUser;
+	protected FilterListAdapter adapterVersion;
 	public IssueEditForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
@@ -162,12 +162,12 @@ public class IssueEditForm extends FormHelper {
 	}
 
 	public void setupDatabase(DatabaseCacheHelper helper){
-		adapterStatus = new RedmineFilterListAdapter(new RedmineStatusModel(helper));
-		adapterTracker = new RedmineFilterListAdapter(new RedmineTrackerModel(helper));
-		adapterCategory = new RedmineFilterListAdapter(new RedmineCategoryModel(helper));
-		adapterPriority = new RedmineFilterListAdapter(new RedminePriorityModel(helper));
-		adapterUser = new RedmineFilterListAdapter(new RedmineUserModel(helper));
-		adapterVersion = new RedmineFilterListAdapter(new RedmineVersionModel(helper));
+		adapterStatus = new FilterListAdapter(new RedmineStatusModel(helper));
+		adapterTracker = new FilterListAdapter(new RedmineTrackerModel(helper));
+		adapterCategory = new FilterListAdapter(new RedmineCategoryModel(helper));
+		adapterPriority = new FilterListAdapter(new RedminePriorityModel(helper));
+		adapterUser = new FilterListAdapter(new RedmineUserModel(helper));
+		adapterVersion = new FilterListAdapter(new RedmineVersionModel(helper));
 	}
 
 	public void setupParameter(int connection, long project){
@@ -180,7 +180,7 @@ public class IssueEditForm extends FormHelper {
 
 	}
 
-	protected void setupParameter(Spinner spinner, RedmineFilterListAdapter adapter
+	protected void setupParameter(Spinner spinner, FilterListAdapter adapter
 			,int connection, long project, boolean isAdd){
 		adapter.setupDummyItem(spinner.getContext());
 		adapter.setupParameter(connection, project, isAdd);
@@ -213,7 +213,7 @@ public class IssueEditForm extends FormHelper {
 
 	}
 
-	protected void setSpinnerItem(Spinner spinner, RedmineFilterListAdapter adapter, IMasterRecord record){
+	protected void setSpinnerItem(Spinner spinner, FilterListAdapter adapter, IMasterRecord record){
 		if(record == null){
 			spinner.setSelection(0);
 		} else {

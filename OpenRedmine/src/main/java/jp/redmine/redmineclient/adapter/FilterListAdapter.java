@@ -10,7 +10,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-public class RedmineFilterListAdapter extends RedmineBaseAdapter<IMasterRecord> {
+public class FilterListAdapter extends RedmineBaseAdapter<IMasterRecord> {
 
 	private IMasterModel<? extends IMasterRecord> model;
 	protected Integer connection_id;
@@ -34,7 +34,7 @@ public class RedmineFilterListAdapter extends RedmineBaseAdapter<IMasterRecord> 
 		dummyitem = record;
 	}
 
-	public RedmineFilterListAdapter(IMasterModel<? extends IMasterRecord> m){
+	public FilterListAdapter(IMasterModel<? extends IMasterRecord> m){
 		model = m;
 	}
 

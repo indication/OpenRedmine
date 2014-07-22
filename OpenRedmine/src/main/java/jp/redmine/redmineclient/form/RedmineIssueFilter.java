@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.adapter.RedmineFilterListAdapter;
+import jp.redmine.redmineclient.adapter.FilterListAdapter;
 import jp.redmine.redmineclient.adapter.RedmineFilterSortListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.IMasterModel;
@@ -93,8 +93,8 @@ public class RedmineIssueFilter {
 	}
 	public void setupParameter(int connection, long project){
 		for(RedmineIssueFilterExpander ex: dic.values()){
-			if(ex.adapter instanceof RedmineFilterListAdapter)
-				((RedmineFilterListAdapter)ex.adapter).setupParameter(connection, project);
+			if(ex.adapter instanceof FilterListAdapter)
+				((FilterListAdapter)ex.adapter).setupParameter(connection, project);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class RedmineIssueFilter {
 	}
 
 	public void addList(RedmineIssueFilterExpander ex,Activity activity, IMasterModel<? extends IMasterRecord> master, int key ){
-		RedmineFilterListAdapter adapter = new RedmineFilterListAdapter(master);
+		FilterListAdapter adapter = new FilterListAdapter(master);
 		adapter.setupDummyItem(activity.getApplicationContext());
 		ex.adapter = adapter;
 		dic.put(key, ex);

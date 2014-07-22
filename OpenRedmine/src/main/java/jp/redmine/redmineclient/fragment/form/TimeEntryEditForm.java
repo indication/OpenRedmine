@@ -6,7 +6,7 @@ import java.util.Calendar;
 import com.andreabaccega.widget.FormEditText;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.adapter.RedmineFilterListAdapter;
+import jp.redmine.redmineclient.adapter.FilterListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeActivityModel;
 import jp.redmine.redmineclient.entity.RedmineTimeActivity;
@@ -38,7 +38,7 @@ public class TimeEntryEditForm extends FormHelper {
 	public ImageButton imageCalendar;
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
-	RedmineFilterListAdapter adapterActivity;
+	FilterListAdapter adapterActivity;
 	public TimeEntryEditForm(View view){
 		this.setup(view);
 		this.setupEvents();
@@ -90,7 +90,7 @@ public class TimeEntryEditForm extends FormHelper {
 	}
 
 	public void setupDatabase(DatabaseCacheHelper helper){
-		adapterActivity = new RedmineFilterListAdapter(new RedmineTimeActivityModel(helper));
+		adapterActivity = new FilterListAdapter(new RedmineTimeActivityModel(helper));
 	}
 
 	public void setupParameter(int connection, long project){

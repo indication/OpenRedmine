@@ -134,7 +134,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 		} else {
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.page_issuestickyheader, null);
+			convertView = infalInflater.inflate(R.layout.listheader_issuetitle, null);
 			if (convertView != null){
 				TextView text = (TextView) convertView.findViewById(R.id.textTitle);
 				text.setText(adapter == null ? "" : convertView.getContext().getString(getInner(position).res));

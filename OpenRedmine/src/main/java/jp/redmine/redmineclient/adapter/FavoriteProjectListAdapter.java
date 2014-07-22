@@ -18,10 +18,10 @@ import jp.redmine.redmineclient.form.helper.HtmlHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class RedmineProjectFavoriteAdapter extends RedmineDaoAdapter<RedmineProject, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
+public class FavoriteProjectListAdapter extends RedmineDaoAdapter<RedmineProject, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
 	private ConnectionModel mConnection;
 
-	public RedmineProjectFavoriteAdapter(DatabaseCacheHelper helper, Context context){
+	public FavoriteProjectListAdapter(DatabaseCacheHelper helper, Context context){
 		super(helper, context, RedmineProject.class);
 		mConnection = new ConnectionModel(context);
 	}

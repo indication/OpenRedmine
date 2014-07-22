@@ -195,7 +195,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-        View current = inflater.inflate(R.layout.issuedetail, container, false);
+        View current = inflater.inflate(R.layout.page_issue, container, false);
         list = (StickyListHeadersListView)current.findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

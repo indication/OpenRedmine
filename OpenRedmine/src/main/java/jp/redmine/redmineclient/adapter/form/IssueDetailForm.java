@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import android.view.View;
 import android.widget.TableRow;
@@ -12,9 +12,10 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.form.RedmineIssueDetailBaseForm;
 import jp.redmine.redmineclient.form.helper.TextViewHelper;
 
-public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
+public class IssueDetailForm extends RedmineIssueDetailBaseForm {
 	public TextView textProject;
 	public TextView textPrivate;
 	public TextView textCreated;
@@ -30,7 +31,7 @@ public class RedmineIssueViewDetailForm extends RedmineIssueDetailBaseForm {
 	public TableRow rowProject;
 	public TextView textView;
 	public TextViewHelper textViewHelper;
-	public RedmineIssueViewDetailForm(View activity){
+	public IssueDetailForm(View activity){
 		super(activity);
 		this.setup(activity);
 	}

@@ -7,7 +7,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.form.RedmineIssueViewDetailForm;
+import jp.redmine.redmineclient.adapter.form.IssueDetailForm;
 import jp.redmine.redmineclient.adapter.form.IssueJournalHeaderForm;
 import android.content.Context;
 import android.util.Log;
@@ -52,11 +52,11 @@ public class RedmineIssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, L
 
 	@Override
 	protected void setupView(View view, RedmineIssue data) {
-		RedmineIssueViewDetailForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineIssueViewDetailForm){
-			form = (RedmineIssueViewDetailForm)view.getTag();
+		IssueDetailForm form;
+		if(view.getTag() != null && view.getTag() instanceof IssueDetailForm){
+			form = (IssueDetailForm)view.getTag();
 		} else {
-			form = new RedmineIssueViewDetailForm(view);
+			form = new IssueDetailForm(view);
 			form.setupWebView(action);
 		}
 		form.setValue(data);

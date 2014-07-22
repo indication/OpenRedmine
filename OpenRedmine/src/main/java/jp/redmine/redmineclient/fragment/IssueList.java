@@ -166,7 +166,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		mHeader = inflater.inflate(R.layout.filterheader,null);
+		mHeader = inflater.inflate(R.layout.listheader_filter,null);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 

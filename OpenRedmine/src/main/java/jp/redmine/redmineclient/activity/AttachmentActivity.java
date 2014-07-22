@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,13 +19,13 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
-import jp.redmine.redmineclient.fragment.IssueList;
-import jp.redmine.redmineclient.param.FilterArgument;
+import jp.redmine.redmineclient.fragment.FileDownload;
+import jp.redmine.redmineclient.param.AttachmentArgument;
 
-public class IssueFilterActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
+public class AttachmentActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
-	private static final String TAG = IssueFilterActivity.class.getSimpleName();
-	public IssueFilterActivity(){
+	private static final String TAG = AttachmentActivity.class.getSimpleName();
+	public AttachmentActivity(){
 		super();
 	}
 
@@ -34,7 +34,6 @@ public class IssueFilterActivity extends OrmLiteFragmentActivity<DatabaseCacheHe
 	public void onCreate(Bundle savedInstanceState) {
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
-		getSupportActionBar();
 
 		/**
 		 * Add fragment on first view only
@@ -42,15 +41,17 @@ public class IssueFilterActivity extends OrmLiteFragmentActivity<DatabaseCacheHe
 		 */
 		if(savedInstanceState != null)
 			return;
-		FilterArgument intent = new FilterArgument();
-		intent.setIntent(getIntent());
 
-		FilterArgument arg = new FilterArgument();
+		AttachmentArgument arg = new AttachmentArgument();
 		arg.setArgument();
-		arg.importArgument(intent);
+		{
+			AttachmentArgument intent = new AttachmentArgument();
+			intent.setIntent(getIntent());
+			arg.importArgument(intent);
+		}
 
 		getSupportFragmentManager().beginTransaction()
-				.replace(android.R.id.content, IssueList.newInstance(arg))
+				.replace(android.R.id.content, FileDownload.newInstance(arg))
 				.commit();
 	}
 

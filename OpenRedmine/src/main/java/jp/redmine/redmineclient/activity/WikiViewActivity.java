@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
 import android.annotation.TargetApi;
 import android.app.FragmentBreadCrumbs;
@@ -12,6 +12,7 @@ import android.view.View;
 import com.actionbarsherlock.app.ActionBar;
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionHandler;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
@@ -25,10 +26,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
-import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.WikiDetail;
-import jp.redmine.redmineclient.fragment.WikiList;
-import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.WikiArgument;
 
 public class WikiViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>

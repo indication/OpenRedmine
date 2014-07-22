@@ -5,7 +5,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
-import jp.redmine.redmineclient.ConnectionNaviActivity;
+import jp.redmine.redmineclient.activity.ConnectionNaviActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;

@@ -7,7 +7,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
-import jp.redmine.redmineclient.FilterViewActivity;
+import jp.redmine.redmineclient.activity.FilterViewActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;

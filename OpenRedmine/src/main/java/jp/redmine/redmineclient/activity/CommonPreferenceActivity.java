@@ -1,9 +1,10 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 
 public class CommonPreferenceActivity extends SherlockPreferenceActivity {

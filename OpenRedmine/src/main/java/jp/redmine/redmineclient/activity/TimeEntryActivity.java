@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
 import android.os.Bundle;
 

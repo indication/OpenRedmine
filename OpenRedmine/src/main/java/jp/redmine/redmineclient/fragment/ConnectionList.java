@@ -19,8 +19,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 import java.io.File;
 
-import jp.redmine.redmineclient.AboutActivity;
-import jp.redmine.redmineclient.CommonPreferenceActivity;
+import jp.redmine.redmineclient.activity.AboutActivity;
+import jp.redmine.redmineclient.activity.CommonPreferenceActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;

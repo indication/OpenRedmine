@@ -2,7 +2,7 @@ package jp.redmine.redmineclient.activity.handler;
 
 import android.content.Intent;
 
-import jp.redmine.redmineclient.TimeEntryActivity;
+import jp.redmine.redmineclient.activity.TimeEntryActivity;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
 
 public class TimeEntryHandler extends Core implements TimeentryActionInterface {

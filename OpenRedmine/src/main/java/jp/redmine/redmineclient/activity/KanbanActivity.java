@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionHandler;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;

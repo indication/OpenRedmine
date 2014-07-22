@@ -1,5 +1,6 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.form.RedmineNavigationForm;
 import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;

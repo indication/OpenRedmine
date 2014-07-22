@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.redmine.redmineclient.activity.TabActivity;
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.pager.CorePage;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;

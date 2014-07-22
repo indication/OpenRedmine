@@ -1,10 +1,11 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
 
 import java.sql.SQLException;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;

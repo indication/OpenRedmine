@@ -1,5 +1,6 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.TabActivity;
 import jp.redmine.redmineclient.activity.pager.CorePage;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;

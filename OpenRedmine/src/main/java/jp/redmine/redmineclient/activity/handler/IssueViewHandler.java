@@ -3,11 +3,11 @@ package jp.redmine.redmineclient.activity.handler;
 import android.content.Intent;
 import android.net.Uri;
 
-import jp.redmine.redmineclient.IssueActivity;
-import jp.redmine.redmineclient.IssueFilterActivity;
-import jp.redmine.redmineclient.KanbanActivity;
-import jp.redmine.redmineclient.ProjectActivity;
-import jp.redmine.redmineclient.WikiViewActivity;
+import jp.redmine.redmineclient.activity.IssueActivity;
+import jp.redmine.redmineclient.activity.IssueFilterActivity;
+import jp.redmine.redmineclient.activity.KanbanActivity;
+import jp.redmine.redmineclient.activity.ProjectActivity;
+import jp.redmine.redmineclient.activity.WikiViewActivity;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;

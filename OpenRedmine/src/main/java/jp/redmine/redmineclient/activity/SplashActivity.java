@@ -1,5 +1,6 @@
-package jp.redmine.redmineclient;
+package jp.redmine.redmineclient.activity;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import android.app.Activity;
 import android.content.Intent;

@@ -34,7 +34,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 	private JournalListAdapter adapterJournal;
 	private IssueDetailAdapter adapterIssue;
-	private RedmineRelativeIssueListAdapter adapterRelation;
+	private IssueRelativeListAdapter adapterRelation;
 	private RedmineTimeEntryListAdapter adapterTimeEntry;
 	private AttachmentListAdapter adapterAttachment;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
@@ -42,7 +42,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	public RedmineIssueViewStickyListHeadersAdapter(DatabaseCacheHelper m,Context context,WebviewActionInterface act){
 		adapterJournal = new JournalListAdapter(m,context, act);
 		adapterIssue = new IssueDetailAdapter(m,context, act);
-		adapterRelation = new RedmineRelativeIssueListAdapter(m,context);
+		adapterRelation = new IssueRelativeListAdapter(m,context);
 		adapterTimeEntry = new RedmineTimeEntryListAdapter(m,context);
 		adapterAttachment = new AttachmentListAdapter(m,context);
 		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));

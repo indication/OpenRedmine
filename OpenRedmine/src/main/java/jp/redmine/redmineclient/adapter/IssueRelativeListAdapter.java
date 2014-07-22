@@ -17,15 +17,15 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-public class RedmineRelativeIssueListAdapter extends RedmineDaoAdapter<RedmineIssueRelation, Long, DatabaseCacheHelper>  {
-	private static final String TAG = RedmineRelativeIssueListAdapter.class.getSimpleName();
+public class IssueRelativeListAdapter extends RedmineDaoAdapter<RedmineIssueRelation, Long, DatabaseCacheHelper>  {
+	private static final String TAG = IssueRelativeListAdapter.class.getSimpleName();
 	protected Integer connection_id;
 	protected Integer issue_id;
 	protected Dao<RedmineIssue, Long> daoIssue;
 
 
 
-	public RedmineRelativeIssueListAdapter(DatabaseCacheHelper helper, Context context) {
+	public IssueRelativeListAdapter(DatabaseCacheHelper helper, Context context) {
 		super(helper, context, RedmineIssueRelation.class);
 		try {
 			daoIssue = helper.getDao(RedmineIssue.class);

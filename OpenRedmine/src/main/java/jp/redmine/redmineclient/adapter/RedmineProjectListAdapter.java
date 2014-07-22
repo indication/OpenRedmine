@@ -6,7 +6,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.ProjectListItemForm;
+import jp.redmine.redmineclient.adapter.form.ProjectForm;
 
 import android.content.Context;
 import android.util.Log;
@@ -44,11 +44,11 @@ public class RedmineProjectListAdapter extends  RedmineDaoAdapter<RedmineProject
 
 	@Override
 	protected void setupView(View view, final RedmineProject data) {
-		ProjectListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof ProjectListItemForm){
-			form = (ProjectListItemForm)view.getTag();
+		ProjectForm form;
+		if(view.getTag() != null && view.getTag() instanceof ProjectForm){
+			form = (ProjectForm)view.getTag();
 		} else {
-			form = new ProjectListItemForm(view);
+			form = new ProjectForm(view);
 		}
 		form.ratingBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override

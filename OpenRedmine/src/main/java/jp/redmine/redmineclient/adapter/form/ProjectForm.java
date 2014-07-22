@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import android.view.View;
 import android.widget.CheckBox;
@@ -9,10 +9,10 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 
-public class ProjectListItemForm extends FormHelper {
+public class ProjectForm extends FormHelper {
 	public TextView textSubject;
     public CheckBox ratingBar;
-	public ProjectListItemForm(View activity){
+	public ProjectForm(View activity){
 		this.setup(activity);
 	}
 

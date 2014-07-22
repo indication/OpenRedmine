@@ -1,16 +1,18 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.form.RedmineIssueDetailBaseForm;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class RedmineIssueListItemForm extends RedmineIssueDetailBaseForm {
+public class IssueForm extends RedmineIssueDetailBaseForm {
 	public TextView textSubject;
 	public TextView textTicketid;
 	public TextView textDescription;
-	public RedmineIssueListItemForm(View activity){
+	public IssueForm(View activity){
 		super(activity);
 	}
 

@@ -7,11 +7,10 @@ import java.util.Hashtable;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
-import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.form.RedmineIssueListItemForm;
+import jp.redmine.redmineclient.adapter.form.IssueForm;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -57,11 +56,11 @@ public class RedmineIssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Lon
 
 	@Override
 	protected void setupView(View view, RedmineIssue data) {
-		RedmineIssueListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineIssueListItemForm){
-			form = (RedmineIssueListItemForm)view.getTag();
+		IssueForm form;
+		if(view.getTag() != null && view.getTag() instanceof IssueForm){
+			form = (IssueForm)view.getTag();
 		} else {
-			form = new RedmineIssueListItemForm(view);
+			form = new IssueForm(view);
 		}
 		form.setValue(data);
 	}

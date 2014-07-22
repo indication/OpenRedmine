@@ -37,7 +37,7 @@ public class IssueTimeEntryListAdapter extends RedmineDaoAdapter<RedmineTimeEntr
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.timeentryitem;
+		return R.layout.listitem_timeentry;
 	}
 
 	@Override

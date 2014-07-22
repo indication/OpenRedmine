@@ -10,9 +10,8 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.form.RedmineTimeentryEditForm;
+import jp.redmine.redmineclient.fragment.form.TimeEntryEditForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
-import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
 import android.app.Activity;
@@ -28,7 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
-	private RedmineTimeentryEditForm form;
+	private TimeEntryEditForm form;
 	private ProgressDialog dialog;
 
 	public TimeEntryEdit(){
@@ -52,7 +51,7 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		form = new RedmineTimeentryEditForm(getView());
+		form = new TimeEntryEditForm(getView());
 		form.setupDatabase(getHelper());
 
 	}

@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class RedmineTimeentryEditForm extends FormHelper {
+public class TimeEntryEditForm extends FormHelper {
 	public Spinner spinnerActivity;
 	public FormEditText textTime;
 	public FormEditText textDate;
@@ -39,7 +39,7 @@ public class RedmineTimeentryEditForm extends FormHelper {
 	public Button buttonOK;
 	public DatePickerDialog dialogDatePicker;
 	RedmineFilterListAdapter adapterActivity;
-	public RedmineTimeentryEditForm(View view){
+	public TimeEntryEditForm(View view){
 		this.setup(view);
 		this.setupEvents();
 	}

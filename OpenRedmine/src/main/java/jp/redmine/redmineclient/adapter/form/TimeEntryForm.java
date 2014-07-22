@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
@@ -6,12 +6,12 @@ import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.TextView;
 
-public class RedmineTimeEntryListItemForm extends FormHelper {
+public class TimeEntryForm extends FormHelper {
 	public TextView textAuthor;
 	public TextView textActivity;
 	public TextView textSpentsOn;
 	public TextView textTimeEntry;
-	public RedmineTimeEntryListItemForm(View activity){
+	public TimeEntryForm(View activity){
 		this.setup(activity);
 	}
 

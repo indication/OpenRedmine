@@ -6,7 +6,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.form.RedmineTimeEntryListItemForm;
+import jp.redmine.redmineclient.adapter.form.TimeEntryForm;
 
 import android.content.Context;
 import android.view.View;
@@ -42,11 +42,11 @@ public class RedmineTimeEntryListAdapter extends RedmineDaoAdapter<RedmineTimeEn
 
 	@Override
 	protected void setupView(View view, RedmineTimeEntry data) {
-		RedmineTimeEntryListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineTimeEntryListItemForm){
-			form = (RedmineTimeEntryListItemForm)view.getTag();
+		TimeEntryForm form;
+		if(view.getTag() != null && view.getTag() instanceof TimeEntryForm){
+			form = (TimeEntryForm)view.getTag();
 		} else {
-			form = new RedmineTimeEntryListItemForm(view);
+			form = new TimeEntryForm(view);
 		}
 		form.setValue(data);
 	}

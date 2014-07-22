@@ -28,7 +28,7 @@ public class FavoriteProjectListAdapter extends RedmineDaoAdapter<RedmineProject
 	@Override
 	public View getHeaderView(int i, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = infrator.inflate(R.layout.connection_header, null);
+			convertView = infrator.inflate(R.layout.listheader_connection, null);
 		}
 		if(convertView == null)
 			return null;

@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.fragment.form;
 
 import com.andreabaccega.widget.FormEditText;
 
@@ -8,11 +8,11 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 
-public class RedmineIssueCommentForm extends FormHelper {
+public class IssueCommentForm extends FormHelper {
 	public FormEditText textDescription;
 	public Button buttonOK;
 
-	public RedmineIssueCommentForm(View issueViewActivity) {
+	public IssueCommentForm(View issueViewActivity) {
 
 		this.setup(issueViewActivity);
 		this.setupEvents();

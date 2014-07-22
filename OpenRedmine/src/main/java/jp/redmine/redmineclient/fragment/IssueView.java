@@ -37,7 +37,7 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.form.RedmineIssueCommentForm;
+import jp.redmine.redmineclient.fragment.form.IssueCommentForm;
 import jp.redmine.redmineclient.form.RedmineIssueViewForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
@@ -61,7 +61,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private TimeentryActionInterface mTimeEntryListener;
 	private AttachmentActionInterface mAttachmentListener;
 	private RedmineIssueViewForm formTitle;
-	private RedmineIssueCommentForm formComment;
+	private IssueCommentForm formComment;
 	private ProgressDialog dialog;
 
 	public IssueView(){
@@ -125,7 +125,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 		formTitle = new RedmineIssueViewForm(getView());
 
 		//setup comment form
-		formComment = new RedmineIssueCommentForm(getView());
+		formComment = new IssueCommentForm(getView());
 
 		onRefresh(true);
 

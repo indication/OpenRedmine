@@ -1,13 +1,13 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.TextView;
 
-public class RedmineConnectionListItemForm extends FormHelper {
+public class ConnectionForm extends FormHelper {
 	public TextView textSubject;
-	public RedmineConnectionListItemForm(View activity){
+	public ConnectionForm(View activity){
 		this.setup(activity);
 	}
 

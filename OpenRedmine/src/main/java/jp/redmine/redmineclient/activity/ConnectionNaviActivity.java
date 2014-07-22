@@ -34,7 +34,7 @@ public class ConnectionNaviActivity extends SherlockFragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.connection_navi);
+		setContentView(R.layout.page_connection_navi);
 
 
 		form = new RedmineNavigationForm(this);

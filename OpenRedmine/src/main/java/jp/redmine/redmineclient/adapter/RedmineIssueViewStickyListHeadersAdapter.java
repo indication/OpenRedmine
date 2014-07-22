@@ -35,7 +35,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 	private JournalListAdapter adapterJournal;
 	private IssueDetailAdapter adapterIssue;
 	private IssueRelativeListAdapter adapterRelation;
-	private RedmineTimeEntryListAdapter adapterTimeEntry;
+	private IssueTimeEntryListAdapter adapterTimeEntry;
 	private AttachmentListAdapter adapterAttachment;
 	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
 
@@ -43,7 +43,7 @@ public class RedmineIssueViewStickyListHeadersAdapter extends BaseAdapter implem
 		adapterJournal = new JournalListAdapter(m,context, act);
 		adapterIssue = new IssueDetailAdapter(m,context, act);
 		adapterRelation = new IssueRelativeListAdapter(m,context);
-		adapterTimeEntry = new RedmineTimeEntryListAdapter(m,context);
+		adapterTimeEntry = new IssueTimeEntryListAdapter(m,context);
 		adapterAttachment = new AttachmentListAdapter(m,context);
 		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));
 		mapAdapters.add(new AggrigateAdapter(adapterRelation, R.string.ticket_relations));

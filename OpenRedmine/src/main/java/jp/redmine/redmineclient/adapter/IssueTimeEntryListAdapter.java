@@ -1,24 +1,24 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.sql.SQLException;
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
-import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.adapter.form.TimeEntryForm;
-
 import android.content.Context;
 import android.view.View;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-public class RedmineTimeEntryListAdapter extends RedmineDaoAdapter<RedmineTimeEntry, Long, DatabaseCacheHelper> {
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.adapter.form.TimeEntryForm;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
+
+public class IssueTimeEntryListAdapter extends RedmineDaoAdapter<RedmineTimeEntry, Long, DatabaseCacheHelper> {
 	private RedmineTimeEntryModel model;
 	protected Integer connection_id;
 	protected Integer issue_id;
-	public RedmineTimeEntryListAdapter(DatabaseCacheHelper helper, Context context) {
+	public IssueTimeEntryListAdapter(DatabaseCacheHelper helper, Context context) {
 		super(helper, context, RedmineTimeEntry.class);
 	}
 

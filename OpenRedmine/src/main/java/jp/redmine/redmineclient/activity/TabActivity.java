@@ -41,7 +41,7 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
-		setContentView(R.layout.fragment_pager);
+		setContentView(R.layout.page_fragment_pager);
 
 		List<CorePage> list = getTabs();
 

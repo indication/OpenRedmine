@@ -1,4 +1,4 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
 import android.view.View;
 import android.widget.TextView;
@@ -7,9 +7,9 @@ import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 
-public class RedmineWikiListItemForm extends FormHelper {
+public class WikiForm extends FormHelper {
 	public TextView textSubject;
-	public RedmineWikiListItemForm(View activity){
+	public WikiForm(View activity){
 		this.setup(activity);
 	}
 

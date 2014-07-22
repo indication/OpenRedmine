@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineWiki;
-import jp.redmine.redmineclient.form.RedmineWikiListItemForm;
+import jp.redmine.redmineclient.adapter.form.WikiForm;
 
 public class RedmineWikiListAdapter extends RedmineDaoAdapter<RedmineWiki, Long, DatabaseCacheHelper> {
 	protected Integer connection_id;
@@ -38,11 +38,11 @@ public class RedmineWikiListAdapter extends RedmineDaoAdapter<RedmineWiki, Long,
 
 	@Override
 	protected void setupView(View view, RedmineWiki data) {
-		RedmineWikiListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineWikiListItemForm){
-			form = (RedmineWikiListItemForm)view.getTag();
+		WikiForm form;
+		if(view.getTag() != null && view.getTag() instanceof WikiForm){
+			form = (WikiForm)view.getTag();
 		} else {
-			form = new RedmineWikiListItemForm(view);
+			form = new WikiForm(view);
 		}
 		form.setValue(data);
 	}

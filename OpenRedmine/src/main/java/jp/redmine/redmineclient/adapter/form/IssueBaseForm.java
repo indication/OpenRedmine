@@ -1,13 +1,14 @@
-package jp.redmine.redmineclient.form;
+package jp.redmine.redmineclient.adapter.form;
 
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.form.helper.FormHelper;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RedmineIssueDetailBaseForm extends FormHelper {
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.form.helper.FormHelper;
+
+abstract class IssueBaseForm extends FormHelper {
 	public TextView textStatus;
 	public TextView textAssignedTo;
 	public TextView textTracker;
@@ -17,7 +18,7 @@ public class RedmineIssueDetailBaseForm extends FormHelper {
 	public TextView textVersion;
 	public TextView textModified;
 	public ProgressBar progressBar;
-	public RedmineIssueDetailBaseForm(View activity){
+	public IssueBaseForm(View activity){
 		this.setup(activity);
 	}
 

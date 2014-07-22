@@ -12,10 +12,9 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.form.RedmineIssueDetailBaseForm;
 import jp.redmine.redmineclient.form.helper.TextViewHelper;
 
-public class IssueDetailForm extends RedmineIssueDetailBaseForm {
+public class IssueDetailForm extends IssueBaseForm {
 	public TextView textProject;
 	public TextView textPrivate;
 	public TextView textCreated;

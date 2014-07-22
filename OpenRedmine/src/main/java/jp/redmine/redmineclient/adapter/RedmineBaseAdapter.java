@@ -1,8 +1,5 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.sql.SQLException;
-
-import jp.redmine.redmineclient.external.lib.LRUCache;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCache.IFetchObject<Integer> {
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.external.lib.LRUCache;
+
+abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCache.IFetchObject<Integer> {
 	private static final String TAG = "RedmineBaseAdapter";
 	protected LRUCache<Integer,T> cache = new LRUCache<Integer,T>(20);
 	protected abstract int getItemViewId();

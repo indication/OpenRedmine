@@ -14,13 +14,12 @@ import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.support.DatabaseResults;
 
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
 
-public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper>
+abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper>
 		extends BaseAdapter
 		implements Filterable
 {

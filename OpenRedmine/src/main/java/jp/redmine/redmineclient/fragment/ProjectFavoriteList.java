@@ -78,7 +78,7 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View current = inflater.inflate(R.layout.stickylistheaderslist, container, false);
+		View current = inflater.inflate(R.layout.page_stickylistheaderslist, container, false);
 		list = (StickyListHeadersListView)current.findViewById(R.id.list);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override

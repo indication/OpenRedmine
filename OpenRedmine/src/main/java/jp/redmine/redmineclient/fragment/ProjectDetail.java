@@ -49,7 +49,7 @@ public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.projectdetail, container, false);
+		View view = inflater.inflate(R.layout.page_project, container, false);
 		return view;
 	}
 	@Override

@@ -41,7 +41,6 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
-import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	public final String CHARSET = "UTF-8";
@@ -148,7 +147,6 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	}
 	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
 		url.setupRequest(requests.xml);
-		url.setupVersion(versions.v130);
 		return fetchData(type,connectionhandler, url.getUrl(connection.getUrl()),handler,puthandler);
 	}
 	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,Builder builder

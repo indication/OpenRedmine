@@ -5,10 +5,6 @@ import android.net.Uri;
 
 public class RemoteUrlVersion extends RemoteUrl {
 	private String project = "";
-	@Override
-	public versions getMinVersion(){
-		return versions.v130;
-	}
 	public void setProject(RedmineProject proj){
 		if(proj.getIdentifier() != null)
 			project = proj.getIdentifier();

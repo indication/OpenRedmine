@@ -17,7 +17,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.ProjectForm;
+import jp.redmine.redmineclient.fragment.form.ProjectForm;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
@@ -49,7 +49,7 @@ public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.projectdetail, container, false);
+		View view = inflater.inflate(R.layout.page_project, container, false);
 		return view;
 	}
 	@Override

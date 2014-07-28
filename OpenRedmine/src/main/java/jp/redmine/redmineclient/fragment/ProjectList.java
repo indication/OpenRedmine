@@ -23,7 +23,7 @@ import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineProjectListAdapter;
+import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -36,7 +36,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = ProjectList.class.getSimpleName();
-	private RedmineProjectListAdapter adapter;
+	private ProjectListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
@@ -94,7 +94,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().setTextFilterEnabled(true);
 
 
-		adapter = new RedmineProjectListAdapter(getHelper(), getActivity());
+		adapter = new ProjectListAdapter(getHelper(), getActivity());
 
 		final ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());

@@ -5,7 +5,7 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineTimeEntryListAdapter;
+import jp.redmine.redmineclient.adapter.IssueTimeEntryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.param.IssueArgument;
@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
-	private RedmineTimeEntryListAdapter adapter;
+	private IssueTimeEntryListAdapter adapter;
 	private View mFooter;
 	private TimeentryActionInterface mListener;
 
@@ -57,7 +57,7 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().addFooterView(mFooter);
 
-		adapter = new RedmineTimeEntryListAdapter(getHelper(),getActivity());
+		adapter = new IssueTimeEntryListAdapter(getHelper(),getActivity());
 		setListAdapter(adapter);
 
 		getListView().setFastScrollEnabled(true);

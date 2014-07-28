@@ -27,10 +27,6 @@ public class RemoteUrlWiki extends RemoteUrl {
 	public void filterOffset(int offset){
 		params.put("offset", Integer.toString(offset));
 	}
-	@Override
-	public versions getMinVersion(){
-		return versions.v130;
-	}
 	public void setProject(RedmineProject proj){
 		if(proj.getIdentifier() != null)
 			project = proj.getIdentifier();

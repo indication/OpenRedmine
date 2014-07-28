@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineCategoryListAdapter;
+import jp.redmine.redmineclient.adapter.CategoryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
@@ -22,7 +22,7 @@ import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = CategoryList.class.getSimpleName();
-	private RedmineCategoryListAdapter adapter;
+	private CategoryListAdapter adapter;
 
 	private IssueActionInterface mListener;
 
@@ -59,7 +59,7 @@ public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineCategoryListAdapter(getHelper(), getActivity());
+		adapter = new CategoryListAdapter(getHelper(), getActivity());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());

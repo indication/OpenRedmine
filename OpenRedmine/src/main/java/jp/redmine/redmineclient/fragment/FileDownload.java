@@ -9,7 +9,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineAttachmentModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.form.RedmineDownloadForm;
+import jp.redmine.redmineclient.fragment.form.DownloadForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.AttachmentArgument;
 import jp.redmine.redmineclient.param.IssueArgument;
@@ -30,7 +30,7 @@ import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 public class FileDownload extends OrmLiteFragment<DatabaseCacheHelper> {
 	static private final String TAG = FileDownload.class.getSimpleName();
-	private RedmineDownloadForm form;
+	private DownloadForm form;
 	private SelectAttachmentTask task;
 
 	public FileDownload(){
@@ -46,13 +46,13 @@ public class FileDownload extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.downloaditem, container, false);
+		return inflater.inflate(R.layout.page_download, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		form = new RedmineDownloadForm(getView());
+		form = new DownloadForm(getView());
 		form.buttonDownload.setOnClickListener(new OnClickListener() {
 			
 			@Override

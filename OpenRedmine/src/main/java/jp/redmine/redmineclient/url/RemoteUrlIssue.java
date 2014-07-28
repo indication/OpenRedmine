@@ -48,10 +48,6 @@ public class RemoteUrlIssue extends RemoteUrl {
 		}
 	}
 	@Override
-	public versions getMinVersion(){
-		return versions.v110;
-	}
-	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
 		if(issue_id == null){

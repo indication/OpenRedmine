@@ -7,11 +7,6 @@ import android.net.Uri;
 
 public class RemoteUrlProjects extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
-
-	@Override
-	public versions getMinVersion(){
-		return versions.v110;
-	}
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);

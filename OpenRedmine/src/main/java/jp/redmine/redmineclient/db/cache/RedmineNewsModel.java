@@ -8,7 +8,6 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineNews;
 
@@ -26,9 +25,9 @@ public class RedmineNewsModel {
 
 	public RedmineNews fetchById(int connection, int newsId) throws SQLException{
 		PreparedQuery<RedmineNews> query = dao.queryBuilder().where()
-		.eq(RedmineAttachment.CONNECTION, connection)
+		.eq(RedmineNews.CONNECTION, connection)
 		.and()
-		.eq(RedmineAttachment.ATTACHMENT_ID, newsId)
+		.eq(RedmineNews.NEWS_ID, newsId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
 		RedmineNews item = dao.queryForFirst(query);

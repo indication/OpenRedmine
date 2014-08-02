@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +18,17 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
+import java.sql.SQLException;
+
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
-import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
+import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.adapter.NewsListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.model.ConnectionModel;
-import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectNewsTask;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
@@ -38,7 +41,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
-	private IssueActionInterface mListener;
+	private WebviewActionInterface mListener;
 
 	public NewsList(){
 		super();
@@ -55,11 +58,11 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onAttach(activity);
 		if(activity instanceof ActivityInterface){
 			ActivityInterface aif = (ActivityInterface)activity;
-			mListener = aif.getHandler(IssueActionInterface.class);
+			mListener = aif.getHandler(WebviewActionInterface.class);
 		}
 		if(mListener == null) {
 			//setup empty events
-			mListener = new IssueActionEmptyHandler();
+			mListener = new WebviewActionEmptyHandler();
 		}
 
 	}
@@ -86,7 +89,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().setTextFilterEnabled(true);
 
 
-		adapter = new NewsListAdapter(getHelper(), getActivity());
+		adapter = new NewsListAdapter(getHelper(), getActivity(), mListener);
 
 		final ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
@@ -165,14 +168,20 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
-		ConnectionArgument intent = new ConnectionArgument();
+		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		ConnectionModel mConnection = new ConnectionModel(getActivity());
 		RedmineConnection connection = mConnection.getItem(id);
 			mConnection.finalize();
-		task = new SelectDataTask(getHelper(),connection);
-		task.execute();
+		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+		try {
+			RedmineProject proj = mProject.fetchById(intent.getProjectId());
+			task = new SelectDataTask(getHelper(),connection);
+			task.execute(proj);
+		} catch (SQLException e) {
+			Log.e(TAG, "onRefresh", e);
+		}
 	}
 
 	private class SelectDataTask extends SelectNewsTask {
@@ -194,7 +203,6 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		@Override
 		protected void onPostExecute(Void b) {
 			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
@@ -204,7 +212,6 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		@Override
 		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
 			super.onProgress(max, proc);
 		}
@@ -212,7 +219,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate( R.menu.projects, menu );
+		inflater.inflate( R.menu.refresh, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);

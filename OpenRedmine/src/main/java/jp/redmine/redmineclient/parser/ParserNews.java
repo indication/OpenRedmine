@@ -5,14 +5,12 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineNews;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
-public class ParserNews extends BaseParserInternal<RedmineConnection,RedmineNews> {
+public class ParserNews extends BaseParserInternal<RedmineProject,RedmineNews> {
 
 	@Override
 	protected String getProveTagName() {
@@ -25,7 +23,7 @@ public class ParserNews extends BaseParserInternal<RedmineConnection,RedmineNews
 	}
 
 	@Override
-	protected void parseInternal(RedmineConnection con, RedmineNews item)
+	protected void parseInternal(RedmineProject con, RedmineNews item)
 			throws XmlPullParserException, IOException, SQLException {
 		if(xml.getDepth() <= 1)
 			return;

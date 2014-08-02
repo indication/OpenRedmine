@@ -31,23 +31,24 @@ public class SelectNewsTask extends SelectDataTask<Void,RedmineProject> {
 	protected Void doInBackground(RedmineProject... params) {
 		final RedmineNewsModel model = new RedmineNewsModel(helper);
 		final ParserNews parser = new ParserNews();
-		parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineNews>() {
-			public void onData(RedmineConnection con,RedmineNews data) throws SQLException {
-				model.refreshItem(con,data);
+		parser.registerDataCreation(new DataCreationHandler<RedmineProject,RedmineNews>() {
+			public void onData(RedmineProject con,RedmineNews data) throws SQLException {
+				data.setProject(con);
+				model.refreshItem(connection,data);
 			}
 		});
-		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
-		};
 
 		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RemoteUrlNews url = new RemoteUrlNews();
-		for(RedmineProject item : params){
+		for(final RedmineProject item : params){
+			SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
+				@Override
+				public void onContent(InputStream stream)
+						throws XmlPullParserException, IOException, SQLException {
+					helperSetupParserStream(stream,parser);
+					parser.parse(item);
+				}
+			};
 			url.setProject(item);
 			fetchData(client,connection, url, handler);
 		}

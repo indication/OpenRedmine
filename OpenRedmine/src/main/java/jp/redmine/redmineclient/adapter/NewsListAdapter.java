@@ -7,15 +7,19 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.adapter.form.NewsForm;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineNews;
-import jp.redmine.redmineclient.adapter.form.NewsForm;
 
 public class NewsListAdapter extends RedmineDaoAdapter<RedmineNews, Long, DatabaseCacheHelper> {
 	protected Integer connection_id;
 	protected Long project_id;
-	public NewsListAdapter(DatabaseCacheHelper helper, Context context) {
+	protected WebviewActionInterface action;
+	public NewsListAdapter(DatabaseCacheHelper helper, Context context, WebviewActionInterface act) {
 		super(helper, context, RedmineNews.class);
+		action = act;
 	}
 
 	public void setupParameter(int connection, long project){
@@ -33,7 +37,7 @@ public class NewsListAdapter extends RedmineDaoAdapter<RedmineNews, Long, Databa
 
 	@Override
 	protected int getItemViewId() {
-		return android.R.layout.simple_list_item_1;
+		return R.layout.listitem_news;
 	}
 
 	@Override
@@ -43,6 +47,7 @@ public class NewsListAdapter extends RedmineDaoAdapter<RedmineNews, Long, Databa
 			form = (NewsForm)view.getTag();
 		} else {
 			form = new NewsForm(view);
+			form.setupWebView(action);
 		}
 		form.setValue(data);
 	}
@@ -55,7 +60,7 @@ public class NewsListAdapter extends RedmineDaoAdapter<RedmineNews, Long, Databa
 				.where()
 				.eq(RedmineNews.CONNECTION, connection_id)
 				.and()
-				.eq(RedmineNews.NEWS_ID, project_id)
+				.eq(RedmineNews.PROJECT, project_id)
 		;
 		return builder;
 	}

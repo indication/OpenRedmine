@@ -20,6 +20,7 @@ import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.CategoryList;
 import jp.redmine.redmineclient.fragment.IssueList;
+import jp.redmine.redmineclient.fragment.NewsList;
 import jp.redmine.redmineclient.fragment.ProjectDetail;
 import jp.redmine.redmineclient.fragment.VersionList;
 import jp.redmine.redmineclient.fragment.WikiList;
@@ -181,6 +182,22 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 			}
 		}).setParam(argCategory));
 
+		// news
+		ProjectArgument argNews = new ProjectArgument();
+		argNews.setArgument();
+		argNews.importArgument(intent);
+		list.add((new CorePage<ProjectArgument>() {
+			@Override
+			public Fragment getRawFragment() {
+				return NewsList.newInstance(getParam());
+			}
+
+			@Override
+			public CharSequence getName() {
+				return getString(R.string.news);
+			}
+
+		}).setParam(argNews));
 		return list;
 	}
 

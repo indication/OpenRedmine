@@ -7,10 +7,6 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 public class RemoteUrlNews extends RemoteUrl {
 	private String project;
 
-	@Override
-	public versions getMinVersion(){
-		return versions.v130;
-	}
 	public void setProject(RedmineProject proj){
 		if(proj.getIdentifier() != null)
 			project = proj.getIdentifier();

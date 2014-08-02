@@ -8,12 +8,12 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.RedmineNews;
 import jp.redmine.redmineclient.form.helper.FormHelper;
-import jp.redmine.redmineclient.form.helper.TextileHelper;
+import jp.redmine.redmineclient.form.helper.WebViewHelper;
 
 public class NewsForm extends FormHelper {
 	public WebView webView;
 	public TextView textSubject;
-	public TextileHelper webViewHelper;
+	public WebViewHelper webViewHelper;
 	public NewsForm(View activity){
 		this.setup(activity);
 	}
@@ -25,13 +25,13 @@ public class NewsForm extends FormHelper {
 	}
 
 	public void setupWebView(WebviewActionInterface act){
-		webViewHelper = new TextileHelper(webView);
-		webViewHelper.setup();
+		webViewHelper = new WebViewHelper();
+		webViewHelper.setup(webView);
 		webViewHelper.setAction(act);
 	}
 
 	public void setValue(RedmineNews jr){
-		webViewHelper.setContent(jr.getConnectionId(), jr.getProject().getId(), jr.getDescription());
+		webViewHelper.setContent(webView, jr.getConnectionId(), jr.getProject().getId(), jr.getDescription());
 		textSubject.setText(jr.getTitle());
 	}
 

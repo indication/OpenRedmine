@@ -9,7 +9,6 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineNews;
-import jp.redmine.redmineclient.form.IMasterRecordListItemForm;
 import jp.redmine.redmineclient.adapter.form.NewsForm;
 
 public class NewsListAdapter extends RedmineDaoAdapter<RedmineNews, Long, DatabaseCacheHelper> {

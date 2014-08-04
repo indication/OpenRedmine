@@ -28,6 +28,7 @@ Features:
 * Create or modify issue/timeentry
 * Download file related with issues (saved to /sdcard/download/jp.redmine.redmineclient/)
 * View wiki
+* View news
 
 Permissions:
 * INTERNET - connect to redmine server

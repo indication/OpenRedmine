@@ -17,8 +17,8 @@
 	    android:textAppearance="?android:attr/textAppearanceLarge"
 	    tools:ignore="HardcodedText" />
 
-	<WebView
-		android:id="@+id/webView"
+	<TextView
+		android:id="@+id/textView"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content" />
 

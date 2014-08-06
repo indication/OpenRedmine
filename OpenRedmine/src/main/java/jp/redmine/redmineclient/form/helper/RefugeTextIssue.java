@@ -16,7 +16,7 @@ public class RefugeTextIssue extends RefugeText<Anchor>{
 
 	@Override
 	protected Anchor push(Matcher m) {
-		return new Anchor(m.group(1),m.group());
+		return new Anchor(m.group(1) == null ? m.group(2) : m.group(1),m.group());
 	}
 
 }

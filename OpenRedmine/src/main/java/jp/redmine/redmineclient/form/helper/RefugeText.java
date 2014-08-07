@@ -1,5 +1,7 @@
 package jp.redmine.redmineclient.form.helper;
 
+import android.text.TextUtils;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.HashMap;
@@ -19,6 +21,8 @@ public abstract class RefugeText<T> {
 	}
 
 	public String refugeadd(String input){
+		if(TextUtils.isEmpty(input))
+			return "";
 		Pattern p = getPattern();
 		String texttile = input;
 		Matcher m = p.matcher(texttile);

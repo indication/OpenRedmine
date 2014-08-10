@@ -16,6 +16,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
+import java.util.Locale;
 
 import jp.redmine.redmineclient.R;
 
@@ -166,7 +167,7 @@ abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper>
 						if(TextUtils.isEmpty(charSequence)){
 							query = getQueryBuilder();
 						} else {
-							String str = charSequence.toString().toLowerCase().trim();
+							String str = charSequence.toString().toLowerCase(Locale.getDefault()).trim();
 							query = getSearchQueryBuilder(str);
 						}
 						if(query == null)

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="3dip" >
+
+    
+	<TextView
+	    android:id="@+id/textSubject"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="5dp"
+	    android:singleLine="true"
+	    android:text="Title is very long long to display"
+	    android:textAppearance="?android:attr/textAppearanceLarge"
+	    tools:ignore="HardcodedText" />
+
+	<TextView
+		android:id="@+id/textView"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+
+
+</LinearLayout>

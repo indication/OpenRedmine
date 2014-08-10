@@ -17,7 +17,7 @@ android {
         testFunctionalTest true
     }
     lintOptions {
-        abortOnError false
+        abortOnError true
     }
     signingConfigs {
         release

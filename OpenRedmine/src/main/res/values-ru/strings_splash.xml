@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string name="app_name">OpenRedmine</string>
-	<string name="app_description"><![CDATA[
+  <string name="app_description"><![CDATA[
 OpenRedmine Android является клиентом .
 ]]></string>
   <string name="product">продукт</string>

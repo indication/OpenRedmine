@@ -14,14 +14,14 @@
         android:installLocation="auto"
         android:description="@string/app_description"
         android:restoreNeedsApplication="true">
-        <activity android:name=".SplashActivity"
+        <activity android:name=".activity.SplashActivity"
         	  android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CommonPreferenceActivity"
+        <activity android:name=".activity.CommonPreferenceActivity"
 		  android:label="@string/menu_settings"
 		  android:configChanges="orientation|screenSize|keyboardHidden">
 			<intent-filter>
@@ -29,31 +29,31 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
         </activity>
-        <activity android:name=".ConnectionListActivity"
+        <activity android:name=".activity.ConnectionListActivity"
                   android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-	    <activity android:name=".ConnectionActivity"
+	    <activity android:name=".activity.ConnectionActivity"
                       android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-		<activity android:name=".ConnectionEditActivity"
+		<activity android:name=".activity.ConnectionEditActivity"
                 	  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-	    <activity android:name=".ProjectActivity"
+	    <activity android:name=".activity.ProjectActivity"
         	      android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-	    <activity android:name=".IssueActivity"
+	    <activity android:name=".activity.IssueActivity"
                       android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-	    <activity android:name=".IssueFilterActivity"
+	    <activity android:name=".activity.IssueFilterActivity"
 	              android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-		<activity android:name=".WikiViewActivity"
+		<activity android:name=".activity.WikiViewActivity"
                           android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-        <activity android:name=".ConnectionNaviActivity"
+        <activity android:name=".activity.ConnectionNaviActivity"
 		  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-        <activity android:name=".FilterViewActivity"
+        <activity android:name=".activity.FilterViewActivity"
         	  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-		<activity android:name=".AttachmentActivity"
+		<activity android:name=".activity.AttachmentActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-		<activity android:name=".TimeEntryActivity"
+		<activity android:name=".activity.TimeEntryActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-		<activity android:name=".KanbanActivity"
+		<activity android:name=".activity.KanbanActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
-		<activity android:name=".AboutActivity"
+		<activity android:name=".activity.AboutActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
     </application>
 

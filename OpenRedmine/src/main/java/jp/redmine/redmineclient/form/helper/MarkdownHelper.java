@@ -6,26 +6,18 @@ import org.markdown4j.Markdown4jProcessor;
 
 import java.io.IOException;
 
-public class MarkdownHelper {
+public class MarkdownHelper implements ConvertToHtmlHelper {
 	private static final String TAG = MarkdownHelper.class.getSimpleName();
+	Markdown4jProcessor proc = new Markdown4jProcessor();
 
-	static public String convertMarkdownToHtml(String text, ConvertToHtmlHelper helper){
-		return convertMarkdownToHtml(text, false, helper);
-	}
-	static public String convertMarkdownToHtml(String text, boolean isDocument, ConvertToHtmlHelper helper){
-
+	@Override
+	public String getHtml(String text) {
 		String textile = text;
-		if(helper != null)
-			textile = helper.beforeParse(textile);
 		try {
-			Markdown4jProcessor proc = new Markdown4jProcessor();
 			textile = proc.process(textile);
 		} catch (IOException e) {
 			Log.e(TAG, "convertMarkdownToHtml", e);
 		}
-		if(helper != null)
-			textile = helper.afterParse(textile);
 		return  textile;
 	}
-
 }

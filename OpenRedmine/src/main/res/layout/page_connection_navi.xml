@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:validate="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+	<LinearLayout
+	    android:id="@+id/layoutHeader"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+
+		<ProgressBar
+		    style="?android:attr/progressBarStyleSmall"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" />
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/menu_settings_loading" />
+
+	</LinearLayout>
+	<WebView
+	    android:id="@+id/webView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1" />
+
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+
+	    <com.andreabaccega.widget.FormEditText
+	        style="@android:style/Widget.EditText"
+	        android:id="@+id/editToken"
+	        android:inputType="textVisiblePassword"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:ems="10"
+	        android:hint="@string/menu_setting_edit_accesstoken"
+	        android:singleLine="true"
+	        validate:testType="alphaNumeric"
+	        validate:emptyAllowed="true"  />
+	    <Button
+	        android:id="@+id/buttonSave"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:text="@android:string/ok" />
+	</LinearLayout>
+</LinearLayout>

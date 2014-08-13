@@ -27,7 +27,8 @@ See [lisence.md](OpenRedmine/src/main/res/raw/lisence.md)
 Contributors
 ==========
 *  [insink71](https://twitter.com/insink71/statuses/425297982078996480) - Promotion in [redmine wiki](http://www.redmine.org/projects/redmine/wiki/ThirdPartyTools)
-*  [box789](https://github.com/box789) - _Add russian translation
+*  [box789](https://github.com/box789) - Add russian translation
+*  [ironAss](https://github.com/ironAss) - Screen rotation support #88
 
 Used references
 ==========

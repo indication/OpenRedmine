@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineVersionListAdapter;
+import jp.redmine.redmineclient.adapter.VersionListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
@@ -22,7 +22,7 @@ import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = VersionList.class.getSimpleName();
-	private RedmineVersionListAdapter adapter;
+	private VersionListAdapter adapter;
 
 	private IssueActionInterface mListener;
 
@@ -59,7 +59,7 @@ public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new RedmineVersionListAdapter(getHelper());
+		adapter = new VersionListAdapter(getHelper());
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		adapter.setupParameter(intent.getConnectionId(), intent.getProjectId());

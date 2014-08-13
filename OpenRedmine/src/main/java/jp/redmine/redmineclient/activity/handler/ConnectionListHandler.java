@@ -2,8 +2,8 @@ package jp.redmine.redmineclient.activity.handler;
 
 import android.content.Intent;
 
-import jp.redmine.redmineclient.ConnectionActivity;
-import jp.redmine.redmineclient.ConnectionEditActivity;
+import jp.redmine.redmineclient.activity.ConnectionActivity;
+import jp.redmine.redmineclient.activity.ConnectionEditActivity;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 

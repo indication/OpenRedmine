@@ -6,6 +6,9 @@ TODO
 ===========
 - Check date to update bug (#83)
 - Add share button on issue (#18)
+
+v3.11 - 43 - 2014/08/16
+===========
 - Show project news (#17)
 
 Next Release

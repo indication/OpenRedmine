@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<TableLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" >
+
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:text="@string/ticket_project" />
+
+			<TextView
+				android:id="@+id/textProject"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="3dip"
+				android:text="@string/ticket_project"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+		</TableRow>
+
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:text="@string/ticket_created" />
+
+			<TextView
+				android:id="@+id/textCreated"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="3dip"
+				android:text="@string/ticket_created" />
+		</TableRow>
+
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:text="@string/homepage" />
+
+			<TextView
+				android:id="@+id/textHomepage"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="3dip"
+				android:text="http://example.com"
+				tools:ignore="HardcodedText"/>
+		</TableRow>
+
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:text="@string/ticket_modified" />
+
+			<TextView
+				android:id="@+id/textModified"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="3dip"
+				android:text="@string/ticket_modified_by" />
+		</TableRow>
+	</TableLayout>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_description"
+		android:layout_marginTop="10dp"/>
+	<WebView
+		android:id="@+id/webView"
+		android:layout_width="fill_parent"
+		android:layout_height="match_parent"
+		android:layout_marginLeft="10dp"/>
+</LinearLayout>

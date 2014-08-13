@@ -28,7 +28,7 @@ import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
-import jp.redmine.redmineclient.adapter.RedmineIssueViewStickyListHeadersAdapter;
+import jp.redmine.redmineclient.adapter.IssueStickyListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
@@ -37,8 +37,8 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import jp.redmine.redmineclient.form.RedmineIssueCommentForm;
-import jp.redmine.redmineclient.form.RedmineIssueViewForm;
+import jp.redmine.redmineclient.fragment.form.IssueCommentForm;
+import jp.redmine.redmineclient.fragment.form.IssueViewForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalPost;
@@ -51,7 +51,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private final String TAG = IssueView.class.getSimpleName();
-	private RedmineIssueViewStickyListHeadersAdapter adapter;
+	private IssueStickyListAdapter adapter;
     private StickyListHeadersListView list;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
@@ -60,8 +60,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	private IssueActionInterface mListener;
 	private TimeentryActionInterface mTimeEntryListener;
 	private AttachmentActionInterface mAttachmentListener;
-	private RedmineIssueViewForm formTitle;
-	private RedmineIssueCommentForm formComment;
+	private IssueViewForm formTitle;
+	private IssueCommentForm formComment;
 	private ProgressDialog dialog;
 
 	public IssueView(){
@@ -116,16 +116,16 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 
         list.addFooterView(mFooter);
 
-		adapter = new RedmineIssueViewStickyListHeadersAdapter(getHelper(),getActivity(), mActionListener);
+		adapter = new IssueStickyListAdapter(getHelper(),getActivity(), mActionListener);
         list.setAdapter(adapter);
 		
         list.setFastScrollEnabled(true);
 
 		//setup title view
-		formTitle = new RedmineIssueViewForm(getView());
+		formTitle = new IssueViewForm(getView());
 
 		//setup comment form
-		formComment = new RedmineIssueCommentForm(getView());
+		formComment = new IssueCommentForm(getView());
 
 		onRefresh(true);
 
@@ -195,7 +195,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-        View current = inflater.inflate(R.layout.issuedetail, container, false);
+        View current = inflater.inflate(R.layout.page_issue, container, false);
         list = (StickyListHeadersListView)current.findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

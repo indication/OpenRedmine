@@ -5,7 +5,6 @@ import android.net.Uri.Builder;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Xml;
 import android.widget.ArrayAdapter;
 
 import org.apache.http.Header;
@@ -21,6 +20,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,7 +41,6 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
-import jp.redmine.redmineclient.url.RemoteUrl.versions;
 
 public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	public final String CHARSET = "UTF-8";
@@ -111,7 +110,9 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	}
 
 	protected void helperSetupParserStream(InputStream stream,BaseParser<?,?> parser) throws XmlPullParserException{
-		XmlPullParser xmlPullParser = Xml.newPullParser();
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		XmlPullParser xmlPullParser = factory.newPullParser();
 		xmlPullParser.setInput(stream, CHARSET);
 		parser.setXml(xmlPullParser);
 	}
@@ -146,7 +147,6 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	}
 	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
 		url.setupRequest(requests.xml);
-		url.setupVersion(versions.v130);
 		return fetchData(type,connectionhandler, url.getUrl(connection.getUrl()),handler,puthandler);
 	}
 	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,Builder builder

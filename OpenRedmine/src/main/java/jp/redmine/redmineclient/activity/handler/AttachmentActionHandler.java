@@ -2,7 +2,7 @@ package jp.redmine.redmineclient.activity.handler;
 
 import android.content.Intent;
 
-import jp.redmine.redmineclient.AttachmentActivity;
+import jp.redmine.redmineclient.activity.AttachmentActivity;
 import jp.redmine.redmineclient.param.AttachmentArgument;
 
 public class AttachmentActionHandler extends Core implements AttachmentActionInterface {

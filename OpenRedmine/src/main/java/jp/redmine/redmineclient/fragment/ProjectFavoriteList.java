@@ -13,7 +13,7 @@ import com.j256.ormlite.android.apptools.OrmLiteFragment;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineProjectFavoriteAdapter;
+import jp.redmine.redmineclient.adapter.FavoriteProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
@@ -58,7 +58,7 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		list.setFastScrollEnabled(true);
 
-		RedmineProjectFavoriteAdapter adapter = new RedmineProjectFavoriteAdapter(getHelper(), getActivity());
+		FavoriteProjectListAdapter adapter = new FavoriteProjectListAdapter(getHelper(), getActivity());
 
 		list.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
@@ -78,7 +78,7 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View current = inflater.inflate(R.layout.stickylistheaderslist, container, false);
+		View current = inflater.inflate(R.layout.page_stickylistheaderslist, container, false);
 		list = (StickyListHeadersListView)current.findViewById(R.id.list);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override

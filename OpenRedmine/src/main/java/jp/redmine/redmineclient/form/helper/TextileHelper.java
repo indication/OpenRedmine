@@ -6,28 +6,22 @@ import net.java.textilej.parser.markup.textile.TextileDialect;
 
 import java.io.StringWriter;
 
-public class TextileHelper {
+public class TextileHelper implements ConvertToHtmlHelper {
 
+	MarkupParser parser = new MarkupParser(new TextileDialect());
 
-	static public String convertTextileToHtml(String text, ConvertToHtmlHelper helper){
-		return convertTextileToHtml(text, false, helper);
+	@Override
+	public String getHtml(String textile) {
+		return getHtml(textile, false);
 	}
-	static public String convertTextileToHtml(String text, boolean isDocument, ConvertToHtmlHelper helper){
 
-		String textile = text;
-		if(helper != null)
-			textile = helper.beforeParse(textile);
+	public String getHtml(String textile, boolean isDocument) {
 		StringWriter sw = new StringWriter();
 		HtmlDocumentBuilder builder = new HtmlDocumentBuilder(sw);
 		builder.setEmitAsDocument(isDocument);
 
-		MarkupParser parser = new MarkupParser(new TextileDialect());
 		parser.setBuilder(builder);
 		parser.parse(textile);
-		textile = sw.toString();
-		if(helper != null)
-			textile = helper.afterParse(textile);
-		return  textile;
+		return sw.toString();
 	}
-
 }

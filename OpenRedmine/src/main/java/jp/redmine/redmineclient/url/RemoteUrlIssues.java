@@ -120,10 +120,6 @@ public class RemoteUrlIssues extends RemoteUrl {
 	}
 
 	@Override
-	public versions getMinVersion(){
-		return versions.v110;
-	}
-	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
 		url.appendEncodedPath("issues."+getExtention());

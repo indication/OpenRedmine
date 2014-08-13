@@ -5,13 +5,13 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
-import jp.redmine.redmineclient.ConnectionNaviActivity;
+import jp.redmine.redmineclient.activity.ConnectionNaviActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.form.RedmineConnectionActivityForm;
+import jp.redmine.redmineclient.fragment.form.ConnectionForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
@@ -28,7 +28,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	private int idEditing = -1;
 	private static final int ACTIVITY_SUB = 1001;
-	private RedmineConnectionActivityForm form;
+	private ConnectionForm form;
 
 	private ConnectionModel modelConnection;
 	private ConnectionActionInterface mListener;
@@ -53,7 +53,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.connection, container, false);
+		return inflater.inflate(R.layout.input_connection, container, false);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		super.onActivityCreated(savedInstanceState);
 		modelConnection = new ConnectionModel(getActivity());
 
-		form = new RedmineConnectionActivityForm(getView());
+		form = new ConnectionForm(getView());
 		form.setupEvents();
 
 		form.buttonSave.setOnClickListener(new Button.OnClickListener() {

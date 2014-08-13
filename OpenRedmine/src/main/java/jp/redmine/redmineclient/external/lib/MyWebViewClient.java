@@ -91,7 +91,7 @@ public class MyWebViewClient extends WebViewClient {
 
 	private void showHttpAuthDialog( final HttpAuthHandler handler, final String host, final String realm, final String title ) {
 		LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
-		View view = inflater.inflate(R.layout.basicauthentication, null);
+		View view = inflater.inflate(R.layout.input_basicauthentication, null);
 
 		final HttpAuthDialogForm form = new HttpAuthDialogForm(view);
 		form.setUserID(UserID);

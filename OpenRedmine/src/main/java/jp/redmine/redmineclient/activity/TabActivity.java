@@ -28,7 +28,7 @@ import jp.redmine.redmineclient.activity.pager.CorePage;
 import jp.redmine.redmineclient.activity.pager.CorePager;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
 
-abstract public class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFragmentActivity<T>
+abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFragmentActivity<T>
 	implements ActivityInterface {
 	abstract protected List<CorePage> getTabs();
 	public TabActivity(){
@@ -41,7 +41,7 @@ abstract public class TabActivity<T extends OrmLiteSqliteOpenHelper> extends Orm
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		getSupportActionBar();
-		setContentView(R.layout.fragment_pager);
+		setContentView(R.layout.page_fragment_pager);
 
 		List<CorePage> list = getTabs();
 

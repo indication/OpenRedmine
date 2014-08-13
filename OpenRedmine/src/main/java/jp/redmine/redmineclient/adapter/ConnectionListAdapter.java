@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.form.RedmineConnectionListItemForm;
+import jp.redmine.redmineclient.adapter.form.ConnectionForm;
 
 import android.content.Context;
 import android.view.View;
@@ -30,11 +30,11 @@ public class ConnectionListAdapter extends RedmineDaoAdapter<RedmineConnection, 
 
 	@Override
 	protected void setupView(View view, RedmineConnection data) {
-		RedmineConnectionListItemForm form;
-		if(view.getTag() != null && view.getTag() instanceof RedmineConnectionListItemForm){
-			form = (RedmineConnectionListItemForm)view.getTag();
+		ConnectionForm form;
+		if(view.getTag() != null && view.getTag() instanceof ConnectionForm){
+			form = (ConnectionForm)view.getTag();
 		} else {
-			form = new RedmineConnectionListItemForm(view);
+			form = new ConnectionForm(view);
 		}
 		form.setValue(data);
 	}

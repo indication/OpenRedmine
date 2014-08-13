@@ -30,7 +30,7 @@
   <string name="menu_refresh">Обновить список</string>
   <string name="menu_setting_permit_unsafe">Разрешить небезопасное SSL-соединение</string>
   <string name="menu_setting_label_certkey">Ключ сертификации (необязательно)</string>
-  <string name="menu_setting_message_certkey">NOTE: If you input certification MD5 key, validate certification is same fingerprint.</string>
+  <string name="menu_setting_message_certkey">ВНИМАНИЕ: При вводе сертификации ключ MD5, проверки сертификация же отпечатков пальцев.</string>
   <string name="remove_cache_all">Очистить кэш</string>
   <string name="format_name">%1$s</string>
   <string name="format_date">%tF</string>
@@ -106,5 +106,7 @@
   <string name="wiki">Wiki</string>
   <string name="connection">подключение</string>
   <string name="favorite">любимый</string>
-  <string name="information">Информация</string>
+  <string name="information">информация</string>
+  <string name="homepage">домашняя страница</string>
+  <string name="news">News</string>
 </resources>

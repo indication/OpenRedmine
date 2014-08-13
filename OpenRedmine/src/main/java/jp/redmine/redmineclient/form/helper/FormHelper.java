@@ -10,6 +10,7 @@ import jp.redmine.redmineclient.entity.TypeConverter;
 
 import com.andreabaccega.widget.FormEditText;
 
+import android.annotation.SuppressLint;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
@@ -121,6 +122,7 @@ abstract public class FormHelper {
 	 * @param us User
 	 * @return User name
 	 */
+	@SuppressLint("StringFormatMatches")
 	protected String convertUserName(View form,RedmineUser us){
 		if(us == null)
 			return "";

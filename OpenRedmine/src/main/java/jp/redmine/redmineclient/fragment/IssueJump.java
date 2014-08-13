@@ -6,7 +6,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.form.RedmineIssueJumpForm;
+import jp.redmine.redmineclient.fragment.form.IssueJumpForm;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 public class IssueJump extends OrmLiteFragment<DatabaseCacheHelper> {
 
-	private RedmineIssueJumpForm form;
+	private IssueJumpForm form;
 	private IssueActionInterface mListener;
 
 	public IssueJump(){
@@ -34,13 +34,13 @@ public class IssueJump extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.issuejump, container, false);
+		return inflater.inflate(R.layout.listheader_issuejump, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		form = new RedmineIssueJumpForm(getView());
+		form = new IssueJumpForm(getView());
 
 		form.buttonOK.setOnClickListener(new OnClickListener() {
 

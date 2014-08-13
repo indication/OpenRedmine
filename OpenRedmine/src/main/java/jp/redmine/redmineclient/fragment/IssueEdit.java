@@ -15,7 +15,7 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.RedmineIssueEditForm;
+import jp.redmine.redmineclient.fragment.form.IssueEditForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssuePost;
@@ -34,7 +34,7 @@ import android.widget.Toast;
 public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private static final String TAG = "IssueEdit";
 
-	private RedmineIssueEditForm form;
+	private IssueEditForm form;
 	private ProgressDialog dialog;
 	private IssueActionInterface mListener;
 
@@ -57,13 +57,13 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.issuedetailedit, container, false);
+		return inflater.inflate(R.layout.input_issue, container, false);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		form = new RedmineIssueEditForm(getView());
+		form = new IssueEditForm(getView());
 		form.setupDatabase(getHelper());
 
 

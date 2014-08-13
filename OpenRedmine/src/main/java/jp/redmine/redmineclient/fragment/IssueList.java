@@ -7,17 +7,17 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
-import jp.redmine.redmineclient.FilterViewActivity;
+import jp.redmine.redmineclient.activity.FilterViewActivity;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.adapter.RedmineIssueListAdapter;
+import jp.redmine.redmineclient.adapter.IssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.form.RedmineIssueFilterHeader;
+import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -50,7 +50,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
-	private RedmineIssueListAdapter adapter;
+	private IssueListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
@@ -104,7 +104,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		getListView().setFastScrollEnabled(true);
 		getListView().setTextFilterEnabled(true);
 
-		adapter = new RedmineIssueListAdapter(getHelper(), getActivity());
+		adapter = new IssueListAdapter(getHelper(), getActivity());
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument( getArguments() );
 		if(intent.hasFilterId()){
@@ -166,7 +166,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		mHeader = inflater.inflate(R.layout.filterheader,null);
+		mHeader = inflater.inflate(R.layout.listheader_filter,null);
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
@@ -265,7 +265,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(adapter == null)
 			return;
 		adapter.notifyDataSetChanged();
-		RedmineIssueFilterHeader form = new RedmineIssueFilterHeader(mHeader);
+		IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
 		form.setValue(adapter.getParameter());
 
 	}

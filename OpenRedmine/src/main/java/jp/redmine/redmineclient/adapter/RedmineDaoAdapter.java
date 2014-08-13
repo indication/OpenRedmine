@@ -14,13 +14,13 @@ import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.support.DatabaseResults;
 
 import java.sql.SQLException;
+import java.util.Locale;
 
 import jp.redmine.redmineclient.R;
 
-public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper>
+abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper>
 		extends BaseAdapter
 		implements Filterable
 {
@@ -167,7 +167,7 @@ public abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper
 						if(TextUtils.isEmpty(charSequence)){
 							query = getQueryBuilder();
 						} else {
-							String str = charSequence.toString().toLowerCase().trim();
+							String str = charSequence.toString().toLowerCase(Locale.getDefault()).trim();
 							query = getSearchQueryBuilder(str);
 						}
 						if(query == null)

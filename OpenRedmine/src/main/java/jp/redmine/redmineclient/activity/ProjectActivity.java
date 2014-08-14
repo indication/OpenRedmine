@@ -57,8 +57,8 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argList.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return IssueList.newInstance(getParam());
+			public Fragment getRawFragment(ProjectArgument param) {
+				return IssueList.newInstance(param);
 			}
 
 			@Override
@@ -98,8 +98,8 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				argUser.setFilterId(target.getId());
 				list.add((new CorePage<FilterArgument>() {
 					@Override
-					public Fragment getRawFragment() {
-						return IssueList.newInstance(getParam());
+					public Fragment getRawFragment(FilterArgument param) {
+						return IssueList.newInstance(param);
 					}
 
 					@Override
@@ -122,8 +122,8 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argProject.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return ProjectDetail.newInstance(getParam());
+			public Fragment getRawFragment(ProjectArgument param) {
+				return ProjectDetail.newInstance(param);
 			}
 
 			@Override
@@ -138,8 +138,8 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argWiki.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return WikiList.newInstance(getParam());
+			public Fragment getRawFragment(ProjectArgument param) {
+				return WikiList.newInstance(param);
 			}
 
 			@Override
@@ -155,8 +155,8 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argVersion.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return VersionList.newInstance(getParam());
+			public Fragment getRawFragment(ProjectArgument param) {
+				return VersionList.newInstance(param);
 			}
 
 			@Override
@@ -172,8 +172,8 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argCategory.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return CategoryList.newInstance(getParam());
+			public Fragment getRawFragment(ProjectArgument param) {
+				return CategoryList.newInstance(param);
 			}
 
 			@Override
@@ -188,8 +188,8 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argNews.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return NewsList.newInstance(getParam());
+			public Fragment getRawFragment(ProjectArgument param) {
+				return NewsList.newInstance(param);
 			}
 
 			@Override

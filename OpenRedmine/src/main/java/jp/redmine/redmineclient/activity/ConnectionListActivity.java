@@ -1,17 +1,16 @@
 package jp.redmine.redmineclient.activity;
 
+import android.support.v4.app.Fragment;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.TabActivity;
 import jp.redmine.redmineclient.activity.pager.CorePage;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.ConnectionList;
 import jp.redmine.redmineclient.fragment.ProjectFavoriteList;
-
-import android.support.v4.app.Fragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
@@ -24,7 +23,7 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 		List<CorePage> list = new ArrayList<CorePage>();
 		list.add((new CorePage<Void>() {
 			@Override
-			public Fragment getRawFragment() {
+			public Fragment getRawFragment(Void param) {
 				return ConnectionList.newInstance();
 			}
 
@@ -41,7 +40,7 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 
 		list.add((new CorePage<Void>() {
 			@Override
-			public Fragment getRawFragment() {
+			public Fragment getRawFragment(Void param) {
 				return ProjectFavoriteList.newInstance();
 			}
 

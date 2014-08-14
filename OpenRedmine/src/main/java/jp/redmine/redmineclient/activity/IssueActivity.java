@@ -75,8 +75,8 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 			argList.importArgument(intent);
 			list.add((new CorePage<IssueArgument>() {
 				@Override
-				public Fragment getRawFragment() {
-					return IssueView.newInstance(getParam());
+				public Fragment getRawFragment(IssueArgument param) {
+					return IssueView.newInstance(param);
 				}
 
 				@Override
@@ -97,8 +97,8 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 			argTimeentry.importArgument(intent);
 			list.add((new CorePage<TimeEntryArgument>() {
 				@Override
-				public Fragment getRawFragment() {
-					return TimeEntryEdit.newInstance(getParam());
+				public Fragment getRawFragment(TimeEntryArgument param) {
+					return TimeEntryEdit.newInstance(param);
 				}
 
 				@Override
@@ -118,8 +118,8 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		argEdit.importArgument(intent);
 		list.add((new CorePage<IssueArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return IssueEdit.newInstance(getParam());
+			public Fragment getRawFragment(IssueArgument param) {
+				return IssueEdit.newInstance(param);
 			}
 
 			@Override

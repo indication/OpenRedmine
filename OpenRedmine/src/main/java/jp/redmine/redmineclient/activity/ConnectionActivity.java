@@ -47,8 +47,8 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		argList.importArgument(intent);
 		list.add((new CorePage<ConnectionArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return ProjectList.newInstance(getParam());
+			public Fragment getRawFragment(ConnectionArgument param) {
+				return ProjectList.newInstance(param);
 			}
 
 			@Override
@@ -68,8 +68,8 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		argJump.importArgument(intent);
 		list.add((new CorePage<ConnectionArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return IssueJump.newInstance(getParam());
+			public Fragment getRawFragment(ConnectionArgument param) {
+				return IssueJump.newInstance(param);
 			}
 
 			@Override
@@ -106,8 +106,8 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				argIssue.setFilterId(target.getId());
 				list.add((new CorePage<FilterArgument>() {
 					@Override
-					public Fragment getRawFragment() {
-						return IssueList.newInstance(getParam());
+					public Fragment getRawFragment(FilterArgument param) {
+						return IssueList.newInstance(param);
 					}
 
 					@Override

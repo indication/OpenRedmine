@@ -32,7 +32,7 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 
 		list.add((new CorePage<Void>() {
 			@Override
-			public Fragment getRawFragment() {
+			public Fragment getRawFragment(Void param) {
 				return new Fragment(){
 
 					@Override
@@ -70,8 +70,8 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setResource(R.raw.lisence);
 		list.add((new CorePage<ResourceArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return ResourceMarkdown.newInstance(getParam());
+			public Fragment getRawFragment(ResourceArgument param) {
+				return ResourceMarkdown.newInstance(param);
 			}
 
 			@Override
@@ -90,8 +90,8 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setResource(R.raw.version);
 		list.add((new CorePage<ResourceArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return ResourceMarkdown.newInstance(getParam());
+			public Fragment getRawFragment(ResourceArgument param) {
+				return ResourceMarkdown.newInstance(param);
 			}
 
 			@Override
@@ -110,8 +110,8 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setResource(R.raw.store);
 		list.add((new CorePage<ResourceArgument>() {
 			@Override
-			public Fragment getRawFragment() {
-				return ResourceMarkdown.newInstance(getParam());
+			public Fragment getRawFragment(ResourceArgument param) {
+				return ResourceMarkdown.newInstance(param);
 			}
 
 			@Override

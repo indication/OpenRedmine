@@ -13,7 +13,14 @@ Next Release
 
 v3.11 - 43 - 2014/08/16
 ===========
-- Show project news (#17)
+- Show project news (#17,#118)
+-  Add projectpage (#116)
+-  Refactor wiki (#114)
+ - Support for issue id with brackets
+ - Use factory method about XmlPullParser
+ -  Add parent page
+ - Refactor wiki
+- Fix builds (#115,#119)
 
 v3.10 - 42 - 2014/06/28
 ===========

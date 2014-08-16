@@ -46,48 +46,36 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		argList.setArgument();
 		argList.importArgument(intent);
 		list.add((new CorePage<ConnectionArgument>() {
-			@Override
-			public Fragment getRawFragment(ConnectionArgument param) {
-				return ProjectList.newInstance(param);
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.ticket_project);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_mapmode;
-			}
-		}).setParam(argList));
+					@Override
+					public Fragment getRawFragment(ConnectionArgument param) {
+						return ProjectList.newInstance(param);
+					}
+				})
+				.setParam(argList)
+				.setName(getString(R.string.ticket_project))
+				.setIcon(android.R.drawable.ic_menu_mapmode)
+		);
 
 		// Direct issue jump list
 		ConnectionArgument argJump = new ConnectionArgument();
 		argJump.setArgument();
 		argJump.importArgument(intent);
 		list.add((new CorePage<ConnectionArgument>() {
-			@Override
-			public Fragment getRawFragment(ConnectionArgument param) {
-				return IssueJump.newInstance(param);
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.ticket_jump);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_directions;
-			}
-		}).setParam(argJump));
+					@Override
+					public Fragment getRawFragment(ConnectionArgument param) {
+						return IssueJump.newInstance(param);
+					}
+				})
+						.setParam(argJump)
+						.setName(getString(R.string.ticket_jump))
+						.setIcon(android.R.drawable.ic_menu_directions)
+		);
 
 
 
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
 		try {
-			final RedmineUser user = mUserModel.fetchCurrentUser(intent.getConnectionId());
+			RedmineUser user = mUserModel.fetchCurrentUser(intent.getConnectionId());
 			if(user != null){
 				RedmineFilter filter = new RedmineFilter();
 				filter.setConnectionId(intent.getConnectionId());
@@ -105,21 +93,15 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				argIssue.importArgument(intent);
 				argIssue.setFilterId(target.getId());
 				list.add((new CorePage<FilterArgument>() {
-					@Override
-					public Fragment getRawFragment(FilterArgument param) {
-						return IssueList.newInstance(param);
-					}
-
-					@Override
-					public CharSequence getName() {
-						return user.getName();
-					}
-
-					@Override
-					public Integer getIcon() {
-						return R.drawable.ic_action_user;
-					}
-				}).setParam(argIssue));
+							@Override
+							public Fragment getRawFragment(FilterArgument param) {
+								return IssueList.newInstance(param);
+							}
+						})
+								.setParam(argIssue)
+								.setName(user.getName())
+								.setIcon(R.drawable.ic_action_user)
+				);
 			}
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);

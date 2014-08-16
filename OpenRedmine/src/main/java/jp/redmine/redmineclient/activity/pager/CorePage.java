@@ -6,7 +6,9 @@ import java.lang.ref.WeakReference;
 
 abstract public class CorePage<T> {
 	abstract protected Fragment getRawFragment(T param);
-	abstract public CharSequence getName();
+	String title = "";
+	Integer icon = null;
+	boolean isDefault = false;
 	private T param;
 	private WeakReference<Fragment> fragment;
 	public Fragment getFragment(){
@@ -24,10 +26,25 @@ abstract public class CorePage<T> {
 	public T getParam(){
 		return param;
 	}
+	public  CorePage<T> setName(String name){
+		title = name;
+		return this;
+	}
+	public CharSequence getName(){
+		return title;
+	}
+	public  CorePage<T> setIcon(Integer ic){
+		icon = ic;
+		return this;
+	}
 	public Integer getIcon(){
-		return null;
+		return icon;
+	}
+	public  CorePage<T> setDefault(boolean id){
+		isDefault = id;
+		return this;
 	}
 	public boolean isDefault(){
-		return false;
+		return isDefault;
 	}
 }

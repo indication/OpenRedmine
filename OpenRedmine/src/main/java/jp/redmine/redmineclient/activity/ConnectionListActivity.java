@@ -22,38 +22,26 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 
 		List<CorePage> list = new ArrayList<CorePage>();
 		list.add((new CorePage<Void>() {
-			@Override
-			public Fragment getRawFragment(Void param) {
-				return ConnectionList.newInstance();
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.connection);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_mapmode;
-			}
-		}).setParam(null));
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return ConnectionList.newInstance();
+					}
+				})
+						.setParam(null)
+						.setName(getString(R.string.connection))
+						.setIcon(android.R.drawable.ic_menu_mapmode)
+		);
 
 		list.add((new CorePage<Void>() {
-			@Override
-			public Fragment getRawFragment(Void param) {
-				return ProjectFavoriteList.newInstance();
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.favorite);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.btn_star;
-			}
-		}).setParam(null));
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return ProjectFavoriteList.newInstance();
+					}
+				})
+				.setParam(null)
+				.setName(getString(R.string.favorite))
+				.setIcon(android.R.drawable.btn_star)
+		);
 		return list;
 	}
 }

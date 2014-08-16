@@ -74,64 +74,46 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 			argList.setArgument();
 			argList.importArgument(intent);
 			list.add((new CorePage<IssueArgument>() {
-				@Override
-				public Fragment getRawFragment(IssueArgument param) {
-					return IssueView.newInstance(param);
-				}
+						@Override
+						public Fragment getRawFragment(IssueArgument param) {
+							return IssueView.newInstance(param);
+						}
 
-				@Override
-				public CharSequence getName() {
-					return getString(R.string.ticket_issue);
-				}
-
-				@Override
-				public Integer getIcon() {
-					return R.drawable.ic_action_message;
-				}
-			}).setParam(argList));
+					})
+					.setParam(argList)
+					.setName(getString(R.string.ticket_issue))
+					.setIcon(R.drawable.ic_action_message)
+			);
 
 			// Time Entry
-
 			TimeEntryArgument argTimeentry = new TimeEntryArgument();
 			argTimeentry.setArgument();
 			argTimeentry.importArgument(intent);
 			list.add((new CorePage<TimeEntryArgument>() {
-				@Override
-				public Fragment getRawFragment(TimeEntryArgument param) {
-					return TimeEntryEdit.newInstance(param);
-				}
-
-				@Override
-				public CharSequence getName() {
-					return getString(R.string.ticket_time);
-				}
-
-				@Override
-				public Integer getIcon() {
-					return android.R.drawable.ic_menu_recent_history;
-				}
-			}).setParam(argTimeentry));
+						@Override
+						public Fragment getRawFragment(TimeEntryArgument param) {
+							return TimeEntryEdit.newInstance(param);
+						}
+				})
+				.setParam(argTimeentry)
+				.setName(getString(R.string.ticket_time))
+				.setIcon(android.R.drawable.ic_menu_recent_history)
+			);
 		}
 
 		IssueArgument argEdit = new IssueArgument();
 		argEdit.setArgument();
 		argEdit.importArgument(intent);
 		list.add((new CorePage<IssueArgument>() {
-			@Override
-			public Fragment getRawFragment(IssueArgument param) {
-				return IssueEdit.newInstance(param);
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.edit);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_edit;
-			}
-		}).setParam(argEdit));
+					@Override
+					public Fragment getRawFragment(IssueArgument param) {
+						return IssueEdit.newInstance(param);
+					}
+				})
+				.setParam(argEdit)
+				.setName(getString(R.string.edit))
+				.setIcon(android.R.drawable.ic_menu_edit)
+		);
 
 
 		return list;

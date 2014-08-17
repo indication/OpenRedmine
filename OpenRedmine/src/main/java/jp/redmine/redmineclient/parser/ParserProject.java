@@ -38,6 +38,8 @@ public class ParserProject extends BaseParserInternal<RedmineConnection,RedmineP
 			item.setDescription(getNextText());
 		} else if("homepage".equalsIgnoreCase(xml.getName())){
 			item.setHomepage(getNextText());
+		} else if(equalsTagName("status")){
+			item.setStatus(RedmineProject.Status.getValueOf(getTextInteger()));
 		} else if("parent".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;

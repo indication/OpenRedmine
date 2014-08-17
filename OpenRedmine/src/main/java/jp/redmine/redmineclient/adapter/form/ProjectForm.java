@@ -2,7 +2,6 @@ package jp.redmine.redmineclient.adapter.form;
 
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import jp.redmine.redmineclient.R;
@@ -25,8 +24,9 @@ public class ProjectForm extends FormHelper {
 
 
 	public void setValue(RedmineProject rd){
+		performSetEnabled(textSubject, rd.getStatus().isUpdateable());
 		textSubject.setText(rd.getName());
-		ratingBar.setChecked(rd.getFavorite() != null && rd.getFavorite() > 0 ? true : false);
+		ratingBar.setChecked(rd.getFavorite() > 0);
 
 	}
 	public void getValue(RedmineProject rd){

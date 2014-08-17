@@ -79,6 +79,11 @@
 	<string name="relation_follows">%1$d days follows</string>
 	<string name="relation_copied_to">Copied</string>
 
+	<string name="project_status_none"></string>
+	<string name="project_status_active">Active</string>
+	<string name="project_status_closed">Closed</string>
+	<string name="project_status_archived">Archived</string>
+
 	<string name="ascending">ascending</string>
 	<string name="descending">descending</string>
 	<string name="menu_setting_goto_redmine">Get token</string>

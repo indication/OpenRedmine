@@ -77,6 +77,10 @@
   <string name="relation_precedes">%1$d дн. до</string>
   <string name="relation_follows">%1$d дн. после</string>
   <string name="relation_copied_to">Скопирована в</string>
+  <string name="project_status_none"></string>
+  <string name="project_status_active">Active</string>
+  <string name="project_status_closed">Closed</string>
+  <string name="project_status_archived">Archived</string>
   <string name="ascending">по возрастанию</string>
   <string name="descending">по убыванию</string>
   <string name="menu_setting_goto_redmine">Получить ключ</string>

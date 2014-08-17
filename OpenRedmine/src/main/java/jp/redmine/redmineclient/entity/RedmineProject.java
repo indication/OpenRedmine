@@ -1,15 +1,19 @@
 package jp.redmine.redmineclient.entity;
 
-import java.util.Date;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Date;
+
+import jp.redmine.redmineclient.R;
 
 @DatabaseTable
 public class RedmineProject implements IMasterRecord {
 	public final static String ID = "id";
 	public final static String CONNECTION = "connection_id";
 	public final static String PROJECT_ID = "project_id";
-	public final static String NAME = "name";
+	public final static String NAME = "kind";
 	public final static String FAVORITE = "favorite";
 
     @DatabaseField(generatedId = true)
@@ -36,7 +40,43 @@ public class RedmineProject implements IMasterRecord {
     private Integer favorite;
     @DatabaseField
     private Integer parent;
+	@DatabaseField(dataType = DataType.ENUM_INTEGER, unknownEnumName = "None")
+	private Status status;
 
+	public enum Status {
+		None		(0	, true,	R.string.project_status_none),
+		Active		(1	, true,	R.string.project_status_active),
+		Closed		(2	, false,R.string.project_status_closed),
+		Archived	(9	, false,R.string.project_status_archived),
+		;
+
+		Status(int nm, boolean u, int r){
+			this.kind = nm;
+			this.res = r;
+			this.isUpdateable = u;
+		}
+		private int kind;
+		private int res;
+
+		private boolean isUpdateable;
+		public int getKind(){
+			return kind;
+		}
+		public int getResourceId(){
+			return res;
+		}
+		public boolean isUpdateable() {
+			return isUpdateable;
+		}
+
+		public static Status getValueOf(int kind){
+			for(Status i : values()){
+				if(i.getKind() == kind)
+					return i;
+			}
+			return null;
+		}
+	}
 
     @Override
     public String toString(){
@@ -186,7 +226,7 @@ public class RedmineProject implements IMasterRecord {
 	 * @return favorite
 	 */
 	public Integer getFavorite() {
-		return favorite;
+		return favorite == null ? 0 : favorite;
 	}
 
 	/**
@@ -201,6 +241,14 @@ public class RedmineProject implements IMasterRecord {
 	 */
 	public void setParent(Integer parent) {
 		this.parent = parent;
+	}
+
+	public Status getStatus() {
+		return status == null ? Status.None : status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	/**

@@ -77,6 +77,10 @@
   <string name="relation_precedes">%1$d日遅れ</string>
   <string name="relation_follows">%1$d日先行</string>
   <string name="relation_copied_to">コピー</string>
+  <string name="project_status_none"></string>
+  <string name="project_status_active">Active</string>
+  <string name="project_status_closed">Closed</string>
+  <string name="project_status_archived">Archived</string>
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
   <string name="menu_setting_goto_redmine">取得</string>

@@ -277,6 +277,11 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			formTitle.setValue(issue);
 			adapter.setupParameter(intent.getConnectionId(), issue.getId());
 			adapter.notifyDataSetChanged();
+			if(!issue.getProject().getStatus().isUpdateable()) {
+				formComment.hide();
+			} else {
+				formComment.show();
+			}
 		}
 
 		if(adapter.getJournalCount() < 1 && isFetch){

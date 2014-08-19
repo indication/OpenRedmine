@@ -36,14 +36,15 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="right|center_vertical"
-				android:text="@string/ticket_created" />
+				android:text="@string/ticket_status" />
 
 			<TextView
-				android:id="@+id/textCreated"
+				android:id="@+id/textStatus"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="3dip"
-				android:text="@string/ticket_created" />
+				android:text="@string/project_status_active"
+				tools:ignore="HardcodedText"/>
 		</TableRow>
 
 		<TableRow
@@ -63,6 +64,24 @@
 				android:layout_marginLeft="3dip"
 				android:text="http://example.com"
 				tools:ignore="HardcodedText"/>
+		</TableRow>
+
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:text="@string/ticket_created" />
+
+			<TextView
+				android:id="@+id/textCreated"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="3dip"
+				android:text="@string/ticket_created" />
 		</TableRow>
 
 		<TableRow

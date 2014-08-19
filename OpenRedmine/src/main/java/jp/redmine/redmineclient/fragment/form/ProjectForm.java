@@ -14,6 +14,7 @@ import jp.redmine.redmineclient.form.helper.WebViewHelper;
 
 public class ProjectForm extends FormHelper {
 	public TextView textProject;
+	public TextView textStatus;
 	public TextView textHomepage;
 	public TextView textCreated;
 	public TextView textModified;
@@ -34,6 +35,7 @@ public class ProjectForm extends FormHelper {
 
 	public void setup(View view){
 		textProject = (TextView)view.findViewById(R.id.textProject);
+		textStatus = (TextView)view.findViewById(R.id.textStatus);
 		textHomepage = (TextView)view.findViewById(R.id.textHomepage);
 		textCreated = (TextView)view.findViewById(R.id.textCreated);
 		textModified = (TextView)view.findViewById(R.id.textModified);
@@ -46,6 +48,7 @@ public class ProjectForm extends FormHelper {
 
 	public void setValue(RedmineProject rd){
 		setMasterName(textProject, rd);
+		textStatus.setText(textStatus.getContext().getString(rd.getStatus().getResourceId()));
 		textViewHelper.setContent(textHomepage, rd.getConnectionId(), rd.getId(), nvl(rd.getHomepage()));
 		webViewHelper.setContent(webView, rd.getConnectionId(), rd.getId(), nvl(rd.getDescription()));
 		setDateTime(textCreated, rd.getCreated());

@@ -47,6 +47,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setIntent(getIntent());
 
 		// setup navigation
+		boolean isEditable = true;
 		try {
 			RedmineProject proj = null;
 			if(intent.getProjectId() < 0){
@@ -60,6 +61,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 			}
 			if(proj != null && proj.getId() != null){
 				setTitle(proj.getName());
+				isEditable = proj.getStatus().isUpdateable();
 			}
 		} catch (SQLException e) {
 			Log.e(TAG, "getTabs", e);
@@ -68,7 +70,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		boolean isValidIssue = intent.getIssueId() > 0;
 
 		List<CorePage> list = new ArrayList<CorePage>();
-		if(isValidIssue){
+		if(isValidIssue) {
 			// Issue view
 			IssueArgument argList = new IssueArgument();
 			argList.setArgument();
@@ -80,11 +82,12 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 						}
 
 					})
-					.setParam(argList)
-					.setName(getString(R.string.ticket_issue))
-					.setIcon(R.drawable.ic_action_message)
+							.setParam(argList)
+							.setName(getString(R.string.ticket_issue))
+							.setIcon(R.drawable.ic_action_message)
 			);
-
+		}
+		if(isValidIssue && isEditable){
 			// Time Entry
 			TimeEntryArgument argTimeentry = new TimeEntryArgument();
 			argTimeentry.setArgument();
@@ -101,19 +104,21 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 			);
 		}
 
-		IssueArgument argEdit = new IssueArgument();
-		argEdit.setArgument();
-		argEdit.importArgument(intent);
-		list.add((new CorePage<IssueArgument>() {
-					@Override
-					public Fragment getRawFragment(IssueArgument param) {
-						return IssueEdit.newInstance(param);
-					}
-				})
-				.setParam(argEdit)
-				.setName(getString(R.string.edit))
-				.setIcon(android.R.drawable.ic_menu_edit)
-		);
+		if(isEditable) {
+			IssueArgument argEdit = new IssueArgument();
+			argEdit.setArgument();
+			argEdit.importArgument(intent);
+			list.add((new CorePage<IssueArgument>() {
+						@Override
+						public Fragment getRawFragment(IssueArgument param) {
+							return IssueEdit.newInstance(param);
+						}
+					})
+							.setParam(argEdit)
+							.setName(getString(R.string.edit))
+							.setIcon(android.R.drawable.ic_menu_edit)
+			);
+		}
 
 
 		return list;

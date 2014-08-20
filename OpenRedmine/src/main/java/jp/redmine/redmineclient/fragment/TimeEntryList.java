@@ -1,23 +1,24 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
 import jp.redmine.redmineclient.adapter.IssueTimeEntryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.param.IssueArgument;
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
 
 public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private IssueTimeEntryListAdapter adapter;
@@ -37,13 +38,7 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(TimeentryActionInterface.class);
-		}
-		if(mListener == null){
-			//setup empty events
-			mListener = new TimeentryActionEmptyHandler();
-		}
+		mListener = ActivityHandler.getHandler(activity, TimeentryActionInterface.class);
 
 	}
 	@Override

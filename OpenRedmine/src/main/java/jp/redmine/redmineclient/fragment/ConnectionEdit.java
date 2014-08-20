@@ -1,20 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.j256.ormlite.android.apptools.OrmLiteFragment;
-
-import jp.redmine.redmineclient.activity.ConnectionNaviActivity;
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
-import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.fragment.form.ConnectionForm;
-import jp.redmine.redmineclient.model.ConnectionModel;
-import jp.redmine.redmineclient.param.ConnectionArgument;
-import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.ConnectionNaviActivity;
+import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.fragment.form.ConnectionForm;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
 
 public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
@@ -88,14 +89,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(ConnectionActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new ConnectionActionEmptyHandler();
-		}
-
+		mListener = ActivityHandler.getHandler(activity, ConnectionActionInterface.class);
 	}
 
 	@Override

@@ -19,13 +19,9 @@ import com.j256.ormlite.android.apptools.OrmLiteFragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.AttachmentActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.activity.handler.TimeentryActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
-import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.IssueStickyListAdapter;
@@ -39,6 +35,7 @@ import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.fragment.form.IssueCommentForm;
 import jp.redmine.redmineclient.fragment.form.IssueViewForm;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalPost;
@@ -96,19 +93,10 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			ActivityInterface aif = (ActivityInterface)activity;
-			mActionListener		= aif.getHandler(WebviewActionInterface.class);
-			mListener			= aif.getHandler(IssueActionInterface.class);
-			mTimeEntryListener	= aif.getHandler(TimeentryActionInterface.class);
-			mAttachmentListener	= aif.getHandler(AttachmentActionInterface.class);
-		}
-		//setup empty events
-		if(mActionListener		== null)	mActionListener		= new WebviewActionEmptyHandler();
-		if(mListener			== null)	mListener			= new IssueActionEmptyHandler();
-		if(mTimeEntryListener	== null)	mTimeEntryListener	= new TimeentryActionEmptyHandler();
-		if(mAttachmentListener	== null)	mAttachmentListener	= new AttachmentActionEmptyHandler();
-
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
+		mActionListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
+		mTimeEntryListener = ActivityHandler.getHandler(activity, TimeentryActionInterface.class);
+		mAttachmentListener = ActivityHandler.getHandler(activity, AttachmentActionInterface.class);
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {

@@ -12,12 +12,12 @@ import com.j256.ormlite.android.apptools.OrmLiteFragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.WebviewActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.ProjectForm;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
@@ -28,13 +28,7 @@ public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler( WebviewActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new WebviewActionEmptyHandler();
-		}
+		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
 
 	}
 	public ProjectDetail(){

@@ -11,11 +11,11 @@ import android.widget.BaseAdapter;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.FavoriteProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
@@ -35,15 +35,7 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			ActivityInterface aif = (ActivityInterface)activity;
-			mListener = aif.getHandler(IssueActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new IssueActionEmptyHandler();
-		}
-
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 	}
 
 	@Override

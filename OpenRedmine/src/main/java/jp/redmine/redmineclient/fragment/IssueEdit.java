@@ -1,12 +1,23 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
+
 import java.sql.SQLException;
 import java.util.List;
 
-import com.j256.ormlite.android.apptools.OrmLiteFragment;
-
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -16,20 +27,10 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.IssueEditForm;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssuePost;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private static final String TAG = "IssueEdit";
@@ -82,13 +83,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(IssueActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new IssueActionEmptyHandler();
-		}
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 
 	}
 

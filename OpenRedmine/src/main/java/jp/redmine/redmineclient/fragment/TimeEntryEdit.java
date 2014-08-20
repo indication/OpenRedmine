@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.fragment;
 
 import java.sql.SQLException;
+import java.util.Calendar;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
@@ -95,6 +96,9 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 			} catch (SQLException e) {
 				Log.e("SelectDataTask","ParserIssue",e);
 			}
+		} else {
+			Calendar cal = Calendar.getInstance();
+			timeentry.setSpentsOn(cal.getTime());
 		}
 		form.setValue(timeentry);
 	}

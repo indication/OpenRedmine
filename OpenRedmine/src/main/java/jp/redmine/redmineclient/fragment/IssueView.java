@@ -201,7 +201,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                Object item = adapter.getItem(position);
+                Object item = id < 0 ? null : adapter.getItem(position);
                 if (item == null) {
                 } else if (item instanceof RedmineTimeEntry) {
                     RedmineTimeEntry entry = (RedmineTimeEntry) item;

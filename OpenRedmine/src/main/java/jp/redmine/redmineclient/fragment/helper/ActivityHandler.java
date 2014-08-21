@@ -33,7 +33,7 @@ public class ActivityHandler {
 				@Override
 				public void issue(int connection, int issueid) {}
 				@Override
-				public boolean url(String url) {return false;}
+				public boolean url(String url, Integer connection) {return false;}
 				@Override
 				public void wiki(int connection, long projectid, String title) {}
 			};

@@ -7,10 +7,12 @@ import jp.redmine.redmineclient.activity.IssueActivity;
 import jp.redmine.redmineclient.activity.IssueFilterActivity;
 import jp.redmine.redmineclient.activity.KanbanActivity;
 import jp.redmine.redmineclient.activity.ProjectActivity;
+import jp.redmine.redmineclient.activity.WebViewActivity;
 import jp.redmine.redmineclient.activity.WikiViewActivity;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.param.WikiArgument;
 
 public class IssueViewHandler extends Core
@@ -114,9 +116,21 @@ public class IssueViewHandler extends Core
 	}
 
 	@Override
-	public boolean url(String url) {
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		manager.kickActivity(intent);
+	public boolean url(final String url, final Integer connection) {
+		if (connection == null) {
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			manager.kickActivity(intent);
+		} else {
+			kickActivity(WebViewActivity.class, new IntentFactory() {
+				@Override
+				public void generateIntent(Intent intent) {
+					WebArgument arg = new WebArgument();
+					arg.setIntent(intent);
+					arg.setConnectionId(connection);
+					arg.setUrl(url);
+				}
+			});
+		}
 		return true;
 	}
 

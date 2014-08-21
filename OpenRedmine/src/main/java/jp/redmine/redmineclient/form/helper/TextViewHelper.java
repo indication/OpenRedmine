@@ -37,7 +37,7 @@ public class TextViewHelper {
 				if (m.find()) {
 					RedmineConvertToHtmlHelper.kickAction(action, m.replaceAll(""));
 				} else if (action != null) {
-					action.url(url);
+					action.url(url, connectionid);
 				}
 			}
 		});

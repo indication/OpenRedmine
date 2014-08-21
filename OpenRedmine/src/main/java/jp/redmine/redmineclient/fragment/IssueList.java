@@ -29,7 +29,6 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.FilterViewActivity;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.IssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -38,6 +37,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
@@ -64,14 +64,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler( IssueActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new  IssueActionEmptyHandler();
-		}
-
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 	}
 	public IssueList(){
 		super();

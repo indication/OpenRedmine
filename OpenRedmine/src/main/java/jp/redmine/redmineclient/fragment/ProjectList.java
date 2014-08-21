@@ -19,14 +19,13 @@ import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
@@ -56,20 +55,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			ActivityInterface aif = (ActivityInterface)activity;
-			mListener = aif.getHandler(IssueActionInterface.class);
-			mConnectionListener = aif.getHandler(ConnectionActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new IssueActionEmptyHandler();
-		}
-		if(mConnectionListener == null) {
-			//setup empty events
-			mConnectionListener = new ConnectionActionEmptyHandler();
-		}
-
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
+		mConnectionListener = ActivityHandler.getHandler(activity, ConnectionActionInterface.class);
 	}
 
 	@Override

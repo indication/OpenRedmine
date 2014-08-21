@@ -1,19 +1,20 @@
 package jp.redmine.redmineclient.fragment;
 
-import com.j256.ormlite.android.apptools.OrmLiteFragment;
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
-import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.fragment.form.IssueJumpForm;
-import jp.redmine.redmineclient.param.ConnectionArgument;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.fragment.form.IssueJumpForm;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 
 public class IssueJump extends OrmLiteFragment<DatabaseCacheHelper> {
 
@@ -58,13 +59,7 @@ public class IssueJump extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(IssueActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new IssueActionEmptyHandler();
-		}
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 
 	}
 

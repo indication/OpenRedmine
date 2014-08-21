@@ -19,15 +19,15 @@ import com.actionbarsherlock.view.MenuItem;
 
 import java.io.File;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.AboutActivity;
 import jp.redmine.redmineclient.activity.CommonPreferenceActivity;
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.ConnectionActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 
 public class ConnectionList extends SherlockListFragment {
 	private DatabaseHelper helperStore;
@@ -45,13 +45,7 @@ public class ConnectionList extends SherlockListFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler(ConnectionActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new ConnectionActionEmptyHandler();
-		}
+		mListener = ActivityHandler.getHandler(activity, ConnectionActionInterface.class);
 
 	}
 

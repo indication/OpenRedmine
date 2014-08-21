@@ -10,7 +10,6 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import java.sql.SQLException;
 
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.CategoryListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -18,6 +17,7 @@ import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.param.ProjectArgument;
 
 public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
@@ -29,13 +29,7 @@ public class CategoryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler( IssueActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new  IssueActionEmptyHandler();
-		}
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 
 	}
 	public CategoryList(){

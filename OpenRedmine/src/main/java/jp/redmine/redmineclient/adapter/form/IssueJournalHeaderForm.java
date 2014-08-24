@@ -1,11 +1,12 @@
 package jp.redmine.redmineclient.adapter.form;
 
+import android.view.View;
+import android.widget.TextView;
+
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
 import jp.redmine.redmineclient.form.helper.FormHelper;
-import android.view.View;
-import android.widget.TextView;
 
 public class IssueJournalHeaderForm extends FormHelper {
 	public TextView textUser;
@@ -22,11 +23,11 @@ public class IssueJournalHeaderForm extends FormHelper {
 	}
 	public void setValue(RedmineJournal jr){
 		setUserName(textUser, jr.getUser());
-		setDateTime(textDate,jr.getCreated());
+		setDateTimeSpan(textDate,jr.getCreated());
 	}
 	public void setValue(RedmineIssue jr){
 		setUserName(textUser, jr.getAuthor());
-		setDateTime(textDate,jr.getCreated());
+		setDateTimeSpan(textDate,jr.getCreated());
 	}
 
 }

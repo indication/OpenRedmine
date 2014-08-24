@@ -13,6 +13,7 @@ import com.andreabaccega.widget.FormEditText;
 import android.annotation.SuppressLint;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -171,6 +172,9 @@ abstract public class FormHelper {
 	 */
 	protected void setDateTime(TextView v,Date date){
 		v.setText(convertDateTime(v,date));
+	}
+	protected void setDateTimeSpan(TextView v,Date date){
+		v.setText(date == null ? "" : DateUtils.getRelativeTimeSpanString(date.getTime()));
 	}
 
 	/**

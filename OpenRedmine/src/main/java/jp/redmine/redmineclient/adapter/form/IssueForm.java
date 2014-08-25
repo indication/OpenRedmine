@@ -1,11 +1,11 @@
 package jp.redmine.redmineclient.adapter.form;
 
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 
 public class IssueForm extends IssueBaseForm {
 	public TextView textSubject;
@@ -29,6 +29,7 @@ public class IssueForm extends IssueBaseForm {
 		textSubject.setText(rd.getSubject());
 		textTicketid.setText("#"+rd.getIssueId().toString());
 		textDescription.setText(rd.getDescription());
+		setDateTimeSpan(textModified, rd.getModified());
 
 		boolean isEnabled = true;
 		if(rd.getStatus() != null && rd.getStatus().isIs_close()){

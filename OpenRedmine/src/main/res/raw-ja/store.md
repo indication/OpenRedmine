@@ -2,6 +2,9 @@ Title
 ===========
 OpenRedmine
 
+
+完全に無料で、GitHub上のオープンソースであるRedmineのクライアントです
+
 Description
 ==========
 OpenRedmine はアンドロイド用Redmineクライアントです。

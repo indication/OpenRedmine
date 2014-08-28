@@ -2,6 +2,11 @@ Title
 ===========
 OpenRedmine
 
+Brief description
+===========
+Клиент Redmine является полностью бесплатной открытым исходным кодом на GitHub
+
+
 Description
 ==========
 OpenRedmine Android является клиентом .

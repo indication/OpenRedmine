@@ -2,6 +2,10 @@ Title
 ===========
 OpenRedmine
 
+Brief description
+===========
+OpenRedmine is a Redmine client which is totally free and open-source on GitHub.
+
 Description
 ==========
 OpenRedmine is an android Redmine client.

@@ -9,6 +9,9 @@ TODO
 
 Next Release
 ===========
+
+v3.12 - 44 - 2014/09/06
+===========
 - Support parse Project Status on Redmine 2.5.0 (#71)
 - Show Ndays before ... etc (#28)
 

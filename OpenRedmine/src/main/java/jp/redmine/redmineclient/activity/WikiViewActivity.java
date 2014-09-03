@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import jp.redmine.redmineclient.R;
@@ -42,6 +43,8 @@ public class WikiViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelpe
 	public void onCreate(Bundle savedInstanceState) {
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			setupBreadCubs();
@@ -134,5 +137,16 @@ public class WikiViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelpe
 		if(cls.equals(AttachmentActionInterface.class))
 			return (T) new AttachmentActionHandler(registry);
 		return null;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
 	}
 }

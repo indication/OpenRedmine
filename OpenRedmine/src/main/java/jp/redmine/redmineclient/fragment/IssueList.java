@@ -1,15 +1,34 @@
 package jp.redmine.redmineclient.fragment;
 
-import java.sql.SQLException;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask.Status;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
-import jp.redmine.redmineclient.activity.FilterViewActivity;
+import java.sql.SQLException;
+
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.handler.IssueActionEmptyHandler;
+import jp.redmine.redmineclient.activity.FilterViewActivity;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.IssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -18,34 +37,15 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
+import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
+import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.AsyncTask.Status;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = IssueList.class.getSimpleName();
@@ -53,6 +53,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private IssueListAdapter adapter;
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
+	private MenuItem menu_add;
 	private View mFooter;
 	private View mHeader;
 	private long lastPos = -1;
@@ -63,14 +64,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			mListener = ((ActivityInterface)activity).getHandler( IssueActionInterface.class);
-		}
-		if(mListener == null) {
-			//setup empty events
-			mListener = new  IssueActionEmptyHandler();
-		}
-
+		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 	}
 	public IssueList(){
 		super();
@@ -254,6 +248,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			RedmineProjectModel mProject = new RedmineProjectModel(helper);
 			try {
 				project = mProject.fetchById(intent.getProjectId());
+				if(menu_add != null)
+					menu_add.setEnabled(project.getStatus().isUpdateable());
 			} catch (SQLException e) {
 				Log.e(TAG,"SelectDataTask",e);
 			}
@@ -315,6 +311,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		}
 		inflater.inflate( R.menu.refresh, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
+		menu_add = menu.findItem(R.id.menu_access_addnew);
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
 

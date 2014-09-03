@@ -47,6 +47,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setIntent(getIntent());
 
 		// setup navigation
+		boolean isEditable = true;
 		try {
 			RedmineProject proj = null;
 			if(intent.getProjectId() < 0){
@@ -60,6 +61,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 			}
 			if(proj != null && proj.getId() != null){
 				setTitle(proj.getName());
+				isEditable = proj.getStatus().isUpdateable();
 			}
 		} catch (SQLException e) {
 			Log.e(TAG, "getTabs", e);
@@ -68,70 +70,55 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		boolean isValidIssue = intent.getIssueId() > 0;
 
 		List<CorePage> list = new ArrayList<CorePage>();
-		if(isValidIssue){
+		if(isValidIssue) {
 			// Issue view
 			IssueArgument argList = new IssueArgument();
 			argList.setArgument();
 			argList.importArgument(intent);
 			list.add((new CorePage<IssueArgument>() {
-				@Override
-				public Fragment getRawFragment() {
-					return IssueView.newInstance(getParam());
-				}
+						@Override
+						public Fragment getRawFragment(IssueArgument param) {
+							return IssueView.newInstance(param);
+						}
 
-				@Override
-				public CharSequence getName() {
-					return getString(R.string.ticket_issue);
-				}
-
-				@Override
-				public Integer getIcon() {
-					return R.drawable.ic_action_message;
-				}
-			}).setParam(argList));
-
+					})
+							.setParam(argList)
+							.setName(getString(R.string.ticket_issue))
+							.setIcon(R.drawable.ic_action_message)
+			);
+		}
+		if(isValidIssue && isEditable){
 			// Time Entry
-
 			TimeEntryArgument argTimeentry = new TimeEntryArgument();
 			argTimeentry.setArgument();
 			argTimeentry.importArgument(intent);
 			list.add((new CorePage<TimeEntryArgument>() {
-				@Override
-				public Fragment getRawFragment() {
-					return TimeEntryEdit.newInstance(getParam());
-				}
-
-				@Override
-				public CharSequence getName() {
-					return getString(R.string.ticket_time);
-				}
-
-				@Override
-				public Integer getIcon() {
-					return android.R.drawable.ic_menu_recent_history;
-				}
-			}).setParam(argTimeentry));
+						@Override
+						public Fragment getRawFragment(TimeEntryArgument param) {
+							return TimeEntryEdit.newInstance(param);
+						}
+				})
+				.setParam(argTimeentry)
+				.setName(getString(R.string.ticket_time))
+				.setIcon(android.R.drawable.ic_menu_recent_history)
+			);
 		}
 
-		IssueArgument argEdit = new IssueArgument();
-		argEdit.setArgument();
-		argEdit.importArgument(intent);
-		list.add((new CorePage<IssueArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return IssueEdit.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.edit);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_edit;
-			}
-		}).setParam(argEdit));
+		if(isEditable) {
+			IssueArgument argEdit = new IssueArgument();
+			argEdit.setArgument();
+			argEdit.importArgument(intent);
+			list.add((new CorePage<IssueArgument>() {
+						@Override
+						public Fragment getRawFragment(IssueArgument param) {
+							return IssueEdit.newInstance(param);
+						}
+					})
+							.setParam(argEdit)
+							.setName(getString(R.string.edit))
+							.setIcon(android.R.drawable.ic_menu_edit)
+			);
+		}
 
 
 		return list;

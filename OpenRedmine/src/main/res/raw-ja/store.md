@@ -28,6 +28,7 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 * チケット・時間記録の作成/更新
 * チケットに関するファイルのダウンロード(/sdcard/download/jp.redmine.redmineclient/ へ保存されます)
 * Wikiの参照
+* ニュースを表示
 
 アプリの権限:
 * ネットワーク通信(完全なインターネットアクセス) - Redmine サーバーへの接続
@@ -41,4 +42,4 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 * このアプリはオープンソース(ライブラリ等を除きGPL)です。あなたが参加できます。(例: 翻訳)
 * あなたの言語に翻訳することが可能です: https://www.transifex.com/projects/p/openredmine/ .
 * このアプリについてなにか思うことがありましたら、https://github.com/indication/OpenRedmine や twitter @OpenRedmine を通じて知らせてください。
-* ベータは https://plus.google.com/u/0/communities/118409948481316268572 にリリースされるだろう
+* ベータは https://plus.google.com/communities/118409948481316268572 にリリースされるだろう

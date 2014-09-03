@@ -30,101 +30,66 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 
 		List<CorePage> list = new ArrayList<CorePage>();
 
-		list.add((new CorePage<Void>() {
-			@Override
-			public Fragment getRawFragment() {
-				return new Fragment(){
-
-					@Override
-					public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-						return inflater.inflate(R.layout.page_splash, container, false);
-					}
-
-					@Override
-					public void onActivityCreated(Bundle savedInstanceState) {
-						super.onActivityCreated(savedInstanceState);
-						TextView view = (TextView)findViewById(R.id.footer);
-						if (view != null)
-							view.setText(getString(R.string.footer_version,
-									BuildConfig.PACKAGE_NAME, BuildConfig.VERSION_NAME,
-									BuildConfig.VERSION_CODE, BuildConfig.BUILD_TYPE
-							));
-					}
-				};
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.information);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_gallery;
-			}
-		}).setParam(null));
+		list.add((new PageInformation()).setParam(null)
+						.setName(getString(R.string.information))
+						.setIcon(android.R.drawable.ic_menu_gallery)
+		);
 
 		ResourceArgument intent;
 		intent = new ResourceArgument();
 		intent.setArgument();
 		intent.setResource(R.raw.lisence);
-		list.add((new CorePage<ResourceArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return ResourceMarkdown.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.license);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_share;
-			}
-		}).setParam(intent));
+		list.add((new PageMarkdown()).setParam(intent)
+				.setName(getString(R.string.license))
+				.setIcon(android.R.drawable.ic_menu_share)
+		);
 
 		intent = new ResourceArgument();
 		intent.setArgument();
 		intent.setResource(R.raw.version);
-		list.add((new CorePage<ResourceArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return ResourceMarkdown.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.ticket_version);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_recent_history;
-			}
-		}).setParam(intent));
+		list.add((new PageMarkdown()).setParam(intent)
+						.setName(getString(R.string.ticket_version))
+						.setIcon(android.R.drawable.ic_menu_recent_history)
+		);
 
 		intent = new ResourceArgument();
 		intent.setArgument();
 		intent.setResource(R.raw.store);
-		list.add((new CorePage<ResourceArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return ResourceMarkdown.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.product);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return android.R.drawable.ic_menu_slideshow;
-			}
-		}).setParam(intent));
+		list.add((new PageMarkdown()).setParam(intent)
+						.setName(getString(R.string.product))
+						.setIcon(android.R.drawable.ic_menu_slideshow)
+		);
 		return list;
 	}
 
+	private class PageInformation extends CorePage<Void> {
+		@Override
+		public Fragment getRawFragment(Void param) {
+			return new Fragment(){
+
+				@Override
+				public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+					return inflater.inflate(R.layout.page_splash, container, false);
+				}
+
+				@Override
+				public void onActivityCreated(Bundle savedInstanceState) {
+					super.onActivityCreated(savedInstanceState);
+					TextView view = (TextView)findViewById(R.id.footer);
+					if (view != null)
+						view.setText(getString(R.string.footer_version,
+								BuildConfig.PACKAGE_NAME, BuildConfig.VERSION_NAME,
+								BuildConfig.VERSION_CODE, BuildConfig.BUILD_TYPE
+						));
+				}
+			};
+		}
+	}
+
+	private class PageMarkdown extends CorePage<ResourceArgument> {
+		@Override
+		public Fragment getRawFragment(ResourceArgument param) {
+			return ResourceMarkdown.newInstance(param);
+		}
+	}
 }

@@ -56,21 +56,15 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argList.setArgument();
 		argList.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return IssueList.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.ticket_issue);
-			}
-
-			@Override
-			public Integer getIcon() {
-				return R.drawable.ic_action_message;
-			}
-		}).setParam(argList));
+					@Override
+					public Fragment getRawFragment(ProjectArgument param) {
+						return IssueList.newInstance(param);
+					}
+				})
+				.setParam(argList)
+				.setName(getString(R.string.ticket_issue))
+				.setIcon(R.drawable.ic_action_message)
+		);
 
 		// current user
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
@@ -97,21 +91,15 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				argUser.importArgument(intent);
 				argUser.setFilterId(target.getId());
 				list.add((new CorePage<FilterArgument>() {
-					@Override
-					public Fragment getRawFragment() {
-						return IssueList.newInstance(getParam());
-					}
-
-					@Override
-					public CharSequence getName() {
-						return user.getName();
-					}
-
-					@Override
-					public Integer getIcon() {
-						return R.drawable.ic_action_user;
-					}
-				}).setParam(argUser));
+							@Override
+							public Fragment getRawFragment(FilterArgument param) {
+								return IssueList.newInstance(param);
+							}
+						})
+						.setParam(argUser)
+						.setName(user.getName())
+						.setIcon(R.drawable.ic_action_user)
+				);
 			}
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);
@@ -121,32 +109,28 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argProject.setArgument();
 		argProject.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return ProjectDetail.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.ticket_project);
-			}
-		}).setParam(argProject));
+					@Override
+					public Fragment getRawFragment(ProjectArgument param) {
+						return ProjectDetail.newInstance(param);
+					}
+				})
+				.setParam(argProject)
+				.setName(getString(R.string.ticket_project))
+		);
 
 		// wiki
 		ProjectArgument argWiki = new ProjectArgument();
 		argWiki.setArgument();
 		argWiki.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return WikiList.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.wiki);
-			}
-		}).setParam(argWiki));
+					@Override
+					public Fragment getRawFragment(ProjectArgument param) {
+						return WikiList.newInstance(param);
+					}
+				})
+				.setParam(argWiki)
+				.setName(getString(R.string.wiki))
+		);
 
 
 		// version
@@ -154,16 +138,14 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argVersion.setArgument();
 		argVersion.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return VersionList.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.ticket_version);
-			}
-		}).setParam(argVersion));
+					@Override
+					public Fragment getRawFragment(ProjectArgument param) {
+						return VersionList.newInstance(param);
+					}
+				})
+				.setParam(argVersion)
+				.setName(getString(R.string.ticket_version))
+		);
 
 
 		// category
@@ -171,33 +153,28 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		argCategory.setArgument();
 		argCategory.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return CategoryList.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.ticket_category);
-			}
-		}).setParam(argCategory));
+					@Override
+					public Fragment getRawFragment(ProjectArgument param) {
+						return CategoryList.newInstance(param);
+					}
+				})
+				.setParam(argCategory)
+				.setName(getString(R.string.ticket_category))
+		);
 
 		// news
 		ProjectArgument argNews = new ProjectArgument();
 		argNews.setArgument();
 		argNews.importArgument(intent);
 		list.add((new CorePage<ProjectArgument>() {
-			@Override
-			public Fragment getRawFragment() {
-				return NewsList.newInstance(getParam());
-			}
-
-			@Override
-			public CharSequence getName() {
-				return getString(R.string.news);
-			}
-
-		}).setParam(argNews));
+					@Override
+					public Fragment getRawFragment(ProjectArgument param) {
+						return NewsList.newInstance(param);
+					}
+				})
+				.setParam(argNews)
+				.setName(getString(R.string.news))
+		);
 		return list;
 	}
 

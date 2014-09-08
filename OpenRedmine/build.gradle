@@ -26,6 +26,7 @@ android {
         debug {
             debuggable true
             zipAlign true
+            buildConfigField 'boolean', 'DEBUG_XML', 'false'
         }
         release {
             //runProguard true
@@ -34,6 +35,7 @@ android {
 
             debuggable false
             zipAlign true
+            buildConfigField 'boolean', 'DEBUG_XML', 'false'
             if (project.hasProperty('keyAlias')) {
                 signingConfig signingConfigs.release
             }

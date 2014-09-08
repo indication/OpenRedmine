@@ -38,7 +38,7 @@ public class SelectNewsTask extends SelectDataTask<Void,RedmineProject> {
 			}
 		});
 
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RemoteUrlNews url = new RemoteUrlNews();
 		for(final RedmineProject item : params){
 			SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
@@ -50,7 +50,7 @@ public class SelectNewsTask extends SelectDataTask<Void,RedmineProject> {
 				}
 			};
 			url.setProject(item);
-			fetchData(client,connection, url, handler);
+			fetchData(client, url, handler);
 		}
 		client.close();
 		return null;

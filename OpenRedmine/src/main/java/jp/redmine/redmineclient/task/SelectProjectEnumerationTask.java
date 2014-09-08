@@ -1,10 +1,10 @@
 package jp.redmine.redmineclient.task;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
@@ -37,19 +37,19 @@ public class SelectProjectEnumerationTask extends SelectDataTask<Void,Integer> {
 
 	@Override
 	protected Void doInBackground(Integer... params) {
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		fetchVersions(client,project);
 		fetchCategory(client,project);
 		client.close();
 		return null;
 	}
 
-	protected void fetchVersions(SelectDataTaskConnectionHandler client,final RedmineProject project){
+	protected void fetchVersions(SelectDataTaskRedmineConnectionHandler client,final RedmineProject project){
 		final RedmineVersionModel model = new RedmineVersionModel(helper);
 		RemoteUrlVersion url = new RemoteUrlVersion();
 		url.setProject(project);
 
-		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
+		fetchData(client, url, new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
@@ -66,13 +66,13 @@ public class SelectProjectEnumerationTask extends SelectDataTask<Void,Integer> {
 			}
 		});
 	}
-	protected void fetchCategory(SelectDataTaskConnectionHandler client,final RedmineProject project){
+	protected void fetchCategory(SelectDataTaskRedmineConnectionHandler client,final RedmineProject project){
 		final RedmineCategoryModel model = new RedmineCategoryModel(helper);
 		final RedmineUserModel modelUser = new RedmineUserModel(helper);
 		RemoteUrlCategory url = new RemoteUrlCategory();
 		url.setProject(project);
 
-		fetchData(client,connection, url, new SelectDataTaskDataHandler() {
+		fetchData(client, url, new SelectDataTaskDataHandler() {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {

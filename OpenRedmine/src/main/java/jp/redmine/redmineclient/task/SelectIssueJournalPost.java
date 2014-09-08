@@ -1,12 +1,12 @@
 package jp.redmine.redmineclient.task;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.util.Log;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineJournalModel;
@@ -43,7 +43,7 @@ public class SelectIssueJournalPost extends SelectDataPost<Void,RedmineJournal> 
 			}
 		};
 
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RedmineJournalModel mJournal = new RedmineJournalModel(helper);
 		RemoteUrlIssue url = new RemoteUrlIssue();
 		for(final RedmineJournal item : params){
@@ -51,10 +51,10 @@ public class SelectIssueJournalPost extends SelectDataPost<Void,RedmineJournal> 
 			if(item.getIssueId() == null){
 				url.setIssueId((Integer)null);
 
-				postData(client, connection, url, handler, puthandler);
+				postData(client, url, handler, puthandler);
 			} else {
 				url.setIssueId(item.getIssueId().intValue());
-				boolean isSuccess = putData(client, connection, url, handler, puthandler);
+				boolean isSuccess = putData(client, url, handler, puthandler);
 				if(isSuccess && parser.getCount() < 1){
 					try {
 						mJournal.refreshItem(connection.getId(), item);

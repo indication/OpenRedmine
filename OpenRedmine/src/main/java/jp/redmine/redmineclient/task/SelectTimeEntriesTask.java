@@ -1,10 +1,10 @@
 package jp.redmine.redmineclient.task;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
@@ -46,7 +46,7 @@ public class SelectTimeEntriesTask extends SelectDataTask<Void,Integer> {
 			}
 		};
 
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RemoteUrlTimeEntries url = new RemoteUrlTimeEntries();
 		for(int item : params){
 			int offset = 0;
@@ -54,7 +54,7 @@ public class SelectTimeEntriesTask extends SelectDataTask<Void,Integer> {
 			url.filterIssue(String.valueOf(item));
 			do {
 				url.filterOffset(offset);
-				fetchData(client,connection, url, handler);
+				fetchData(client, url, handler);
 				offset += parser.getCount() + 1;
 			} while(parser.getCount() == LIMIT);
 		}

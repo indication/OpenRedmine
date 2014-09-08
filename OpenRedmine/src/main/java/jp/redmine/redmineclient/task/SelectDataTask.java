@@ -1,49 +1,18 @@
 package jp.redmine.redmineclient.task;
 
-import android.net.Uri;
-import android.net.Uri.Builder;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.InflaterInputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import jp.redmine.redmineclient.BuildConfig;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
-import jp.redmine.redmineclient.url.RemoteUrl.requests;
 
 public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
-	public final String CHARSET = "UTF-8";
 	/**
 	 * Notify error request on UI thread
 	 * @param statuscode http response code
@@ -110,176 +79,33 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	}
 
 	protected void helperSetupParserStream(InputStream stream,BaseParser<?,?> parser) throws XmlPullParserException{
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setNamespaceAware(true);
-		XmlPullParser xmlPullParser = factory.newPullParser();
-		xmlPullParser.setInput(stream, CHARSET);
-		parser.setXml(xmlPullParser);
+		Fetcher.setupParserStream(stream, parser);
 	}
 
-	private boolean isGZipHttpResponse(HttpResponse response) {
-		Header header = response.getEntity().getContentEncoding();
-		if (header == null) return false;
-		String value = header.getValue();
-		return (!TextUtils.isEmpty(value) && value.contains("gzip"));
+	protected boolean fetchData(SelectDataTaskRedmineConnectionHandler connectionhandler, RemoteUrl url,SelectDataTaskDataHandler handler){
+		return Fetcher.fetchData(connectionhandler, getErrorHandler(), connectionhandler.getUrl(url), handler);
 	}
-	private boolean isDeflateHttpResponse(HttpResponse response) {
-		Header header = response.getEntity().getContentEncoding();
-		if (header == null) return false;
-		String value = header.getValue();
-		return (!TextUtils.isEmpty(value) && value.contains("deflate"));
+	protected boolean fetchData(SelectDataTaskConnectionHandler connectionhandler,String url,SelectDataTaskDataHandler handler){
+		return Fetcher.fetchData(connectionhandler, getErrorHandler(), url, handler);
 	}
-	protected boolean fetchData(SelectDataTaskConnectionHandler connectionhandler, RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler){
-		return fetchData(RemoteType.get,connectionhandler,connection,url,handler,null);
+	protected boolean putData(SelectDataTaskRedmineConnectionHandler connectionhandler,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		return Fetcher.putData(connectionhandler, getErrorHandler(), connectionhandler.getUrl(url), handler, puthandler);
 	}
-	protected boolean putData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
-		return fetchData(RemoteType.put,connectionhandler,connection,url,handler,puthandler);
-	}
-	protected boolean postData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
-		return fetchData(RemoteType.post,connectionhandler,connection,url,handler,puthandler);
+	protected boolean postData(SelectDataTaskRedmineConnectionHandler connectionhandler,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		return Fetcher.postData(connectionhandler, getErrorHandler(), connectionhandler.getUrl(url), handler, puthandler);
 	}
 
-	protected enum RemoteType{
-		get,
-		put,
-		post,
-		delete,
-	}
-	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
-		url.setupRequest(requests.xml);
-		return fetchData(type,connectionhandler, url.getUrl(connection.getUrl()),handler,puthandler);
-	}
-	protected boolean fetchData(RemoteType type, SelectDataTaskConnectionHandler connectionhandler,Builder builder
-			,final SelectDataTaskDataHandler handler,SelectDataTaskPutHandler puthandler){
-		Uri remoteurl = builder.build();
-		DefaultHttpClient client = connectionhandler.getHttpClient();
-		Boolean isOk = false;
-		try {
-			URI uri = new URI(remoteurl.toString());
-			HttpUriRequest msg = null;
-			switch(type){
-			case get:
-				HttpGet get = new HttpGet(uri);
-				msg = get;
-				break;
-			case delete:
-				HttpDelete del = new HttpDelete();
-				msg = del;
-				break;
-			case post:
-				HttpPost post = new HttpPost(new URI(remoteurl.toString()));
-				post.setEntity(puthandler.getContent());
-				msg = post;
-				break;
-			case put:
-				HttpPut put = new HttpPut(new URI(remoteurl.toString()));
-				put.setEntity(puthandler.getContent());
-				msg = put;
-				break;
-			default:
-				return false;
-
+	protected Fetcher.ContentResponseErrorHandler getErrorHandler(){
+		return new Fetcher.ContentResponseErrorHandler() {
+			@Override
+			public void onErrorRequest(int status) {
+				publishErrorRequest(status);
 			}
-			connectionhandler.setupOnMessage(msg);
-			msg.setHeader("Accept-Encoding", "gzip, deflate");
-			if(BuildConfig.DEBUG){
-				Log.i("request", "Url: " + msg.getURI().toASCIIString());
-				for(Header h : msg.getAllHeaders())
-					Log.d("request", "Header:" + h.toString());
-				if(type == RemoteType.get && false){
-					client.execute(msg, new ResponseHandler<Boolean>() {
 
-						@Override
-						public Boolean handleResponse(HttpResponse response)
-								throws ClientProtocolException, IOException {
-							int status = response.getStatusLine().getStatusCode();
-							InputStream stream = response.getEntity().getContent();
-							if (isGZipHttpResponse(response)) {
-								stream =  new GZIPInputStream(stream);
-							} else if(isDeflateHttpResponse(response)){
-								stream =  new InflaterInputStream(stream);
-							}
-							Log.d("requestDebug", "Status: " + String.valueOf(status));
-							BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-						    String str;
-					    	Log.d("requestDebug", ">>Dump start>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-						    while((str = reader.readLine()) != null){
-						    	Log.d("requestDebug", str);
-						    }
-					    	Log.d("requestDebug", "<<Dump end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-							return false;
-						}
-						
-					});
-				}
+			@Override
+			public void onError(Exception e) {
+				publishError(e);
 			}
-			// fetch remote
-			isOk = client.execute(msg, new ResponseHandler<Boolean>() {
-
-				@Override
-				public Boolean handleResponse(HttpResponse response)
-						throws ClientProtocolException, IOException {
-					int status = response.getStatusLine().getStatusCode();
-					long length = response.getEntity().getContentLength();
-					if(BuildConfig.DEBUG){
-						Log.i("request", "Status: " + status);
-						Log.i("request", "Protocol: " + response.getProtocolVersion());
-						Log.i("request", "Length: " + length);
-					}
-					InputStream stream = response.getEntity().getContent();
-					if (isGZipHttpResponse(response)) {
-						if(BuildConfig.DEBUG) Log.i("request", "Gzip: Enabled");
-						stream =  new GZIPInputStream(stream);
-					} else if(isDeflateHttpResponse(response)){
-						if(BuildConfig.DEBUG) Log.i("request", "Deflate: Enabled");
-						stream =  new InflaterInputStream(stream);
-					}
-					switch(status){
-					case HttpStatus.SC_OK:
-					case HttpStatus.SC_CREATED:
-						try {
-							if(length != 0)
-								handler.onContent(stream);
-							return true;
-						} catch (XmlPullParserException e) {
-							publishError(e);
-						} catch (SQLException e) {
-							publishError(e);
-						}
-						break;
-					default:
-						publishErrorRequest(status);
-						if(BuildConfig.DEBUG){
-							Log.d("requestError", "Status: " + String.valueOf(status));
-							BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-						    String str;
-						    while((str = reader.readLine()) != null){
-						    	Log.d("requestError", str);
-						    }
-						}
-						break;
-					}
-					return false;
-				}
-
-			});
-		} catch (URISyntaxException e) {
-			publishErrorRequest(404);
-		} catch (ClientProtocolException e) {
-			publishError(e);
-		} catch (IOException e) {
-			publishError(e);
-		} catch (SQLException e) {
-			publishError(e);
-		} catch (IllegalArgumentException e) {
-			publishError(e);
-		} catch (ParserConfigurationException e) {
-			publishError(e);
-		} catch (TransformerException e) {
-			publishError(e);
-		}
-		if(!isOk)
-			connectionhandler.close();
-		return isOk;
+		};
 	}
 }

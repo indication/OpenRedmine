@@ -177,7 +177,7 @@ public class Fetcher {
 				Log.i("request", "Url: " + msg.getURI().toASCIIString());
 				for(Header h : msg.getAllHeaders())
 					Log.d("request", "Header:" + h.toString());
-				if(type == RemoteType.get && false){
+				if(type == RemoteType.get && BuildConfig.DEBUG_XML){
 					client.execute(msg, new Fetcher.DebugResponseHandler());
 				}
 			}

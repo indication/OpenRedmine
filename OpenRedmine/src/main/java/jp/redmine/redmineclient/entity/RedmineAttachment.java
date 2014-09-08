@@ -1,13 +1,13 @@
 package jp.redmine.redmineclient.entity;
 
-import java.io.File;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.io.File;
+import java.util.Date;
 
 @DatabaseTable
 public class RedmineAttachment implements IUserRecord {
@@ -22,6 +22,8 @@ public class RedmineAttachment implements IUserRecord {
 	private Integer connection_id;
 	@DatabaseField()
 	private Integer issue_id;
+	@DatabaseField
+	private Long wiki_id;
 	@DatabaseField(uniqueIndexName="attachment_target")
 	private int attachment_id;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
@@ -87,6 +89,12 @@ public class RedmineAttachment implements IUserRecord {
 	}
 	public void setIssueId(Integer issue_id) {
 		this.issue_id = issue_id;
+	}
+	public Long getWikiId() {
+		return wiki_id;
+	}
+	public void setWikiId(Long wiki_id) {
+		this.wiki_id = wiki_id;
 	}
 	public RedmineUser getUser() {
 		return user;

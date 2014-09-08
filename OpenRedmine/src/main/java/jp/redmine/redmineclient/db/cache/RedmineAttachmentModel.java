@@ -41,8 +41,11 @@ public class RedmineAttachmentModel {
 		.prepare();
 		Log.d(TAG,query.getStatement());
 		RedmineAttachment item = dao.queryForFirst(query);
-		if(item == null)
+		if(item == null) {
 			item = new RedmineAttachment();
+			item.setConnectionId(connection);
+			item.setAttachmentId(journalId);
+		}
 		return item;
 	}
 

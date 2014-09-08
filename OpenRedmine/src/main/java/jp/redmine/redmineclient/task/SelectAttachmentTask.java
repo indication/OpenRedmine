@@ -1,5 +1,9 @@
 package jp.redmine.redmineclient.task;
 
+import android.net.Uri;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,10 +17,6 @@ import java.util.List;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.external.lib.PlaceHolder;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.net.Uri;
 
 public class SelectAttachmentTask extends SelectDataTask<List<RedmineAttachment>,RedmineAttachment> {
 
@@ -70,7 +70,7 @@ public class SelectAttachmentTask extends SelectDataTask<List<RedmineAttachment>
 						output.close();
 					}
 				};
-				result = fetchData(RemoteType.get, client, data.buildUpon(), handler, null);
+				result = fetchData(client, data.buildUpon().toString(), handler);
 			} else {
 				result = true;
 				progress.item += item.getFilesize();

@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.task;
 
-import jp.redmine.redmineclient.entity.RedmineConnection;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
@@ -19,10 +20,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.transdroid.daemon.util.FakeSocketFactory;
 
-import android.net.Uri;
-import android.text.TextUtils;
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.url.RemoteUrl;
 
-class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHandler {
+public class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHandler {
 	private RedmineConnection connection;
 	private ClientConnectionManager manager;
 	private HttpParams httpparams = new BasicHttpParams();
@@ -59,6 +60,15 @@ class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnectionHan
 			client.getCredentialsProvider().setCredentials(scope, credential);
 		}
 		return client;
+	}
+
+	public static String getUrl(RedmineConnection connection, RemoteUrl url){
+		url.setupRequest(RemoteUrl.requests.xml);
+		return url.getUrl(connection.getUrl()).build().toString();
+	}
+
+	public String getUrl(RemoteUrl url){
+		return getUrl(connection, url);
 	}
 
 	@Override

@@ -9,10 +9,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.InputStream;
 import java.util.List;
 
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
-import jp.redmine.redmineclient.url.RemoteUrl.requests;
 
 public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 	/**
@@ -84,23 +82,19 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		Fetcher.setupParserStream(stream, parser);
 	}
 
-	protected boolean fetchData(SelectDataTaskConnectionHandler connectionhandler, RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler){
-		return Fetcher.fetchData(connectionhandler, getErrorHandler(), getUrl(connection, url), handler);
+	protected boolean fetchData(SelectDataTaskRedmineConnectionHandler connectionhandler, RemoteUrl url,SelectDataTaskDataHandler handler){
+		return Fetcher.fetchData(connectionhandler, getErrorHandler(), connectionhandler.getUrl(url), handler);
 	}
 	protected boolean fetchData(SelectDataTaskConnectionHandler connectionhandler,String url,SelectDataTaskDataHandler handler){
 		return Fetcher.fetchData(connectionhandler, getErrorHandler(), url, handler);
 	}
-	protected boolean putData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
-		return Fetcher.putData(connectionhandler, getErrorHandler(), getUrl(connection, url), handler, puthandler);
+	protected boolean putData(SelectDataTaskRedmineConnectionHandler connectionhandler,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		return Fetcher.putData(connectionhandler, getErrorHandler(), connectionhandler.getUrl(url), handler, puthandler);
 	}
-	protected boolean postData(SelectDataTaskConnectionHandler connectionhandler,RedmineConnection connection,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
-		return Fetcher.postData(connectionhandler, getErrorHandler(), getUrl(connection, url), handler, puthandler);
+	protected boolean postData(SelectDataTaskRedmineConnectionHandler connectionhandler,RemoteUrl url,SelectDataTaskDataHandler handler, SelectDataTaskPutHandler puthandler){
+		return Fetcher.postData(connectionhandler, getErrorHandler(), connectionhandler.getUrl(url), handler, puthandler);
 	}
 
-	protected String getUrl(RedmineConnection connection, RemoteUrl url){
-		url.setupRequest(requests.xml);
-		return url.getUrl(connection.getUrl()).build().toString();
-	}
 	protected Fetcher.ContentResponseErrorHandler getErrorHandler(){
 		return new Fetcher.ContentResponseErrorHandler() {
 			@Override

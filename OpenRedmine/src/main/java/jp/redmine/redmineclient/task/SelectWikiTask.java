@@ -66,7 +66,7 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 			}
 		};
 
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RemoteUrlWiki url = new RemoteUrlWiki();
 		for(String item : params){
 			int offset = 0;
@@ -79,7 +79,7 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 
 			do {
 				url.filterOffset(offset);
-				fetchData(client,connection, url, handler);
+				fetchData(client, url, handler);
 				offset += parser.getCount() + 1;
 			} while(parser.getCount() == LIMIT);
 		}

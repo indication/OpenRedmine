@@ -1,5 +1,9 @@
 package jp.redmine.redmineclient.task;
 
+import android.util.Log;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -23,10 +27,6 @@ import jp.redmine.redmineclient.parser.ParserTimeEntry;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 import jp.redmine.redmineclient.url.RemoteUrlTimeEntries;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.util.Log;
-
 public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 	private final static int LIMIT = 50;
 	private final static String TAG = SelectIssueJournalTask.class.getSimpleName();
@@ -44,14 +44,14 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 
 	@Override
 	protected Void doInBackground(Integer... params) {
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		doInBackgroundIssue(client, params);
 		doInBackgroundTimeEntry(client, params);
 		client.close();
 		return null;
 	}
 
-	protected void doInBackgroundIssue(SelectDataTaskConnectionHandler client,Integer... params) {
+	protected void doInBackgroundIssue(SelectDataTaskRedmineConnectionHandler client,Integer... params) {
 		final ParserIssue parser = new ParserIssue();
 		final List<Integer> listAdditionalIssue = new ArrayList<Integer>();
 		DataCreationHandler<RedmineConnection,RedmineIssue> relationHandler = new DataCreationHandler<RedmineConnection,RedmineIssue>() {
@@ -92,19 +92,19 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 				);
 		for(int param: params){
 			url.setIssueId(param);
-			fetchData(client,connection, url, handler);
+			fetchData(client, url, handler);
 		}
 		//Add external issues
 		parser.unregisterDataCreation(relationHandler);
 		url.setInclude();
 		for(int param: listAdditionalIssue){
 			url.setIssueId(param);
-			fetchData(client,connection, url, handler);
+			fetchData(client, url, handler);
 		}
 		
 	}
 
-	protected void doInBackgroundTimeEntry(SelectDataTaskConnectionHandler client,Integer... params) {
+	protected void doInBackgroundTimeEntry(SelectDataTaskRedmineConnectionHandler client,Integer... params) {
 		final RedmineTimeEntryModel model = new RedmineTimeEntryModel(helper);
 		final RedmineTimeActivityModel mActivity = new RedmineTimeActivityModel(helper);
 		final RedmineUserModel mUser = new RedmineUserModel(helper);
@@ -136,7 +136,7 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 			url.filterIssue(String.valueOf(item));
 			do {
 				url.filterOffset(offset);
-				fetchData(client,connection, url, handler);
+				fetchData(client, url, handler);
 				offset += parser.getCount() + 1;
 			} while(parser.getCount() == LIMIT);
 		}

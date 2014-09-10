@@ -12,47 +12,74 @@ import android.webkit.MimeTypeMap;
 
 import com.j256.ormlite.android.apptools.OrmLiteContentProvider;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 
 import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineAttachmentModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.parser.DataCreationHandler;
+import jp.redmine.redmineclient.parser.ParserAttachment;
+import jp.redmine.redmineclient.task.Fetcher;
+import jp.redmine.redmineclient.task.SelectDataTaskDataHandler;
+import jp.redmine.redmineclient.task.SelectDataTaskRedmineConnectionHandler;
+import jp.redmine.redmineclient.url.RemoteUrlAttachment;
 
 public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 	private static final String TAG = Attachment.class.getSimpleName();
-	public static final String PROVIDER = BuildConfig.PACKAGE_NAME + "." + TAG;
+	protected static final String PROVIDER = BuildConfig.PACKAGE_NAME + "." + TAG.toLowerCase(Locale.getDefault());
+	protected static final String PROVIDER_BASE = ContentResolver.SCHEME_CONTENT + "://" + PROVIDER;
 	private static enum AttachmentUrl {
+		none,
 		id,
-		issue,
+		attachment,
 		;
 		public static AttachmentUrl getEnum(int value){
 			return AttachmentUrl.values()[value];
 		}
 	}
-	private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+	private static final UriMatcher sURIMatcher = new UriMatcher(AttachmentUrl.none.ordinal());
 
 	static {
-		sURIMatcher.addURI("attachment","id/#",AttachmentUrl.id.ordinal());
-		//sURIMatcher.addURI("attachment","issue/#/#",AttachmentUrl.issue.ordinal());
+		sURIMatcher.addURI(PROVIDER,"id/#",AttachmentUrl.id.ordinal());
+		sURIMatcher.addURI(PROVIDER, "attachment/#", AttachmentUrl.attachment.ordinal());
 	}
 
-	public static String getUrl(long id){
-		Uri.Builder builder = Uri.parse(PROVIDER).buildUpon();
-		builder.scheme(ContentResolver.SCHEME_CONTENT);
+	public static Uri getUrl(long id){
+		Uri.Builder builder = Uri.parse(PROVIDER_BASE).buildUpon();
 		builder.appendPath("id");
 		builder = ContentUris.appendId(builder, id);
-		return builder.build().toString();
+		return builder.build();
+	}
+	public static Uri getUrl(int connection, int attachment){
+		Uri.Builder builder = Uri.parse(PROVIDER_BASE).buildUpon();
+		builder.appendPath("attachment");
+		builder = ContentUris.appendId(builder, connection);
+		builder = ContentUris.appendId(builder, attachment);
+		return builder.build();
 	}
 
 	@Override
 	public boolean onCreate() {
+		super.onCreate();
 		return true;
+	}
+
+	@Override
+	protected Class<DatabaseCacheHelper> getOrmClass() {
+		return DatabaseCacheHelper.class;
 	}
 
 	@Override
@@ -61,14 +88,45 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 	}
 
 	@Override
-	public ParcelFileDescriptor openFile(Uri uri, String mode, android.os.CancellationSignal signal) throws FileNotFoundException {
-		RedmineAttachmentModel model = new RedmineAttachmentModel(getHelper());
-		RedmineAttachment attachment = getAttachment(uri, model);
-		if (attachment.getId() == null)
-			return null;
-		try {
-			if (!model.isFileExists(attachment)) {
+	public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
+		if (BuildConfig.DEBUG) Log.d(TAG, "Called openFile uri");
+		return openFileInner(uri, mode, null);
+	}
 
+	@Override
+	public ParcelFileDescriptor openFile(Uri uri, String mode, android.os.CancellationSignal signal) throws FileNotFoundException {
+		return openFileInner(uri, mode, signal);
+	}
+
+	protected ParcelFileDescriptor openFileInner(Uri uri, String mode, android.os.CancellationSignal signal) throws FileNotFoundException {
+		final RedmineAttachmentModel model = new RedmineAttachmentModel(getHelper());
+		RedmineAttachment attachment = getAttachment(uri, model);
+		SelectDataTaskRedmineConnectionHandler client = null;
+		if (attachment.getId() == null && attachment.getConnectionId() == null){
+			return null;
+		}
+		try {
+			ConnectionModel mConnection = new ConnectionModel(getContext());
+			RedmineConnection connection = mConnection.getItem(attachment.getConnectionId());
+			mConnection.finalize();
+			client = new SelectDataTaskRedmineConnectionHandler(connection);
+			Fetcher.ContentResponseErrorHandler errorHandler = new Fetcher.ContentResponseErrorHandler() {
+				@Override
+				public void onErrorRequest(int status) {
+					Log.e( TAG, "Request Error:  " + status);
+				}
+
+				@Override
+				public void onError(Exception e) {
+					Log.e( TAG, "IO Error:  ", e);
+				}
+			};
+			if (attachment.getId() == null){
+				fetchInfoFromRemote(client, errorHandler,model, connection,String.valueOf(attachment.getAttachmentId()));
+				attachment = getAttachment(uri, model);
+			}
+			if (!model.isFileExists(attachment)) {
+				fetchAttachmentFromRemote(client, errorHandler, model, attachment);
 			}
 			File file = File.createTempFile(attachment.getLocalFileName(), attachment.getFilenameExt(), getContext().getCacheDir());
 			FileOutputStream file_stream = new FileOutputStream(file);
@@ -80,18 +138,91 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 			Log.e( TAG, "IO Error: " + uri.toString(), e);
 		} catch (SQLException e) {
 			Log.e(TAG, "SQL Error: " + uri.toString(), e);
+		} catch (InterruptedException e) {
+			Log.e(TAG, "Thread exception", e);
+		} finally {
+			if (client != null)
+				client.close();
 		}
 		return null;
 	}
 
+	protected void fetchInfoFromRemote(final SelectDataTaskRedmineConnectionHandler client
+			, final Fetcher.ContentResponseErrorHandler errorHandler
+			, final RedmineAttachmentModel model
+			, final RedmineConnection connection
+			, final String attachment_id
+	) throws InterruptedException {
+		final Thread fetcher = new Thread(){
+			@Override
+			public void run() {
+				super.run();
+				RemoteUrlAttachment url = new RemoteUrlAttachment();
+				url.setAttachment(attachment_id);
+				final ParserAttachment parserAttachment = new ParserAttachment();
+				parserAttachment.registerDataCreation(new DataCreationHandler<RedmineIssue, RedmineAttachment>() {
+					@Override
+					public void onData(RedmineIssue info, RedmineAttachment data) throws SQLException {
+						data.setRedmineConnection(connection);
+						model.refreshItem(data);
+					}
+				});
+				boolean fetch_status = Fetcher.fetchData(client, errorHandler, client.getUrl(url)
+						, new SelectDataTaskDataHandler() {
+					@Override
+					public void onContent(InputStream stream) throws XmlPullParserException, IOException, SQLException {
+						Fetcher.setupParserStream(stream,parserAttachment);
+						parserAttachment.parse(null);
+					}
+				});
+				if (!fetch_status){
+					Log.e(TAG, "Fetch failed: "+  client.getUrl(url));
+				}
+			}
+		};
+		fetcher.start();
+		fetcher.join();
+	}
+	protected void fetchAttachmentFromRemote(final SelectDataTaskRedmineConnectionHandler client
+			, final Fetcher.ContentResponseErrorHandler errorHandler
+			, final RedmineAttachmentModel model
+			, final RedmineAttachment attachment
+	) throws InterruptedException {
+		final Thread fetcher = new Thread(){
+			@Override
+			public void run() {
+				super.run();
+				if (BuildConfig.DEBUG) Log.i(TAG, "Fetch start");
+				Fetcher.fetchData(client, errorHandler, attachment.getContentUrl(), new SelectDataTaskDataHandler() {
+					@Override
+					public void onContent(InputStream stream) throws XmlPullParserException, IOException, SQLException {
+						if (BuildConfig.DEBUG) Log.i(TAG, "Fetch incoming data");
+						model.saveData(attachment,stream);
+					}
+				});
+				if (BuildConfig.DEBUG) Log.i(TAG, "Fetch end");
+			}
+		};
+		fetcher.start();
+		fetcher.join();
+
+	}
 	@Override
 	public String getType(Uri uri) {
 		RedmineAttachmentModel model = new RedmineAttachmentModel(getHelper());
 		RedmineAttachment attachment = getAttachment(uri, model);
 		if (attachment.getId() == null)
 			return null;
-		String mimetype = MimeTypeMap.getSingleton().getMimeTypeFromExtension(attachment.getFilenameExt());
-		Log.d(TAG,"file: " + uri.toString() + " mimetype: " + mimetype + " -- " + attachment.getContentType());
+		String extention = attachment.getFilenameExt();
+
+		// Fix content type
+		if("log".equalsIgnoreCase(extention))
+			extention = "txt";
+		else if("patch".equalsIgnoreCase(extention))
+			extention = "txt";
+
+		String mimetype = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extention);
+		if (BuildConfig.DEBUG) Log.d(TAG,"file: " + uri.toString() + " mimetype: " + mimetype + " -- " + attachment.getContentType());
 		return mimetype;
 	}
 
@@ -100,16 +231,17 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 			switch(AttachmentUrl.getEnum(sURIMatcher.match(uri))){
 				case id:
 					return model.fetchById(ContentUris.parseId(uri));
-				case issue:
+				case attachment:
 					List<String> params = uri.getPathSegments();
-					if (params.size() < 4)
+					if (params.size() < 3)
 						break;
-					return model.fetchById(Integer.parseInt(params.get(1)),Integer.parseInt(params.get(3)));
+					return model.fetchById(Integer.parseInt(params.get(1)),Integer.parseInt(params.get(2)));
 				default:
+					Log.e(TAG, "Not found:" + uri.toString());
 					break;
 			}
 		} catch (SQLException e) {
-			Log.e(TAG, "");
+			Log.e(TAG, "SQL Exception", e);
 		}
 		return new RedmineAttachment();
 	}

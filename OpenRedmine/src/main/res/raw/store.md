@@ -26,14 +26,13 @@ Features:
 * Sort (IssueID/Created/Modified/... etc)
 * Show changelogs, relative issues
 * Create or modify issue/timeentry
-* Download file related with issues (saved to /sdcard/download/jp.redmine.redmineclient/)
+* Download file related with issues
 * View wiki
 * View news
 
 Permissions:
 * INTERNET - connect to redmine server
 * VIBRATE - notify with vibrate on tap the list item
-* WRITE EXTERNAL STORAGE - download item and share to other app
 
 Reports:
 If you detect the crash, bless us by the report via twitter, github, reviews with 1 star.

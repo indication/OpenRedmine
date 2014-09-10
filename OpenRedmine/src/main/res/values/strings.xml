@@ -116,5 +116,6 @@
 	<string name="information">Information</string>
 	<string name="homepage">Homepage</string>
 	<string name="news">News</string>
+	<string name="activity_not_found">The activity is not found for this file.</string>
 
 </resources>

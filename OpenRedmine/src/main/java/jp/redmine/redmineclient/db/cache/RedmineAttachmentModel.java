@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
@@ -83,7 +81,6 @@ public class RedmineAttachmentModel {
 		return builder;
 	}
 	public long saveData(RedmineAttachment attachment, InputStream stream) throws IOException, SQLException {
-		stream =  new GZIPInputStream(stream);
 		byte buffer[] = new byte[1024*128];
 		int count;
 		if (isFileExists(attachment)) {
@@ -91,6 +88,8 @@ public class RedmineAttachmentModel {
 			if (BuildConfig.DEBUG) Log.i(TAG, "deleted " + deleted + " rows");
 		}
 		long total_size = 0;
+		int count_rows = 0;
+
 		while((count = stream.read(buffer)) != -1){
 			RedmineAttachmentData data = new RedmineAttachmentData();
 			data.setAttachemnt(attachment);
@@ -98,9 +97,10 @@ public class RedmineAttachmentModel {
 			data.setSize(count);
 			daoData.create(data);
 			total_size += count;
+			count_rows++;
 		}
 		stream.close();
-		if (BuildConfig.DEBUG) Log.i(TAG,"inserted  " + total_size + " rows");
+		if (BuildConfig.DEBUG) Log.i(TAG,"inserted  " + count_rows + " rows " + total_size + " bytes wrote");
 		return total_size;
 	}
 	public boolean exportToFile(RedmineAttachment attachment, File file) throws IOException, SQLException {
@@ -115,7 +115,6 @@ public class RedmineAttachmentModel {
 		return setupWhere(daoData.queryBuilder(),attachment).countOf() > 0;
 	}
 	public long loadData(RedmineAttachment attachment, OutputStream stream) throws IOException, SQLException {
-		stream =  new GZIPOutputStream(stream);
 		long total_size = 0;
 		for(RedmineAttachmentData data :
 				setupWhere(daoData.queryBuilder(),attachment)

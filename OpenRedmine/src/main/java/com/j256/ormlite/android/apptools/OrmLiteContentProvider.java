@@ -69,10 +69,12 @@ public abstract class OrmLiteContentProvider<H extends OrmLiteSqliteOpenHelper> 
 	 */
 	protected H getHelperInternal(Context context) {
 		@SuppressWarnings({ "unchecked", "deprecation" })
-		H newHelper = (H) OpenHelperManager.getHelper(context);
+		H newHelper = (H) OpenHelperManager.getHelper(context,getOrmClass());
 		logger.trace("{}: got new helper {} from OpenHelperManager", this, newHelper);
 		return newHelper;
 	}
+
+	abstract protected Class<H> getOrmClass();
 
 	/**
 	 * Release the helper instance created in {@link #getHelperInternal(Context)}. You most likely will not need to call

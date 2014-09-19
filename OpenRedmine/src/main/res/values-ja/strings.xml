@@ -115,4 +115,5 @@
   <string name="homepage">ホームページ</string>
   <string name="news">ニュース</string>
   <string name="activity_not_found">The activity is not found for this file.</string>
+	<string name="recent_issues">Resent issues</string>
 </resources>

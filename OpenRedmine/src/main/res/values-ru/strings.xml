@@ -107,10 +107,12 @@
   <string name="size">Размер</string>
   <string name="progress">Готовность</string>
   <string name="download">Загрузить</string>
+	<string name="download_with_manager">Download via Download Manager</string>
   <string name="wiki">Wiki</string>
   <string name="connection">подключение</string>
   <string name="favorite">любимый</string>
   <string name="information">информация</string>
   <string name="homepage">домашняя страница</string>
   <string name="news">Новости</string>
+  <string name="activity_not_found">The activity is not found for this file.</string>
 </resources>

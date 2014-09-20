@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class RedmineWiki {
 	}
 
 	public List<RedmineAttachment> getAttachments() {
-		return attachments;
+		return (attachments == null) ? new ArrayList<RedmineAttachment>() : attachments;
 	}
 
 	public void setAttachments(List<RedmineAttachment> attachments) {

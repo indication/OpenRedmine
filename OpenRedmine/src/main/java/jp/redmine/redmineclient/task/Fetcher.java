@@ -152,7 +152,7 @@ public class Fetcher {
 			return false;
 		}
 	}
-	interface ContentResponseErrorHandler {
+	public interface ContentResponseErrorHandler {
 		void onErrorRequest(int status);
 		void onError(Exception e);
 	}

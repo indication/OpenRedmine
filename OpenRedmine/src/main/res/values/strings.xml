@@ -110,6 +110,7 @@
 	<string name="size">Size</string>
 	<string name="progress">Progress</string>
 	<string name="download">Download</string>
+	<string name="download_with_manager">Download via Download Manager</string>
 	<string name="wiki">Wiki</string>
 	<string name="connection">Connection</string>
 	<string name="favorite">Favorite</string>

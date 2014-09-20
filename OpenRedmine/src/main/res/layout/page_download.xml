@@ -97,5 +97,12 @@
 		android:layout_height="wrap_content"
 		android:drawableLeft="@android:drawable/ic_menu_save"
 		android:text="@string/download" />
+
+	<Button
+		android:id="@+id/buttonBrowser"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:drawableLeft="@android:drawable/ic_menu_set_as"
+		android:text="@string/download_with_manager" />
 	
 </LinearLayout>

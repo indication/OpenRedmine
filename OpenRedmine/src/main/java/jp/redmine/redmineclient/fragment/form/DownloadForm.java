@@ -14,6 +14,7 @@ public class DownloadForm extends FormHelper {
 	public TextView textCreated;
 	public TextView textAuthor;
 	public Button buttonDownload;
+	public Button buttonBrowser;
 	public DownloadForm(View activity){
 		this.setup(activity);
 		this.setupEvents();
@@ -26,6 +27,7 @@ public class DownloadForm extends FormHelper {
 		textCreated = (TextView)view.findViewById(R.id.textCreated);
 		textAuthor = (TextView)view.findViewById(R.id.textAuthor);
 		buttonDownload = (Button)view.findViewById(R.id.buttonDownload);
+		buttonBrowser = (Button)view.findViewById(R.id.buttonBrowser);
 	}
 
 	public void setupEvents(){

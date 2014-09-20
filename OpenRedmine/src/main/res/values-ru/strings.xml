@@ -107,6 +107,7 @@
   <string name="size">Размер</string>
   <string name="progress">Готовность</string>
   <string name="download">Загрузить</string>
+	<string name="download_with_manager">Download via Download Manager</string>
   <string name="wiki">Wiki</string>
   <string name="connection">подключение</string>
   <string name="favorite">любимый</string>

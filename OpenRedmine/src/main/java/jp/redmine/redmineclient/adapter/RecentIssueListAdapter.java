@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.adapter.form.RecentIssueForm;
+import jp.redmine.redmineclient.adapter.form.IssueForm;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineRecentIssue;
@@ -57,12 +57,12 @@ public class RecentIssueListAdapter extends RedmineDaoAdapter<RedmineRecentIssue
 
 	@Override
 	protected int getItemViewId() {
-		return R.layout.listitem_recent_issue;
+		return R.layout.listitem_issue;
 	}
 
 	@Override
 	protected void setupView(View view, RedmineRecentIssue history) {
-		RecentIssueForm form = new RecentIssueForm(view);
+		IssueForm form = new IssueForm(view);
 		form.setValue(history);
 	}
 

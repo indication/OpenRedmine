@@ -2,19 +2,21 @@
 
 package jp.redmine.redmineclient.entity;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import android.text.TextUtils;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @DatabaseTable
-public class RedmineFilter {
+public class RedmineFilter
+		implements IConnectionRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String PROJECT = "project_id";
 	public final static String TRACKER = "tracker_id";
 	public final static String AUTHOR = "author_id";
@@ -27,7 +29,7 @@ public class RedmineFilter {
 
     @DatabaseField(generatedId = true)
     private Integer id;
-    @DatabaseField
+    @DatabaseField(columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
     @DatabaseField
     private boolean is_current;
@@ -84,12 +86,6 @@ public class RedmineFilter {
 		return id;
 	}
 	////////////////////////////////////////////////////////
-	/**
-	 * @param connection セットする connection
-	 */
-	public void RedmineConnection(RedmineConnection connection) {
-		this.connection_id = connection.getId();
-	}
 	/**
 	 * @return name
 	 */
@@ -176,17 +172,11 @@ public class RedmineFilter {
 		return project.getId();
 	}
 
-	/**
-	 * @param connection_id セットする connection_id
-	 */
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
-
-
-	/**
-	 * @return connection_id
-	 */
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}
@@ -287,8 +277,7 @@ public class RedmineFilter {
 		return category;
 	}
 
-
-
+	@Override
 	public void setRedmineConnection(RedmineConnection info) {
 		setConnectionId(info.getId());
 	}

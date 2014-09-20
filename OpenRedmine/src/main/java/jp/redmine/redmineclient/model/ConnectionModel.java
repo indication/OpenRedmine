@@ -65,7 +65,8 @@ public class ConnectionModel extends Connector {
 		}
 		return item;
 	}
-	public void deleteItem(int itemid){
+	public int deleteItem(int itemid){
+		int count = 0;
 		RedmineConnectionModel model = new RedmineConnectionModel(helperStore);
 		List<Class<? extends IConnectionRecord>> model_class =new ArrayList<Class<? extends IConnectionRecord>>();
 		model_class.add(RedmineAttachmentData.class);
@@ -99,10 +100,11 @@ public class ConnectionModel extends Connector {
 		}
 
 		try {
-			model.delete(itemid);
+			count += model.delete(itemid);
 		} catch (SQLException e) {
 			Log.e(TAG, "deleteItem", e);
 		}
+		return count;
 	}
 
 }

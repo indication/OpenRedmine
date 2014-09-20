@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.io.File;
 import java.util.Date;
 
 @DatabaseTable
@@ -42,8 +41,6 @@ public class RedmineAttachment implements IUserRecord {
 	private Date created;
 	@DatabaseField
 	private Date modified;
-	
-	private File file;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -139,12 +136,6 @@ public class RedmineAttachment implements IUserRecord {
 	public String getFilenameExt(){
 		int ch = TextUtils.isEmpty(getFilename()) ? -1 : getFilename().lastIndexOf('.');
 		return ((ch>=0)?getFilename().substring(ch + 1):"").toLowerCase();
-	}
-	public File getFile() {
-		return file;
-	}
-	public void setFile(File file) {
-		this.file = file;
 	}
 
 }

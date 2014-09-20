@@ -22,12 +22,10 @@ import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.fragment.form.DownloadForm;
 import jp.redmine.redmineclient.param.AttachmentArgument;
 import jp.redmine.redmineclient.provider.Attachment;
-import jp.redmine.redmineclient.task.SelectAttachmentTask;
 
 public class FileDownload extends OrmLiteFragment<DatabaseCacheHelper> {
 	static private final String TAG = FileDownload.class.getSimpleName();
 	private DownloadForm form;
-	private SelectAttachmentTask task;
 
 	public FileDownload(){
 		super();

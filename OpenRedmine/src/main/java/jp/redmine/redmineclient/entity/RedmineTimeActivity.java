@@ -1,18 +1,22 @@
 package jp.redmine.redmineclient.entity;
 
-import java.util.Date;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.Date;
+
 @DatabaseTable
-public class RedmineTimeActivity implements IMasterRecord {
+public class RedmineTimeActivity
+		implements IConnectionRecord
+		,IMasterRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String ACTIVITY_ID = "activity_id";
 
     @DatabaseField(generatedId = true)
     private Long id;
-    @DatabaseField(uniqueIndexName="activity_target")
+    @DatabaseField(uniqueIndexName="activity_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="activity_target")
     private Integer activity_id;
@@ -66,9 +70,7 @@ public class RedmineTimeActivity implements IMasterRecord {
 	public void setName(String name) {
 		this.name = name;
 	}
-	/**
-	 * @param connection セットする connection
-	 */
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -110,20 +112,16 @@ public class RedmineTimeActivity implements IMasterRecord {
 	public void setDefault(boolean is_default) {
 		this.is_default = is_default;
 	}
-	/**
-	 * @param connection_id セットする connection_id
-	 */
+
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
-
-
-	/**
-	 * @return connection_id
-	 */
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}
+
 	@Override
 	public void setRemoteId(Long id) {
 		if(id == null)

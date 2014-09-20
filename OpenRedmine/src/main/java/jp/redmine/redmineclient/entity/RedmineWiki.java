@@ -8,16 +8,18 @@ import java.util.Date;
 import java.util.List;
 
 @DatabaseTable
-public class RedmineWiki {
+public class RedmineWiki
+		implements IConnectionRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String PROJECT_ID = "project_id";
 	public final static String TITLE = "title";
 	public final static String NAME = "name";
 
 	@DatabaseField(generatedId = true)
 	private Long id;
-	@DatabaseField(uniqueIndexName = "wiki_target")
+	@DatabaseField(uniqueIndexName = "wiki_target", columnName = RedmineConnection.CONNECTION_ID)
 	private Integer connection_id;
 	@DatabaseField(uniqueIndexName = "wiki_target", foreign = true, foreignColumnName = "id", columnName = "project_id", foreignAutoRefresh = true)
 	private RedmineProject project;
@@ -73,6 +75,7 @@ public class RedmineWiki {
 		return id;
 	}
 
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -158,10 +161,12 @@ public class RedmineWiki {
 	}
 
 
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
 
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}

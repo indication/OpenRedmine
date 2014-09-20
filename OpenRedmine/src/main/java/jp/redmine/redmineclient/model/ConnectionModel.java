@@ -1,15 +1,39 @@
 package jp.redmine.redmineclient.model;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
+import jp.redmine.redmineclient.entity.IConnectionRecord;
+import jp.redmine.redmineclient.entity.RedmineAttachment;
+import jp.redmine.redmineclient.entity.RedmineAttachmentData;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import android.content.Context;
-import android.util.Log;
+import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation;
+import jp.redmine.redmineclient.entity.RedmineNews;
+import jp.redmine.redmineclient.entity.RedminePriority;
+import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineProjectCategory;
+import jp.redmine.redmineclient.entity.RedmineProjectMember;
+import jp.redmine.redmineclient.entity.RedmineProjectVersion;
+import jp.redmine.redmineclient.entity.RedmineRecentIssue;
+import jp.redmine.redmineclient.entity.RedmineRole;
+import jp.redmine.redmineclient.entity.RedmineTimeActivity;
+import jp.redmine.redmineclient.entity.RedmineTimeEntry;
+import jp.redmine.redmineclient.entity.RedmineTracker;
+import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.entity.RedmineWiki;
 
 public class ConnectionModel extends Connector {
+	private final static String TAG = ConnectionModel.class.getSimpleName();
 
 	public ConnectionModel(Context context) {
 		super(context);
@@ -21,7 +45,7 @@ public class ConnectionModel extends Connector {
 		try {
 			item = model.fetchById(itemid);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(TAG, "getItem", e);
 		}
 		return item;
 	}
@@ -37,30 +61,50 @@ public class ConnectionModel extends Connector {
 				model.update(item);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(TAG, "updateItem", e);
 		}
 		return item;
 	}
-	public void deleteItem(int itemid){
+	public int deleteItem(int itemid){
+		int count = 0;
 		RedmineConnectionModel model = new RedmineConnectionModel(helperStore);
-		try {
-			model.delete(itemid);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		List<Class<? extends IConnectionRecord>> model_class =new ArrayList<Class<? extends IConnectionRecord>>();
+		model_class.add(RedmineAttachmentData.class);
+		model_class.add(RedmineAttachment.class);
+		model_class.add(RedmineFilter.class);
+		model_class.add(RedmineTimeEntry.class);
+		model_class.add(RedmineTimeActivity.class);
+		model_class.add(RedmineRecentIssue.class);
+		model_class.add(RedmineIssueRelation.class);
+		model_class.add(RedmineIssue.class);
+		model_class.add(RedmineWiki.class);
+		model_class.add(RedmineNews.class);
+		model_class.add(RedmineUser.class);
+		model_class.add(RedmineProjectCategory.class);
+		model_class.add(RedmineProjectMember.class);
+		model_class.add(RedmineProjectVersion.class);
+		model_class.add(RedmineProject.class);
+		model_class.add(RedmineRole.class);
+		model_class.add(RedmineTracker.class);
+		model_class.add(RedminePriority.class);
+		for(Class<? extends IConnectionRecord> cls : model_class){
+			try {
+				Dao<?, ?> dao =  helperCache.getDao(cls);
+				DeleteBuilder<?,?> builder = dao.deleteBuilder();
+				builder.where()
+						.eq(RedmineConnection.CONNECTION_ID, itemid);
+				builder.delete();
+			} catch (SQLException e) {
+				Log.e(TAG, "deleteItem", e);
+			}
 		}
+
+		try {
+			count += model.delete(itemid);
+		} catch (SQLException e) {
+			Log.e(TAG, "deleteItem", e);
+		}
+		return count;
 	}
 
-	public List<RedmineConnection> fetchAllData(){
-		final RedmineConnectionModel model =
-			new RedmineConnectionModel(helperStore);
-		List<RedmineConnection> projects = new ArrayList<RedmineConnection>();
-		try {
-			projects = model.fetchAll();
-		} catch (SQLException e) {
-			Log.e("SelectDataTask","doInBackground",e);
-		} catch (Throwable e) {
-			Log.e("SelectDataTask","doInBackground",e);
-		}
-		return projects;
-	}
 }

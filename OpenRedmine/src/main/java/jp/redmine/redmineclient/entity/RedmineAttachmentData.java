@@ -7,14 +7,16 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable
-public class RedmineAttachmentData {
+public class RedmineAttachmentData
+	implements IConnectionRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String ATTACHMENT_ID = "attachment_id";
 
 	@DatabaseField(generatedId = true)
 	private Long id;
-	@DatabaseField(indexName="attachment_data_target")
+	@DatabaseField(indexName="attachment_data_target", columnName = RedmineConnection.CONNECTION_ID)
 	private Integer connection_id;
 	@DatabaseField(indexName = "attachment_data_target")
 	private int attachment_id;
@@ -33,6 +35,7 @@ public class RedmineAttachmentData {
 	}
 	////////////////////////////////////////////////////////
 
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -54,9 +57,11 @@ public class RedmineAttachmentData {
 		setAttachmentId(attachment.getAttachmentId());
 	}
 
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}

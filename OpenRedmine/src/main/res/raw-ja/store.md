@@ -3,6 +3,8 @@ Title
 OpenRedmine
 
 
+Brief description
+===========
 完全に無料で、GitHub上のオープンソースであるRedmineのクライアントです
 
 Description
@@ -29,14 +31,13 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 * ソート(チケットID/作成日/更新日/...など)
 * 変更点・関係するチケットの表示
 * チケット・時間記録の作成/更新
-* チケットに関するファイルのダウンロード(/sdcard/download/jp.redmine.redmineclient/ へ保存されます)
+* チケットに関連したファイルをダウンロード
 * Wikiの参照
 * ニュースを表示
 
 アプリの権限:
 * ネットワーク通信(完全なインターネットアクセス) - Redmine サーバーへの接続
 * ハードウェアの制御(バイブレーションの制御) - リストアイテムのタップしたときにバイブレーションで通知
-* ストレージ(SD カードのコンテンツを修正/削除する) - ダウンロードしてほかのアプリと連携
 
 報告:
 クラッシュに気づいたら、twitterもしくはgithub、星1でレビューすることによってご祝福してください
@@ -45,4 +46,4 @@ OpenRedmine はアンドロイド用Redmineクライアントです。
 * このアプリはオープンソース(ライブラリ等を除きGPL)です。あなたが参加できます。(例: 翻訳)
 * あなたの言語に翻訳することが可能です: https://www.transifex.com/projects/p/openredmine/ .
 * このアプリについてなにか思うことがありましたら、https://github.com/indication/OpenRedmine や twitter @OpenRedmine を通じて知らせてください。
-* ベータは https://plus.google.com/communities/118409948481316268572 にリリースされるだろう
+* ベータは https://plus.google.com/u/0/communities/118409948481316268572 にリリースされるだろう

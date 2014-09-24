@@ -45,4 +45,4 @@ Note:
 * This app is open source(GPL exclude libraries), you can contribute.
 * You can translate your language via https://www.transifex.com/projects/p/openredmine/ .
 * Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
-* Beta would be released on https://plus.google.com/communities/118409948481316268572
+* Beta would be released on https://plus.google.com/u/0/communities/118409948481316268572

@@ -10,6 +10,14 @@ TODO
 Next Release
 ===========
 
+v3.13 - 45 - 2014/10/04
+===========
+- Put jump area to issue  on the project list (#130)
+- Supported attachment provider (#131, #135)
+- Add recently viewed issue list (#137)
+- Supported deleting connection (#138)
+
+
 v3.12 - 44 - 2014/09/06
 ===========
 - Support parse Project Status on Redmine 2.5.0 (#71)

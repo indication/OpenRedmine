@@ -130,6 +130,15 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		mListener.onConnectionSaved();
 	}
 
+	protected void computeDelete(){
+		if (idEditing == -1)
+			return;
+		if (modelConnection.deleteItem(idEditing) > 0) {
+			Toast.makeText(getActivity(),R.string.has_been_saved, Toast.LENGTH_SHORT).show();
+			mListener.onConnectionSaved();
+		}
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch(requestCode){
@@ -161,10 +170,8 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 				completeSave();
 				return true;
 			case R.id.menu_delete:
-			{
-
+				computeDelete();
 				return true;
-			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

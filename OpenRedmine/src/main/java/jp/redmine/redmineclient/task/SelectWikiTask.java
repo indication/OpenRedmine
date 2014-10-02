@@ -10,8 +10,11 @@ import java.io.InputStream;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineAttachmentModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
+import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
+import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineWiki;
@@ -49,12 +52,23 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 	@Override
 	protected Void doInBackground(String... params) {
 		final RedmineWikiModel model = new RedmineWikiModel(helper);
+		final RedmineAttachmentModel mAttachment = new RedmineAttachmentModel(helper);
+		final RedmineUserModel mUser = new RedmineUserModel(helper);
 		final ParserWiki parser = new ParserWiki();
 		parser.registerDataCreation(new DataCreationHandler<RedmineProject,RedmineWiki>() {
 			public void onData(RedmineProject con,RedmineWiki data) throws SQLException {
 				data.setProject(con);
 				data.setConnectionId(con.getConnectionId());
-				model.refreshItem(con.getConnectionId(), con.getId(),data);
+				data = model.refreshItem(con.getConnectionId(), con.getId(),data);
+				for (RedmineAttachment attachment : data.getAttachments()){
+					onDataAttachment(data,attachment);
+				}
+			}
+			protected void onDataAttachment(RedmineWiki data, RedmineAttachment attachment) throws SQLException {
+				attachment.setConnectionId(data.getConnectionId());
+				attachment.setWikiId(data.getId());
+				mUser.refreshItem(attachment);
+				mAttachment.refreshItem(attachment);
 			}
 		});
 		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
@@ -66,8 +80,9 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 			}
 		};
 
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RemoteUrlWiki url = new RemoteUrlWiki();
+		url.setInclude(RemoteUrlWiki.Includes.Attachments);
 		for(String item : params){
 			int offset = 0;
 			url.filterLimit(LIMIT);
@@ -79,7 +94,7 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 
 			do {
 				url.filterOffset(offset);
-				fetchData(client,connection, url, handler);
+				fetchData(client, url, handler);
 				offset += parser.getCount() + 1;
 			} while(parser.getCount() == LIMIT);
 		}

@@ -1,11 +1,11 @@
 package jp.redmine.redmineclient.task;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Date;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
@@ -98,7 +98,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 			lastfetched += limit;
 		}
 
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		final ParserIssue parser = new ParserIssue();
 		SelectDataTaskDataHandler taskhandler = new SelectDataTaskDataHandler() {
 			@Override
@@ -117,7 +117,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 			while(fetched < lastfetched){
 				url.filterOffset((int)fetched);
 				url.filterLimit((int)limit);
-				fetchData(client,connection, url, taskhandler);
+				fetchData(client, url, taskhandler);
 
 				// update fetch status
 				fetched += parser.getCount();

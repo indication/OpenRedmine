@@ -1,8 +1,17 @@
 package jp.redmine.redmineclient.db.cache;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
+
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.RedmineAttachment;
+import jp.redmine.redmineclient.entity.RedmineAttachmentData;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
@@ -13,6 +22,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
 import jp.redmine.redmineclient.entity.RedmineProjectMember;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
+import jp.redmine.redmineclient.entity.RedmineRecentIssue;
 import jp.redmine.redmineclient.entity.RedmineRole;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTimeActivity;
@@ -21,17 +31,9 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
-
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=13;
+	private static int DB_VERSION=16;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -60,8 +62,10 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(source, RedmineTimeActivity.class);
 			TableUtils.createTable(source, RedmineIssueRelation.class);
 			TableUtils.createTable(source, RedmineAttachment.class);
+			TableUtils.createTable(source, RedmineAttachmentData.class);
 			TableUtils.createTable(source, RedmineWiki.class);
 			TableUtils.createTable(source, RedmineNews.class);
+			TableUtils.createTable(source, RedmineRecentIssue.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -105,6 +109,14 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				TableUtils.createTable(source, RedmineNews.class);
 			case 12:
 				addColumn(db,RedmineProject.class,"status INTEGER");
+			case 13:
+				TableUtils.createTable(source, RedmineAttachmentData.class);
+			case 14:
+				if(older > 8) {
+					addColumn(db,RedmineAttachment.class,"wiki_id TEXT");
+				}
+			case 15:
+				TableUtils.createTable(source, RedmineRecentIssue.class);
 				break;
 			}
 

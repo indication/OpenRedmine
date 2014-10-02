@@ -2,6 +2,10 @@ Title
 ===========
 OpenRedmine
 
+Brief description
+===========
+OpenRedmine is a Redmine client which is totally free and open-source on GitHub.
+
 Description
 ==========
 OpenRedmine is an android Redmine client.
@@ -26,14 +30,13 @@ Features:
 * Sort (IssueID/Created/Modified/... etc)
 * Show changelogs, relative issues
 * Create or modify issue/timeentry
-* Download file related with issues (saved to /sdcard/download/jp.redmine.redmineclient/)
+* Download file related with issues
 * View wiki
 * View news
 
 Permissions:
 * INTERNET - connect to redmine server
 * VIBRATE - notify with vibrate on tap the list item
-* WRITE EXTERNAL STORAGE - download item and share to other app
 
 Reports:
 If you detect the crash, bless us by the report via twitter, github, reviews with 1 star.
@@ -42,4 +45,4 @@ Note:
 * This app is open source(GPL exclude libraries), you can contribute.
 * You can translate your language via https://www.transifex.com/projects/p/openredmine/ .
 * Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
-* Beta would be released on https://plus.google.com/communities/118409948481316268572
+* Beta would be released on https://plus.google.com/u/0/communities/118409948481316268572

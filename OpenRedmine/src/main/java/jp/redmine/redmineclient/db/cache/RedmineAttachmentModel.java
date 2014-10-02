@@ -1,20 +1,31 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-
-import jp.redmine.redmineclient.entity.RedmineAttachment;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.StatementBuilder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.SQLException;
+
+import jp.redmine.redmineclient.BuildConfig;
+import jp.redmine.redmineclient.entity.RedmineAttachment;
+import jp.redmine.redmineclient.entity.RedmineAttachmentData;
 
 
 public class RedmineAttachmentModel {
 	private final static String TAG = RedmineAttachmentModel.class.getSimpleName();
 	protected Dao<RedmineAttachment, Long> dao;
+	protected Dao<RedmineAttachmentData, Long> daoData;
 	public RedmineAttachmentModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineAttachment.class);
+			daoData = helper.getDao(RedmineAttachmentData.class);
 		} catch (SQLException e) {
 			Log.e(TAG,TAG,e);
 		}
@@ -28,8 +39,11 @@ public class RedmineAttachmentModel {
 		.prepare();
 		Log.d(TAG,query.getStatement());
 		RedmineAttachment item = dao.queryForFirst(query);
-		if(item == null)
+		if(item == null) {
 			item = new RedmineAttachment();
+			item.setConnectionId(connection);
+			item.setAttachmentId(journalId);
+		}
 		return item;
 	}
 
@@ -56,6 +70,64 @@ public class RedmineAttachmentModel {
 	public int delete(long id) throws SQLException{
 		int count = dao.deleteById(id);
 		return count;
+	}
+
+	protected <X extends StatementBuilder<T,A>, T,A> X setupWhere(X builder, RedmineAttachment attachment) throws SQLException {
+		builder.where()
+				.eq(RedmineAttachmentData.CONNECTION, attachment.getConnectionId())
+				.and()
+				.eq(RedmineAttachmentData.ATTACHMENT_ID, attachment.getAttachmentId())
+		;
+		return builder;
+	}
+	public long saveData(RedmineAttachment attachment, InputStream stream) throws IOException, SQLException {
+		byte buffer[] = new byte[1024*128];
+		int count;
+		if (isFileExists(attachment)) {
+			int deleted = setupWhere(daoData.deleteBuilder(), attachment).delete();
+			if (BuildConfig.DEBUG) Log.i(TAG, "deleted " + deleted + " rows");
+		}
+		long total_size = 0;
+		int count_rows = 0;
+
+		while((count = stream.read(buffer)) != -1){
+			RedmineAttachmentData data = new RedmineAttachmentData();
+			data.setAttachemnt(attachment);
+			data.setData(buffer);
+			data.setSize(count);
+			daoData.create(data);
+			total_size += count;
+			count_rows++;
+		}
+		stream.close();
+		if (BuildConfig.DEBUG) Log.i(TAG,"inserted  " + count_rows + " rows " + total_size + " bytes wrote");
+		return total_size;
+	}
+	public boolean exportToFile(RedmineAttachment attachment, File file) throws IOException, SQLException {
+		if (isFileExists(attachment))
+			return false;
+		OutputStream output = new FileOutputStream(file);
+		loadData(attachment, output);
+		output.close();
+		return true;
+	}
+	public boolean isFileExists(RedmineAttachment attachment) throws SQLException {
+		return setupWhere(daoData.queryBuilder(),attachment).countOf() > 0;
+	}
+	public long loadData(RedmineAttachment attachment, OutputStream stream) throws IOException, SQLException {
+		long total_size = 0;
+		for(RedmineAttachmentData data :
+				setupWhere(daoData.queryBuilder(),attachment)
+				.orderBy(RedmineAttachmentData.ID, true)
+				.query()
+		){
+			stream.write(data.getData(),0, data.getSize());
+			total_size += data.getSize();
+		}
+		stream.flush();
+		stream.close();
+		if (BuildConfig.DEBUG) Log.i(TAG,"selected  " + total_size + " bytes");
+		return total_size;
 	}
 
 	public RedmineAttachment refreshItem(int connection_id,RedmineAttachment data) throws SQLException{

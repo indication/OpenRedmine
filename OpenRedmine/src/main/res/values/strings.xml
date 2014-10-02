@@ -110,11 +110,14 @@
 	<string name="size">Size</string>
 	<string name="progress">Progress</string>
 	<string name="download">Download</string>
+	<string name="download_with_manager">Download via Download Manager</string>
 	<string name="wiki">Wiki</string>
 	<string name="connection">Connection</string>
 	<string name="favorite">Favorite</string>
 	<string name="information">Information</string>
 	<string name="homepage">Homepage</string>
 	<string name="news">News</string>
+	<string name="activity_not_found">The activity is not found for this file.</string>
+	<string name="recent_issues">Resent issues</string>
 
 </resources>

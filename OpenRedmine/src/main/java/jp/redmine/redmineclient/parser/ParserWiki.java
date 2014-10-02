@@ -1,18 +1,21 @@
 package jp.redmine.redmineclient.parser;
 
-import android.util.Log;
-
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import jp.redmine.redmineclient.entity.RedmineAttachment;
+import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class ParserWiki extends BaseParserInternal<RedmineProject,RedmineWiki> {
+	private ParserAttachment parserAttachment = new ParserAttachment();
 
 	@Override
 	protected String getProveTagName() {
@@ -45,6 +48,23 @@ public class ParserWiki extends BaseParserInternal<RedmineProject,RedmineWiki> {
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if(equalsTagName("updated_on")){
 			item.setModified(TypeConverter.parseDateTime(getNextText()));
+		} else if(equalsTagName("attachments")){
+			final List<RedmineAttachment> attachments = new ArrayList<RedmineAttachment>();
+			parserAttachment.setXml(xml);
+			DataCreationHandler<RedmineIssue, RedmineAttachment> handler =
+					new DataCreationHandler<RedmineIssue, RedmineAttachment>() {
+						@Override
+						public void onData(RedmineIssue info, RedmineAttachment data)
+								throws SQLException {
+							attachments.add(data);
+						}
+					};
+
+			parserAttachment.registerDataCreation(handler);
+			parserAttachment.parse(null);
+			parserAttachment.unregisterDataCreation(handler);
+			item.setAttachments(attachments);
+
 		}
 
 	}

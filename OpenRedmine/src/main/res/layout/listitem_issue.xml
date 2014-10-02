@@ -142,6 +142,12 @@
 				    android:text="Assigned to user"
 				    tools:ignore="HardcodedText" />
 
+				<ImageView
+					android:layout_width="wrap_content"
+					android:layout_height="fill_parent"
+					android:id="@+id/imageRecent"
+					android:src="@android:drawable/ic_menu_recent_history"/>
+
 				<TextView
 				    android:id="@+id/textModified"
 				    android:layout_width="wrap_content"

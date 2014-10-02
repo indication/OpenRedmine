@@ -11,6 +11,7 @@ import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.ConnectionList;
 import jp.redmine.redmineclient.fragment.ProjectFavoriteList;
+import jp.redmine.redmineclient.fragment.RecentIssueList;
 
 public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
@@ -41,6 +42,16 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 				.setParam(null)
 				.setName(getString(R.string.favorite))
 				.setIcon(android.R.drawable.btn_star)
+		);
+		list.add((new CorePage<Void>() {
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return RecentIssueList.newInstance();
+					}
+				})
+						.setParam(null)
+						.setName(getString(R.string.recent_issues))
+						.setIcon(android.R.drawable.ic_menu_recent_history)
 		);
 		return list;
 	}

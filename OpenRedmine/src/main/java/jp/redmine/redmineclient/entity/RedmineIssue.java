@@ -14,9 +14,12 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable
-public class RedmineIssue implements IPostingRecord {
+public class RedmineIssue
+		implements IConnectionRecord
+		,IPostingRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String PROJECT_ID = "project_id";
 	public final static String ISSUE_ID = "issue_id";
 	public final static String DATE_START = "start_date";
@@ -37,7 +40,7 @@ public class RedmineIssue implements IPostingRecord {
 
     @DatabaseField(generatedId = true)
     private Long id;
-    @DatabaseField(uniqueIndexName="issue_target")
+    @DatabaseField(uniqueIndexName="issue_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
     @DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
     private RedmineProject project;
@@ -173,12 +176,6 @@ public class RedmineIssue implements IPostingRecord {
 		return description;
 	}
 	/**
-	 * @param connection セットする connection
-	 */
-	public void RedmineConnection(RedmineConnection connection) {
-		this.connection_id = connection.getId();
-	}
-	/**
 	 * @param created セットする created
 	 */
 	public void setCreated(Date created) {
@@ -219,18 +216,11 @@ public class RedmineIssue implements IPostingRecord {
 		return project;
 	}
 
-
-	/**
-	 * @param connection_id セットする connection_id
-	 */
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
-
-
-	/**
-	 * @return connection_id
-	 */
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}
@@ -468,6 +458,7 @@ public class RedmineIssue implements IPostingRecord {
 	}
 
 
+	@Override
 	public void setRedmineConnection(RedmineConnection info) {
 		setConnectionId(info.getId());
 	}

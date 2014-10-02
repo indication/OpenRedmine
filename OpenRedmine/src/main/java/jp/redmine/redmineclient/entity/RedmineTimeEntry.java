@@ -1,25 +1,29 @@
 package jp.redmine.redmineclient.entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @DatabaseTable
-public class RedmineTimeEntry implements IPostingRecord, IUserRecord {
+public class RedmineTimeEntry
+		implements IConnectionRecord
+		,IPostingRecord
+		,IUserRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String TIMEENTRY_ID = "timeentry_id";
 	public final static String PROJECT_ID = "project_id";
 	public final static String ISSUE_ID = "issue_id";
 
     @DatabaseField(generatedId = true)
     private Long id;
-    @DatabaseField(uniqueIndexName="timeentry_target")
+    @DatabaseField(uniqueIndexName="timeentry_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="timeentry_target")
     private Integer timeentry_id;
@@ -184,9 +188,7 @@ public class RedmineTimeEntry implements IPostingRecord, IUserRecord {
 	public void setComment(String comments) {
 		this.comments = comments;
 	}
-	/**
-	 * @param connection セットする connection
-	 */
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -228,20 +230,16 @@ public class RedmineTimeEntry implements IPostingRecord, IUserRecord {
 	public void setDirty(boolean is_dirty) {
 		this.is_dirty = is_dirty;
 	}
-	/**
-	 * @param connection_id セットする connection_id
-	 */
+
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
-
-
-	/**
-	 * @return connection_id
-	 */
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}
+
 	@Override
 	public Element getXml(Document document) {
 

@@ -26,6 +26,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.IssueStickyListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RecentIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
@@ -255,9 +256,14 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());
 		RedmineIssueModel mIssue = new RedmineIssueModel(getHelper());
+		RecentIssueModel mRecentIssue = new RecentIssueModel(getHelper());
 		RedmineIssue issue = null;
 		try {
 			issue = mIssue.fetchById(intent.getConnectionId(), intent.getIssueId());
+			if(issue != null && issue.getId() != null) {
+				mRecentIssue.ping(issue);
+				mRecentIssue.strip(issue.getProject(), 10);
+			}
 		} catch (SQLException e) {
 			Log.e(TAG,"onRefresh",e);
 		}

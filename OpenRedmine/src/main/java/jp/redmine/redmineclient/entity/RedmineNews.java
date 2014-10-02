@@ -6,15 +6,18 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable
-public class RedmineNews implements IUserRecord {
+public class RedmineNews
+		implements IConnectionRecord
+		,IUserRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String PROJECT = "project_id";
 	public final static String NEWS_ID = "news_id";
 
 	@DatabaseField(generatedId = true)
 	private Long id;
-	@DatabaseField(uniqueIndexName="news_target")
+	@DatabaseField(uniqueIndexName="news_target", columnName = RedmineConnection.CONNECTION_ID)
 	private Integer connection_id;
 	@DatabaseField(uniqueIndexName="news_target")
 	private int news_id;
@@ -77,6 +80,7 @@ public class RedmineNews implements IUserRecord {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -100,9 +104,11 @@ public class RedmineNews implements IUserRecord {
 		this.data_modified = data_modified;
 	}
 
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}

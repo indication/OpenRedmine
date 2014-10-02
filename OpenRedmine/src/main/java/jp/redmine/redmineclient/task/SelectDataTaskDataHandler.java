@@ -6,6 +6,6 @@ import java.sql.SQLException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-interface SelectDataTaskDataHandler {
+public interface SelectDataTaskDataHandler {
 	public void onContent(InputStream stream) throws XmlPullParserException, IOException, SQLException;
 }

@@ -25,6 +25,7 @@ import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.fragment.form.IssueJumpForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
@@ -105,6 +106,21 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 				return true;
 			}
 		});
+
+		final IssueJumpForm formJump = new IssueJumpForm(getView());
+
+		formJump.buttonOK.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if(!formJump.Validate())
+					return;
+
+				ConnectionArgument intent = new ConnectionArgument();
+				intent.setArgument(getArguments());
+				mListener.onIssueSelected(intent.getConnectionId(), formJump.getIssueId());
+			}
+		});
 	}
 
 	@Override
@@ -118,7 +134,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		return super.onCreateView(inflater, container, savedInstanceState);
+		return inflater.inflate(R.layout.page_project_list, null);
 	}
 
 	@Override
@@ -231,7 +247,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 				@Override
 				public boolean onQueryTextSubmit(String s) {
-					return false;
+					return onQueryTextChange(s);
 				}
 
 				@Override

@@ -1,12 +1,12 @@
 package jp.redmine.redmineclient.task;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import android.util.Log;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
@@ -47,17 +47,17 @@ public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry>
 			}
 		};
 
-		SelectDataTaskConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RemoteUrlTimeEntries url = new RemoteUrlTimeEntries();
 		for(final RedmineTimeEntry item : params){
 			SelectDataTaskPutHandler puthandler = getPutHandler(item);
 			if(item.getTimeentryId() == null){
 				url.setId(null);
 
-				postData(client, connection, url, handler, puthandler);
+				postData(client, url, handler, puthandler);
 			} else {
 				url.setId(item.getTimeentryId());
-				boolean isSuccess = putData(client, connection, url, handler, puthandler);
+				boolean isSuccess = putData(client, url, handler, puthandler);
 				if(isSuccess && parser.getCount() < 1){
 					try {
 						model.refreshItem(connection, item);

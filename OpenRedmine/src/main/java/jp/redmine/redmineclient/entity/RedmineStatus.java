@@ -1,19 +1,23 @@
 package jp.redmine.redmineclient.entity;
 
-import java.util.Date;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.Date;
+
 @DatabaseTable
-public class RedmineStatus implements IMasterRecord {
+public class RedmineStatus
+		implements IConnectionRecord
+		,IMasterRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String STATUS_ID = "status_id";
 	public final static String NAME = "name";
 
     @DatabaseField(generatedId = true)
     private Long id;
-    @DatabaseField(uniqueIndexName="status_target")
+    @DatabaseField(uniqueIndexName="status_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
     @DatabaseField(uniqueIndexName="status_target")
     private int status_id;
@@ -60,9 +64,7 @@ public class RedmineStatus implements IMasterRecord {
 	public String getName() {
 		return name;
 	}
-	/**
-	 * @param connection セットする connection
-	 */
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -139,18 +141,11 @@ public class RedmineStatus implements IMasterRecord {
 		return status_id;
 	}
 
-
-	/**
-	 * @param connection_id セットする connection_id
-	 */
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
-
-
-	/**
-	 * @return connection_id
-	 */
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}

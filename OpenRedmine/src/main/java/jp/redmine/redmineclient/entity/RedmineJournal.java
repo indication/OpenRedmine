@@ -1,5 +1,12 @@
 package jp.redmine.redmineclient.entity;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -9,23 +16,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 @DatabaseTable
-public class RedmineJournal implements IPostingRecord,IUserRecord {
+public class RedmineJournal
+		implements IConnectionRecord
+		,IPostingRecord
+		,IUserRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String JOURNAL_ID = "journal_id";
 	public final static String ISSUE_ID = "issue_id";
 
 	@DatabaseField(generatedId = true)
 	private Long id;
-	@DatabaseField(uniqueIndexName="journal_target")
+	@DatabaseField(uniqueIndexName="journal_target",columnName = RedmineConnection.CONNECTION_ID)
 	private Integer connection_id;
 	@DatabaseField()
 	private Long issue_id;
@@ -58,9 +62,7 @@ public class RedmineJournal implements IPostingRecord,IUserRecord {
 	}
 	////////////////////////////////////////////////////////
 
-	/**
-	 * @param connection セットする connection
-	 */
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -140,18 +142,11 @@ public class RedmineJournal implements IPostingRecord,IUserRecord {
 		return modified;
 	}
 
-
-	/**
-	 * @param connection_id セットする connection_id
-	 */
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
-
-
-	/**
-	 * @return connection_id
-	 */
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}

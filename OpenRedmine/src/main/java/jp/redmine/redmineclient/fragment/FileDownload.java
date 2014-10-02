@@ -1,8 +1,27 @@
 package jp.redmine.redmineclient.fragment;
 
-import java.io.File;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.j256.ormlite.android.apptools.OrmLiteFragment;
+
 import java.sql.SQLException;
-import java.util.List;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -12,26 +31,11 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.fragment.form.DownloadForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.AttachmentArgument;
-import jp.redmine.redmineclient.param.IssueArgument;
-import jp.redmine.redmineclient.task.SelectAttachmentTask;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.Toast;
-
-import com.j256.ormlite.android.apptools.OrmLiteFragment;
+import jp.redmine.redmineclient.provider.Attachment;
 
 public class FileDownload extends OrmLiteFragment<DatabaseCacheHelper> {
 	static private final String TAG = FileDownload.class.getSimpleName();
 	private DownloadForm form;
-	private SelectAttachmentTask task;
 
 	public FileDownload(){
 		super();
@@ -59,16 +63,62 @@ public class FileDownload extends OrmLiteFragment<DatabaseCacheHelper> {
 			public void onClick(View v) {
 				AttachmentArgument instance = new AttachmentArgument();
 				instance.setArgument(getArguments());
-				
 				RedmineAttachmentModel modelAttachemnt = new RedmineAttachmentModel(getHelper());
 				try {
 					RedmineAttachment attachment = modelAttachemnt.fetchById(instance.getConnectionId(), instance.getAttachmentId());
-					task = new Downloader();
-					task.execute(attachment);
+
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					Uri uri = Attachment.getUrl(attachment.getId());
+					intent.setData(uri);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+					getActivity().startActivity(intent);
+
+				} catch (ActivityNotFoundException e) {
+					Toast.makeText(getActivity(), R.string.activity_not_found, Toast.LENGTH_SHORT).show();
 				} catch (SQLException e) {
 					Log.e(TAG,"onClick",e);
 				}
-				
+
+			}
+		});
+		form.buttonBrowser.setOnClickListener(new OnClickListener() {
+
+			@SuppressLint("NewApi")
+			@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+			@Override
+			public void onClick(View v) {
+				AttachmentArgument instance = new AttachmentArgument();
+				instance.setArgument(getArguments());
+				RedmineAttachmentModel modelAttachemnt = new RedmineAttachmentModel(getHelper());
+				try {
+					RedmineAttachment attachment = modelAttachemnt.fetchById(instance.getConnectionId(), instance.getAttachmentId());
+					ConnectionModel mConnection = new ConnectionModel(getActivity());
+					RedmineConnection connection = mConnection.getItem(attachment.getConnectionId());
+					mConnection.finalize();
+
+					Uri uri = Uri.parse(attachment.getContentUrl());
+					DownloadManager.Request r = new DownloadManager.Request(uri);
+					r.setTitle(connection.getName() + " - " + attachment.getFilename());
+					r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, attachment.getFilename());
+					if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+						r.allowScanningByMediaScanner();
+						r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+					}
+					if (!TextUtils.isEmpty(connection.getToken()))
+						r.addRequestHeader("X-Redmine-API-Key",connection.getToken());
+					if (connection.isAuth()) {
+						String auth = connection.getAuthId() + ":" + connection.getAuthPasswd();
+						String base64 = Base64.encodeToString(auth.getBytes(), Base64.NO_WRAP);
+						r.addRequestHeader("Authorization", "Basic " + base64);
+					}
+
+					DownloadManager dm = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+					dm.enqueue(r);
+
+				} catch (SQLException e) {
+					Log.e(TAG,"onClick",e);
+				}
+
 			}
 		});
 	}
@@ -91,58 +141,5 @@ public class FileDownload extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		form.setValue(attachment);
 	}
-	
-	protected String getDownloadDir(){
-		return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()
-				+ File.separator + getActivity().getPackageName();
-	}
-	
-	class Downloader extends SelectAttachmentTask{
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			form.progress(0);
 
-			File directory = new File(savefolder);
-			if(!directory.exists()){
-				if(!directory.mkdirs()){
-					Toast.makeText(getActivity(), "failed to create folder " + savefolder, Toast.LENGTH_SHORT).show();
-					cancel(false);
-				}
-			}
-		}
-		
-		@Override
-		protected void onProgress(int max, int proc) {
-			super.onProgress(max, proc);
-			form.progress(proc);
-		}
-		
-		@Override
-		protected void onPostExecute(List<RedmineAttachment> result) {
-			super.onPostExecute(result);
-			form.progress(null);
-			for(RedmineAttachment item : result){
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				String mimetype =MimeTypeMap.getSingleton().getMimeTypeFromExtension(item.getFilenameExt());
-				Log.d(TAG,"file: " + item.getFile().getPath() + " mimetype: " + mimetype + " -- " + item.getContentType());
-				intent.setDataAndType(Uri.fromFile(item.getFile()), mimetype);
-				
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-				getActivity().startActivity(intent);
-			}
-		}
-		public Downloader(){
-			super();
-			this.savefolder = getDownloadDir();
-			IssueArgument intent = new IssueArgument();
-			intent.setArgument(getArguments());
-			int connectionid = intent.getConnectionId();
-			RedmineConnection connection = null;
-			ConnectionModel mConnection = new ConnectionModel(getActivity());
-			connection = mConnection.getItem(connectionid);
-			mConnection.finalize();
-			this.connection = connection;
-		}
-	}
 }

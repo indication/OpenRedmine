@@ -1,13 +1,17 @@
 package jp.redmine.redmineclient.entity;
 
-import java.util.Date;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.Date;
+
 @DatabaseTable
-public class RedmineProjectVersion implements IMasterRecord {
+public class RedmineProjectVersion
+		implements IConnectionRecord
+		,IMasterRecord
+{
 	public final static String ID = "id";
-	public final static String CONNECTION = "connection_id";
+	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String VERSION_ID = "version_id";
 	public final static String DUE_DATE = "due_date";
 	public final static String PROJECT_ID = "project_id";
@@ -15,7 +19,7 @@ public class RedmineProjectVersion implements IMasterRecord {
 
     @DatabaseField(generatedId = true)
     private Long id;
-    @DatabaseField(uniqueIndexName="projectversion_target")
+    @DatabaseField(uniqueIndexName="projectversion_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
     @DatabaseField(foreign = true,foreignColumnName="id"
     	,columnName= "project_id"
@@ -70,9 +74,7 @@ public class RedmineProjectVersion implements IMasterRecord {
 	public String getName() {
 		return name;
 	}
-	/**
-	 * @param connection セットする connection
-	 */
+	@Override
 	public void setRedmineConnection(RedmineConnection connection) {
 		this.setConnectionId(connection.getId());
 	}
@@ -118,17 +120,11 @@ public class RedmineProjectVersion implements IMasterRecord {
 	}
 
 
-	/**
-	 * @param connection_id セットする connection_id
-	 */
+	@Override
 	public void setConnectionId(Integer connection_id) {
 		this.connection_id = connection_id;
 	}
-
-
-	/**
-	 * @return connection_id
-	 */
+	@Override
 	public Integer getConnectionId() {
 		return connection_id;
 	}

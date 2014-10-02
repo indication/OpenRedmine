@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable
 public class RedmineConnection {
 	public final static String ID = "id";
+	public final static String CONNECTION_ID = "connection_id";
     @DatabaseField(generatedId = true)
     private Integer id;
     @DatabaseField

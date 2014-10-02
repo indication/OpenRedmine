@@ -13,6 +13,17 @@ public class RemoteUrlWiki extends RemoteUrl {
 	private String project;
 	private String title;
 
+	public enum Includes{
+		Attachments("attachments"),
+		;
+		private String name;
+		Includes(String nm){
+			name = nm;
+		}
+		public String getName(){
+			return name;
+		}
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -37,6 +48,16 @@ public class RemoteUrlWiki extends RemoteUrl {
 		project = proj;
 	}
 
+	public void setInclude(Includes ... args){
+		StringBuilder sb = new StringBuilder();
+		for(Includes inc : args){
+			if(sb.length()>1){
+				sb.append(",");
+			}
+			sb.append(inc.getName());
+		}
+		params.put("include", sb.length()>1 ? sb.toString() : null);
+	}
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);

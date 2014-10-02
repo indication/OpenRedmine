@@ -16,7 +16,6 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.fragment.IssueJump;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.ProjectList;
 import jp.redmine.redmineclient.model.ConnectionModel;
@@ -55,23 +54,6 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				.setName(getString(R.string.ticket_project))
 				.setIcon(android.R.drawable.ic_menu_mapmode)
 		);
-
-		// Direct issue jump list
-		ConnectionArgument argJump = new ConnectionArgument();
-		argJump.setArgument();
-		argJump.importArgument(intent);
-		list.add((new CorePage<ConnectionArgument>() {
-					@Override
-					public Fragment getRawFragment(ConnectionArgument param) {
-						return IssueJump.newInstance(param);
-					}
-				})
-						.setParam(argJump)
-						.setName(getString(R.string.ticket_jump))
-						.setIcon(android.R.drawable.ic_menu_directions)
-		);
-
-
 
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
 		try {

@@ -30,6 +30,7 @@ import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.entity.RedmineWatcher;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 
 public class ConnectionModel extends Connector {
@@ -87,6 +88,7 @@ public class ConnectionModel extends Connector {
 		model_class.add(RedmineRole.class);
 		model_class.add(RedmineTracker.class);
 		model_class.add(RedminePriority.class);
+		model_class.add(RedmineWatcher.class);
 		for(Class<? extends IConnectionRecord> cls : model_class){
 			try {
 				Dao<?, ?> dao =  helperCache.getDao(cls);

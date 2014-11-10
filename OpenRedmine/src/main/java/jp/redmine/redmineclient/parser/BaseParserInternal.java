@@ -1,15 +1,15 @@
 package jp.redmine.redmineclient.parser;
 
+import android.text.TextUtils;
+
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.IMasterRecord;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.text.TextUtils;
 
 abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> {
 	private ITEM item = null;
@@ -51,8 +51,7 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 		return tag.equalsIgnoreCase(xml.getName());
 	}
 
-	protected void setMasterRecord(IMasterRecord item)
-		throws XmlPullParserException, IOException{
+	protected void setMasterRecord(IMasterRecord item){
 		item.setName(xml.getAttributeValue("", "name"));
 		item.setRemoteId(getAttributeLong("id"));
 	}

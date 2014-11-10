@@ -89,6 +89,7 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 				 RemoteUrlIssue.Includes.Journals
 				,RemoteUrlIssue.Includes.Relations
 				,RemoteUrlIssue.Includes.Attachments
+				,RemoteUrlIssue.Includes.Watchers
 				);
 		for(int param: params){
 			url.setIssueId(param);

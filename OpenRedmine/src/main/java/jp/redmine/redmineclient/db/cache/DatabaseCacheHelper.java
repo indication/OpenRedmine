@@ -29,11 +29,12 @@ import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.entity.RedmineWatcher;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=16;
+	private static int DB_VERSION=17;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -66,6 +67,7 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.createTable(source, RedmineWiki.class);
 			TableUtils.createTable(source, RedmineNews.class);
 			TableUtils.createTable(source, RedmineRecentIssue.class);
+			TableUtils.createTable(source, RedmineWatcher.class);
 
 		} catch (SQLException e) {
 			Log.e("DatabaseHelper","onCreate",e);
@@ -117,6 +119,8 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				}
 			case 15:
 				TableUtils.createTable(source, RedmineRecentIssue.class);
+			case 16:
+				TableUtils.createTable(source, RedmineWatcher.class);
 				break;
 			}
 

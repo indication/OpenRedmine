@@ -1,5 +1,7 @@
 package jp.redmine.redmineclient.parser;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,16 +20,14 @@ import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.entity.RedmineWatcher;
 import jp.redmine.redmineclient.entity.TypeConverter;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.util.Log;
 
 public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIssue> {
 	private static final String TAG = ParserIssue.class.getSimpleName();
 	private ParserJournals parserJournal = new ParserJournals();
 	private ParserAttachment parserAttachment = new ParserAttachment();
+	private ParserWatchers parserWatcher = new ParserWatchers();
 	@Override
 	protected String getProveTagName() {
 		return "issue";
@@ -158,7 +158,23 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			relation.setDelay(getAttributeBigDecimal("delay"));
 			relation.setType(RelationType.getValueOf(getAttributeString("relation_type")));
 			item.getRelations().add(relation);
-			
+
+		} else if(equalsTagName("watchers")){
+			final List<RedmineWatcher> watchers = new ArrayList<RedmineWatcher>();
+			parserWatcher.setXml(xml);
+			DataCreationHandler<RedmineIssue, RedmineWatcher> handler =
+					new DataCreationHandler<RedmineIssue, RedmineWatcher>() {
+						@Override
+						public void onData(RedmineIssue info, RedmineWatcher data)
+								throws SQLException {
+							watchers.add(data);
+						}
+					};
+
+			parserWatcher.registerDataCreation(handler);
+			parserWatcher.parse(item);
+			parserWatcher.unregisterDataCreation(handler);
+			item.setWatchers(watchers);
 		} else if("closed_on".equalsIgnoreCase(xml.getName())){
 			item.setClosed(TypeConverter.parseDateTime(getNextText()));
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
@@ -167,7 +183,6 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 			item.setModified(TypeConverter.parseDateTime(getNextText()));
 		}
 		// TODO changesets
-		// TODO watchers
 
 	}
 

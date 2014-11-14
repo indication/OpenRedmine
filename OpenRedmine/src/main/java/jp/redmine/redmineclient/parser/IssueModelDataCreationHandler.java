@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.parser;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,11 +17,13 @@ import jp.redmine.redmineclient.db.cache.RedmineStatusModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
+import jp.redmine.redmineclient.db.cache.RedmineWatcherModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.entity.RedmineJournal;
+import jp.redmine.redmineclient.entity.RedmineWatcher;
 
 public class IssueModelDataCreationHandler implements DataCreationHandler<RedmineConnection,RedmineIssue> {
 
@@ -35,6 +38,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 	private RedmineProjectModel mProject;
 	private RedmineIssueRelationModel mRelation;
 	private RedmineAttachmentModel mAttachment;
+	private RedmineWatcherModel mWatcher;
 	public IssueModelDataCreationHandler(DatabaseCacheHelper helperCache){
 		mIssue = new RedmineIssueModel(helperCache);
 		mVersion = new RedmineVersionModel(helperCache);
@@ -47,6 +51,7 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		mProject = new RedmineProjectModel(helperCache);
 		mRelation = new RedmineIssueRelationModel(helperCache);
 		mAttachment = new RedmineAttachmentModel(helperCache);
+		mWatcher = new RedmineWatcherModel(helperCache);
 	}
 	public void onData(RedmineConnection connection,RedmineIssue data) throws SQLException {
 		data.setConnectionId(connection.getId());
@@ -66,6 +71,8 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		onDataRelation(data);
 		RedmineIssue.setupAttachments(data);
 		onDataAttachment(data);
+		RedmineIssue.setupWatchers(data);
+		onDataWatchers(data);
 	}
 	public void onDataJournal(RedmineIssue data) throws SQLException {
 		if(data.getJournals() == null)
@@ -95,6 +102,24 @@ public class IssueModelDataCreationHandler implements DataCreationHandler<Redmin
 		for (RedmineAttachment attachment : data.getAttachments()){
 			mUser.refreshItem(attachment);
 			mAttachment.refreshItem(attachment);
+		}
+	}
+	public void onDataWatchers(RedmineIssue data) throws SQLException {
+		if(data.getWatchers() == null)
+			return;
+		List<Integer> listUsers = new ArrayList<Integer>();
+		for (RedmineWatcher watcher : data.getWatchers()){
+			mUser.refreshItem(watcher);
+			mWatcher.refreshItem(watcher);
+			if(watcher.getUser() != null)
+				listUsers.add(watcher.getUser().getUserId());
+		}
+		for (RedmineWatcher watcher : mWatcher.fetchByIssue(data.getConnectionId(), data.getIssueId())){
+			if(watcher.getUser() == null)
+				continue;
+			if(!listUsers.contains(watcher.getUser().getUserId())){
+				mWatcher.delete(watcher);
+			}
 		}
 	}
 }

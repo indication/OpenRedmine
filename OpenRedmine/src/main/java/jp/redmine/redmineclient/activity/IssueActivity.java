@@ -22,6 +22,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.IssueEdit;
 import jp.redmine.redmineclient.fragment.IssueView;
+import jp.redmine.redmineclient.fragment.IssueWatcherList;
 import jp.redmine.redmineclient.fragment.TimeEntryEdit;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
@@ -85,6 +86,20 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 							.setParam(argList)
 							.setName(getString(R.string.ticket_issue))
 							.setIcon(R.drawable.ic_action_message)
+			);
+			// Watchers
+			IssueArgument argWatchers = new IssueArgument();
+			argWatchers.setArgument();
+			argWatchers.importArgument(intent);
+			list.add((new CorePage<IssueArgument>() {
+						@Override
+						public Fragment getRawFragment(IssueArgument param) {
+							return IssueWatcherList.newInstance(param);
+						}
+					})
+					.setParam(argWatchers)
+					.setName(getString(R.string.ticket_watcher))
+					.setIcon(android.R.drawable.ic_menu_view)
 			);
 		}
 		if(isValidIssue && isEditable){

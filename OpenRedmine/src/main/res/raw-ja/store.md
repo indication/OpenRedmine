@@ -2,8 +2,7 @@ Title
 ===========
 OpenRedmine
 
-
-Brief description
+簡単な説明
 ===========
 完全に無料で、GitHub上のオープンソースであるRedmineのクライアントです
 

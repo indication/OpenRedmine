@@ -2,10 +2,9 @@ Title
 ===========
 OpenRedmine
 
-Brief description
+краткое описание
 ===========
 Клиент Redmine является полностью бесплатной открытым исходным кодом на GitHub
-
 
 Description
 ==========
@@ -46,4 +45,4 @@ OpenRedmine Android является клиентом .
 * Данное приложение является (GPL , за исключением библиотек и т.д.) с открытым исходным кодом . Вы можете принять участие . (Например, перевод)
 * Вы можете перевести свой ​​язык через https://www.transifex.com/projects/p/openredmine/ .
 * Обратите внимание, с помощью https://github.com/indication/OpenRedmine или щебет @OpenRedmine если вы чувствуете что-то хорошее или плохое.
-* Beta would be released on https://plus.google.com/u/0/communities/118409948481316268572
+* Бета будет выпущен есть https://plus.google.com/u/0/communities/118409948481316268572

@@ -10,6 +10,16 @@ TODO
 Next Release
 ===========
 
+v3.14 - 47 - 2014/10/29
+===========
+- Fetch watchers (#132)
+- Fix misc (#142)
+ - Support new API on WebView fragment
+ - Close connection
+ - Delete unused code
+ - Support android studio 0.9.1
+
+
 v3.13 - 45 - 2014/10/04
 ===========
 - Put jump area to issue  on the project list (#130)

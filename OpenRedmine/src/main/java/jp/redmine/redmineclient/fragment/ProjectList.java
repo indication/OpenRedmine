@@ -1,12 +1,11 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -28,7 +27,6 @@ import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.fragment.form.IssueJumpForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
@@ -108,20 +106,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 			}
 		});
 
-		final IssueJumpForm formJump = new IssueJumpForm(getView());
-
-		formJump.buttonOK.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if(!formJump.Validate())
-					return;
-
-				ConnectionArgument intent = new ConnectionArgument();
-				intent.setArgument(getArguments());
-				mListener.onIssueSelected(intent.getConnectionId(), formJump.getIssueId());
-			}
-		});
 	}
 
 	@Override
@@ -135,10 +119,12 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		View view = inflater.inflate(R.layout.page_project_list, null);
-		mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.layoutSwipeRefresh);
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
+				= ListFragmentSwipeRefreshLayout.inject(container, view);
+		mSwipeRefreshLayout = result.layout;
 		mSwipeRefreshLayout.setOnRefreshListener(this);
-		return view;
+		return result.parent;
 	}
 
 	@Override
@@ -220,17 +206,20 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	protected void setupSearchBar(Menu menu){
 
-		if(! (getActivity() instanceof FragmentActivity)) {
-			return;
-		}
-		ActionBar bar = ((FragmentActivity)getActivity()).getActionBar();
-		SearchView search = new SearchView(bar.getThemedContext());
+		SearchView search = new SearchView(getActivity());
 		search.setIconifiedByDefault(false);
 		search.setSubmitButtonEnabled(true);
 		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String s) {
-				return false;
+				if (TextUtils.isDigitsOnly(s)){
+					ConnectionArgument intent = new ConnectionArgument();
+					intent.setArgument(getArguments());
+					mListener.onIssueSelected(intent.getConnectionId(), Integer.parseInt(s));
+					return true;
+				} else {
+					return onQueryTextChange(s);
+				}
 			}
 
 			@Override

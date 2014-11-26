@@ -24,6 +24,8 @@ public class ActivityHelper {
 			theme = R.style.ThemeLight;
 		} else if("hololight".equals(setting)){
 			theme = R.style.ThemeLight;
+		} else {
+			theme = R.style.ThemeDefault;
 		}
 		if(theme != null){
 			activity.setTheme(theme);

@@ -1,7 +1,7 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +9,7 @@ import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -26,7 +26,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
-import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import java.sql.SQLException;
@@ -43,6 +42,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectIssueTask;
@@ -180,7 +180,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
 		if(v == mHeader){
-			if(adapter != null && adapter.getParameter() != null && adapter.getParameter().isCurrent() == true)
+			if(adapter != null && adapter.getParameter() != null && adapter.getParameter().isCurrent())
 				intentFilterAction();
 			return;
 		}
@@ -302,18 +302,20 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	protected void setupSearchBar(Menu menu){
-
-		if(! (getActivity() instanceof FragmentActivity)) {
-			return;
-		}
-		ActionBar bar = ((FragmentActivity)getActivity()).getActionBar();
-		SearchView search = new SearchView(bar.getThemedContext());
+		SearchView search = new SearchView(getActivity());
 		search.setIconifiedByDefault(false);
 		search.setSubmitButtonEnabled(true);
 		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String s) {
-				return false;
+				if (TextUtils.isDigitsOnly(s)){
+					ConnectionArgument intent = new ConnectionArgument();
+					intent.setArgument(getArguments());
+					mListener.onIssueSelected(intent.getConnectionId(), Integer.parseInt(s));
+					return true;
+				} else {
+					return onQueryTextChange(s);
+				}
 			}
 
 			@Override

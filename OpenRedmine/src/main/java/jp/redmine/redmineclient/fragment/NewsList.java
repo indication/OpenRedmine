@@ -1,12 +1,11 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import java.sql.SQLException;
@@ -199,12 +197,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	}
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	protected void setupSearchBar(Menu menu){
-
-		if(! (getActivity() instanceof FragmentActivity)) {
-			return;
-		}
-		ActionBar bar = ((FragmentActivity)getActivity()).getActionBar();
-		SearchView search = new SearchView(bar.getThemedContext());
+		SearchView search = new SearchView(getActivity());
 		search.setIconifiedByDefault(false);
 		search.setSubmitButtonEnabled(true);
 		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

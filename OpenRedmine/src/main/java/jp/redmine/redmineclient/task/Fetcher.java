@@ -97,6 +97,8 @@ public class Fetcher {
 				Log.d("requestDebug", str);
 			}
 			Log.d("requestDebug", "<<Dump end<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+			reader.close();
+			stream.close();
 			return false;
 		}
 	}
@@ -149,6 +151,8 @@ public class Fetcher {
 					}
 					break;
 			}
+			if (stream != null)
+				stream.close();
 			return false;
 		}
 	}

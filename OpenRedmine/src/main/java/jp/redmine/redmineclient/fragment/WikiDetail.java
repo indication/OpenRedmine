@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -72,8 +73,16 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onDestroyView() {
 		cancelTask();
+		webView.destroy();
 		super.onDestroyView();
 	}
+
+	@Override
+	public void onLowMemory() {
+		webView.freeMemory();
+		super.onLowMemory();
+	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -105,6 +114,20 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 		} catch (SQLException e) {
 			Log.e(TAG, "loadWebView", e);
 		}
+	}
+
+	@Override
+	public void onPause() {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			webView.onPause();
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			webView.onResume();
+		super.onResume();
 	}
 
 	private class SelectDataTask extends SelectWikiTask {

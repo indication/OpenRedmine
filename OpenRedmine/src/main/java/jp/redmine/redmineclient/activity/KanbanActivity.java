@@ -36,7 +36,6 @@ import jp.redmine.redmineclient.fragment.ActivityInterface;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
-import jp.redmine.redmineclient.param.TimeEntryArgument;
 
 public class KanbanActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
@@ -59,14 +58,6 @@ public class KanbanActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 		 */
 		if(savedInstanceState != null)
 			return;
-
-		TimeEntryArgument arg = new TimeEntryArgument();
-		arg.setArgument();
-		{
-			TimeEntryArgument intent = new TimeEntryArgument();
-			intent.setIntent(getIntent());
-			arg.importArgument(intent);
-		}
 
 		renewFragments();
 	}

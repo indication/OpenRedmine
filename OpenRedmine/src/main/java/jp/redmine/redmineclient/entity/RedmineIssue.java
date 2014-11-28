@@ -1,17 +1,17 @@
 package jp.redmine.redmineclient.entity;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 import android.text.TextUtils;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @DatabaseTable
 public class RedmineIssue
@@ -94,6 +94,7 @@ public class RedmineIssue
 	private List<RedmineJournal> journals;
 	private List<RedmineIssueRelation> relations;
 	private List<RedmineAttachment> attachments;
+	private List<RedmineWatcher> watchers;
 
 	static public void setupConnectionId(RedmineIssue item){
 		if(item.getConnectionId() == null)
@@ -147,6 +148,16 @@ public class RedmineIssue
 		for (RedmineAttachment data : item.getAttachments()){
 			data.setConnectionId(item.getConnectionId());
 			data.setIssueId(item.getIssueId());
+		}
+	}
+	static public void setupWatchers(RedmineIssue item){
+		if(item.getWatchers() == null)
+			return;
+		for (RedmineWatcher data : item.getWatchers()){
+			data.setConnectionId(item.getConnectionId());
+			data.setIssueId(item.getIssueId());
+			if(data.getUser() != null)
+				data.getUser().setConnectionId(item.getConnectionId());
 		}
 	}
 
@@ -574,9 +585,6 @@ public class RedmineIssue
 		return additional_modified;
 	}
 
-	/**
-	 * @param closed セットする closed
-	 */
 	public void setClosed(Date date) {
 		closed = date;
 	}
@@ -586,6 +594,14 @@ public class RedmineIssue
 	 */
 	public Date getClosed() {
 		return closed;
+	}
+
+	public List<RedmineWatcher> getWatchers() {
+		return watchers;
+	}
+
+	public void setWatchers(List<RedmineWatcher> watchers) {
+		this.watchers = watchers;
 	}
 
 	@Override

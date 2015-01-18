@@ -1,48 +1,48 @@
-Title
+Titel
 ===========
 OpenRedmine
 
-Brief description
+Kurze Beschreibung
 ===========
-OpenRedmine is a Redmine client which is totally free and open-source on GitHub.
+OpenRedmine ist ein Redmine-Client der opensource ist und auf GitHub gehostet ist.
 
-Description
+Beschreibung
 ==========
-OpenRedmine is an android Redmine client.
+OpenRedmine ist ein Android Redmine-Client.
 
-Requirement:
-* Redmine 1.2 later
-* API access key (Change from "My Account")
+Voraussetzung
+* Redmine 1.2 oder höher
+* API-Zugriffsschlüssel (Siehe unter "Mein Konto")
 
-CAUTION:
-* Cache data(downloaded issues) are stored WITHOUT encryption. To remove cache data immediately , open connection list - show menu - remove all cache 
-* This is gamma release, so it is not safe for anything. On Android 2.x, the view would be wrong some times.
+ACHTUNG:
+* Gecachte Daten (z.B. heruntergeladene Tickets) werden OHNE Verschlüsselung gespeichert. Um die gecachte Daten zu löschen, öffnen Sie Verbindungsliste und wählen Sie "Gecachte Daten löschen" 
+* Dies ist eine gamma release, d.h. es wird für nichts garantiert. Unter Android 2.x, könnte es einige Anzeigefehler geben.
 
-Connection:
-* Allow to connect UNSAFE SSL sites powered by transdroid
-* Allow to connect via Basic Authentication
-* Get API key from web site semi-automatically
-* Connection via gzip(compresstion)
+Verbindung:
+* Erlaube UNSICHERE SSL Verbindungen via transdroid.
+* Erlaube via Basis Authentifizierung zu verbinden
+* Lade den API-Schlüssel halbautomatisch vom Server
+* Verbindung via gzip (kompremiert)
 
 Features:
-* View issues offline
-* Filter (Status/Tracker/Category/Priority/Author/Assined)
-* Sort (IssueID/Created/Modified/... etc)
-* Show changelogs, relative issues
-* Create or modify issue/timeentry
-* Download file related with issues
-* View wiki
-* View news
+* Zeige Tickets offline an
+* Filter (Status/Tracker/Kategorie/Priorität/Author/Zugewiesen)
+* Sortiere (Ticket-ID/Erstellt/Bearbeitet/... etc)
+* Zeige Changelogs, verwandte Tickets an
+* Erstelle oder bearbeite ein Ticket / Eintrag
+* Download von Dateien die den Ticket zugeordnet wurden
+* Sehe das Wiki an.
+* Zeige die News an.
 
-Permissions:
-* INTERNET - connect to redmine server
-* VIBRATE - notify with vibrate on tap the list item
+Berechtigungen:
+* INTERNET - um zum Redmine-Server zu verbinden
+* VIBRATION - Benachrichtigung, wenn auf ein Ticket geklickt wird.
 
 Reports:
-If you detect the crash, bless us by the report via twitter, github, reviews with 1 star.
+Sollte die Applikation abstürzen, bitte schicken Sie uns die Fehlerbeschreibung via Twitter, Github, oder bewerten Sie uns mit einem Stern.
 
-Note:
-* This app is open source(GPL exclude libraries), you can contribute.
-* You can translate your language via https://www.transifex.com/projects/p/openredmine/ .
-* Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
-* Beta would be released on https://plus.google.com/u/0/communities/118409948481316268572
+Notiz:
+* Diese App ist open source (GPL ohne Libraries). Bitte helfen Sie mit.
+* Sie können die App in Ihre Sprache übersetzen oder die Übersetzung verbessern unter: https://www.transifex.com/projects/p/openredmine/ .
+* Bitte Fehlerberichte, Anmerkungen, Neue Feature via https://github.com/indication/OpenRedmine oder Twitter @OpenRedmine
+* Beta-Versionen werden hier veröffentlicht: https://plus.google.com/u/0/communities/118409948481316268572

@@ -85,7 +85,7 @@ map(objFSO,pathTranslation+"/openredmine.stringsxml-49",pathRoot+"/OpenRedmine/s
 map(objFSO,pathTranslation+"/openredmine.storemd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","store.md");
 map(objFSO,pathTranslation+"/openredmine.versionmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","version.md");
 
-WScript.Echo("DONE!");
+//WScript.Echo("DONE!");
 
 
 /* Download file
@@ -142,7 +142,7 @@ function map(fso,pathFrom,pathToFoler,pathToFile){
 	for (; !folderfiles.atEnd(); folderfiles.moveNext()){
 		var pathFromFile = folderfiles.item();
 		var itemname = fso.GetBaseName(pathFromFile);
-		var pathSendFolder = pathTargetFolder.replace("XX",itemname).replace("values-en","values");
+		var pathSendFolder = pathTargetFolder.replace("XX",itemname);
 		var pathSendFile = pathToFile.replace("XX",itemname);
 		if(!fso.FolderExists(pathSendFolder)){
 			fso.CreateFolder(pathSendFolder);

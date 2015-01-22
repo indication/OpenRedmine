@@ -9,7 +9,6 @@ TODO
 
 Next Release
 ===========
-- Add German translation by markusr
 
 v3.14 - 47 - 2014/10/29
 ===========

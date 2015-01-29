@@ -1,53 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:shrinkColumns="1"
-    android:stretchColumns="1" >
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:padding="10dp">
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:src="@android:drawable/ic_menu_recent_history"
+		android:contentDescription="@string/ticket_time"
+		android:layout_alignTop="@+id/textTimeEntry"
+		android:layout_alignBottom="@+id/textTimeEntry"
+		android:id="@+id/image"/>
 
-    <TableRow tools:ignore="UselessParent" >
-		<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-			android:src="@android:drawable/ic_menu_recent_history"
-			android:contentDescription="@string/ticket_time"/>
+	<TextView
+		android:id="@+id/textActivity"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:text="Activity"
+		tools:ignore="HardcodedText"
+		android:layout_toRightOf="@+id/image"
+		android:layout_centerVertical="true"/>
 
-        <TextView
-            android:id="@+id/textAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-            android:text="Author"
-            tools:ignore="HardcodedText" />
+	<TextView
+		android:id="@+id/textAuthor"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:text="Author"
+		tools:ignore="HardcodedText"
+		android:layout_toRightOf="@+id/textActivity"
+		android:layout_toLeftOf="@+id/textSpentsOn"
+		android:layout_centerVertical="true"
+		android:layout_marginLeft="5dp"
+		android:layout_marginRight="5dp"/>
 
-        <TextView
-            android:id="@+id/textActivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:text="Activity"
-            tools:ignore="HardcodedText" />
+	<TextView
+		android:id="@+id/textSpentsOn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:text="2012-12-12"
+		android:layout_marginLeft="5dp"
+		tools:ignore="HardcodedText"
+		android:layout_toLeftOf="@+id/textTimeEntry"
+		android:layout_centerVertical="true"/>
 
-        <TextView
-            android:id="@+id/textSpentsOn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-            android:text="2012-12-12"
-            android:layout_marginLeft="5dp"
-            tools:ignore="HardcodedText" />
+	<TextView
+		android:id="@+id/textTimeEntry"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:text="@string/ticket_time_estimate"
+		android:layout_marginLeft="5dp"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"/>
 
-        <TextView
-            android:id="@+id/textTimeEntry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-            android:text="@string/ticket_time_estimate"
-            android:layout_marginLeft="5dp"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </TableRow>
-
-</TableLayout>
+</RelativeLayout>

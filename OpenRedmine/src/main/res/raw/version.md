@@ -9,6 +9,9 @@ TODO
 
 Next Release
 ===========
+
+v3.15 - 48 - 2015/02/07
+===========
 - Add German translation by markusr
 - Support journal relations (#151)
 

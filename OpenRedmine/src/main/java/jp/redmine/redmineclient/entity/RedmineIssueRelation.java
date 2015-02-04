@@ -80,7 +80,7 @@ public class RedmineIssueRelation
 				if(i.getName().equalsIgnoreCase(name))
 					return i;
 			}
-			return null;
+			return None;
 		}
 	}
 

@@ -10,6 +10,7 @@ TODO
 Next Release
 ===========
 - Add German translation by markusr
+- Support journal relations (#151)
 
 v3.14 - 47 - 2014/10/29
 ===========

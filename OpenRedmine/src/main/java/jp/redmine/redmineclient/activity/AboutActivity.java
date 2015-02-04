@@ -78,7 +78,7 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 					TextView view = (TextView)findViewById(R.id.footer);
 					if (view != null)
 						view.setText(getString(R.string.footer_version,
-								BuildConfig.PACKAGE_NAME, BuildConfig.VERSION_NAME,
+								BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME,
 								BuildConfig.VERSION_CODE, BuildConfig.BUILD_TYPE
 						));
 				}

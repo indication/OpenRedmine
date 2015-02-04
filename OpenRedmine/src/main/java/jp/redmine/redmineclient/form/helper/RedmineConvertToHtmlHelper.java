@@ -9,7 +9,7 @@ import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.entity.TypeConverter;
 
 class RedmineConvertToHtmlHelper {
-	static public final String URL_PREFIX = BuildConfig.PACKAGE_NAME + BuildConfig.VERSION_CODE +"://";
+	static public final String URL_PREFIX = BuildConfig.APPLICATION_ID + BuildConfig.VERSION_CODE +"://";
 	private int connection_id;
 	private long project_id;
 	HashMap<WikiType, ConvertToHtmlHelper> helpers = new HashMap<WikiType, ConvertToHtmlHelper>();

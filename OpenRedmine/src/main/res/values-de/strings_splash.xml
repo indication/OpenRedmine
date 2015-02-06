@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="app_name">OpenRedmine</string>
+  <string name="app_description"><![CDATA[
+OpenRedmine ist ein Android Redmine client.
+]]></string>
+  <string name="product">Produkt</string>
+  <string name="message_first_time"><![CDATA[Vielen Dank für das Herunterladen.
+
+]]></string>
+  <string name="license">Lizenz</string>
+  <string name="footer_version">%1$s v%2$s[%3$d] - %4$s</string>
+</resources>

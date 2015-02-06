@@ -1,13 +1,13 @@
 OpenRedmine
 ===========
-Release history
+Geschichtliches
 
-TODO
+Alle
 ===========
-- Check date to update bug (#83)
-- Add share button on issue (#18)
+- Überprüfen Sie Datum, um Fehler zu aktualisieren (#83)
+- Hinzufügen Share-Taste auf Frage (#18)
 
-Next Release
+Nächste Veröffentlichung
 ===========
 
 v3.15 - 48 - 2015/02/07
@@ -17,12 +17,12 @@ v3.15 - 48 - 2015/02/07
 
 v3.14 - 47 - 2014/10/29
 ===========
-- Fetch watchers (#132)
-- Fix misc (#142)
- - Support new API on WebView fragment
- - Close connection
- - Delete unused code
- - Support android studio 0.9.1
+- Fetch-Beobachter (#132)
+- Verschiedene Modifikationen (#142)
+ - Unterstützen neue API auf WebView Fragment
+ - enge Verbindung
+ - Nicht verwendeten Code löschen
+ - Unterstützung android Studio 0.9.1
 
 
 v3.13 - 45 - 2014/10/04

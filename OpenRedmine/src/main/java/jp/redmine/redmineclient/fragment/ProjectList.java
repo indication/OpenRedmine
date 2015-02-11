@@ -249,13 +249,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 				this.onRefresh();
 				return true;
 			}
-			case R.id.menu_settings:
-			{
-				ConnectionArgument input = new ConnectionArgument();
-				input.setArgument(getArguments());
-				mConnectionListener.onConnectionEdit(input.getConnectionId());
-				return true;
-			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

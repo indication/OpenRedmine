@@ -23,6 +23,9 @@ abstract public class CorePage<T> {
 		param = p;
 		return this;
 	}
+	public Runnable getCustomAction(){
+		return null;
+	}
 	public T getParam(){
 		return param;
 	}

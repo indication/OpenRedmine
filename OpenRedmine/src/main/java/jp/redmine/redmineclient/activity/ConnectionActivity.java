@@ -40,6 +40,25 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 			setTitle(con.getName());
 
 		List<CorePage> list = new ArrayList<CorePage>();
+		list.add((new CorePage<Void>() {
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return null;
+					}
+
+					@Override
+					public Runnable getCustomAction() {
+						return new Runnable() {
+							@Override
+							public void run() {
+								finish();
+							}
+						};
+					}
+				})
+						.setName(getString(R.string.connection))
+						.setIcon(android.R.drawable.ic_menu_revert)
+		);
 		// Project list
 		ConnectionArgument argList = new ConnectionArgument();
 		argList.setArgument();
@@ -53,6 +72,7 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				.setParam(argList)
 				.setName(getString(R.string.ticket_project))
 				.setIcon(android.R.drawable.ic_menu_mapmode)
+				.setDefault(true)
 		);
 
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());

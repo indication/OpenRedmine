@@ -137,9 +137,12 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				CorePage page = (CorePage) parent.getItemAtPosition(position);
-
+				Runnable run = page.getCustomAction();
+				if (run != null){
+					run.run();
+					return;
+				}
 				mActionBarToolbar.setTitle(page.getName());
-				mActionBarToolbar.setNavigationIcon(page.getIcon() == null ? R.drawable.ic_launcher : page.getIcon());
 				getSupportFragmentManager().beginTransaction()
 						.replace(R.id.container, page.getFragment())
 						.commit();
@@ -157,12 +160,23 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 		if (savedInstanceState != null) {
 			mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
 			mFromSavedInstanceState = true;
+		} else {
+			mCurrentSelectedPosition = getDefaultPosition();
 		}
 
 		// Select either the default item (0) or the last selected item.
 		selectItem(mCurrentSelectedPosition);
+
 		mDrawerListView.performItemClick(mDrawerListView,mCurrentSelectedPosition,0);
 
+	}
+
+	protected int getDefaultPosition(){
+		for(int i=0;i<mListTabs.size();i++){
+			if(mListTabs.get(i).isDefault())
+				return i;
+		}
+		return 0;
 	}
 
 	public boolean isDrawerOpen() {

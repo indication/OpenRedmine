@@ -16,6 +16,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.fragment.ConnectionEdit;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.ProjectFavoriteList;
 import jp.redmine.redmineclient.fragment.ProjectList;
@@ -138,6 +139,19 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 						.setParam(argRecent)
 						.setName(getString(R.string.recent_issues))
 						.setIcon(R.drawable.ic_recent)
+		);
+		ConnectionArgument argConnection = new ConnectionArgument();
+		argConnection.setArgument();
+		argConnection.importArgument(intent);
+		list.add((new CorePage<ConnectionArgument>() {
+					@Override
+					public Fragment getRawFragment(ConnectionArgument param) {
+						return ConnectionEdit.newInstance(param);
+					}
+				})
+						.setParam(argConnection)
+						.setName(getString(R.string.menu_settings))
+						.setIcon(android.R.drawable.ic_menu_preferences)
 		);
 
 		return list;

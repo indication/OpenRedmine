@@ -222,17 +222,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 				mConnectionListener.onConnectionEdit(input.getConnectionId());
 				return true;
 			}
-			case R.id.menu_web:
-			{
-				ConnectionArgument input = new ConnectionArgument();
-				input.setArgument(getArguments());
-				WebArgument intent = new WebArgument();
-				intent.setIntent(getActivity().getApplicationContext(), WebViewActivity.class);
-				intent.importArgument(input);
-				intent.setUrl("/projects");
-				getActivity().startActivity(intent.getIntent());
-				return true;
-			}
 		}
 		return super.onOptionsItemSelected(item);
 	}

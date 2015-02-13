@@ -19,7 +19,6 @@ import android.widget.ListView;
 import java.io.File;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.AboutActivity;
 import jp.redmine.redmineclient.activity.CommonPreferenceActivity;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
@@ -145,13 +144,6 @@ public class ConnectionList extends ListFragment {
 			case R.id.menu_settings:
 			{
 				Intent intent = new Intent( getActivity().getApplicationContext(), CommonPreferenceActivity.class );
-				startActivity( intent );
-
-				return true;
-			}
-			case R.id.menu_about:
-			{
-				Intent intent = new Intent( getActivity().getApplicationContext(), AboutActivity.class );
 				startActivity( intent );
 
 				return true;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="ThemeDark" parent="Theme.AppCompat.Light.DarkActionBar" />
+	<style name="ThemeDark" parent="Theme.AppCompat" />
 	<style name="ThemeLight" parent="Theme.AppCompat.Light" />
 	<style name="ThemeDefault" parent="Theme.AppCompat" />
 </resources>

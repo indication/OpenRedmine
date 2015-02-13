@@ -1,11 +1,10 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.ListFragment;
@@ -19,7 +18,6 @@ import android.widget.ListView;
 
 import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.activity.CommonPreferenceActivity;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
@@ -125,13 +123,6 @@ public class ConnectionList extends ListFragment {
 			{
 				ClearCacheAndRestart();
 				//@todo show dialog
-				return true;
-			}
-			case R.id.menu_settings:
-			{
-				Intent intent = new Intent( getActivity().getApplicationContext(), CommonPreferenceActivity.class );
-				startActivity( intent );
-
 				return true;
 			}
 		}

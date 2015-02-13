@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
@@ -69,6 +70,29 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 						.setParam(null)
 						.setName(getString(R.string.recent_issues))
 						.setIcon(R.drawable.ic_recent)
+		);
+
+		//Settings
+		list.add((new CorePage<Void>() {
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return null;
+					}
+
+					@Override
+					public Runnable getCustomAction() {
+						return new Runnable() {
+							@Override
+							public void run() {
+								Intent intent = new Intent( getApplicationContext(), CommonPreferenceActivity.class );
+								startActivity( intent );
+							}
+						};
+					}
+				})
+						.setParam(null)
+						.setName(getString(R.string.menu_settings))
+						.setIcon(android.R.drawable.ic_menu_preferences)
 		);
 
 		//from AboutActivity

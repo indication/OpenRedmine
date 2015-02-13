@@ -120,5 +120,7 @@
 	<string name="news">News</string>
 	<string name="activity_not_found">The activity is not found for this file.</string>
 	<string name="recent_issues">Resent issues</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

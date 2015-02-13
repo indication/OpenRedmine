@@ -1,9 +1,12 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,12 +27,11 @@ import jp.redmine.redmineclient.activity.CommonPreferenceActivity;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.store.DatabaseHelper;
-import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineConnectionContract;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 
-public class ConnectionList extends ListFragment {
-	private DatabaseHelper helperStore;
+public class ConnectionList extends ListFragment implements
+		LoaderManager.LoaderCallbacks<Cursor> {
 	private ConnectionListAdapter adapter;
 	private View mFooter;
 	private ConnectionActionInterface mListener;
@@ -52,10 +54,6 @@ public class ConnectionList extends ListFragment {
 	public void onDestroyView() {
 		setListAdapter(null);
 		super.onDestroyView();
-		if(helperStore != null){
-			helperStore.close();
-			helperStore = null;
-		}
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -64,15 +62,13 @@ public class ConnectionList extends ListFragment {
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
 
-		helperStore = new DatabaseHelper(getActivity());
 
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				ListView listView = (ListView) parent;
-				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				mListener.onConnectionEdit(item.getId());
+				mListener.onConnectionEdit(adapter.getId((Cursor)listView.getItemAtPosition(position)));
 				return true;
 			}
 		});
@@ -84,9 +80,11 @@ public class ConnectionList extends ListFragment {
 			}
 		});
 
-		adapter = new ConnectionListAdapter(helperStore, getActivity());
+		adapter = new ConnectionListAdapter(getActivity(), null, true);
 		setListAdapter(adapter);
 		adapter.notifyDataSetChanged();
+
+		getLoaderManager().initLoader(0,null, this);
 	}
 
 	@Override
@@ -112,8 +110,7 @@ public class ConnectionList extends ListFragment {
 	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
-		RedmineConnection item = (RedmineConnection) parent.getItemAtPosition(position);
-		mListener.onConnectionSelected(item.getId());
+		mListener.onConnectionSelected(adapter.getId((Cursor)parent.getItemAtPosition(position)));
 	}
 
 	@Override
@@ -160,4 +157,20 @@ public class ConnectionList extends ListFragment {
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		return new CursorLoader(getActivity(),
+				RedmineConnectionContract.CONTENT_URI, null, null, null, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		adapter.swapCursor(data);
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		adapter.swapCursor(null);
+	}
 }

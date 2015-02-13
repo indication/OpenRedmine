@@ -1,13 +1,22 @@
 package jp.redmine.redmineclient.entity;
 
+import android.provider.BaseColumns;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.tojc.ormlite.android.annotation.AdditionalAnnotation;
 
+import jp.redmine.redmineclient.BuildConfig;
+
+@AdditionalAnnotation.Contract()
 @DatabaseTable
+@AdditionalAnnotation.DefaultContentUri(authority = BuildConfig.APPLICATION_ID, path = "connection")
+@AdditionalAnnotation.DefaultContentMimeTypeVnd(name = BuildConfig.PROVIDER_ID, type = "connection")
 public class RedmineConnection {
 	public final static String ID = "id";
 	public final static String CONNECTION_ID = "connection_id";
-    @DatabaseField(generatedId = true)
+    @DatabaseField(columnName = BaseColumns._ID,generatedId = true)
+	@AdditionalAnnotation.DefaultSortOrder
     private Integer id;
     @DatabaseField
     private String name;

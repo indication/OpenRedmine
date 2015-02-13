@@ -59,6 +59,10 @@
 			android:name=".provider.Attachment"
 			android:authorities="jp.redmine.redmineclient.attachment"
 			/>
+		<provider
+			android:name=".provider.Connection"
+			android:authorities="jp.redmine.redmineclient"
+			/>
     </application>
 
 </manifest>

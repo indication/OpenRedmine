@@ -3,19 +3,18 @@ package jp.redmine.redmineclient.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import java.io.File;
 
@@ -29,7 +28,7 @@ import jp.redmine.redmineclient.db.store.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 
-public class ConnectionList extends SherlockListFragment {
+public class ConnectionList extends ListFragment {
 	private DatabaseHelper helperStore;
 	private ConnectionListAdapter adapter;
 	private View mFooter;

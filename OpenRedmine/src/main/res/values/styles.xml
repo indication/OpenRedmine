@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android" >
-	<style name="ThemeDefault" parent="Theme.Sherlock">
-	</style>
-	<style name="ThemeDark" parent="Theme.Sherlock.Light.DarkActionBar">
-	</style>
-	<style name="ThemeLight" parent="Theme.Sherlock.Light">
-	</style>
+<resources>
+	<style name="ThemeDark" parent="Theme.AppCompat.Light.DarkActionBar" />
+	<style name="ThemeLight" parent="Theme.AppCompat.Light" />
 </resources>

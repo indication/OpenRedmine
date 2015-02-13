@@ -45,17 +45,12 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:20.+'
+    compile 'com.android.support:appcompat-v7:20.+'
     compile 'com.andreabaccega:android-form-edittext:1.0.5@aar'
-    compile 'com.actionbarsherlock:actionbarsherlock:4.4.+@aar'
-    compile ('com.github.chrisbanes.actionbarpulltorefresh:extra-abs:0.9.+'){
-        exclude group: 'com.android.support', module:'support-v4'
-        exclude group: 'com.android.support', module:'appcompat-v7'
-    }
     compile 'se.emilsjolander:stickylistheaders:2.+'
     compile 'com.j256.ormlite:ormlite-core:4.+'
     compile 'com.j256.ormlite:ormlite-android:4.+'
     compile 'org.apache.commons:commons-lang3:3.1'
-    //compile 'com.jakewharton:hanselandgretel:1.0.2'
     compile 'net.java:textile-j:2.2'
     compile 'org.commonjava.googlecode.markdown4j:markdown4j:+'
     compile project(':Transdroid')

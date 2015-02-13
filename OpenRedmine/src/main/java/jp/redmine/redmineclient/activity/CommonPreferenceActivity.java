@@ -1,13 +1,12 @@
 package jp.redmine.redmineclient.activity;
 
 import android.os.Bundle;
-
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import android.preference.PreferenceActivity;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 
-public class CommonPreferenceActivity extends SherlockPreferenceActivity {
+public class CommonPreferenceActivity extends PreferenceActivity {
 	public CommonPreferenceActivity(){
 		super();
 	}
@@ -16,7 +15,7 @@ public class CommonPreferenceActivity extends SherlockPreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
-		getSupportActionBar();
+		//getSupportActionBar();
 		addPreferencesFromResource(R.xml.preference);
 	}
 }

@@ -1,18 +1,18 @@
 package jp.redmine.redmineclient.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.form.RedmineNavigationForm;
 import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-public class ConnectionNaviActivity extends SherlockFragmentActivity {
+public class ConnectionNaviActivity extends FragmentActivity {
 	public ConnectionNaviActivity(){
 		super();
 	}

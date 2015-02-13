@@ -1,6 +1,7 @@
 package com.j256.ormlite.android.apptools;
 
-import com.actionbarsherlock.app.SherlockListFragment;
+import android.support.v4.app.ListFragment;
+
 import com.j256.ormlite.support.ConnectionSource;
 
 /**
@@ -16,17 +17,17 @@ import com.j256.ormlite.support.ConnectionSource;
  *
  * @author graywatson, kevingalligan
  */
-public abstract class OrmLiteListFragment<H extends OrmLiteSqliteOpenHelper> extends SherlockListFragment {
+public abstract class OrmLiteListFragment<H extends OrmLiteSqliteOpenHelper> extends ListFragment {
 
     /**
      * Get a helper for this action.
      */
     public H getHelper() {
         if(getActivity() instanceof OrmLiteFragmentActivity<?>){
-            return ((OrmLiteFragmentActivity<H>)getActivity()).getHelper();
-        } else {
-            return null;
-        }
+			return ((OrmLiteFragmentActivity<H>)getActivity()).getHelper();
+		} else {
+			return null;
+		}
     }
 
     /**

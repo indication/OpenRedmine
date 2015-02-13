@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto" >
 	<item android:id="@+id/menu_access_addnew"
 	    android:title="@string/add"
-	    android:showAsAction="ifRoom"
+	    app:showAsAction="ifRoom"
 	    android:icon="@android:drawable/ic_menu_add" />
     <item android:id="@+id/menu_refresh"
         android:title="@string/menu_refresh"
-        android:showAsAction="ifRoom"
+		app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_refresh"
         android:visible="false"
         android:numericShortcut="5"

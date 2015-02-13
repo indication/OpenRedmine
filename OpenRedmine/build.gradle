@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.neenbedankt.android-apt'
 android {
     compileSdkVersion 21
     buildToolsVersion '21.1.2'
@@ -14,6 +14,7 @@ android {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
         testHandleProfiling true
         testFunctionalTest true
+        buildConfigField 'String', 'PROVIDER_ID', 'APPLICATION_ID + ".provider"'
     }
     lintOptions {
         abortOnError true
@@ -52,6 +53,8 @@ dependencies {
     compile 'se.emilsjolander:stickylistheaders:2.+'
     compile 'com.j256.ormlite:ormlite-core:4.+'
     compile 'com.j256.ormlite:ormlite-android:4.+'
+    compile 'com.tojc.ormlite.android:ormlite-content-provider-library:1.0.+'
+    apt 'com.tojc.ormlite.android:ormlite-content-provider-compiler:1.0.+'
     compile 'org.apache.commons:commons-lang3:3.+'
     compile 'net.java:textile-j:2.2'
     compile 'org.commonjava.googlecode.markdown4j:markdown4j:+'

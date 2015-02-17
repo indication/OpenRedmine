@@ -218,6 +218,12 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
         return view;
 	}
 
+
+	@Override
+	public void onRefresh() {
+		onFetchRemote();
+	}
+
 	protected void onRefresh(boolean isFetch){
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());
@@ -256,11 +262,6 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		intent.setArgument(getArguments());
 		task = new SelectDataTask();
 		task.execute(intent.getIssueId());
-	}
-
-	@Override
-	public void onRefresh() {
-
 	}
 
 	private class SelectDataTask extends SelectIssueJournalTask{

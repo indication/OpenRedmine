@@ -33,6 +33,7 @@
 		<ListView
 			android:id="@+id/listMenu"
 			android:layout_width="@dimen/navigation_drawer_width"
+			android:background="?attr/navigationDrawerBackground"
 			android:layout_height="match_parent"
 			android:layout_gravity="start"/>
 	</android.support.v4.widget.DrawerLayout>

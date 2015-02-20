@@ -1,25 +1,33 @@
 package jp.redmine.redmineclient.entity;
 
+import android.provider.BaseColumns;
+
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.tojc.ormlite.android.annotation.AdditionalAnnotation;
 
 import java.util.Date;
 
+import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.R;
 
+@AdditionalAnnotation.Contract
 @DatabaseTable
+@AdditionalAnnotation.DefaultContentUri(authority = BuildConfig.PROVIDER_CACHE_ID, path = "project")
+@AdditionalAnnotation.DefaultContentMimeTypeVnd(name = BuildConfig.PROVIDER_CACHE_ID, type = "project")
 public class RedmineProject
 		implements IConnectionRecord
 		,IMasterRecord
 {
-	public final static String ID = "id";
+	public final static String ID = BaseColumns._ID;
 	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String PROJECT_ID = "project_id";
 	public final static String NAME = "kind";
 	public final static String FAVORITE = "favorite";
 
-    @DatabaseField(generatedId = true)
+	@DatabaseField(columnName = BaseColumns._ID,generatedId = true)
+	@AdditionalAnnotation.DefaultSortOrder
     private Long id;
     @DatabaseField(uniqueIndexName="project_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;

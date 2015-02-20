@@ -59,7 +59,13 @@
 			/>
 		<provider
 			android:name=".provider.Connection"
-			android:authorities="jp.redmine.redmineclient"
+			android:authorities="jp.redmine.redmineclient.provider.store"
+			android:exported="false"
+			/>
+		<provider
+			android:name=".provider.Cache"
+			android:authorities="jp.redmine.redmineclient.provider.cache"
+			android:exported="false"
 			/>
     </application>
 

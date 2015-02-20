@@ -19,7 +19,7 @@ public class RedmineRecentIssue
 	private Long id;
 	@DatabaseField(uniqueIndexName="history_target", columnName = RedmineConnection.CONNECTION_ID)
 	private Integer connection_id;
-	@DatabaseField(foreign = true,foreignColumnName="id", columnName= PROJECT, foreignAutoRefresh = true)
+	@DatabaseField(foreign = true,foreignColumnName=RedmineProject.ID, columnName= PROJECT, foreignAutoRefresh = true)
 	private RedmineProject project;
     @DatabaseField(uniqueIndexName="history_target", foreign = true,foreignColumnName="id", columnName= ISSUE, foreignAutoRefresh = true)
 	private RedmineIssue issue;

@@ -10,10 +10,10 @@ import jp.redmine.redmineclient.BuildConfig;
 
 @AdditionalAnnotation.Contract()
 @DatabaseTable
-@AdditionalAnnotation.DefaultContentUri(authority = BuildConfig.APPLICATION_ID, path = "connection")
-@AdditionalAnnotation.DefaultContentMimeTypeVnd(name = BuildConfig.PROVIDER_ID, type = "connection")
+@AdditionalAnnotation.DefaultContentUri(authority = BuildConfig.PROVIDER_STORE_ID, path = "connection")
+@AdditionalAnnotation.DefaultContentMimeTypeVnd(name = BuildConfig.PROVIDER_STORE_ID, type = "connection")
 public class RedmineConnection {
-	public final static String ID = "id";
+	public final static String ID = BaseColumns._ID;
 	public final static String CONNECTION_ID = "connection_id";
     @DatabaseField(columnName = BaseColumns._ID,generatedId = true)
 	@AdditionalAnnotation.DefaultSortOrder

@@ -22,7 +22,7 @@ public class RedmineWatcher
 	@DatabaseField(uniqueIndexName="watcher_target")
 	private Integer issue_id;
     @DatabaseField(uniqueIndexName="watcher_target",
-			foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
+			foreign = true,foreignColumnName=RedmineUser.ID, columnName= "user_id", foreignAutoRefresh = true)
 	private RedmineUser user;
 	@DatabaseField
 	private Date created;

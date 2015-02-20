@@ -21,7 +21,7 @@ public class RedmineProjectVersion
     private Long id;
     @DatabaseField(uniqueIndexName="projectversion_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
-    @DatabaseField(foreign = true,foreignColumnName="id"
+    @DatabaseField(foreign = true,foreignColumnName=RedmineProject.ID
     	,columnName= "project_id"
     	,foreignAutoRefresh = true)
     private RedmineProject project;

@@ -2,9 +2,13 @@ package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -27,12 +31,16 @@ import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineProjectContract;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
 
-public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
+public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements
+		LoaderManager.LoaderCallbacks<Cursor>
+		,SwipeRefreshLayout.OnRefreshListener
+{
 	private static final String TAG = ProjectList.class.getSimpleName();
 	private ProjectListAdapter adapter;
 	private SelectDataTask task;
@@ -77,22 +85,27 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
-
 		getListView().setTextFilterEnabled(true);
 
 
-		adapter = new ProjectListAdapter(getHelper(), getActivity());
+		adapter = new ProjectListAdapter(getActivity(), null, true);
 
-		final ConnectionArgument intent = new ConnectionArgument();
-		intent.setArgument(getArguments());
+		getLoaderManager().initLoader(0, null, this);
 
 		setListAdapter(adapter);
-		adapter.setupParameter(intent.getConnectionId());
 		adapter.notifyDataSetChanged();
 
 		if(adapter.getCount() < 1){
 			onRefresh();
 		}
+		adapter.setOnFavoriteClickListener(new ProjectListAdapter.OnFavoriteClickListener() {
+			@Override
+			public void onItemClick(View view, int position, Cursor cursor, boolean b) {
+				if(adapter == null)
+					return;
+				ProjectListAdapter.updateFavorite(getActivity().getContentResolver(), cursor, b);
+			}
+		});
 
 		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
@@ -137,11 +150,15 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	@Override
 	public void onListItemClick(ListView listView, View v, int position, long id) {
 		super.onListItemClick(listView, v, position, id);
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setArgument(getArguments());
+		int connection_id = intent.getConnectionId();
+
 		Object item =  listView.getItemAtPosition(position);
-		if(item == null || !(item instanceof RedmineProject))
+		if(item == null || !(item instanceof Cursor))
 			return;
-		RedmineProject project = (RedmineProject)item;
-		mListener.onIssueList(project.getConnectionId(), project.getId());
+		Cursor cursor = (Cursor)item;
+		mListener.onIssueList(connection_id, ProjectListAdapter.getProjectId(cursor));
 	}
 
 	public void onRefresh(){
@@ -253,4 +270,28 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setArgument(getArguments());
+		int connection_id = intent.getConnectionId();
+		return new CursorLoader(getActivity(),
+			RedmineProjectContract.CONTENT_URI, null
+			, RedmineProjectContract.CONNECTION_ID + "=?"
+			, new String[]{
+				String.valueOf(connection_id)
+			}, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		adapter.swapCursor(data);
+		adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		adapter.swapCursor(null);
+	}
 }

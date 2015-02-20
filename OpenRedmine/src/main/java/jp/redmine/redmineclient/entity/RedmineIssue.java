@@ -42,7 +42,7 @@ public class RedmineIssue
     private Long id;
     @DatabaseField(uniqueIndexName="issue_target", columnName = RedmineConnection.CONNECTION_ID)
     private Integer connection_id;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineProject.ID, columnName= "project_id", foreignAutoRefresh = true)
     private RedmineProject project;
     @DatabaseField(uniqueIndexName="issue_target")
     private Integer issue_id;

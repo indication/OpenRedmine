@@ -37,21 +37,21 @@ public class RedmineFilter
     private boolean is_default;
     @DatabaseField
     private boolean is_completed;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineProject.ID, columnName= "project_id", foreignAutoRefresh = true)
     private RedmineProject project;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "tracker_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineTracker.ID, columnName= "tracker_id", foreignAutoRefresh = true)
     private RedmineTracker tracker;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "status_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineStatus.ID, columnName= "status_id", foreignAutoRefresh = true)
     private RedmineStatus status;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "priority_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedminePriority.ID, columnName= "priority_id", foreignAutoRefresh = true)
     private RedminePriority priority;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "author_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineUser.ID, columnName= "author_id", foreignAutoRefresh = true)
     private RedmineUser author;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "assign_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineUser.ID, columnName= "assign_id", foreignAutoRefresh = true)
     private RedmineUser assigned;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "category_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineProjectCategory.ID, columnName= "category_id", foreignAutoRefresh = true)
     private RedmineProjectCategory category;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "version_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineProjectVersion.ID, columnName= "version_id", foreignAutoRefresh = true)
     private RedmineProjectVersion version;
     @DatabaseField
     private long fetched;

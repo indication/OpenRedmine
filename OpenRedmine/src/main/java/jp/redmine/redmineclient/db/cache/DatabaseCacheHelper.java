@@ -10,7 +10,9 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.HashMap;
 
+import jp.redmine.redmineclient.db.AppDatabaseUtils;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineAttachmentData;
 import jp.redmine.redmineclient.entity.RedmineFilter;
@@ -35,7 +37,7 @@ import jp.redmine.redmineclient.entity.RedmineWiki;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=17;
+	private static int DB_VERSION=18;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -88,41 +90,45 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				TableUtils.createTable(source, RedmineJournal.class);
 				TableUtils.createTable(source, RedmineIssue.class);
 			case 3:
-				addColumn(db,RedmineProjectVersion.class,"sharing TEXT");
-				addColumn(db,RedmineProjectVersion.class,"description TEXT");
-				addColumn(db,RedmineProject.class,"parent INTEGER");
+				AppDatabaseUtils.addColumn(db,RedmineProjectVersion.class,"sharing TEXT");
+				AppDatabaseUtils.addColumn(db,RedmineProjectVersion.class,"description TEXT");
+				AppDatabaseUtils.addColumn(db,RedmineProject.class,"parent INTEGER");
 				TableUtils.createTable(source, RedmineTimeEntry.class);
 				TableUtils.createTable(source, RedmineTimeActivity.class);
 			case 4:
 				if(older > 2){
-					addColumn(db,RedmineIssue.class,"closed TEXT");
+					AppDatabaseUtils.addColumn(db,RedmineIssue.class,"closed TEXT");
 				}
 			case 5:
-				addColumn(db,RedminePriority.class,"is_default BOOLEAN");
+				AppDatabaseUtils.addColumn(db,RedminePriority.class,"is_default BOOLEAN");
 			case 6:
-				addColumn(db,RedmineUser.class,"is_current BOOLEAN");
+				AppDatabaseUtils.addColumn(db,RedmineUser.class,"is_current BOOLEAN");
 			case 7:
 				TableUtils.createTable(source, RedmineIssueRelation.class);
 			case 8:
 				TableUtils.createTable(source, RedmineAttachment.class);
 			case 9:
-				addColumn(db,RedmineRole.class,"permissions TEXT");
+				AppDatabaseUtils.addColumn(db,RedmineRole.class,"permissions TEXT");
 			case 10:
 				TableUtils.createTable(source, RedmineWiki.class);
 			case 11:
 				TableUtils.createTable(source, RedmineNews.class);
 			case 12:
-				addColumn(db,RedmineProject.class,"status INTEGER");
+				AppDatabaseUtils.addColumn(db,RedmineProject.class,"status INTEGER");
 			case 13:
 				TableUtils.createTable(source, RedmineAttachmentData.class);
 			case 14:
 				if(older > 8) {
-					addColumn(db,RedmineAttachment.class,"wiki_id TEXT");
+					AppDatabaseUtils.addColumn(db,RedmineAttachment.class,"wiki_id TEXT");
 				}
 			case 15:
 				TableUtils.createTable(source, RedmineRecentIssue.class);
 			case 16:
 				TableUtils.createTable(source, RedmineWatcher.class);
+			case 17:
+				HashMap<String,String> replace = new HashMap<String,String>();
+				replace.put("_id","id");
+				AppDatabaseUtils.renameColumn(db, source, RedmineProject.class, replace);
 				break;
 			}
 
@@ -134,13 +140,5 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	}
 
 
-	protected void addColumn(SQLiteDatabase db, Class<?> name, String column){
-		db.execSQL("ALTER TABLE "
-				+ name.getSimpleName()
-				+ " ADD COLUMN "
-				+ column
-				+ ";");
-
-	}
 
 }

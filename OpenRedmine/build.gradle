@@ -14,7 +14,8 @@ android {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
         testHandleProfiling true
         testFunctionalTest true
-        buildConfigField 'String', 'PROVIDER_ID', 'APPLICATION_ID + ".provider"'
+        buildConfigField 'String', 'PROVIDER_STORE_ID', 'APPLICATION_ID + ".provider.store"'
+        buildConfigField 'String', 'PROVIDER_CACHE_ID', 'APPLICATION_ID + ".provider.cache"'
     }
     lintOptions {
         abortOnError true

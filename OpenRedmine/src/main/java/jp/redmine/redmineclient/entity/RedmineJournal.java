@@ -35,7 +35,7 @@ public class RedmineJournal
 	private Long issue_id;
 	@DatabaseField(uniqueIndexName="journal_target")
 	private int journal_id;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineUser.ID, columnName= "user_id", foreignAutoRefresh = true)
 	private RedmineUser user;
 	@DatabaseField
 	private String notes;

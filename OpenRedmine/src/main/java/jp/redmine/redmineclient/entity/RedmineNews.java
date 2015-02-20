@@ -21,9 +21,9 @@ public class RedmineNews
 	private Integer connection_id;
 	@DatabaseField(uniqueIndexName="news_target")
 	private int news_id;
-	@DatabaseField(foreign = true,foreignColumnName="id", columnName= "project_id", foreignAutoRefresh = true)
+	@DatabaseField(foreign = true,foreignColumnName=RedmineProject.ID, columnName= "project_id", foreignAutoRefresh = true)
 	private RedmineProject project;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "author_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineUser.ID, columnName= "author_id", foreignAutoRefresh = true)
 	private RedmineUser author;
 	@DatabaseField
 	private String summary;

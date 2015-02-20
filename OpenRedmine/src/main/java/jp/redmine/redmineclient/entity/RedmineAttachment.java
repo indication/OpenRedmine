@@ -28,7 +28,7 @@ public class RedmineAttachment
 	private Long wiki_id;
 	@DatabaseField(uniqueIndexName="attachment_target")
 	private int attachment_id;
-    @DatabaseField(foreign = true,foreignColumnName="id", columnName= "user_id", foreignAutoRefresh = true)
+    @DatabaseField(foreign = true,foreignColumnName=RedmineUser.ID, columnName= "user_id", foreignAutoRefresh = true)
 	private RedmineUser user;
 	@DatabaseField
 	private String filename;

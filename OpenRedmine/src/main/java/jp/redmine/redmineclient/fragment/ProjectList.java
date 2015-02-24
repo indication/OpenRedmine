@@ -150,10 +150,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		}
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
-		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-			mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 		task = new SelectDataTask(getHelper());
 		task.execute(connection);
 	}
@@ -177,7 +174,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		@Override
 		protected void onPostExecute(Void b) {
 			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
@@ -187,7 +183,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 
 		@Override
 		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
 			super.onProgress(max, proc);
 		}

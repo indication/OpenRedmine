@@ -207,9 +207,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument(getArguments());
 		DatabaseCacheHelper helper = getHelper();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(intent.getConnectionId());
-		mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if(intent.hasFilterId())

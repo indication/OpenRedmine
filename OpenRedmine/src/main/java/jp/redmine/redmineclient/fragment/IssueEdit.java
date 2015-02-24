@@ -125,10 +125,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 				IssueArgument intent = new IssueArgument();
 				intent.setArgument(getArguments());
 				int connectionid = intent.getConnectionId();
-				RedmineConnection connection = null;
-				ConnectionModel mConnection = new ConnectionModel(getActivity());
-				connection = mConnection.getItem(connectionid);
-				mConnection.finalize();
+				RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), connectionid);
 
 				RedmineIssue issue = new RedmineIssue();
 				RedmineIssueModel model = new RedmineIssueModel(getHelper());

@@ -138,10 +138,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		}
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
-		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-			mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
 		try {
 			RedmineProject proj = mProject.fetchById(intent.getProjectId());

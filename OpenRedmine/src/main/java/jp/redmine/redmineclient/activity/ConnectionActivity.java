@@ -34,8 +34,7 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		intent.setIntent(getIntent());
 
 		// setup navigation
-		ConnectionModel mConnection = new ConnectionModel(getApplicationContext());
-		RedmineConnection con = mConnection.getItem(intent.getConnectionId());
+		RedmineConnection con = ConnectionModel.getConnectionItem(getApplicationContext().getContentResolver(), intent.getConnectionId());
 		if(con.getId() != null)
 			setTitle(con.getName());
 

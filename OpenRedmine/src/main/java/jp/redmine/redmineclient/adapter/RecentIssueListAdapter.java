@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.adapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 
+import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,11 +24,11 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class RecentIssueListAdapter extends RedmineDaoAdapter<RedmineRecentIssue, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
-	private ConnectionModel mConnection;
+	private WeakReference<ContentResolver> mResolver;
 
 	public RecentIssueListAdapter(DatabaseCacheHelper helper, Context context){
 		super(helper, context, RedmineRecentIssue.class);
-		mConnection = new ConnectionModel(context);
+		mResolver = new WeakReference<ContentResolver>(context.getContentResolver());
 	}
 	@Override
 	public View getHeaderView(int i, View convertView, ViewGroup parent) {
@@ -35,9 +37,14 @@ public class RecentIssueListAdapter extends RedmineDaoAdapter<RedmineRecentIssue
 		}
 		if(convertView == null)
 			return null;
-		RedmineConnection connection = mConnection.getItem((int)getHeaderId(i));
-		TextView text = (TextView)convertView.findViewById(R.id.name);
-		if(text != null)
+		TextView text = (TextView) convertView.findViewById(R.id.name);
+		RedmineConnection connection;
+		if(mResolver.get() == null){
+			connection = new RedmineConnection();
+		} else {
+			connection = ConnectionModel.getConnectionItem(mResolver.get(), (int) getHeaderId(i));
+		}
+		if (text != null)
 			text.setText((TextUtils.isEmpty(connection.getName())) ? "" : connection.getName());
 		//fix background to hide transparent headers
 		convertView.setBackgroundColor(HtmlHelper.getBackgroundColor(convertView.getContext()));

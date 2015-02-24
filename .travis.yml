@@ -3,6 +3,7 @@ jdk: oraclejdk7
 
 notifications:
   email: false
+  webhooks: "https://zapier.com/hooks/catch/opzg6m/"
 
 android:
   components:

@@ -159,10 +159,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		}
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
-		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-		mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
 		task.execute("");
 	}

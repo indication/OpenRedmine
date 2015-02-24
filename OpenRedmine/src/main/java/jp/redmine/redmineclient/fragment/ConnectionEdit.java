@@ -109,7 +109,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		if (idEditing == -1)
 			return;
 
-		RedmineConnection con = modelConnection.getItem(idEditing);
+		RedmineConnection con = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), idEditing);
 		if(con.getId() != null)
 		{
 			form.setValue(con);

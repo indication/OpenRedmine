@@ -100,10 +100,10 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		}
 		adapter.setOnFavoriteClickListener(new ProjectListAdapter.OnFavoriteClickListener() {
 			@Override
-			public void onItemClick(View view, int position, Cursor cursor, boolean b) {
+			public void onItemClick(View view, int position, int id, boolean b) {
 				if(adapter == null)
 					return;
-				ProjectListAdapter.updateFavorite(getActivity().getContentResolver(), cursor, b);
+				ProjectListAdapter.updateFavorite(getActivity().getContentResolver(), id, b);
 			}
 		});
 
@@ -153,12 +153,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
 		int connection_id = intent.getConnectionId();
-
-		Object item =  listView.getItemAtPosition(position);
-		if(item == null || !(item instanceof Cursor))
-			return;
-		Cursor cursor = (Cursor)item;
-		mListener.onIssueList(connection_id, ProjectListAdapter.getProjectId(cursor));
+		mListener.onIssueList(connection_id, id);
 	}
 
 	public void onRefresh(){
@@ -167,10 +162,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		}
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
-		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-			mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 		task = new SelectDataTask(getHelper());
 		task.execute(connection);
 	}
@@ -194,7 +186,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		@Override
 		protected void onPostExecute(Void b) {
 			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
@@ -204,7 +195,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 
 		@Override
 		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
 			super.onProgress(max, proc);
 		}

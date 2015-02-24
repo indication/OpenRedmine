@@ -123,10 +123,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 				IssueArgument intent = new IssueArgument();
 				intent.setArgument(getArguments());
 
-				RedmineConnection connection = null;
-				ConnectionModel mConnection = new ConnectionModel(getActivity());
-				connection = mConnection.getItem(intent.getConnectionId());
-				mConnection.finalize();
+				RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 
 				RedmineJournal journal = new RedmineJournal();
 				journal.setIssueId((long) intent.getIssueId());
@@ -270,10 +267,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			helper = getHelper();
 			IssueArgument intent = new IssueArgument();
 			intent.setArgument(getArguments());
-			int connectionid = intent.getConnectionId();
-			ConnectionModel mConnection = new ConnectionModel(getActivity());
-			connection = mConnection.getItem(connectionid);
-			mConnection.finalize();
+			connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 		}
 		// can use UI thread here
 		@Override

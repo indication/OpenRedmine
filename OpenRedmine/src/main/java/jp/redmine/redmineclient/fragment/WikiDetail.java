@@ -175,10 +175,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		}
 		WikiArgument intent = new WikiArgument();
 		intent.setArgument(getArguments());
-		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-		mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
 		task.execute(intent.getWikiTitle());
 	}

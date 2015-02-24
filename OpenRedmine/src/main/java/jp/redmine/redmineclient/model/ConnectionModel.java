@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient.model;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
@@ -15,6 +17,7 @@ import jp.redmine.redmineclient.entity.IConnectionRecord;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineAttachmentData;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineConnectionContract;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
@@ -38,17 +41,6 @@ public class ConnectionModel extends Connector {
 
 	public ConnectionModel(Context context) {
 		super(context);
-	}
-
-	public RedmineConnection getItem(int itemid){
-		RedmineConnectionModel model = new RedmineConnectionModel(helperStore);
-		RedmineConnection item = new RedmineConnection();
-		try {
-			item = model.fetchById(itemid);
-		} catch (SQLException e) {
-			Log.e(TAG, "getItem", e);
-		}
-		return item;
 	}
 
 	public RedmineConnection updateItem(int itemid,RedmineConnection item){
@@ -109,4 +101,13 @@ public class ConnectionModel extends Connector {
 		return count;
 	}
 
+	static public RedmineConnection getConnectionItem(ContentResolver resolver, int connection_id){
+		Cursor cursor = resolver.query(
+				RedmineConnectionContract.CONTENT_URI.buildUpon()
+						.appendPath(String.valueOf(connection_id))
+						.build()
+				, null, null, null, null);
+		cursor.moveToFirst();
+		return RedmineConnection.getByCursor(cursor);
+	}
 }

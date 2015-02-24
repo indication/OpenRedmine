@@ -1,5 +1,6 @@
 package jp.redmine.redmineclient.entity;
 
+import android.database.Cursor;
 import android.provider.BaseColumns;
 
 import com.j256.ormlite.field.DatabaseField;
@@ -170,4 +171,18 @@ public class RedmineConnection {
 		return certkey;
 	}
 
+	public static RedmineConnection getByCursor(Cursor c){
+		RedmineConnection item = new RedmineConnection();
+		item.setId			(c.getInt	(c.getColumnIndex(RedmineConnectionContract._ID			)));
+		item.setName		(c.getString(c.getColumnIndex(RedmineConnectionContract.NAME		)));
+		item.setUrl			(c.getString(c.getColumnIndex(RedmineConnectionContract.URL			)));
+		item.setNowarn		(c.getInt	(c.getColumnIndex(RedmineConnectionContract.NOWARN		)) != 0);
+		item.setToken		(c.getString(c.getColumnIndex(RedmineConnectionContract.TOKEN		)));
+		item.setAuth		(c.getInt	(c.getColumnIndex(RedmineConnectionContract.AUTH		)) != 0);
+		item.setAuthId		(c.getString(c.getColumnIndex(RedmineConnectionContract.AUTHID		)));
+		item.setAuthPasswd	(c.getString(c.getColumnIndex(RedmineConnectionContract.AUTHPASS	)));
+		item.setPermitUnsafe(c.getInt	(c.getColumnIndex(RedmineConnectionContract.PERMITUNSAFE)) != 0);
+		item.setCertKey		(c.getString(c.getColumnIndex(RedmineConnectionContract.CERTKEY		)));
+		return item;
+	}
 }

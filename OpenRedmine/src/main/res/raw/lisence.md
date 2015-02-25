@@ -37,13 +37,9 @@ Using Libraries
 
 - [StickyListHeaders](https://github.com/emilsjolander/StickyListHeaders) (Apache License, Version 2.0) - section headers that stick to the top
 
-- [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock) (Apache License, Version 2.0) - support actionbar
-
-- [actionbarpulltorefresh](https://github.com/chrisbanes/ActionBar-PullToRefresh) (Apache License, Version 2.0) - support pull to refresh
-
-- [PtrStickyListHeadersListView](http://stackoverflow.com/questions/20143008/is-it-possible-to-merge-stickylistviewheader-with-crisbanes-pulltorefresh) (unknown)  - support pull to refresh on StickyListHeaders
-
 - [markdown4j](http://code.google.com/p/markdown4j/) (BSD 3-Clause License) - needs to show this markdown text
+
+- [ListFragmentSwipeRefreshLayout](https://developer.android.com/intl/ja/samples/SwipeRefreshListFragment/src/com.example.android.swiperefreshlistfragment/SwipeRefreshListFragment.html) (Apache License, Version 2.0) - Support pull-to-refresh
 
 Using Icons
 ==========

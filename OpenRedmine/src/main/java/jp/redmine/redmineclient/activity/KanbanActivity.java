@@ -51,6 +51,7 @@ public class KanbanActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.page_multiview);
+		getSupportActionBar();
 
 		/**
 		 * Add fragment on first view only

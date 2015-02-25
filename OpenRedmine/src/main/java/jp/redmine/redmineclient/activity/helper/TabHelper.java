@@ -2,8 +2,7 @@ package jp.redmine.redmineclient.activity.helper;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-
-import com.actionbarsherlock.app.ActionBar;
+import android.support.v7.app.ActionBar;
 
 public class TabHelper implements ActionBar.TabListener{
 	protected Fragment mFragment;

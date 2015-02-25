@@ -4,16 +4,18 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import java.sql.SQLException;
@@ -29,16 +31,14 @@ import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.WikiArgument;
 import jp.redmine.redmineclient.task.SelectWikiTask;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
+public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = WikiDetail.class.getSimpleName();
 	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private WebViewHelper webViewHelper;
 	private WebView webView;
+	SwipeRefreshLayout mSwipeRefreshLayout;
 
 	private WebviewActionInterface mListener;
 
@@ -140,8 +140,8 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 		protected void onPreExecute() {
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mPullToRefreshLayout != null && !mPullToRefreshLayout.isRefreshing())
-				mPullToRefreshLayout.setRefreshing(true);
+			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+				mSwipeRefreshLayout.setRefreshing(true);
 		}
 
 		// can use UI thread here
@@ -150,8 +150,8 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 			loadWebView(false);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mPullToRefreshLayout != null)
-				mPullToRefreshLayout.setRefreshComplete();
+			if(mSwipeRefreshLayout != null)
+				mSwipeRefreshLayout.setRefreshing(false);
 		}
 
 	}
@@ -162,40 +162,14 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 		View view = inflater.inflate(R.layout.page_webview, container, false);
 		webView = (WebView) view.findViewById(R.id.webView);
 		webViewHelper = new WebViewHelper();
-		return view;
+		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
+				= ListFragmentSwipeRefreshLayout.inject(container, view);
+		mSwipeRefreshLayout = result.layout;
+		mSwipeRefreshLayout.setOnRefreshListener(this);
+		return result.parent;
 	}
 
-	private PullToRefreshLayout mPullToRefreshLayout;
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		// This is the View which is created by ListFragment
-		ViewGroup viewGroup = (ViewGroup) view;
-
-		// We need to create a PullToRefreshLayout manually
-		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
-
-		// We can now setup the PullToRefreshLayout
-		ActionBarPullToRefresh.from(getActivity())
-				// We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-				.insertLayoutInto(viewGroup)
-
-				// We need to mark the ListView and it's Empty View as pullable
-				// This is because they are not dirent children of the ViewGroup
-				.theseChildrenArePullable(R.id.webView)
-
-				// We can now complete the setup as desired
-				.listener(new OnRefreshListener() {
-					@Override
-					public void onRefreshStarted(View view) {
-						onRefresh();
-					}
-				})
-				.setup(mPullToRefreshLayout);
-	}
-
-	protected void onRefresh(){
+	public void onRefresh(){
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
 			return;
 		}

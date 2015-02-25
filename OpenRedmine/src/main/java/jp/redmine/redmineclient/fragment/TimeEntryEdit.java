@@ -1,9 +1,21 @@
 package jp.redmine.redmineclient.fragment;
 
-import java.sql.SQLException;
-import java.util.Calendar;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
+
+import java.sql.SQLException;
+import java.util.Calendar;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
@@ -15,17 +27,6 @@ import jp.redmine.redmineclient.fragment.form.TimeEntryEditForm;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private TimeEntryEditForm form;

@@ -1,12 +1,13 @@
 package jp.redmine.redmineclient.activity.helper;
 
-import jp.redmine.redmineclient.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+
+import jp.redmine.redmineclient.R;
 
 
 public class ActivityHelper {
@@ -16,13 +17,15 @@ public class ActivityHelper {
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 		String setting = sp.getString("appearance_themes", "default");
-		Integer theme = R.style.ThemeDefault;
+		Integer theme = null;
 		if("dark".equals(setting)){
 			theme = R.style.ThemeDark;
 		} else if("light".equals(setting)){
 			theme = R.style.ThemeLight;
 		} else if("hololight".equals(setting)){
 			theme = R.style.ThemeLight;
+		} else {
+			theme = R.style.ThemeDefault;
 		}
 		if(theme != null){
 			activity.setTheme(theme);

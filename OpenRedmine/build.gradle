@@ -1,13 +1,12 @@
-
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 21
+    buildToolsVersion '21.1.2'
     testBuildType "debug"
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 19
+        targetSdkVersion 21
 
         versionCode 48
         versionName '3.15'
@@ -44,23 +43,18 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.+'
-    compile 'com.andreabaccega:android-form-edittext:1.0.5@aar'
-    compile 'com.actionbarsherlock:actionbarsherlock:4.4.+@aar'
-    compile ('com.github.chrisbanes.actionbarpulltorefresh:extra-abs:0.9.+'){
-        exclude group: 'com.android.support', module:'support-v4'
-        exclude group: 'com.android.support', module:'appcompat-v7'
-    }
-    compile 'se.emilsjolander:stickylistheaders:2.+'
-    compile 'com.j256.ormlite:ormlite-core:4.+'
-    compile 'com.j256.ormlite:ormlite-android:4.+'
-    compile 'org.apache.commons:commons-lang3:3.1'
-    //compile 'com.jakewharton:hanselandgretel:1.0.2'
-    compile 'net.java:textile-j:2.2'
-    compile 'org.commonjava.googlecode.markdown4j:markdown4j:+'
     compile project(':Transdroid')
     androidTestCompile 'com.google.guava:guava:+'
     androidTestCompile 'junit:junit:4.8.2'
+    compile 'com.android.support:support-v4:21.0.+'
+    compile 'com.android.support:appcompat-v7:21.0.+'
+    compile 'com.andreabaccega:android-form-edittext:1.1.0'
+    compile 'se.emilsjolander:stickylistheaders:2.+'
+    compile 'com.j256.ormlite:ormlite-core:4.+'
+    compile 'com.j256.ormlite:ormlite-android:4.+'
+    compile 'org.apache.commons:commons-lang3:3.+'
+    compile 'net.java:textile-j:2.2'
+    compile 'org.commonjava.googlecode.markdown4j:markdown4j:+'
 }
 
 if (project.hasProperty('keyAlias')) {

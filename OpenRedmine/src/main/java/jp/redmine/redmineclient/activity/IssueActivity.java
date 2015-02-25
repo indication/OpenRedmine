@@ -2,10 +2,9 @@ package jp.redmine.redmineclient.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.MenuItem;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

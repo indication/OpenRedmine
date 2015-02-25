@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:orientation="horizontal" >
+	android:padding="5dp">
 
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_vertical"
 		android:src="@drawable/ic_action_attachment"
-		android:contentDescription="@string/ticket_attachments"/>
+		android:contentDescription="@string/ticket_attachments"
+		android:id="@+id/image"
+		android:layout_alignTop="@+id/textCreated"
+		android:layout_alignBottom="@+id/textCreated"/>
 
-	<LinearLayout
-		android:layout_width="fill_parent"
+	<TextView
+		android:id="@+id/textSubject"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginBottom="10dp"
-		android:layout_marginRight="10dip"
-		android:layout_marginTop="10dp"
-		android:orientation="horizontal" >
+		android:singleLine="true"
+		android:text="Attachment file name.png"
+		tools:ignore="HardcodedText"
+		android:layout_centerVertical="true"
+		android:layout_toRightOf="@+id/image"
+		android:layout_toEndOf="@+id/image"
+		android:layout_toLeftOf="@+id/textCreated"/>
 
-		<TextView
-			android:id="@+id/textSubject"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:singleLine="true"
-			android:text="Attachment file name.png"
-			tools:ignore="HardcodedText" />
-		<TextView
-			android:id="@+id/textCreated"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:singleLine="true"
-			android:text="2013-01-01"
-			tools:ignore="HardcodedText" />
-	
-		<TextView
-			android:id="@+id/textSize"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:singleLine="true"
-			android:layout_marginLeft="10dip"
-			android:text="10.2k"
-			tools:ignore="HardcodedText" />
-	</LinearLayout>
-</LinearLayout>
+	<TextView
+		android:id="@+id/textCreated"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:singleLine="true"
+		android:text="2013-01-01"
+		tools:ignore="HardcodedText"
+		android:layout_centerVertical="true"
+		android:layout_toLeftOf="@+id/textSize"
+		android:layout_toStartOf="@+id/textSize"
+		android:layout_margin="10dp"/>
+
+	<TextView
+		android:id="@+id/textSize"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:singleLine="true"
+		android:text="10.2k"
+		tools:ignore="HardcodedText"
+		android:layout_centerVertical="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"/>
+</RelativeLayout>

@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="3dip" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	>
 
 	<LinearLayout
 		    android:id="@+id/formChanges"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical" />
+	    android:orientation="vertical"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentBottom="false"/>
 
 	<TextView
 	    android:id="@+id/textView"
 		android:focusable="false"
 		android:linksClickable="true"
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content" />
-</LinearLayout>
+	    android:layout_height="wrap_content"
+		android:layout_alignParentTop="false"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_below="@+id/formChanges"/>
+
+</RelativeLayout>

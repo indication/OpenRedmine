@@ -1,325 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="3dip" >
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="3dip">
 
 	<TextView
 		android:id="@+id/textPrivate"
 		style="@android:style/Widget.CompoundButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginLeft="3dip"
 		android:background="#cc0000"
-		android:text="@string/ticket_private" />
-
-
-	<TableLayout
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" >
-
-		<TableRow
-			android:id="@+id/rowProject"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="right|center_vertical"
-				android:text="@string/ticket_project" />
-
-			<TextView
-				android:id="@+id/textProject"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="3dip"
-				android:text="@string/ticket_project"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
-		</TableRow>
-
-		<TableRow
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-		    <TextView
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-		    	android:text="@string/ticket_status" />
-
-			<LinearLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginTop="3dip"
-			    android:orientation="horizontal" >
-
-			    <TextView
-			        android:id="@+id/textStatus"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:text="@string/ticket_progress"
-			        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-			    <TextView
-			        android:id="@+id/textPriority"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:text="@string/ticket_priority"
-			        android:textAppearance="?android:attr/textAppearanceMedium" />
-			</LinearLayout>
-		</TableRow>
-		<TableRow
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="right|center_vertical"
-				android:text="@string/ticket_tracker" />
-			
-			<TextView
-				android:id="@+id/textTracker"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="3dip"
-				android:text="@string/ticket_tracker"
-				android:textAppearance="?android:attr/textAppearanceMedium" />
-		</TableRow>
-
-		<TableRow
-			android:id="@+id/rowAssigned"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-		    <TextView
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-		    	android:text="@string/ticket_assigned_to" />
-
-		    <TextView
-		        android:id="@+id/textAssignedTo"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="3dip"
-		        android:text="@string/ticket_assigned_to"
-		        android:textAppearance="?android:attr/textAppearanceMedium" />
-		</TableRow>
-
-		<TableRow
-			android:id="@+id/rowCategory"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-		    <TextView
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-		    	android:text="@string/ticket_category" />
-
-		    <TextView
-		        android:id="@+id/textCategory"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="3dip"
-		        android:text="@string/ticket_category"
-		        android:textAppearance="?android:attr/textAppearanceMedium" />
-		</TableRow>
-
-		<TableRow
-			android:layout_marginTop="5dip"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-		    <TextView
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-		    	android:text="@string/ticket_progress" />
-
-			<LinearLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal" >
-
-
-			    <TextView
-			        android:id="@+id/textProgress"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:text="30%"
-			        tools:ignore="HardcodedText" />
-
-			    <ProgressBar
-			        android:id="@+id/progressissue"
-			        style="?android:attr/progressBarStyleHorizontal"
-				    android:progressDrawable="@android:drawable/progress_horizontal"
-			        android:layout_width="fill_parent"
-			        android:layout_height="20dp"
-			        android:layout_marginRight="3dp"
-			        android:max="100"
-			        android:progress="30" />
-			</LinearLayout>
-		</TableRow>
-
-		<TableRow
-			android:id="@+id/rowDate"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-				android:text="@string/ticket_date" />
-
-			<LinearLayout
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal" >
-
-			    <TextView
-			        android:id="@+id/textDateFrom"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:text="2012-06-20"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        tools:ignore="HardcodedText" />
-
-			    <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/ticket_date_arrow" />
-
-			    <TextView
-			        android:id="@+id/textDateTo"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:text="2012-06-30"
-			        android:textAppearance="?android:attr/textAppearanceMedium"
-			        tools:ignore="HardcodedText" />
-
-			</LinearLayout>
-		</TableRow>
-
-		<TableRow
-			android:id="@+id/rowVersion"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-		    <TextView
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-		    	android:text="@string/ticket_version" />
-
-		    <TextView
-		        android:id="@+id/textVersion"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/ticket_version"
-		        android:textAppearance="?android:attr/textAppearanceMedium" />
-		</TableRow>
-
-		<TableRow
-			android:id="@+id/rowTimeEntry"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-				android:text="@string/ticket_time" />
-
-			<LinearLayout
-			    android:id="@+id/linearTimeEntry"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:orientation="horizontal" >
-			    <TextView
-			        android:id="@+id/textTimeEntry"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:text="@string/ticket_time_estimate"
-			        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-			    <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:layout_marginRight="3dip"
-			        android:text="/"
-			        tools:ignore="HardcodedText" />
-
-			    <TextView
-			        android:id="@+id/textEstimate"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_marginLeft="3dip"
-			        android:text="@string/ticket_time_estimate"
-			        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-			</LinearLayout>
-		</TableRow>
-
-		<TableRow
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-				android:text="@string/ticket_created" />
-
-			<TextView
-				android:id="@+id/textCreated"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="3dip"
-				android:text="@string/ticket_created" />
-		</TableRow>
-
-		<TableRow
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-		    	android:layout_gravity="right|center_vertical"
-				android:text="@string/ticket_modified" />
-
-			<TextView
-			    android:id="@+id/textModified"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_marginLeft="3dip"
-			    android:text="@string/ticket_modified_by" />
-		</TableRow>
-	</TableLayout>
-
-	<ProgressBar
-	    style="?android:attr/progressBarStyleHorizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="1dp" />
+		android:text="@string/ticket_private"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:gravity="center_horizontal"
+		android:layout_margin="5dp"/>
 
 	<TextView
-	    android:id="@+id/textView"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_project"
+		android:id="@+id/labelProject"
+		android:layout_marginLeft="44dp"
+		android:layout_marginStart="44dp"
+		android:layout_below="@+id/textPrivate"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_alignBottom="@+id/textProject"
+		android:gravity="fill_vertical"
+		android:layout_marginRight="5dp"
+		android:labelFor="@+id/textProject"
+		android:layout_alignTop="@+id/textProject"/>
+
+	<TextView
+		android:id="@+id/textProject"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_project"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
+		android:layout_below="@+id/textPrivate"
+		android:layout_toRightOf="@+id/labelProject"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_status"
+		android:layout_below="@+id/labelProject"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelProject"
+		android:id="@+id/labelStatus"
+		android:layout_alignBottom="@+id/textStatus"
+		android:layout_alignTop="@+id/textStatus"
+		android:gravity="fill_vertical"
+		android:labelFor="@+id/textStatus"/>
+
+	<TextView
+		android:id="@+id/textStatus"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_progress"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textProject"
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textProject"
+		android:gravity="fill_vertical"/>
+
+	<TextView
+		android:id="@+id/textPriority"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_priority"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textProject"
+		android:layout_toRightOf="@+id/textStatus"
+		android:layout_toEndOf="@+id/textStatus"
+		android:layout_alignParentRight="true"
+		android:layout_marginLeft="5dp"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_tracker"
+		android:layout_below="@+id/labelStatus"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelStatus"
+		android:id="@+id/labelTracker"
+		android:layout_alignTop="@+id/textTracker"
+		android:layout_alignBottom="@+id/textTracker"
+		android:gravity="fill_vertical"
+		android:labelFor="@+id/textTracker"/>
+
+	<TextView
+		android:id="@+id/textTracker"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_tracker"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textStatus"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
+		android:layout_alignLeft="@+id/textProject"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_assigned_to"
+		android:layout_below="@+id/labelTracker"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelTracker"
+		android:id="@+id/labelAssignedTo"
+		android:labelFor="@+id/textAssignedTo"
+		android:layout_alignTop="@+id/textAssignedTo"
+		android:layout_alignBottom="@+id/textAssignedTo"
+		android:gravity="fill_vertical"/>
+
+	<TextView
+		android:id="@+id/textAssignedTo"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_assigned_to"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textTracker"
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignParentRight="true"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_category"
+		android:layout_below="@+id/labelAssignedTo"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelAssignedTo"
+		android:gravity="fill_vertical"
+		android:id="@+id/labelCategory"
+		android:layout_alignTop="@+id/textCategory"
+		android:layout_alignBottom="@+id/textCategory"/>
+
+	<TextView
+		android:id="@+id/textCategory"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_category"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textAssignedTo"
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textAssignedTo"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_progress"
+		android:layout_below="@+id/labelCategory"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignBottom="@+id/progressissue"
+		android:layout_alignTop="@+id/progressissue"
+		android:id="@+id/labelProgress"/>
+
+	<TextView
+		android:id="@+id/textProgress"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="30%"
+		tools:ignore="HardcodedText"
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textCategory"
+		android:layout_below="@+id/textCategory"
+		android:layout_alignBottom="@+id/progressissue"
+		android:layout_alignTop="@+id/progressissue"
+		android:gravity="fill_vertical"/>
+
+	<ProgressBar
+		android:id="@+id/progressissue"
+		style="?android:attr/progressBarStyleHorizontal"
+		android:progressDrawable="@android:drawable/progress_horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="18dp"
+		android:max="100"
+		android:progress="30"
+		android:layout_weight="1"
+		android:layout_toRightOf="@+id/textProgress"
+		android:layout_toEndOf="@+id/textProgress"
+		android:layout_below="@+id/textCategory"
+		android:layout_alignParentRight="true"
+		android:layout_margin="5dp"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_date"
+		android:layout_below="@+id/labelProgress"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelProgress"
+		android:id="@+id/labelDate"
+		android:layout_alignBottom="@+id/textDateFrom"
+		android:layout_alignTop="@+id/textDateFrom"
+		android:gravity="fill_vertical"/>
+
+	<TextView
+		android:id="@+id/textDateFrom"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="2012-06-20"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		tools:ignore="HardcodedText"
+		android:layout_below="@+id/progressissue"
+		android:layout_alignLeft="@+id/textProject"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_date_arrow"
+		android:layout_alignTop="@+id/textDateFrom"
+		android:layout_toRightOf="@+id/textDateFrom"
+		android:layout_toEndOf="@+id/textDateFrom"
+		android:id="@+id/labelDateArrow"
+		android:layout_alignBottom="@+id/textDateFrom"
+		android:gravity="fill_vertical"/>
+
+	<TextView
+		android:id="@+id/textDateTo"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="2012-06-30"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		tools:ignore="HardcodedText"
+		android:layout_alignTop="@+id/labelDateArrow"
+		android:layout_toRightOf="@+id/labelDateArrow"
+		android:layout_toEndOf="@+id/labelDateArrow"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_version"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignBottom="@+id/textVersion"
+		android:layout_alignTop="@+id/textVersion"
+		android:gravity="fill_vertical"
+		android:id="@+id/labelVersion"/>
+
+	<TextView
+		android:id="@+id/textVersion"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_version"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textDateFrom"
+		android:layout_alignLeft="@+id/textProject"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_time"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_below="@+id/textVersion"
+		android:id="@+id/labelTime"
+		android:layout_alignTop="@+id/textTimeEntry"
+		android:layout_alignBottom="@+id/textTimeEntry"
+		android:gravity="fill_vertical"/>
+
+	<TextView
+		android:id="@+id/textTimeEntry"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_time_estimate"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textVersion"
+		android:layout_alignLeft="@+id/textProject"
+		/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="/"
+		tools:ignore="HardcodedText"
+		android:layout_alignTop="@+id/textTimeEntry"
+		android:layout_toRightOf="@+id/textTimeEntry"
+		android:layout_toEndOf="@+id/textTimeEntry"
+		android:layout_alignBottom="@+id/textTimeEntry"
+		android:gravity="fill_vertical"
+		android:id="@+id/labelTimeSlice"/>
+
+	<TextView
+		android:id="@+id/textEstimate"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_time_estimate"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:layout_below="@+id/textVersion"
+		android:layout_toRightOf="@+id/labelTimeSlice"
+		android:layout_toEndOf="@+id/labelTimeSlice"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_created"
+		android:layout_below="@+id/textTimeEntry"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelTime"
+		android:id="@+id/labelCreated"
+		android:layout_alignTop="@+id/textCreated"
+		android:layout_alignBottom="@+id/textCreated"/>
+
+	<TextView
+		android:id="@+id/textCreated"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_created"
+		android:layout_below="@+id/textTimeEntry"
+		android:layout_toRightOf="@+id/labelProject"
+		android:layout_toEndOf="@+id/labelProject"
+		android:layout_marginTop="2dp"
+		android:layout_marginBottom="2dp"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="right|center_vertical"
+		android:text="@string/ticket_modified"
+		android:id="@+id/labelModified"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_below="@+id/textCreated"
+		android:layout_alignTop="@+id/textModified"
+		android:layout_alignBottom="@+id/textModified"
+		android:gravity="fill_vertical"/>
+
+	<TextView
+		android:id="@+id/textModified"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_modified_by"
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_below="@+id/textCreated"
+		android:layout_marginBottom="2dp"
+		android:layout_marginTop="2dp"/>
+	<ProgressBar
+		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:layout_below="@+id/textModified"
+		android:id="@+id/holizen"/>
+
+	<TextView
+		android:id="@+id/textView"
 		android:focusable="false"
 		android:linksClickable="true"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content" />
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/holizen"/>
+</RelativeLayout>
 
-</LinearLayout>

@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -35,13 +37,11 @@ public class ProjectListAdapter extends CursorAdapter {
 		 * Implementers can call getItemAtPosition(position) if they need
 		 * to access the data associated with the selected item.
 		 *
-		 * @param view The view within the AdapterView that was clicked (this
-		 *            will be a view provided by the adapter)
 		 * @param position The position of the view in the adapter.
 		 * @param id The position of the cursor in the adapter.
 		 * @param b Rating bar status.
 		 */
-		void onItemClick(View view, int position, int id, boolean b);
+		void onItemClick(int position, int id, boolean b);
 	}
 
 	public void setOnFavoriteClickListener(OnFavoriteClickListener mOnItemClickListener) {
@@ -73,20 +73,21 @@ public class ProjectListAdapter extends CursorAdapter {
 
 	@Override
 	public void bindView(final View view, Context context, final Cursor cursor) {
-		final ViewHolder holder = (ViewHolder)view.getTag();
+		ViewHolder holder = (ViewHolder)view.getTag();
 		int column_id = cursor.getColumnIndex(RedmineProjectContract._ID);
 		int column_subject = cursor.getColumnIndex(RedmineProjectContract.NAME);
 		int column_ratingbar = cursor.getColumnIndex(RedmineProjectContract.FAVORITE);
 		final int position = cursor.getPosition();
 		final int id = cursor.getInt(column_id);
 		holder.textSubject.setText(cursor.getString(column_subject));
+		holder.ratingBar.setOnCheckedChangeListener(null);
 		holder.ratingBar.setChecked(cursor.getInt(column_ratingbar) > 0);
 		holder.ratingBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (mOnFavoriteClickListener == null)
 					return;
-				mOnFavoriteClickListener.onItemClick(holder.ratingBar, position, id, isChecked);
+				mOnFavoriteClickListener.onItemClick(position, id, isChecked);
 			}
 		});
 	}
@@ -105,5 +106,36 @@ public class ProjectListAdapter extends CursorAdapter {
 		resolver.update(uri, value, null, null);
 
 	}
+
+	public static CursorLoader getCursorLoader(Context context, int connection_id){
+		return new CursorLoader(context,
+				RedmineProjectContract.CONTENT_URI, null
+				, RedmineProjectContract.CONNECTION_ID + "=?"
+				, new String[]{
+					String.valueOf(connection_id)
+				}, null
+		);
+	}
+	public static Cursor getSearchQuery(ContentResolver resolver,int connection_id, CharSequence constraint){
+		if(TextUtils.isEmpty(constraint)){
+			return resolver.query(RedmineProjectContract.CONTENT_URI
+					, null
+					, RedmineProjectContract.CONNECTION_ID + "=?"
+					, new String[]{
+							String.valueOf(connection_id)
+					}, null
+			);
+		} else {
+			return resolver.query(RedmineProjectContract.CONTENT_URI
+					, null
+					, RedmineProjectContract.CONNECTION_ID + "=? AND " + RedmineProjectContract.NAME + " like ?"
+					, new String[]{
+							String.valueOf(connection_id)
+							, "%" + constraint + "%"
+					}, null
+			);
+		}
+	}
+
 
 }

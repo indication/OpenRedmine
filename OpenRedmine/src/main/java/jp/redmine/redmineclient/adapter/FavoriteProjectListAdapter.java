@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.View;
@@ -62,6 +63,22 @@ public class FavoriteProjectListAdapter extends CursorAdapter implements StickyL
 		final ViewHolder holder = (ViewHolder)view.getTag();
 		int column_subject = cursor.getColumnIndex(RedmineProjectContract.NAME);
 		holder.text.setText(cursor.getString(column_subject));
+	}
+
+
+	public static int getId(Cursor cursor){
+		int column_id = cursor.getColumnIndex(RedmineProjectContract._ID);
+		return cursor.getInt(column_id);
+	}
+	public static int getConnectionId(Cursor cursor){
+		int column_id = cursor.getColumnIndex(RedmineProjectContract.CONNECTION_ID);
+		return cursor.getInt(column_id);
+	}
+	public static CursorLoader getCursorLoader(Context context){
+		return new CursorLoader(context,
+				RedmineProjectContract.CONTENT_URI, null
+				, RedmineProjectContract.FAVORITE + ">0"
+				, null, null);
 	}
 
 

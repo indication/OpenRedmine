@@ -2,10 +2,16 @@ package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
@@ -22,30 +28,38 @@ import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 
-import com.j256.ormlite.android.apptools.OrmLiteListFragment;
-
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.ProjectListAdapter;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
-import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
-import jp.redmine.redmineclient.task.SelectProjectTask;
+import jp.redmine.redmineclient.service.ISync;
+import jp.redmine.redmineclient.service.Sync;
 
-public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements
+public class ProjectList extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>
 		,SwipeRefreshLayout.OnRefreshListener
 {
 	private static final String TAG = ProjectList.class.getSimpleName();
 	private ProjectListAdapter adapter;
-	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private IssueActionInterface mListener;
 	SwipeRefreshLayout mSwipeRefreshLayout;
+
+	ISync mService = null;
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			mService = ISync.Stub.asInterface(service);
+		}
+
+		public void onServiceDisconnected(ComponentName name) {
+			mService = null;
+		}
+	};
 
 	public ProjectList(){
 		super();
@@ -61,19 +75,16 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
+		activity.startService(new Intent(getActivity(), Sync.class));
+		activity.bindService(
+				new Intent(ISync.class.getName()), mConnection, Context.BIND_AUTO_CREATE
+		);
 	}
 
 	@Override
 	public void onDestroyView() {
-		cancelTask();
 		setListAdapter(null);
 		super.onDestroyView();
-	}
-	protected void cancelTask(){
-		// cleanup task
-		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(true);
-		}
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -99,7 +110,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		adapter.setOnFavoriteClickListener(new ProjectListAdapter.OnFavoriteClickListener() {
 			@Override
 			public void onItemClick(int position, int id, boolean b) {
-				if(adapter == null)
+				if (adapter == null)
 					return;
 				ProjectListAdapter.updateFavorite(getActivity().getContentResolver(), id, b);
 			}
@@ -108,15 +119,21 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-				Object item =  adapterView.getItemAtPosition(i);
-				if(item == null || !(item instanceof RedmineProject))
+				Object item = adapterView.getItemAtPosition(i);
+				if (item == null || !(item instanceof RedmineProject))
 					return false;
-				RedmineProject project = (RedmineProject)item;
+				RedmineProject project = (RedmineProject) item;
 				mListener.onKanbanList(project.getConnectionId(), project.getId());
 				return true;
 			}
 		});
 
+	}
+
+	@Override
+	public void onDetach() {
+		getActivity().unbindService(mConnection);
+		super.onDetach();
 	}
 
 	@Override
@@ -155,46 +172,13 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	}
 
 	public void onRefresh(){
-		if(task != null && task.getStatus() == Status.RUNNING){
-			return;
-		}
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
-		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
-		task = new SelectDataTask(getHelper());
-		task.execute(connection);
-	}
-
-	private class SelectDataTask extends SelectProjectTask {
-		public SelectDataTask(DatabaseCacheHelper helper) {
-			super(helper);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
+		try {
+			mService.fetchMaster(intent.getConnectionId());
+			mService.fetchProject(intent.getConnectionId());
+		} catch (RemoteException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -202,8 +186,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate( R.menu.projects, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
-		if(task != null && task.getStatus() == Status.RUNNING)
-			menu_refresh.setEnabled(false);
 
 		setupSearchBar(menu);
 		super.onCreateOptionsMenu(menu, inflater);

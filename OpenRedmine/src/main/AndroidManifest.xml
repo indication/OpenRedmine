@@ -67,6 +67,12 @@
 			android:authorities="jp.redmine.redmineclient.provider.cache"
 			android:exported="false"
 			/>
+		<service android:name=".service.Sync" android:process=":fetcher">
+			<intent-filter>
+				<action android:name="jp.redmine.redmineclient.service.ISync" />
+			</intent-filter>
+		</service>
+
     </application>
 
 </manifest>

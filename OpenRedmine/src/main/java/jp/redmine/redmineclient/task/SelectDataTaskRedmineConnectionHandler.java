@@ -90,4 +90,7 @@ public class SelectDataTaskRedmineConnectionHandler extends SelectDataTaskConnec
 		msg.setHeader("X-Redmine-API-Key", key);
 	}
 
+	public RedmineConnection getConnection(){
+		return connection;
+	}
 }

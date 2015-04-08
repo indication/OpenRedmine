@@ -2,6 +2,8 @@ package jp.redmine.redmineclient.service;
 
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.IInterface;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -20,12 +22,9 @@ import jp.redmine.redmineclient.task.Fetcher;
 import jp.redmine.redmineclient.task.SelectDataTaskRedmineConnectionHandler;
 
 public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
-	private enum ExecuteMethod {
-		Halt,
-		Flush,
-		Master,
-		Project,
-	}
+	private static final String TAG = Sync.class.getSimpleName();
+	private RemoteCallbackList<ISyncObserver> mObservers = new RemoteCallbackList<ISyncObserver>();
+
 	private class ExecuteParam {
 		public ExecuteParam(ExecuteMethod m, int p){
 			method = m;
@@ -56,6 +55,16 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		public void fetchProject(int connection_id) throws RemoteException {
 			queue.add(new ExecuteParam(ExecuteMethod.Project, 0, connection_id));
 		}
+
+		@Override
+		public void setObserver(ISyncObserver observer) throws RemoteException {
+			mObservers.register(observer);
+		}
+
+		@Override
+		public void removeObserver(ISyncObserver observer) throws RemoteException {
+			mObservers.unregister(observer);
+		}
 	};
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -84,13 +93,39 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 			try {
 				thread.join();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Log.e(TAG, "onDestroy", e);
 			}
 		}
 		super.onDestroy();
 	}
 
 	class FetcherThread extends Thread {
+		volatile ExecuteMethod current_method = ExecuteMethod.Halt;
+		private void blessStart(){
+			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
+				@Override
+				public void onEvent(ISyncObserver observer, int cnt) throws RemoteException {
+					observer.onStart(current_method.getId());
+				}
+			});
+		}
+		private void blessStop(){
+
+			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
+				@Override
+				public void onEvent(ISyncObserver observer, int cnt) throws RemoteException {
+					observer.onStop(current_method.getId());
+				}
+			});
+		}
+		private void blessError(final int status){
+			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
+				@Override
+				public void onEvent(ISyncObserver observer, int cnt) throws RemoteException {
+					observer.onError(current_method.getId(), status);
+				}
+			});
+		}
 		@Override
 		public void run() {
 			ExecuteParam param = null;
@@ -99,12 +134,14 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 			Fetcher.ContentResponseErrorHandler errorHandler = new Fetcher.ContentResponseErrorHandler() {
 				@Override
 				public void onErrorRequest(int status) {
-					Log.i("SyncService", "fetchMaster status:" + status);
+					blessError(status);
+					Log.i(TAG, "onErrorRequest status:" + status);
 				}
 
 				@Override
 				public void onError(Exception e) {
-					Log.e("SyncService","fetchMaster",e);
+					blessError(600);
+					Log.e(TAG,"onError",e);
 				}
 			};
 			while(true){
@@ -112,7 +149,7 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					//connection handler is null then wait forever
 					param = handler == null ? queue.poll() : queue.poll(2L, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Log.e(TAG,"queue.poll", e);
 				}
 				if(param == null){
 					if(handler != null) {
@@ -134,6 +171,7 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 						handler = new SelectDataTaskRedmineConnectionHandler(connection);
 					}
 				}
+				current_method = param.method;
 				switch (param.method){
 					case Halt:
 						if(handler != null) {
@@ -142,25 +180,48 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 						}
 						return; //stop loop
 					case Master:
+						blessStart();
 						SyncMaster.fetchStatus(getHelper(), handler, errorHandler);
 						SyncMaster.fetchTracker(getHelper(), handler, errorHandler);
 						SyncMaster.fetchPriority(getHelper(), handler, errorHandler);
 						SyncMaster.fetchTimeEntryActivity(getHelper(), handler, errorHandler);
 						SyncMaster.fetchUsers(getHelper(), handler, errorHandler);
 						SyncMaster.fetchCurrentUser(getHelper(), handler, errorHandler);
+						blessStop();
 						break;
 					case Project:
+						blessStart();
 						int limit = 20;
 						List<RedmineProject> projects = SyncProject.fetchProject(getHelper(), handler, errorHandler, param.offset, limit);
 						if(projects.size() >= limit) {
 							ExecuteParam new_param = new ExecuteParam(param.method, 20, param.connection_id);
-							new_param.offset +=  limit;
+							new_param.offset =  param.offset + limit;
 							queue.add(new_param);
 						}
+						blessStop();
 						break;
 				}
 			}
 
 		}
+	}
+
+	interface BroadCastHandler<E> {
+		void onEvent(E observer, int cnt) throws RemoteException;
+	}
+	static <E extends IInterface> void broadcastEvent(RemoteCallbackList<E> observers, BroadCastHandler<E> handler){
+		if(observers == null)
+			return;
+		int count = observers.beginBroadcast();
+		for(int i = 0; i < count ; i++) {
+			try {
+
+				handler.onEvent(observers.getBroadcastItem(i), i);
+			} catch (RemoteException e) {
+				Log.e(TAG, "broadcastEvent", e);
+			}
+		}
+		observers.finishBroadcast();
+
 	}
 }

@@ -18,6 +18,7 @@ import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +35,9 @@ import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.service.ExecuteMethod;
 import jp.redmine.redmineclient.service.ISync;
+import jp.redmine.redmineclient.service.ISyncObserver;
 import jp.redmine.redmineclient.service.Sync;
 
 public class ProjectList extends ListFragment implements
@@ -49,11 +52,68 @@ public class ProjectList extends ListFragment implements
 	SwipeRefreshLayout mSwipeRefreshLayout;
 
 	ISync mService = null;
+	ISyncObserver mObserver = new ISyncObserver.Stub() {
+		private boolean isValidKind(int kind){
+			switch(ExecuteMethod.getValueOf(kind)){
+				case Master:
+				case Project:
+					return true;
+				default:
+					return false;
+			}
+		}
+		@Override
+		public void onStart(int kind) throws RemoteException {
+			if(!isValidKind(kind)) return;
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(mFooter != null)
+						mFooter.setVisibility(View.VISIBLE);
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(false);
+					if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+						mSwipeRefreshLayout.setRefreshing(true);
+				}
+			});
+		}
+
+		@Override
+		public void onStop(int kind) throws RemoteException {
+			if(!isValidKind(kind)) return;
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(mFooter != null)
+						mFooter.setVisibility(View.GONE);
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(true);
+					if(mSwipeRefreshLayout != null)
+						mSwipeRefreshLayout.setRefreshing(false);
+					if(adapter != null)
+						adapter.notifyDataSetChanged();
+				}
+			});
+		}
+
+		@Override
+		public void onError(int kind, int status) throws RemoteException {
+			if(!isValidKind(kind)) return;
+
+		}
+	};
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			mService = ISync.Stub.asInterface(service);
+			if (mService != null) {
+				try {
+					mService.setObserver(mObserver);
+				} catch (RemoteException e) {
+					Log.e(TAG, "onServiceConnected", e);
+				}
+			}
 		}
 
 		public void onServiceDisconnected(ComponentName name) {
@@ -132,6 +192,13 @@ public class ProjectList extends ListFragment implements
 
 	@Override
 	public void onDetach() {
+		if(mService != null){
+			try {
+				mService.removeObserver(mObserver);
+			} catch (RemoteException e) {
+				Log.e(TAG, "onServiceDisconnected", e);
+			}
+		}
 		getActivity().unbindService(mConnection);
 		super.onDetach();
 	}

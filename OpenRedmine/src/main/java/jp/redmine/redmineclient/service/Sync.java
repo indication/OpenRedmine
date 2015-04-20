@@ -148,7 +148,7 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 			while(true){
 				try {
 					//connection handler is null then wait forever
-					param = handler == null ? queue.poll() : queue.poll(2L, TimeUnit.SECONDS);
+					param = handler == null ? queue.take() : queue.poll(2L, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
 					Log.e(TAG,"queue.poll", e);
 				}

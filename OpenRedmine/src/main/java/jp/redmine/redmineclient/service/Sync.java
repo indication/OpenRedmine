@@ -26,25 +26,11 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 	private static final String TAG = Sync.class.getSimpleName();
 	private RemoteCallbackList<ISyncObserver> mObservers = new RemoteCallbackList<ISyncObserver>();
 
-	private class ExecuteParam {
-		public ExecuteParam(ExecuteMethod m, int p){
-			method = m;
-			priority = p;
-		}
-		public ExecuteParam(ExecuteMethod m, int p, int c){
-			method = m;
-			priority = p;
-			connection_id = c;
-		}
-		public ExecuteMethod method;
-		public int priority;
-		public int connection_id;
-		public int offset;
-		public int param_int1;
-		public long param_long1;
-		public String param_string1;
-	}
 	private PriorityBlockingQueue<ExecuteParam> queue;
+	/**
+	 * Handler from activity to service
+	 * Only make a request to event loop
+	 */
 	private final ISync.Stub mBinder = new ISync.Stub(){
 
 		@Override
@@ -55,6 +41,13 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		@Override
 		public void fetchProject(int connection_id) throws RemoteException {
 			queue.add(new ExecuteParam(ExecuteMethod.Project, 0, connection_id));
+		}
+
+		@Override
+		public void fetchNews(int connection_id, long project_id) throws RemoteException {
+			ExecuteParam param = new ExecuteParam(ExecuteMethod.News, 0, connection_id);
+			param.param_long1 = project_id;
+			queue.add(param);
 		}
 
 		@Override
@@ -102,6 +95,10 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 
 	class FetcherThread extends Thread {
 		volatile ExecuteMethod current_method = ExecuteMethod.Halt;
+
+		/**
+		 * Notify start to activity
+		 */
 		private void blessStart(){
 			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
 				@Override
@@ -110,6 +107,10 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 				}
 			});
 		}
+
+		/**
+		 * Notify stop to activity
+		 */
 		private void blessStop(){
 
 			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
@@ -119,6 +120,11 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 				}
 			});
 		}
+
+		/**
+		 * Notify error to activity
+		 * @param status HTTP Error code including custom code(6xx)
+		 */
 		private void blessError(final int status){
 			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
 				@Override
@@ -127,6 +133,10 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 				}
 			});
 		}
+
+		/**
+		 * Event loop for service
+		 */
 		@Override
 		public void run() {
 			ExecuteParam param = null;
@@ -145,6 +155,7 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					Log.e(TAG,"onError",e);
 				}
 			};
+			// Event loop
 			while(true){
 				try {
 					//connection handler is null then wait forever
@@ -224,6 +235,9 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 						queue.add(new_param);
 					}
 					break;
+				case News:
+					SyncNews.fetchNews(getHelper(), handler, errorHandler, param.param_long1);
+					break;
 			}
 		}
 	}
@@ -231,6 +245,12 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 	interface BroadCastHandler<E> {
 		void onEvent(E observer, int cnt) throws RemoteException;
 	}
+
+	/**
+	 *
+	 * @param observers
+	 * @param handler
+	 */
 	static <E extends IInterface> void broadcastEvent(RemoteCallbackList<E> observers, BroadCastHandler<E> handler){
 		if(observers == null)
 			return;

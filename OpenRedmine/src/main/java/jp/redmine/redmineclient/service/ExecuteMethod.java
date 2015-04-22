@@ -5,7 +5,8 @@ public enum ExecuteMethod {
 	Flush(1),
 	Master(2),
 	Project(3),
-	Issues(4),
+	News(4),
+	Issues(5),
 	;
 
 	ExecuteMethod(int nm) {

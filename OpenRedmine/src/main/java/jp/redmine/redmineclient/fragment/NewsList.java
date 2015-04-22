@@ -2,9 +2,14 @@ package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.AsyncTask.Status;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -20,27 +25,94 @@ import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
-import java.sql.SQLException;
-
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.activity.helper.ActivityHelper;
 import jp.redmine.redmineclient.adapter.NewsListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
-import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ProjectArgument;
-import jp.redmine.redmineclient.task.SelectNewsTask;
+import jp.redmine.redmineclient.service.ExecuteMethod;
+import jp.redmine.redmineclient.service.ISync;
+import jp.redmine.redmineclient.service.ISyncObserver;
 
 public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = NewsList.class.getSimpleName();
 	private NewsListAdapter adapter;
-	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private WebviewActionInterface mListener;
+
+	ISync mService = null;
+	ISyncObserver mObserver = new ISyncObserver.Stub() {
+		private boolean isValidKind(int kind){
+			switch(ExecuteMethod.getValueOf(kind)){
+				case News:
+					return true;
+				default:
+					return false;
+			}
+		}
+		@Override
+		public void onStart(int kind) throws RemoteException {
+			if(!isValidKind(kind)) return;
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(mFooter != null)
+						mFooter.setVisibility(View.VISIBLE);
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(false);
+					if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+						mSwipeRefreshLayout.setRefreshing(true);
+				}
+			});
+		}
+
+		@Override
+		public void onStop(int kind) throws RemoteException {
+			if(!isValidKind(kind)) return;
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(mFooter != null)
+						mFooter.setVisibility(View.GONE);
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(true);
+					if(mSwipeRefreshLayout != null)
+						mSwipeRefreshLayout.setRefreshing(false);
+					if(adapter != null)
+						adapter.notifyDataSetChanged();
+				}
+			});
+		}
+
+		@Override
+		public void onError(int kind, int status) throws RemoteException {
+			if(!isValidKind(kind)) return;
+			ActivityHelper.toastRemoteError(getActivity(), status);
+		}
+	};
+
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			mService = ISync.Stub.asInterface(service);
+			if (mService != null) {
+				try {
+					mService.setObserver(mObserver);
+				} catch (RemoteException e) {
+					Log.e(TAG, "onServiceConnected", e);
+				}
+			}
+		}
+
+		public void onServiceDisconnected(ComponentName name) {
+			mService = null;
+		}
+	};
 
 	public NewsList(){
 		super();
@@ -56,19 +128,29 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
+
+		activity.bindService(
+				new Intent(ISync.class.getName()), mConnection, Context.BIND_AUTO_CREATE
+		);
+	}
+
+	@Override
+	public void onDetach() {
+		if(mService != null){
+			try {
+				mService.removeObserver(mObserver);
+			} catch (RemoteException e) {
+				Log.e(TAG, "onServiceDisconnected", e);
+			}
+		}
+		getActivity().unbindService(mConnection);
+		super.onDetach();
 	}
 
 	@Override
 	public void onDestroyView() {
-		cancelTask();
 		setListAdapter(null);
 		super.onDestroyView();
-	}
-	protected void cancelTask(){
-		// cleanup task
-		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(true);
-		}
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -133,61 +215,22 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	}
 
 	public void onRefresh(){
-		if(task != null && task.getStatus() == Status.RUNNING){
+		if(mService == null)
 			return;
-		}
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
-		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
-		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
 		try {
-			RedmineProject proj = mProject.fetchById(intent.getProjectId());
-			task = new SelectDataTask(getHelper(),connection);
-			task.execute(proj);
-		} catch (SQLException e) {
+			mService.fetchNews(intent.getConnectionId(), intent.getProjectId());
+		} catch (RemoteException e) {
 			Log.e(TAG, "onRefresh", e);
 		}
 	}
 
-	private class SelectDataTask extends SelectNewsTask {
-		public SelectDataTask(DatabaseCacheHelper helper, RedmineConnection con) {
-			super(helper, con);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
-		}
-	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate( R.menu.refresh, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
-		if(task != null && task.getStatus() == Status.RUNNING)
-			menu_refresh.setEnabled(false);
 
 		setupSearchBar(menu);
 		super.onCreateOptionsMenu(menu, inflater);

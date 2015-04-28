@@ -117,4 +117,6 @@
   <string name="news">Новости</string>
   <string name="activity_not_found">Приложение не найдено за этот файл.</string>
   <string name="recent_issues">Последние вопросы</string>
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

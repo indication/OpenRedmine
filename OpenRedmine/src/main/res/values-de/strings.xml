@@ -117,4 +117,6 @@
   <string name="news">News</string>
   <string name="activity_not_found">Die Aktivität für diese Datei wurde nicht gefunden.</string>
   <string name="recent_issues">Wiedergeschickte Tickets</string>
+  <string name="navigation_drawer_open">Open navigation drawer</string>
+  <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

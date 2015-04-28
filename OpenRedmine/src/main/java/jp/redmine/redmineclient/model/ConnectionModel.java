@@ -107,6 +107,8 @@ public class ConnectionModel extends Connector {
 						.appendPath(String.valueOf(connection_id))
 						.build()
 				, null, null, null, null);
+		if(cursor.getCount() == 0)
+			return null;
 		cursor.moveToFirst();
 		return RedmineConnection.getByCursor(cursor);
 	}

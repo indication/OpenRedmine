@@ -38,7 +38,6 @@ import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.service.ExecuteMethod;
 import jp.redmine.redmineclient.service.ISync;
 import jp.redmine.redmineclient.service.ISyncObserver;
-import jp.redmine.redmineclient.service.Sync;
 
 public class ProjectList extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor>
@@ -135,7 +134,6 @@ public class ProjectList extends ListFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
-		activity.startService(new Intent(getActivity(), Sync.class));
 		activity.bindService(
 				new Intent(ISync.class.getName()), mConnection, Context.BIND_AUTO_CREATE
 		);
@@ -239,6 +237,8 @@ public class ProjectList extends ListFragment implements
 	}
 
 	public void onRefresh(){
+		if(mService == null)
+			return;
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
 		try {

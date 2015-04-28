@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseService;
 
+import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -172,37 +173,58 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					}
 				}
 				current_method = param.method;
-				switch (param.method){
-					case Halt:
-						if(handler != null) {
-							handler.close();
-							handler = null;
-						}
-						return; //stop loop
-					case Master:
-						blessStart();
-						SyncMaster.fetchStatus(getHelper(), handler, errorHandler);
-						SyncMaster.fetchTracker(getHelper(), handler, errorHandler);
-						SyncMaster.fetchPriority(getHelper(), handler, errorHandler);
-						SyncMaster.fetchTimeEntryActivity(getHelper(), handler, errorHandler);
-						SyncMaster.fetchUsers(getHelper(), handler, errorHandler);
-						SyncMaster.fetchCurrentUser(getHelper(), handler, errorHandler);
-						blessStop();
-						break;
-					case Project:
-						blessStart();
-						int limit = 20;
-						List<RedmineProject> projects = SyncProject.fetchProject(getHelper(), handler, errorHandler, param.offset, limit);
-						if(projects.size() >= limit) {
-							ExecuteParam new_param = new ExecuteParam(param.method, 20, param.connection_id);
-							new_param.offset =  param.offset + limit;
-							queue.add(new_param);
-						}
-						blessStop();
-						break;
+				if(current_method == ExecuteMethod.Halt) {
+					if(handler != null) {
+						handler.close();
+						handler = null;
+					}
+					return; //stop loop
+				} else {
+					blessStart();
+					try {
+						runCommand(param, handler, errorHandler);
+					} catch (SQLException e) {
+						errorHandler.onError(e);
+					}
+					blessStop();
 				}
 			}
 
+		}
+
+		private void runCommand(ExecuteParam param
+				, SelectDataTaskRedmineConnectionHandler handler
+				, Fetcher.ContentResponseErrorHandler errorHandler
+		) throws SQLException {
+
+			int limit = 20;
+			switch (param.method){
+				case Halt:
+					break;
+				case Master:
+					SyncMaster.fetchStatus(getHelper(), handler, errorHandler);
+					SyncMaster.fetchTracker(getHelper(), handler, errorHandler);
+					SyncMaster.fetchPriority(getHelper(), handler, errorHandler);
+					SyncMaster.fetchTimeEntryActivity(getHelper(), handler, errorHandler);
+					SyncMaster.fetchUsers(getHelper(), handler, errorHandler);
+					SyncMaster.fetchCurrentUser(getHelper(), handler, errorHandler);
+					break;
+				case Project:
+					if(SyncProject.fetchProject(getHelper(), handler, errorHandler, param.offset, limit)){
+						ExecuteParam new_param = new ExecuteParam(param.method, 20, param.connection_id);
+						new_param.offset =  param.offset + limit;
+						queue.add(new_param);
+					}
+					break;
+				case Issues:
+					if(SyncIssue.fetchIssuesByProject(getHelper(), handler, errorHandler,
+							param.param_long1, param.offset, limit, false)) {
+						ExecuteParam new_param = new ExecuteParam(param.method, 20, param.connection_id);
+						new_param.offset =  param.offset + limit;
+						queue.add(new_param);
+					}
+					break;
+			}
 		}
 	}
 

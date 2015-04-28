@@ -4,7 +4,9 @@ public enum ExecuteMethod {
 	Halt(0),
 	Flush(1),
 	Master(2),
-	Project(3),;
+	Project(3),
+	Issues(4),
+	;
 
 	ExecuteMethod(int nm) {
 		this.id = nm;

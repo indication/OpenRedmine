@@ -5,4 +5,6 @@ interface ISyncObserver {
     void onStart(int kind);
     void onStop(int kind);
     void onError(int kind, int status);
+    void onChanged(int kind);
+    boolean isNotify(int kind);
 }

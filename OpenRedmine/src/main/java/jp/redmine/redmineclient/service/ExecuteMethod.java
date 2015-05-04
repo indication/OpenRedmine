@@ -7,7 +7,9 @@ public enum ExecuteMethod {
 	Project(3),
 	News(4),
 	Issues(5),
+	IssueFilter(6),
 	;
+	public static final int REFRESH_ALL = -1;
 
 	ExecuteMethod(int nm) {
 		this.id = nm;

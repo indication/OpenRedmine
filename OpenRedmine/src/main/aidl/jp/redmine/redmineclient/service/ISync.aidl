@@ -8,6 +8,8 @@ interface ISync {
     void fetchMaster(int connection_id);
     void fetchProject(int connection_id);
     void fetchNews(int connection_id, long project_id);
+    void fetchIssuesByProject(int connection_id, long project_id, int offset, boolean isFetchAll);
+    void fetchIssuesByFilter(int connection_id, int filter_id, int offset, boolean isFetchAll);
     void setObserver(ISyncObserver observer);
     void removeObserver(ISyncObserver observer);
 }

@@ -2,11 +2,15 @@ package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,23 +40,21 @@ import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.IssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
-import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
-import jp.redmine.redmineclient.task.SelectIssueTask;
-import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
+import jp.redmine.redmineclient.service.ExecuteMethod;
+import jp.redmine.redmineclient.service.ISync;
+import jp.redmine.redmineclient.service.ISyncObserver;
 
 public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
 	private IssueListAdapter adapter;
-	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private MenuItem menu_add;
 	private View mFooter;
@@ -62,10 +64,90 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 	private IssueActionInterface mListener;
 
+	ISync mService = null;
+	ISyncObserver mObserver = new ISyncObserver.Stub() {
+		@Override
+		public void onStart(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(mFooter != null)
+						mFooter.setVisibility(View.VISIBLE);
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(false);
+					if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+						mSwipeRefreshLayout.setRefreshing(true);
+				}
+			});
+		}
+
+		@Override
+		public void onStop(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(mFooter != null)
+						mFooter.setVisibility(View.GONE);
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(true);
+					if(mSwipeRefreshLayout != null)
+						mSwipeRefreshLayout.setRefreshing(false);
+				}
+			});
+		}
+
+		@Override
+		public void onError(int kind, int status) throws RemoteException {
+			//TODO
+		}
+
+		@Override
+		public void onChanged(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(adapter != null)
+						adapter.notifyDataSetChanged();
+				}
+			});
+		}
+
+		@Override
+		public boolean isNotify(int kind) throws RemoteException {
+			switch(ExecuteMethod.getValueOf(kind)){
+				case Issues:
+					return true;
+				default:
+					return false;
+			}
+		}
+	};
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			mService = ISync.Stub.asInterface(service);
+			if (mService != null) {
+				try {
+					mService.setObserver(mObserver);
+				} catch (RemoteException e) {
+					Log.e(TAG, "onServiceConnected", e);
+				}
+			}
+		}
+
+		public void onServiceDisconnected(ComponentName name) {
+			mService = null;
+		}
+	};
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
+		activity.bindService(
+				new Intent(ISync.class.getName()), mConnection, Context.BIND_AUTO_CREATE
+		);
 	}
 	public IssueList(){
 		super();
@@ -79,16 +161,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 	@Override
 	public void onDestroyView() {
-		cancelTask();
 		setListAdapter(null);
 		super.onDestroyView();
 	}
-	protected void cancelTask(){
-		// cleanup task
-		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(true);
-		}
-	}
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -141,7 +217,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			public void onScroll(AbsListView view, int firstVisibleItem,
 			                     int visibleItemCount, int totalItemCount) {
 				if (totalItemCount == firstVisibleItem + visibleItemCount) {
-					if(task != null && task.getStatus() == Status.RUNNING)
+					if(isFetching())
 						return;
 					if(lastPos == totalItemCount)
 						return;
@@ -155,6 +231,10 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			}
 		});
 		isBlockFetch = false;
+	}
+
+	protected boolean isFetching(){
+		return mFooter != null && mFooter.getVisibility() == View.VISIBLE;
 	}
 
 	@Override
@@ -182,6 +262,14 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		Toolbar bar = (Toolbar)(getActivity().findViewById(R.id.toolbar_actionbar));
 		if(bar != null)
 			bar.removeView(mHeader);
+		if(mService != null){
+			try {
+				mService.removeObserver(mObserver);
+			} catch (RemoteException e) {
+				Log.e(TAG, "onServiceDisconnected", e);
+			}
+		}
+		getActivity().unbindService(mConnection);
 		super.onDetach();
 	}
 
@@ -209,7 +297,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 	}
 
 	protected void onRefresh(boolean isFlush){
-		if(task != null && task.getStatus() == Status.RUNNING){
+		if(isFetching() || mService == null){
 			return;
 		}
 		onRefreshList();
@@ -221,20 +309,21 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument(getArguments());
-		DatabaseCacheHelper helper = getHelper();
-		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
-
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		if(intent.hasFilterId())
-			task = new SelectDataTask(helper,connection,null,intent.getFilterId());
-		else
-			task = new SelectDataTask(helper,connection,intent.getProjectId());
+		boolean isFetchAll = sp.getBoolean("issue_get_all", false);
+		int offset = isFlush ? -1 : 0;
+		try {
+			if(intent.hasFilterId())
+				mService.fetchIssuesByFilter(intent.getConnectionId(), intent.getFilterId(), offset, isFetchAll);
+			else
+				mService.fetchIssuesByProject(intent.getConnectionId(), intent.getProjectId(), offset, isFetchAll);
+		} catch (RemoteException e) {
+			Log.e(TAG, "onRefresh", e);
+		}
 
-		task.setFetchAll(sp.getBoolean("issue_get_all", false));
-		task.execute(0,10,isFlush ? 1 : 0);
 		if(isFlush && !intent.hasFilterId()){
 			RedmineProject project = null;
-			RedmineProjectModel mProject = new RedmineProjectModel(helper);
+			RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
 			try {
 				project = mProject.fetchById(intent.getProjectId());
 				if(menu_add != null)
@@ -242,8 +331,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			} catch (SQLException e) {
 				Log.e(TAG,"SelectDataTask",e);
 			}
-			SelectProjectEnumerationTask enumtask = new SelectProjectEnumerationTask(helper,connection,project);
-			enumtask.execute();
 		}
 	}
 	protected void onRefreshList(){
@@ -260,41 +347,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		onRefresh(true);
 	}
 
-	private class SelectDataTask extends SelectIssueTask {
-		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, long project) {
-			super(helper,connection,project);
-		}
-		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection,Long proj, int filter) {
-			super(helper,connection,proj,filter);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			onRefreshList();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			onRefreshList();
-			super.onProgress(max, proc);
-		}
-	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -306,7 +358,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		inflater.inflate( R.menu.refresh, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		menu_add = menu.findItem(R.id.menu_access_addnew);
-		if(task != null && task.getStatus() == Status.RUNNING)
+		if(isFetching())
 			menu_refresh.setEnabled(false);
 
 		setupSearchBar(menu);

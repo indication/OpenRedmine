@@ -46,17 +46,8 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 
 	ISync mService = null;
 	ISyncObserver mObserver = new ISyncObserver.Stub() {
-		private boolean isValidKind(int kind){
-			switch(ExecuteMethod.getValueOf(kind)){
-				case News:
-					return true;
-				default:
-					return false;
-			}
-		}
 		@Override
 		public void onStart(int kind) throws RemoteException {
-			if(!isValidKind(kind)) return;
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -72,7 +63,6 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 
 		@Override
 		public void onStop(int kind) throws RemoteException {
-			if(!isValidKind(kind)) return;
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -82,6 +72,20 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 						menu_refresh.setEnabled(true);
 					if(mSwipeRefreshLayout != null)
 						mSwipeRefreshLayout.setRefreshing(false);
+				}
+			});
+		}
+
+		@Override
+		public void onError(int kind, int status) throws RemoteException {
+			ActivityHelper.toastRemoteError(getActivity(), status);
+		}
+
+		@Override
+		public void onChanged(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
 					if(adapter != null)
 						adapter.notifyDataSetChanged();
 				}
@@ -89,9 +93,13 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		}
 
 		@Override
-		public void onError(int kind, int status) throws RemoteException {
-			if(!isValidKind(kind)) return;
-			ActivityHelper.toastRemoteError(getActivity(), status);
+		public boolean isNotify(int kind) throws RemoteException {
+			switch(ExecuteMethod.getValueOf(kind)){
+				case News:
+					return true;
+				default:
+					return false;
+			}
 		}
 	};
 

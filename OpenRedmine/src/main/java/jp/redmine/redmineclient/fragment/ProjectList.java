@@ -52,18 +52,8 @@ public class ProjectList extends ListFragment implements
 
 	ISync mService = null;
 	ISyncObserver mObserver = new ISyncObserver.Stub() {
-		private boolean isValidKind(int kind){
-			switch(ExecuteMethod.getValueOf(kind)){
-				case Master:
-				case Project:
-					return true;
-				default:
-					return false;
-			}
-		}
 		@Override
 		public void onStart(int kind) throws RemoteException {
-			if(!isValidKind(kind)) return;
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -79,7 +69,6 @@ public class ProjectList extends ListFragment implements
 
 		@Override
 		public void onStop(int kind) throws RemoteException {
-			if(!isValidKind(kind)) return;
 			getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -89,16 +78,36 @@ public class ProjectList extends ListFragment implements
 						menu_refresh.setEnabled(true);
 					if(mSwipeRefreshLayout != null)
 						mSwipeRefreshLayout.setRefreshing(false);
-					if(adapter != null)
-						adapter.notifyDataSetChanged();
 				}
 			});
 		}
 
 		@Override
 		public void onError(int kind, int status) throws RemoteException {
-			if(!isValidKind(kind)) return;
+			//TODO
 
+		}
+
+		@Override
+		public void onChanged(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+			if(adapter != null)
+				adapter.notifyDataSetChanged();
+				}
+			});
+		}
+
+		@Override
+		public boolean isNotify(int kind) throws RemoteException {
+			switch(ExecuteMethod.getValueOf(kind)){
+				case Master:
+				case Project:
+					return true;
+				default:
+					return false;
+			}
 		}
 	};
 

@@ -21,6 +21,40 @@ import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
 public class SyncIssue {
 
+	public static boolean fetchIssuesByProject(final DatabaseCacheHelper helper
+			, final SelectDataTaskRedmineConnectionHandler client
+			, Fetcher.ContentResponseErrorHandler error
+			, long project_id
+			, int offset
+			, int limit
+			, boolean isFetchAll
+	) throws SQLException {
+		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
+		RedmineFilter filter = getFilter(helper, client, mFilter, project_id);
+		if(offset == ExecuteMethod.REFRESH_ALL){
+			filter.setFetched(0);
+			offset = 0;
+		}
+		return fetchIssues(helper, client, error, mFilter, filter, offset, limit, isFetchAll);
+	}
+
+	public static boolean fetchIssuesByFilter(final DatabaseCacheHelper helper
+			, final SelectDataTaskRedmineConnectionHandler client
+			, Fetcher.ContentResponseErrorHandler error
+			, int filter_id
+			, int offset
+			, int limit
+			, boolean isFetchAll
+	) throws SQLException {
+		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
+		RedmineFilter filter = mFilter.fetchById(filter_id);
+		if(offset == ExecuteMethod.REFRESH_ALL){
+			filter.setFetched(0);
+			offset = 0;
+		}
+		return fetchIssues(helper, client, error, mFilter, filter, offset, limit, isFetchAll);
+	}
+
 	private static RedmineFilter getFilter(DatabaseCacheHelper helper
 			, SelectDataTaskRedmineConnectionHandler client
 			, RedmineFilterModel mFilter
@@ -34,18 +68,6 @@ public class SyncIssue {
 			filter.setCurrent(true);
 		}
 		return filter;
-	}
-	public static boolean fetchIssuesByProject(final DatabaseCacheHelper helper
-			, final SelectDataTaskRedmineConnectionHandler client
-			, Fetcher.ContentResponseErrorHandler error
-			, long project_id
-			, int offset
-			, int limit
-			, boolean isFetchAll
-	) throws SQLException {
-		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
-		RedmineFilter filter = getFilter(helper, client, mFilter, project_id);
-		return fetchIssues(helper, client, error, mFilter, filter, offset, limit, isFetchAll);
 	}
 
 	private static boolean fetchIssues(final DatabaseCacheHelper helper
@@ -68,17 +90,23 @@ public class SyncIssue {
 				parser.parse(client.getConnection());
 			}
 		};
+		int fetch_offset = offset+(int)(filter.getFetched());
 		RemoteUrlIssues url = new RemoteUrlIssues();
 		RemoteUrlIssues.setupFilter(url, filter, isFetchAll);
 
-		url.filterOffset(offset);
+		url.filterOffset(fetch_offset);
 		url.filterLimit(limit);
 		Fetcher.fetchData(client, error, client.getUrl(url), taskhandler);
 
-		filter.setFetched(offset+limit);
-		filter.setLast(new Date());
-		mFilter.updateOrInsert(filter);
-		return parser.getCount() >= limit;
+		//On finished loading, record the filter
+		if(parser.getCount() >= limit && (fetch_offset + limit) <= filter.getFetched()){
+			return true;
+		} else {
+			filter.setFetched(offset + limit);
+			filter.setLast(new Date());
+			mFilter.updateOrInsert(filter);
+			return false;
+		}
 	}
 
 }

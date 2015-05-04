@@ -10,6 +10,7 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteBaseService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -17,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.task.Fetcher;
 import jp.redmine.redmineclient.task.SelectDataTaskRedmineConnectionHandler;
@@ -47,6 +47,24 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		public void fetchNews(int connection_id, long project_id) throws RemoteException {
 			ExecuteParam param = new ExecuteParam(ExecuteMethod.News, 0, connection_id);
 			param.param_long1 = project_id;
+			queue.add(param);
+		}
+
+		@Override
+		public void fetchIssuesByProject(int connection_id, long project_id, int offset, boolean isFetchAll) throws RemoteException {
+			ExecuteParam param = new ExecuteParam(ExecuteMethod.Issues, 0, connection_id);
+			param.param_long1 = project_id;
+			param.param_bool1 = isFetchAll;
+			param.offset = offset;
+			queue.add(param);
+		}
+
+		@Override
+		public void fetchIssuesByFilter(int connection_id, int filter_id, int offset, boolean isFetchAll) throws RemoteException {
+			ExecuteParam param = new ExecuteParam(ExecuteMethod.IssueFilter, 0, connection_id);
+			param.param_int1 = filter_id;
+			param.param_bool1 = isFetchAll;
+			param.offset = offset;
 			queue.add(param);
 		}
 
@@ -99,11 +117,13 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		/**
 		 * Notify start to activity
 		 */
-		private void blessStart(){
+		private void blessStart(final ExecuteMethod param){
 			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
 				@Override
 				public void onEvent(ISyncObserver observer, int cnt) throws RemoteException {
-					observer.onStart(current_method.getId());
+					if(!observer.isNotify(current_method.getId()))
+						return;
+					observer.onStart(param.getId());
 				}
 			});
 		}
@@ -111,12 +131,29 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		/**
 		 * Notify stop to activity
 		 */
-		private void blessStop(){
+		private void blessStop(final ExecuteMethod param){
 
 			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
 				@Override
 				public void onEvent(ISyncObserver observer, int cnt) throws RemoteException {
-					observer.onStop(current_method.getId());
+					if(!observer.isNotify(current_method.getId()))
+						return;
+					observer.onStop(param.getId());
+				}
+			});
+		}
+
+		/**
+		 * Notify stop to activity
+		 */
+		private void blessDataChanged(final ExecuteMethod param){
+
+			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
+				@Override
+				public void onEvent(ISyncObserver observer, int cnt) throws RemoteException {
+					if(!observer.isNotify(current_method.getId()))
+						return;
+					observer.onChanged(param.getId());
 				}
 			});
 		}
@@ -129,6 +166,8 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 			broadcastEvent(mObservers, new BroadCastHandler<ISyncObserver>() {
 				@Override
 				public void onEvent(ISyncObserver observer, int cnt) throws RemoteException {
+					if(!observer.isNotify(current_method.getId()))
+						return;
 					observer.onError(current_method.getId(), status);
 				}
 			});
@@ -155,6 +194,7 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					Log.e(TAG,"onError",e);
 				}
 			};
+			List<ExecuteMethod> notification = new ArrayList<>();
 			// Event loop
 			while(true){
 				try {
@@ -168,6 +208,10 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 						handler.close();
 						handler = null;
 					}
+					for(ExecuteMethod method : notification){
+						blessStop(method);
+					}
+					notification.clear();
 					continue;
 				} else {
 					//if the requested connection_id is deference, reconnect.
@@ -191,13 +235,16 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					}
 					return; //stop loop
 				} else {
-					blessStart();
+					if(!notification.contains(current_method)){
+						blessStart(current_method);
+						notification.add(current_method);
+					}
 					try {
 						runCommand(param, handler, errorHandler);
 					} catch (SQLException e) {
 						errorHandler.onError(e);
 					}
-					blessStop();
+					blessDataChanged(current_method);
 				}
 			}
 
@@ -222,16 +269,36 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					break;
 				case Project:
 					if(SyncProject.fetchProject(getHelper(), handler, errorHandler, param.offset, limit)){
-						ExecuteParam new_param = new ExecuteParam(param.method, 20, param.connection_id);
+						ExecuteParam new_param = param.Clone();
 						new_param.offset =  param.offset + limit;
 						queue.add(new_param);
 					}
 					break;
 				case Issues:
 					if(SyncIssue.fetchIssuesByProject(getHelper(), handler, errorHandler,
-							param.param_long1, param.offset, limit, false)) {
-						ExecuteParam new_param = new ExecuteParam(param.method, 20, param.connection_id);
-						new_param.offset =  param.offset + limit;
+							param.param_long1, param.offset, limit, param.param_bool1)) {
+						ExecuteParam new_param = param.Clone();
+						if(param.offset == ExecuteMethod.REFRESH_ALL) {
+							new_param.offset = limit;
+						} else {
+							new_param.offset = param.offset + limit;
+						}
+						queue.add(new_param);
+					}
+					if(param.offset < 0){
+						SyncCategory.fetchCategory(getHelper(), handler, errorHandler, param.param_long1);
+						SyncVersion.fetchVersions(getHelper(), handler, errorHandler, param.param_long1);
+					}
+					break;
+				case IssueFilter:
+					if(SyncIssue.fetchIssuesByFilter(getHelper(), handler, errorHandler,
+							param.param_int1, param.offset, limit, param.param_bool1)) {
+						ExecuteParam new_param = param.Clone();
+						if(param.offset == ExecuteMethod.REFRESH_ALL) {
+							new_param.offset = limit;
+						} else {
+							new_param.offset = param.offset + limit;
+						}
 						queue.add(new_param);
 					}
 					break;
@@ -257,7 +324,6 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		int count = observers.beginBroadcast();
 		for(int i = 0; i < count ; i++) {
 			try {
-
 				handler.onEvent(observers.getBroadcastItem(i), i);
 			} catch (RemoteException e) {
 				Log.e(TAG, "broadcastEvent", e);

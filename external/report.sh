@@ -1,8 +1,8 @@
 #!/bin/sh
 
 export WORKDIR=$(pwd)
-export WORK_COMMTER="$(git show --pretty=format:%an --no-notes)"
-export WORK_EMAIL="$(git show --pretty=format:%ae --no-notes)"
+export WORK_COMMTER="$(git log -1 --pretty=format:%an --no-notes)"
+export WORK_EMAIL="$(git log -1 --pretty=format:%ae --no-notes)"
 cd ~
 git clone -b travis-ci --depth=50 git@github.com:indication/OpenRedmine.git indication/builds || { echo Failed to checkout repository! ; cd $WORKDIR; exit 1; }
 git config --global user.email "$WORK_EMAIL"

@@ -1,6 +1,4 @@
-package jp.redmine.redmineclient.task;
-
-import android.util.Log;
+package jp.redmine.redmineclient.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.xmlpull.v1.XmlPullParserException;
@@ -15,46 +13,31 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserWiki;
+import jp.redmine.redmineclient.task.Fetcher;
+import jp.redmine.redmineclient.task.SelectDataTaskDataHandler;
+import jp.redmine.redmineclient.task.SelectDataTaskRedmineConnectionHandler;
 import jp.redmine.redmineclient.url.RemoteUrlWiki;
 
-public class SelectWikiTask extends SelectDataTask<Void,String> {
-	private final static String TAG = SelectWikiTask.class.getSimpleName();
-	private final static int LIMIT = 50;
+public class SyncWiki {
 
-	protected DatabaseCacheHelper helper;
-	protected RedmineConnection connection;
-	protected RedmineProject project;
-	public SelectWikiTask(DatabaseCacheHelper helper, RedmineConnection con, RedmineProject proj){
-		this.helper = helper;
-		this.connection = con;
-		this.project = proj;
-	}
-	public SelectWikiTask(DatabaseCacheHelper helper, RedmineConnection con, long proj_id){
-		this.helper = helper;
-		this.connection = con;
-		RedmineProjectModel proj = new RedmineProjectModel(helper);
-		try {
-			this.project = proj.fetchById(proj_id);
-		} catch (SQLException e) {
-			Log.e(TAG, "constructor", e);
-		}
-	}
-
-
-	public SelectWikiTask() {
-	}
-
-	@Override
-	protected Void doInBackground(String... params) {
+	public static boolean fetchWiki(final DatabaseCacheHelper helper
+			, final SelectDataTaskRedmineConnectionHandler client
+			, Fetcher.ContentResponseErrorHandler error
+			, long project_id
+			, String name
+			, int offset
+			, int limit
+	) throws SQLException {
 		final RedmineWikiModel model = new RedmineWikiModel(helper);
 		final RedmineAttachmentModel mAttachment = new RedmineAttachmentModel(helper);
 		final RedmineUserModel mUser = new RedmineUserModel(helper);
+		final RedmineProjectModel mProject = new RedmineProjectModel(helper);
 		final ParserWiki parser = new ParserWiki();
+		final RedmineProject project = mProject.fetchById(project_id);
 		parser.registerDataCreation(new DataCreationHandler<RedmineProject,RedmineWiki>() {
 			public void onData(RedmineProject con,RedmineWiki data) throws SQLException {
 				data.setProject(con);
@@ -75,41 +58,23 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 			@Override
 			public void onContent(InputStream stream)
 					throws XmlPullParserException, IOException, SQLException {
-				helperSetupParserStream(stream,parser);
+				Fetcher.setupParserStream(stream, parser);
 				parser.parse(project);
 			}
 		};
 
-		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
+
 		RemoteUrlWiki url = new RemoteUrlWiki();
 		url.setInclude(RemoteUrlWiki.Includes.Attachments);
-		for(String item : params){
-			int offset = 0;
-			url.filterLimit(LIMIT);
-			url.setProject(project.getIdentifier());
-			if(StringUtils.isEmpty(item))
-				url.setTitle(RemoteUrlWiki.list);
-			else
-				url.setTitle(item);
+		url.filterLimit(limit);
+		url.setProject(project.getIdentifier());
+		if(StringUtils.isEmpty(name))
+			url.setTitle(RemoteUrlWiki.list);
+		else
+			url.setTitle(name);
 
-			do {
-				url.filterOffset(offset);
-				fetchData(client, url, handler);
-				offset += parser.getCount() + 1;
-			} while(parser.getCount() == LIMIT);
-		}
-		client.close();
-		return null;
+		url.filterOffset(offset);
+		Fetcher.fetchData(client, error, client.getUrl(url), handler);
+		return parser.getCount() >= limit;
 	}
-
-	@Override
-	protected void onErrorRequest(int statuscode) {
-
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
-
-	}
-
 }

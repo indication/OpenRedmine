@@ -1,9 +1,13 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
-import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import java.sql.SQLException;
@@ -24,23 +27,109 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
-import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.form.helper.WebViewHelper;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
-import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.WikiArgument;
-import jp.redmine.redmineclient.task.SelectWikiTask;
+import jp.redmine.redmineclient.service.ExecuteMethod;
+import jp.redmine.redmineclient.service.ISync;
+import jp.redmine.redmineclient.service.ISyncObserver;
 
 public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = WikiDetail.class.getSimpleName();
-	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private WebViewHelper webViewHelper;
 	private WebView webView;
 	SwipeRefreshLayout mSwipeRefreshLayout;
 
 	private WebviewActionInterface mListener;
+
+	ISync mService = null;
+	ISyncObserver mObserver = new ISyncObserver.Stub() {
+		@Override
+		public void onStart(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(false);
+					if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+						mSwipeRefreshLayout.setRefreshing(true);
+				}
+			});
+		}
+
+		@Override
+		public void onStop(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(true);
+					if(mSwipeRefreshLayout != null)
+						mSwipeRefreshLayout.setRefreshing(false);
+				}
+			});
+		}
+
+		@Override
+		public void onError(int kind, int status) throws RemoteException {
+			//TODO
+
+		}
+
+		@Override
+		public void onChanged(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					loadWebView(false);
+				}
+			});
+		}
+
+		@Override
+		public boolean isNotify(int kind) throws RemoteException {
+			switch(ExecuteMethod.getValueOf(kind)){
+				case Wiki:
+					return true;
+				default:
+					return false;
+			}
+		}
+	};
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			mService = ISync.Stub.asInterface(service);
+			if (mService != null) {
+				try {
+					mService.setObserver(mObserver);
+				} catch (RemoteException e) {
+					Log.e(TAG, "onServiceConnected", e);
+				}
+				loadWebView(true);
+			}
+		}
+
+		public void onServiceDisconnected(ComponentName name) {
+			mService = null;
+		}
+	};
+
+	@Override
+	public void onDetach() {
+		if(mService != null){
+			try {
+				mService.removeObserver(mObserver);
+			} catch (RemoteException e) {
+				Log.e(TAG, "onServiceDisconnected", e);
+			}
+		}
+		getActivity().unbindService(mConnection);
+		super.onDetach();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,12 +143,6 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
 
 	}
-	protected void cancelTask(){
-		// cleanup task
-		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
-			task.cancel(true);
-		}
-	}
 	public WikiDetail(){
 		super();
 	}
@@ -72,7 +155,6 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 
 	@Override
 	public void onDestroyView() {
-		cancelTask();
 		webView.destroy();
 		super.onDestroyView();
 	}
@@ -89,7 +171,6 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 
 		webViewHelper.setAction(mListener);
 		webViewHelper.setup(webView);
-		loadWebView(true);
 
 	}
 
@@ -130,33 +211,6 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		super.onResume();
 	}
 
-	private class SelectDataTask extends SelectWikiTask {
-		public SelectDataTask(DatabaseCacheHelper helper, RedmineConnection con, long proj_id){
-			super(helper,con,proj_id);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			loadWebView(false);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-	}
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.page_webview, container, false);
@@ -169,22 +223,27 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		return result.parent;
 	}
 
+	protected boolean isFetching(){
+		return menu_refresh != null && !menu_refresh.isEnabled();
+	}
 	public void onRefresh(){
-		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
+		if(mService == null || isFetching()) {
 			return;
 		}
 		WikiArgument intent = new WikiArgument();
 		intent.setArgument(getArguments());
-		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
-		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
-		task.execute(intent.getWikiTitle());
+		try {
+			mService.fetchWiki(intent.getConnectionId(), intent.getProjectId(), intent.getWikiTitle());
+		} catch (RemoteException e) {
+			Log.e(TAG, "onRefresh", e);
+		}
 	}
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		menu.clear();
 		inflater.inflate(R.menu.refresh, menu);
 		menu_refresh = menu.findItem(R.id.menu_refresh);
-		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING)
+		if(isFetching())
 			menu_refresh.setEnabled(false);
 		super.onCreateOptionsMenu(menu, inflater);
 	}

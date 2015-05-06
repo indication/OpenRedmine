@@ -8,6 +8,7 @@ public enum ExecuteMethod {
 	News(4),
 	Issues(5),
 	IssueFilter(6),
+	Wiki(7),
 	;
 	public static final int REFRESH_ALL = -1;
 

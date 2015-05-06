@@ -69,6 +69,23 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		}
 
 		@Override
+		public void fetchWikiByProject(int connection_id, long project_id) throws RemoteException {
+			ExecuteParam param = new ExecuteParam(ExecuteMethod.Wiki, 0, connection_id);
+			param.param_long1 = project_id;
+			param.offset = 0;
+			queue.add(param);
+		}
+
+		@Override
+		public void fetchWiki(int connection_id, long project_id, String title) throws RemoteException {
+			ExecuteParam param = new ExecuteParam(ExecuteMethod.Wiki, 0, connection_id);
+			param.param_long1 = project_id;
+			param.param_string1 = title;
+			param.offset = 0;
+			queue.add(param);
+		}
+
+		@Override
 		public void setObserver(ISyncObserver observer) throws RemoteException {
 			mObservers.register(observer);
 		}
@@ -304,6 +321,14 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					break;
 				case News:
 					SyncNews.fetchNews(getHelper(), handler, errorHandler, param.param_long1);
+					break;
+				case Wiki:
+					if(SyncWiki.fetchWiki(getHelper(), handler, errorHandler, param.param_long1, param.param_string1,
+							param.offset, limit)){
+						ExecuteParam new_param = param.Clone();
+						new_param.offset = param.offset + limit;
+						queue.add(new_param);
+					}
 					break;
 			}
 		}

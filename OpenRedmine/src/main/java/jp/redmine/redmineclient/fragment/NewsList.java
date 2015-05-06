@@ -114,6 +114,9 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 				} catch (RemoteException e) {
 					Log.e(TAG, "onServiceConnected", e);
 				}
+				if(adapter.getCount() < 1){
+					onRefresh();
+				}
 			}
 		}
 
@@ -178,10 +181,6 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		setListAdapter(adapter);
 		adapter.setupParameter(intent.getConnectionId(), intent.getProjectId());
 		adapter.notifyDataSetChanged();
-
-		if(adapter.getCount() < 1){
-			onRefresh();
-		}
 
 	}
 

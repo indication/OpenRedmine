@@ -133,6 +133,9 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 				} catch (RemoteException e) {
 					Log.e(TAG, "onServiceConnected", e);
 				}
+				if(adapter.getCount() < 1){
+					onRefresh(true);
+				}
 			}
 		}
 
@@ -191,9 +194,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
 		}
 		onRefreshList();
-		if(adapter.getCount() < 1){
-			this.onRefresh(true);
-		}
 		setListAdapter(adapter);
 
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {

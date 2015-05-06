@@ -121,6 +121,9 @@ public class ProjectList extends ListFragment implements
 				} catch (RemoteException e) {
 					Log.e(TAG, "onServiceConnected", e);
 				}
+				if(adapter.getCount() < 1) {
+					onRefresh();
+				}
 			}
 		}
 

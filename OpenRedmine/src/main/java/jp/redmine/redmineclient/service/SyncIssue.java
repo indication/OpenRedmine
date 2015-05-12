@@ -1,25 +1,36 @@
 package jp.redmine.redmineclient.service;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
+import jp.redmine.redmineclient.db.cache.RedmineIssueModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.IssueModelDataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserIssue;
 import jp.redmine.redmineclient.task.Fetcher;
 import jp.redmine.redmineclient.task.SelectDataTaskDataHandler;
 import jp.redmine.redmineclient.task.SelectDataTaskRedmineConnectionHandler;
+import jp.redmine.redmineclient.url.RemoteUrlIssue;
 import jp.redmine.redmineclient.url.RemoteUrlIssues;
 
 public class SyncIssue {
+	private final static String TAG = SyncIssue.class.getSimpleName();
 
 	public static boolean fetchIssuesByProject(final DatabaseCacheHelper helper
 			, final SelectDataTaskRedmineConnectionHandler client
@@ -107,6 +118,61 @@ public class SyncIssue {
 			mFilter.updateOrInsert(filter);
 			return false;
 		}
+	}
+
+	public static boolean fetchIssue(final DatabaseCacheHelper helper
+			, final SelectDataTaskRedmineConnectionHandler client
+			, Fetcher.ContentResponseErrorHandler error
+			, int issue_id
+	) throws SQLException {
+		final ParserIssue parser = new ParserIssue();
+		final List<Integer> listAdditionalIssue = new ArrayList<Integer>();
+		DataCreationHandler<RedmineConnection,RedmineIssue> relationHandler = new DataCreationHandler<RedmineConnection,RedmineIssue>() {
+			private RedmineIssueModel mRelation = new RedmineIssueModel(helper);
+			public void onData(RedmineConnection con,RedmineIssue data) throws SQLException {
+				if(data.getParentId() != 0){
+					if(mRelation.getIdByIssue(con.getId(), data.getParentId()) == null)
+						listAdditionalIssue.add(data.getParentId());
+				}
+				if(data.getRelations() == null)
+					return;
+				for(RedmineIssueRelation rel : data.getRelations()) {
+					Log.d(TAG, "relation:" + String.valueOf(rel.getIssueId()) + "->" + String.valueOf(rel.getIssueToId()));
+					int target_id = rel.getTargetIssueId(data.getIssueId());
+					if (mRelation.getIdByIssue(con.getId(), target_id) == null)
+						listAdditionalIssue.add(target_id);
+				}
+			}
+		};
+		IssueModelDataCreationHandler itemhandler = new IssueModelDataCreationHandler(helper);
+		parser.registerDataCreation(itemhandler);
+		parser.registerDataCreation(relationHandler);
+
+		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
+			@Override
+			public void onContent(InputStream stream)
+					throws XmlPullParserException, IOException, SQLException {
+				Fetcher.setupParserStream(stream, parser);
+				parser.parse(client.getConnection());
+			}
+		};
+		RemoteUrlIssue url = new RemoteUrlIssue();
+		url.setInclude(
+				RemoteUrlIssue.Includes.Journals
+				,RemoteUrlIssue.Includes.Relations
+				,RemoteUrlIssue.Includes.Attachments
+				,RemoteUrlIssue.Includes.Watchers
+		);
+		url.setIssueId(issue_id);
+		Fetcher.fetchData(client, error, client.getUrl(url), handler);
+		//Add external issues
+		parser.unregisterDataCreation(relationHandler);
+		url.setInclude();
+		for(int param: listAdditionalIssue){
+			url.setIssueId(param);
+			Fetcher.fetchData(client, error, client.getUrl(url), handler);
+		}
+		return false;
 	}
 
 }

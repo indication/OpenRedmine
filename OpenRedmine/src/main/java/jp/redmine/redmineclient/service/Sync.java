@@ -69,6 +69,18 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 		}
 
 		@Override
+		public void fetchIssue(int connection_id, int issue_id) throws RemoteException {
+			ExecuteParam param = new ExecuteParam(ExecuteMethod.Issue, 0, connection_id);
+			param.param_int1 = issue_id;
+			param.offset = 0;
+			queue.add(param);
+			ExecuteParam param2 = new ExecuteParam(ExecuteMethod.TimeEntries, 0, connection_id);
+			param2.param_int1 = issue_id;
+			param2.offset = 0;
+			queue.add(param2);
+		}
+
+		@Override
 		public void fetchWikiByProject(int connection_id, long project_id) throws RemoteException {
 			ExecuteParam param = new ExecuteParam(ExecuteMethod.Wiki, 0, connection_id);
 			param.param_long1 = project_id;
@@ -305,6 +317,20 @@ public class Sync extends OrmLiteBaseService<DatabaseCacheHelper>{
 					if(param.offset < 0){
 						SyncCategory.fetchCategory(getHelper(), handler, errorHandler, param.param_long1);
 						SyncVersion.fetchVersions(getHelper(), handler, errorHandler, param.param_long1);
+					}
+					break;
+				case Issue:
+					if(SyncIssue.fetchIssue(getHelper(), handler, errorHandler, param.param_int1)){
+						ExecuteParam new_param = param.Clone();
+						new_param.offset += limit;
+						queue.add(new_param);
+					}
+					break;
+				case TimeEntries:
+					if(SyncTimeentry.fetchByIssue(getHelper(), handler, errorHandler, param.param_int1, param.offset, limit)){
+						ExecuteParam new_param = param.Clone();
+						new_param.offset += limit;
+						queue.add(new_param);
 					}
 					break;
 				case IssueFilter:

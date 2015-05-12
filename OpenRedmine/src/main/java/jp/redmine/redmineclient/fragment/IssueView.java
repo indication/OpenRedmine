@@ -2,8 +2,14 @@ package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,15 +46,16 @@ import jp.redmine.redmineclient.fragment.form.IssueViewForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
+import jp.redmine.redmineclient.service.ExecuteMethod;
+import jp.redmine.redmineclient.service.ISync;
+import jp.redmine.redmineclient.service.ISyncObserver;
 import jp.redmine.redmineclient.task.SelectIssueJournalPost;
-import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private final String TAG = IssueView.class.getSimpleName();
 	private IssueStickyListAdapter adapter;
     private StickyListHeadersListView list;
-	private SelectDataTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private WebviewActionInterface mActionListener;
@@ -59,6 +66,88 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	private IssueCommentForm formComment;
 	private ProgressDialog dialog;
 
+	ISync mService = null;
+	ISyncObserver mObserver = new ISyncObserver.Stub() {
+		@Override
+		public void onStart(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(mFooter != null)
+						mFooter.setVisibility(View.VISIBLE);
+					if(menu_refresh != null)
+						menu_refresh.setEnabled(false);
+					if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+						mSwipeRefreshLayout.setRefreshing(true);
+				}
+			});
+		}
+
+		@Override
+		public void onStop(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (mFooter != null)
+						mFooter.setVisibility(View.GONE);
+					if (menu_refresh != null)
+						menu_refresh.setEnabled(true);
+					if (mSwipeRefreshLayout != null)
+						mSwipeRefreshLayout.setRefreshing(false);
+				}
+			});
+		}
+
+		@Override
+		public void onError(int kind, int status) throws RemoteException {
+			//TODO
+			ActivityHelper.toastRemoteError(getActivity(), status);
+
+		}
+
+		@Override
+		public void onChanged(int kind) throws RemoteException {
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(adapter != null)
+						adapter.notifyDataSetChanged();
+				}
+			});
+		}
+
+		@Override
+		public boolean isNotify(int kind) throws RemoteException {
+			switch(ExecuteMethod.getValueOf(kind)){
+				case Issues:
+					return true;
+				default:
+					return false;
+			}
+		}
+	};
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			Log.i(TAG, "onServiceConnected");
+			mService = ISync.Stub.asInterface(service);
+			if (mService != null) {
+				try {
+					mService.setObserver(mObserver);
+				} catch (RemoteException e) {
+					Log.e(TAG, "onServiceConnected", e);
+				}
+				if(adapter.getCount() < 1) {
+					onRefresh();
+				}
+			}
+		}
+
+		public void onServiceDisconnected(ComponentName name) {
+			mService = null;
+		}
+	};
 	public IssueView(){
 		super();
 	}
@@ -69,23 +158,14 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		return instance;
 	}
 
+	protected boolean isFetching(){
+		return mFooter != null && mFooter.getVisibility() == View.VISIBLE;
+	}
 	@Override
 	public void onDestroyView() {
-		cancelTask(true);
         if(list  != null)
             list.setAdapter(null);
 		super.onDestroyView();
-	}
-	protected void cancelTask(boolean isForce){
-		// cleanup task
-		if(task != null && task.getStatus() == Status.RUNNING){
-			task.cancel(isForce);
-		}
-	}
-	@Override
-	public void onPause() {
-		cancelTask(false);
-		super.onPause();
 	}
 
 	@Override
@@ -95,6 +175,9 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		mActionListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
 		mTimeEntryListener = ActivityHandler.getHandler(activity, TimeentryActionInterface.class);
 		mAttachmentListener = ActivityHandler.getHandler(activity, AttachmentActionInterface.class);
+		activity.bindService(
+				new Intent(ISync.class.getName()), mConnection, Context.BIND_AUTO_CREATE
+		);
 	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -253,62 +336,23 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	}
 
 	protected void onFetchRemote(){
-		if(task != null && task.getStatus() == Status.RUNNING)
+		if(isFetching() || mService == null)
 			return;
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());
-		task = new SelectDataTask();
-		task.execute(intent.getIssueId());
-	}
-
-	private class SelectDataTask extends SelectIssueJournalTask{
-		public SelectDataTask() {
-			super();
-			helper = getHelper();
-			IssueArgument intent = new IssueArgument();
-			intent.setArgument(getArguments());
-			connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
-		}
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void v) {
-			onRefresh(false);
-			onStopped();
-
-			IssueArgument intent = new IssueArgument();
-			intent.setArgument(getArguments());
-			mListener.onIssueRefreshed(intent.getConnectionId(), intent.getIssueId());
-		}
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-			onStopped();
-		}
-
-		protected void onStopped(){
-			mFooter.setVisibility(View.GONE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
+		try {
+			mService.fetchIssue(intent.getConnectionId(), intent.getIssueId());
+		} catch (RemoteException e) {
+			Log.e(TAG, "onFetchRemote", e);
 		}
 	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
 		inflater.inflate( R.menu.issue_view, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
-		if(task != null && task.getStatus() == Status.RUNNING)
+		if(isFetching())
 			menu_refresh.setEnabled(false);
         super.onCreateOptionsMenu(menu, inflater);
 	}

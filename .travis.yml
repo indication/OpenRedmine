@@ -1,5 +1,10 @@
 language: android
 jdk: oraclejdk7
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.idea
+  - $HOME/.gradle
 
 notifications:
   email: false

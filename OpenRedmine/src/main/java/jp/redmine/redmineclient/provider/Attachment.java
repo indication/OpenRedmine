@@ -41,7 +41,7 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 	private static final String TAG = Attachment.class.getSimpleName();
 	protected static final String PROVIDER = BuildConfig.APPLICATION_ID + "." + TAG.toLowerCase(Locale.getDefault());
 	protected static final String PROVIDER_BASE = ContentResolver.SCHEME_CONTENT + "://" + PROVIDER;
-	private static enum AttachmentUrl {
+	private enum AttachmentUrl {
 		none,
 		id,
 		attachment,

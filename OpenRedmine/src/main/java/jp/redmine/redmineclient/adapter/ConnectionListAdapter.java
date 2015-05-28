@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import jp.redmine.redmineclient.entity.RedmineConnectionContract;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 
 public class ConnectionListAdapter extends CursorAdapter {
 	private static final String TAG = ConnectionListAdapter.class.getSimpleName();
@@ -35,12 +35,12 @@ public class ConnectionListAdapter extends CursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder)view.getTag();
-		int column_id = cursor.getColumnIndex(RedmineConnectionContract.NAME);
+		int column_id = cursor.getColumnIndex("name");
 		holder.textSubject.setText(cursor.getString(column_id));
 	}
 
 	public int getId(Cursor cursor){
-		int column_id = cursor.getColumnIndex(RedmineConnectionContract._ID);
+		int column_id = cursor.getColumnIndex(RedmineConnection.ID);
 		return cursor.getInt(column_id);
 	}
 }

@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.model;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
@@ -17,7 +18,6 @@ import jp.redmine.redmineclient.entity.IConnectionRecord;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineAttachmentData;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineConnectionContract;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineIssueRelation;
@@ -35,6 +35,7 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.entity.RedmineWatcher;
 import jp.redmine.redmineclient.entity.RedmineWiki;
+import jp.redmine.redmineclient.provider.Connection;
 
 public class ConnectionModel extends Connector {
 	private final static String TAG = ConnectionModel.class.getSimpleName();
@@ -103,7 +104,8 @@ public class ConnectionModel extends Connector {
 
 	static public RedmineConnection getConnectionItem(ContentResolver resolver, int connection_id){
 		Cursor cursor = resolver.query(
-				RedmineConnectionContract.CONTENT_URI.buildUpon()
+				Uri.parse(Connection.PROVIDER_BASE).buildUpon()
+						.appendPath("id")
 						.appendPath(String.valueOf(connection_id))
 						.build()
 				, null, null, null, null);

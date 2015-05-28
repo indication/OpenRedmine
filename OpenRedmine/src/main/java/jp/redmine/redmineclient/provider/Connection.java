@@ -28,7 +28,7 @@ public class Connection extends ContentProvider {
 	protected RuntimeExceptionDao<RedmineConnection, Integer> dao;
 	private static final String TAG = Connection.class.getSimpleName();
 	protected static final String PROVIDER = BuildConfig.APPLICATION_ID + "." + TAG.toLowerCase(Locale.getDefault());
-	protected static final String PROVIDER_BASE = ContentResolver.SCHEME_CONTENT + "://" + PROVIDER;
+	public static final String PROVIDER_BASE = ContentResolver.SCHEME_CONTENT + "://" + PROVIDER;
 
 
 	private enum ConnectionUrl {
@@ -43,7 +43,7 @@ public class Connection extends ContentProvider {
 
 	static {
 		sURIMatcher.addURI(PROVIDER, "id/#", ConnectionUrl.id.ordinal());
-		sURIMatcher.addURI(PROVIDER, "", ConnectionUrl.none.ordinal());
+		sURIMatcher.addURI(PROVIDER, "/", ConnectionUrl.none.ordinal());
 	}
 
 	@Override
@@ -66,10 +66,13 @@ public class Connection extends ContentProvider {
 
 		PreparedQuery<RedmineConnection> builder;
 		try {
-			switch(ConnectionUrl.getEnum(sURIMatcher.match(uri))){
+			ConnectionUrl idtype = ConnectionUrl.none;
+			if(sURIMatcher.match(uri) != -1)
+				idtype = ConnectionUrl.getEnum(sURIMatcher.match(uri));
+			switch(idtype){
 				case id:
 					builder = dao.queryBuilder().where()
-							.eq(RedmineConnection.ID, ContentUris.parseId(uri))
+							.eq("_id", ContentUris.parseId(uri))
 							.prepare();
 					break;
 				case none:
@@ -92,7 +95,10 @@ public class Connection extends ContentProvider {
 
 	@Override
 	public String getType(Uri uri) {
-		return ConnectionUrl.getEnum(sURIMatcher.match(uri)).name();
+		ConnectionUrl idtype = ConnectionUrl.none;
+		if(sURIMatcher.match(uri) != -1)
+			idtype = ConnectionUrl.getEnum(sURIMatcher.match(uri));
+		return idtype.name();
 	}
 
 	@Override

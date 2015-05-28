@@ -1,7 +1,9 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
@@ -27,8 +29,8 @@ import jp.redmine.redmineclient.activity.CommonPreferenceActivity;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.entity.RedmineConnectionContract;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.provider.Connection;
 
 public class ConnectionList extends ListFragment implements
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -110,7 +112,7 @@ public class ConnectionList extends ListFragment implements
 	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
-		mListener.onConnectionSelected(adapter.getId((Cursor)parent.getItemAtPosition(position)));
+		mListener.onConnectionSelected((int)id);
 	}
 
 	@Override
@@ -160,7 +162,7 @@ public class ConnectionList extends ListFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		return new CursorLoader(getActivity(),
-				RedmineConnectionContract.CONTENT_URI, null, null, null, null);
+				Uri.parse(Connection.PROVIDER_BASE), null, null, null, null);
 	}
 
 	@Override

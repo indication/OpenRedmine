@@ -1,40 +1,39 @@
 package jp.redmine.redmineclient.adapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
+
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineProjectContract;
+import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.helper.HtmlHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class FavoriteProjectListAdapter extends CursorAdapter implements StickyListHeadersAdapter {
-	public FavoriteProjectListAdapter(Context context, Cursor c, boolean autoRequery) {
-		super(context, c, autoRequery);
-	}
+public class FavoriteProjectListAdapter extends RedmineDaoAdapter<RedmineProject, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
+	private ContentResolver resolver;
 
-	class ViewHolder {
-		public TextView text;
-		public void setup(View view){
-			text = (TextView)view.findViewById(android.R.id.text1);
-		}
+	public FavoriteProjectListAdapter(DatabaseCacheHelper helper, Context context){
+		super(helper, context, RedmineProject.class);
+		resolver = context.getContentResolver();
 	}
 	@Override
 	public View getHeaderView(int i, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = View.inflate(parent.getContext(), R.layout.listheader_connection, null);
+			convertView = infrator.inflate(R.layout.listheader_connection, null);
 		}
 		if(convertView == null)
 			return null;
-
-		RedmineConnection connection = ConnectionModel.getConnectionItem(mContext.getContentResolver(), (int) getHeaderId(i));
+		RedmineConnection connection = ConnectionModel.getConnectionItem(resolver, i);
 		TextView text = (TextView)convertView.findViewById(R.id.name);
 		if(text != null)
 			text.setText((TextUtils.isEmpty(connection.getName())) ? "" : connection.getName());
@@ -45,24 +44,32 @@ public class FavoriteProjectListAdapter extends CursorAdapter implements StickyL
 
 	@Override
 	public long getHeaderId(int i) {
-		Cursor cursor = (Cursor)getItem(i);
-		return cursor == null ? 0 : cursor.getInt(cursor.getColumnIndex(RedmineProjectContract.CONNECTION_ID));
-	}
-	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = View.inflate(parent.getContext(), android.R.layout.simple_list_item_1, null);
-		ViewHolder holder = new ViewHolder();
-		holder.setup(view);
-		view.setTag(holder);
-		return view;
+		RedmineProject proj = (RedmineProject)getItem(i);
+		return proj == null ? 0 : proj.getConnectionId();
 	}
 
 	@Override
-	public void bindView(final View view, Context context, final Cursor cursor) {
-		final ViewHolder holder = (ViewHolder)view.getTag();
-		int column_subject = cursor.getColumnIndex(RedmineProjectContract.NAME);
-		holder.text.setText(cursor.getString(column_subject));
+	protected long getDbItemId(RedmineProject item) {
+		return item.getId();
 	}
 
+	@Override
+	protected int getItemViewId() {
+		return android.R.layout.simple_list_item_1;
+	}
+
+	@Override
+	protected void setupView(View view, RedmineProject proj) {
+		TextView text = (TextView)view.findViewById(android.R.id.text1);
+		text.setText(TextUtils.isEmpty(proj.getName()) ? "" : proj.getName());
+	}
+
+	@Override
+	protected QueryBuilder getQueryBuilder() throws SQLException {
+		QueryBuilder<RedmineProject, Long> builder = dao.queryBuilder();
+		builder.setWhere(builder.where().gt(RedmineProject.FAVORITE, 0));
+		builder.orderBy(RedmineProject.CONNECTION, true);
+		return builder;
+	}
 
 }

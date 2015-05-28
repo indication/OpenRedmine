@@ -61,7 +61,7 @@
 			/>
 		<provider
 			android:name=".provider.Connection"
-			android:authorities="jp.redmine.redmineclient"
+			android:authorities="jp.redmine.redmineclient.connection"
 			/>
     </application>
 

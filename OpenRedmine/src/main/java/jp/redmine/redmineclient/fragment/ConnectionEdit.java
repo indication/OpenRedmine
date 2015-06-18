@@ -2,6 +2,7 @@ package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.ConnectionNaviResultArgument;
+import jp.redmine.redmineclient.provider.Connection;
 
 public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
@@ -128,6 +130,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		modelConnection.updateItem(idEditing, con);
 		Toast.makeText(getActivity(),R.string.has_been_saved, Toast.LENGTH_SHORT).show();
 		mListener.onConnectionSaved();
+		getActivity().getContentResolver().notifyChange(Uri.parse(Connection.PROVIDER_BASE), null);
 	}
 
 	protected void computeDelete(){

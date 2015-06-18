@@ -58,10 +58,17 @@
 		<provider
 			android:name=".provider.Attachment"
 			android:authorities="jp.redmine.redmineclient.attachment"
+			android:exported="true"
 			/>
 		<provider
 			android:name=".provider.Connection"
 			android:authorities="jp.redmine.redmineclient.connection"
+			android:exported="false"
+			/>
+		<provider
+			android:name=".provider.Project"
+			android:authorities="jp.redmine.redmineclient.project"
+			android:exported="false"
 			/>
     </application>
 

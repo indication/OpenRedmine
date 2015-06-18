@@ -2,9 +2,14 @@ package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -30,9 +35,13 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.provider.Project;
 import jp.redmine.redmineclient.task.SelectProjectTask;
 
-public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
+public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements
+		LoaderManager.LoaderCallbacks<Cursor>
+		,SwipeRefreshLayout.OnRefreshListener
+{
 	private static final String TAG = ProjectList.class.getSimpleName();
 	private ProjectListAdapter adapter;
 	private SelectDataTask task;
@@ -77,22 +86,24 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
-
 		getListView().setTextFilterEnabled(true);
 
 
-		adapter = new ProjectListAdapter(getHelper(), getActivity());
+		adapter = new ProjectListAdapter(getActivity(), null, true);
 
-		final ConnectionArgument intent = new ConnectionArgument();
-		intent.setArgument(getArguments());
+		getLoaderManager().initLoader(0, null, this);
 
 		setListAdapter(adapter);
-		adapter.setupParameter(intent.getConnectionId());
 		adapter.notifyDataSetChanged();
 
-		if(adapter.getCount() < 1){
-			onRefresh();
-		}
+		adapter.setOnFavoriteClickListener(new ProjectListAdapter.OnFavoriteClickListener() {
+			@Override
+			public void onItemClick(View view, int position, Cursor cursor, boolean b) {
+				if(adapter == null)
+					return;
+				ProjectListAdapter.updateFavorite(getActivity().getContentResolver(), cursor, b);
+			}
+		});
 
 		getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
@@ -137,11 +148,15 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	@Override
 	public void onListItemClick(ListView listView, View v, int position, long id) {
 		super.onListItemClick(listView, v, position, id);
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setArgument(getArguments());
+		int connection_id = intent.getConnectionId();
+
 		Object item =  listView.getItemAtPosition(position);
-		if(item == null || !(item instanceof RedmineProject))
+		if(item == null || !(item instanceof Cursor))
 			return;
-		RedmineProject project = (RedmineProject)item;
-		mListener.onIssueList(project.getConnectionId(), project.getId());
+		Cursor cursor = (Cursor)item;
+		mListener.onIssueList(connection_id, ProjectListAdapter.getProjectId(cursor));
 	}
 
 	public void onRefresh(){
@@ -174,7 +189,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		@Override
 		protected void onPostExecute(Void b) {
 			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
+			getActivity().getContentResolver().notifyChange(Uri.parse(Project.PROVIDER_BASE), null);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 			if(mSwipeRefreshLayout != null)
@@ -184,6 +199,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		@Override
 		protected void onProgress(int max, int proc) {
 			adapter.notifyDataSetChanged();
+			getActivity().getContentResolver().notifyChange(Uri.parse(Project.PROVIDER_BASE), null);
 			super.onProgress(max, proc);
 		}
 	}
@@ -244,15 +260,31 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 				this.onRefresh();
 				return true;
 			}
-			case R.id.menu_settings:
-			{
-				ConnectionArgument input = new ConnectionArgument();
-				input.setArgument(getArguments());
-				mConnectionListener.onConnectionEdit(input.getConnectionId());
-				return true;
-			}
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+		ConnectionArgument intent = new ConnectionArgument();
+		intent.setArgument(getArguments());
+		int connection_id = intent.getConnectionId();
+		return new CursorLoader(getActivity()
+				, Uri.parse(Project.PROVIDER_BASE + "/connection/" + String.valueOf(connection_id))
+				, null, null, null, null);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		adapter.swapCursor(data);
+		if(adapter.getCount() < 1){
+			onRefresh();
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		adapter.swapCursor(null);
+	}
 }

@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.entity;
 
 import android.database.Cursor;
-import android.provider.BaseColumns;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -10,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class RedmineConnection {
 	public final static String ID = "id";
 	public final static String CONNECTION_ID = "connection_id";
-    @DatabaseField(columnName = BaseColumns._ID,generatedId = true)
+    @DatabaseField(generatedId = true)
     private Integer id;
     @DatabaseField
     private String name;
@@ -166,7 +165,9 @@ public class RedmineConnection {
 
 	public static RedmineConnection getByCursor(Cursor c){
 		RedmineConnection item = new RedmineConnection();
-		item.setId			(c.getInt	(c.getColumnIndex("_id")));
+		if(c.isClosed() || c.getCount() < 1)
+			return item;
+		item.setId			(c.getInt	(c.getColumnIndex("id")));
 		item.setName		(c.getString(c.getColumnIndex("name")));
 		item.setUrl			(c.getString(c.getColumnIndex("url")));
 		item.setNowarn		(c.getInt	(c.getColumnIndex("nowarn")) != 0);

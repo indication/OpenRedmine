@@ -9,6 +9,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.database.CursorWrapperNonId;
 import android.util.Log;
 
 import com.j256.ormlite.android.AndroidDatabaseResults;
@@ -72,7 +73,7 @@ public class Connection extends ContentProvider {
 			switch(idtype){
 				case id:
 					builder = dao.queryBuilder().where()
-							.eq("_id", ContentUris.parseId(uri))
+							.eq("id", ContentUris.parseId(uri))
 							.prepare();
 					break;
 				case none:
@@ -90,7 +91,7 @@ public class Connection extends ContentProvider {
 		AndroidDatabaseResults result = (AndroidDatabaseResults)dao.iterator(builder).getRawResults();
 		Cursor cursor = result.getRawCursor();
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
-		return cursor;
+		return new CursorWrapperNonId(cursor, RedmineConnection.ID);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.fragment.form;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +23,23 @@ public class IssueFilterHeaderForm {
 
 	public void setup(View view) {
 		layoutTable = (TableLayout) view.findViewById(R.id.layoutTable);
+	}
+	public void setValue(Cursor item) {
+		layoutTable.removeAllViewsInLayout();
+		if (item == null)
+			return;
+		if(item.getCount() < 1)
+			return;
+		int col_res_id = item.getColumnIndex("res_id");
+		int col_res_name = item.getColumnIndex("res_name");
+		int col_name = item.getColumnIndex("name");
+		while(item.moveToNext()) {
+			Integer res_id = item.getInt(col_res_id);
+			Integer res_name = item.getInt(col_res_name);
+			String name = (res_name == 0) ? item.getString(col_name) : layoutTable.getContext().getString(res_name);
+			layoutTable.addView(generateRow(layoutTable.getContext(), name, res_id));
+		}
+		item.close();
 	}
 
 	public void setValue(RedmineFilter item) {

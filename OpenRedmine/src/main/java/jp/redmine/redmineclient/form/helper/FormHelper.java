@@ -1,15 +1,5 @@
 package jp.redmine.redmineclient.form.helper;
 
-import java.util.Date;
-
-
-import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.entity.IMasterRecord;
-import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.entity.TypeConverter;
-
-import com.andreabaccega.widget.FormEditText;
-
 import android.annotation.SuppressLint;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,6 +7,15 @@ import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.andreabaccega.widget.FormEditText;
+
+import java.util.Date;
+
+import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.entity.IMasterRecord;
+import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 abstract public class FormHelper {
 	public static CharSequence convertWikiString(String str){
@@ -159,16 +158,16 @@ abstract public class FormHelper {
 
 	/**
 	 * Set ct to v
-	 * @param v TextView to set user name
-	 * @param ct User name
+	 * @param v TextView to set date
+	 * @param date the date
 	 */
 	protected void setDate(TextView v,Date date){
 		v.setText(convertDate(v,date));
 	}
 	/**
 	 * Set ct to v
-	 * @param v TextView to set user name
-	 * @param ct User name
+	 * @param v TextView to set date
+	 * @param date the date
 	 */
 	protected void setDateTime(TextView v,Date date){
 		v.setText(convertDateTime(v,date));
@@ -180,7 +179,6 @@ abstract public class FormHelper {
 	/**
 	 * Set ct to v
 	 * @param v TextView to set user name
-	 * @param ct User name
 	 */
 	protected Date getDate(TextView v){
 		if(TextUtils.isEmpty(v.getText()))

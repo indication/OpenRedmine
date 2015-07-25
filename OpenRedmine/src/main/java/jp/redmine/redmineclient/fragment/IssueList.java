@@ -1,14 +1,18 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.SearchView;
@@ -24,6 +28,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
@@ -45,10 +50,12 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.provider.Issue;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
 
-public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
+public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implements
+		SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
 	private IssueListAdapter adapter;
@@ -99,19 +106,96 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		getListView().setFastScrollEnabled(true);
 		getListView().setTextFilterEnabled(true);
 
-		adapter = new IssueListAdapter(getHelper(), getActivity());
-		FilterArgument intent = new FilterArgument();
-		intent.setArgument( getArguments() );
-		if(intent.hasFilterId()){
-			adapter.setupParameter(intent.getFilterId());
-		} else {
-			adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		}
+		adapter = new IssueListAdapter(getActivity(), null, true);
+
+		getLoaderManager().initLoader(0,  getArguments(), new LoaderManager.LoaderCallbacks<Cursor>(){
+
+			@Override
+			public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+				FilterArgument intent = new FilterArgument();
+				intent.setArgument(args);
+				if(intent.hasFilterId()){
+					return new CursorLoader(getActivity()
+							, Uri.parse(Issue.PROVIDER_BASE + "/filter/" +intent.getFilterId())
+							, null, null, null, null);
+				} else {
+					return new CursorLoader(getActivity()
+							, Uri.parse(Issue.PROVIDER_BASE + "/project/" +String.valueOf(intent.getProjectId()))
+							, null, null, null, null);
+				}
+			}
+
+			@Override
+			public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+				adapter.swapCursor(data);
+				if(adapter.getCount() < 1){
+					onRefresh(true);
+				}
+				setListAdapter(adapter);
+			}
+
+			@Override
+			public void onLoaderReset(Loader<Cursor> loader) {
+				adapter.swapCursor(null);
+			}
+
+		});
+		getLoaderManager().initLoader(1, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>(){
+
+			@Override
+			public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+				FilterArgument intent = new FilterArgument();
+				intent.setArgument(args);
+				if(intent.hasFilterId()){
+					return new CursorLoader(getActivity()
+							, Uri.parse(Issue.PROVIDER_BASE + "/filter_detail/" +intent.getFilterId())
+							, null, null, null, null);
+				} else {
+					return new CursorLoader(getActivity()
+							, Uri.parse(Issue.PROVIDER_BASE + "/project_detail/" +String.valueOf(intent.getProjectId()))
+							, null, null, null, null);
+				}
+			}
+
+			@Override
+			public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+				IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
+				form.setValue(data);
+			}
+
+			@Override
+			public void onLoaderReset(Loader<Cursor> loader) {
+				IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
+				form.setValue((Cursor)null);
+			}
+
+		});
+		adapter.setFilterQueryProvider(new FilterQueryProvider() {
+			@Override
+			public Cursor runQuery(CharSequence constraint) {
+				FilterArgument intent = new FilterArgument();
+				intent.setArgument( getArguments() );
+				if(intent.hasFilterId()){
+					return getActivity().getContentResolver().query(
+							  Uri.parse(Issue.PROVIDER_BASE + "/filter/" +intent.getFilterId())
+							, null
+							, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT+ " like ?"
+							, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
+							, null);
+				} else {
+					return getActivity().getContentResolver().query(
+							Uri.parse(Issue.PROVIDER_BASE + "/project/" +String.valueOf(intent.getProjectId()))
+							, null
+							, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT+ " like ?"
+							, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
+							, null);
+				}
+			}
+		});
+
 		onRefreshList();
-		if(adapter.getCount() < 1){
-			this.onRefresh(true);
-		}
-		setListAdapter(adapter);
 
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
@@ -132,16 +216,17 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		getListView().setOnScrollListener(new OnScrollListener() {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem,
-			                     int visibleItemCount, int totalItemCount) {
+								 int visibleItemCount, int totalItemCount) {
 				if (totalItemCount == firstVisibleItem + visibleItemCount) {
-					if(task != null && task.getStatus() == Status.RUNNING)
+					if (task != null && task.getStatus() == Status.RUNNING)
 						return;
-					if(lastPos == totalItemCount)
+					if (lastPos == totalItemCount)
 						return;
 					onRefresh(false);
 					lastPos = totalItemCount;
 				}
 			}
+
 			@Override
 			public void onScrollStateChanged(AbsListView arg0, int arg1) {
 
@@ -180,17 +265,17 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
 		if(v == mHeader){
-			if(adapter != null && adapter.getParameter() != null && adapter.getParameter().isCurrent())
+			if(adapter != null)
 				intentFilterAction();
 			return;
 		}
 		Object listitem = parent.getItemAtPosition(position);
-		if(listitem == null || ! RedmineIssue.class.isInstance(listitem)  )
+		if(listitem == null || ! Cursor.class.isInstance(listitem)  )
 		{
 			return;
 		}
-		RedmineIssue item = (RedmineIssue) listitem;
-		mListener.onIssueSelected(item.getConnectionId(), item.getIssueId());
+		Cursor item = (Cursor) listitem;
+		mListener.onIssueSelected(adapter.getConnectionId(item), adapter.getIssueId(item));
 	}
 
 	protected void onRefresh(boolean isFlush){
@@ -216,7 +301,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			task = new SelectDataTask(helper,connection,intent.getProjectId());
 
 		task.setFetchAll(sp.getBoolean("issue_get_all", false));
-		task.execute(0,10,isFlush ? 1 : 0);
+		task.execute(0, 10, isFlush ? 1 : 0);
 		if(isFlush && !intent.hasFilterId()){
 			RedmineProject project = null;
 			RedmineProjectModel mProject = new RedmineProjectModel(helper);
@@ -235,8 +320,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		if(adapter == null)
 			return;
 		adapter.notifyDataSetChanged();
-		IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
-		form.setValue(adapter.getParameter());
 
 	}
 
@@ -383,5 +466,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			break;
 		}
 	}
+
 
 }

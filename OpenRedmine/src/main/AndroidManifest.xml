@@ -70,6 +70,11 @@
 			android:authorities="jp.redmine.redmineclient.project"
 			android:exported="false"
 			/>
+		<provider
+			android:name=".provider.Issue"
+			android:authorities="jp.redmine.redmineclient.issue"
+			android:exported="false"
+			/>
     </application>
 
 </manifest>

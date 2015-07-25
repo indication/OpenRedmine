@@ -1,166 +1,96 @@
 package jp.redmine.redmineclient.adapter;
 
-import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import jp.redmine.redmineclient.R;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
-import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
-import jp.redmine.redmineclient.entity.RedmineFilter;
-import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.adapter.form.IssueForm;
+import jp.redmine.redmineclient.entity.ViewIssueList;
 
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
-
-public class IssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseCacheHelper> {
+public class IssueListAdapter extends CursorAdapter {
 	private static final String TAG = IssueListAdapter.class.getSimpleName();
-	private RedmineFilterModel mFilter;
-	protected Integer connection_id;
-	protected Long project_id;
-	protected Integer filter_id;
-	public IssueListAdapter(DatabaseCacheHelper helper, Context context) {
-		super(helper, context, RedmineIssue.class);
-		mFilter = new RedmineFilterModel(helper);
+
+	public IssueListAdapter(Context context, Cursor c, boolean autoRequery) {
+		super(context, c, autoRequery);
 	}
 
-	public void setupParameter(int connection, long project){
-		connection_id = connection;
-		project_id = project;
-	}
+	class ViewHolder {
+		public TextView textSubject;
+		public TextView textTicketid;
+		public TextView textDescription;
+		public ImageView imageRecent;
 
-	public void setupParameter(int filter){
-		filter_id = filter;
-	}
+		public TextView textStatus;
+		public TextView textAssignedTo;
+		public TextView textTracker;
+		public TextView textPriority;
+		public TextView textDateFrom;
+		public TextView textDateTo;
+		public TextView textVersion;
+		public TextView textModified;
+		public ProgressBar progressBar;
+		public void setup(View view){
+			textSubject = (TextView)view.findViewById(R.id.textSubject);
+			textTicketid = (TextView)view.findViewById(R.id.textTicketid);
+			textDescription = (TextView)view.findViewById(R.id.description);
+			imageRecent = (ImageView)view.findViewById(R.id.imageRecent);
 
-    @Override
-	public boolean isValidParameter(){
-		if(project_id != null && connection_id != null)
-			return true;
-		if(filter_id != null)
-			return true;
-		return false;
+			textStatus = (TextView)view.findViewById(R.id.textStatus);
+			textAssignedTo = (TextView)view.findViewById(R.id.textAssignedTo);
+			progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
+			textTracker = (TextView)view.findViewById(R.id.textTracker);
+			textPriority = (TextView)view.findViewById(R.id.textPriority);
+			textDateFrom = (TextView)view.findViewById(R.id.textDateFrom);
+			textDateTo = (TextView)view.findViewById(R.id.textDateTo);
+			textVersion = (TextView)view.findViewById(R.id.textVersion);
+			textModified = (TextView)view.findViewById(R.id.textModified);
+		}
 	}
 
 	@Override
-	protected int getItemViewId() {
-		return R.layout.listitem_issue;
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+		View view = View.inflate(parent.getContext(), R.layout.listitem_issue, null);
+		ViewHolder holder = new ViewHolder();
+		holder.setup(view);
+		view.setTag(holder);
+		return view;
 	}
+
 
 	@Override
-	protected void setupView(View view, RedmineIssue data) {
-		IssueForm form;
-		if(view.getTag() != null && view.getTag() instanceof IssueForm){
-			form = (IssueForm)view.getTag();
-		} else {
-			form = new IssueForm(view);
-		}
-		form.setValue(data);
+	public void bindView(final View view, Context context, final Cursor cursor) {
+		final ViewHolder holder = (ViewHolder)view.getTag();
+		CursorHelper.setDate(holder.textDateFrom, cursor, ViewIssueList.DATE_START);
+		CursorHelper.setDate(holder.textDateTo, cursor, ViewIssueList.DATE_DUE);
+		CursorHelper.setDateTimeSpan(holder.textModified, cursor, ViewIssueList.MODIFIED);
+		CursorHelper.setText(holder.textSubject, cursor, ViewIssueList.SUBJECT);
+		CursorHelper.setText(holder.textTracker, cursor, ViewIssueList.TRACKER_NAME);
+		CursorHelper.setText(holder.textVersion, cursor, ViewIssueList.VERSION_NAME);
+		CursorHelper.setText(holder.textDescription, cursor, ViewIssueList.DESCRIPTION);
+		CursorHelper.setText(holder.textAssignedTo, cursor, ViewIssueList.ASSIGN_NAME);
+		CursorHelper.setText(holder.textStatus, cursor, ViewIssueList.STATUS_NAME);
+		CursorHelper.setText(holder.textPriority, cursor, ViewIssueList.PRIORITY_NAME);
+		CursorHelper.setText(holder.textTicketid, cursor, "#%1$s", ViewIssueList.ISSUE_ID);
+		holder.progressBar.setMax(100);
+		CursorHelper.setProgress(holder.progressBar, cursor, ViewIssueList.PROGRESS, ViewIssueList.DONE_RATE);
 	}
 
-	@Override
-	protected long getDbItemId(RedmineIssue item) {
-		if(item == null){
-			return -1;
-		} else {
-			return item.getId();
-		}
+	public long getId(Cursor cursor) {
+		int column_id = cursor.getColumnIndex(ViewIssueList.ID);
+		return cursor.getLong(column_id);
 	}
 
-	public RedmineFilter getParameter() {
-		RedmineFilter filter = null;
-		try {
-			if(filter_id != null)
-				filter = mFilter.fetchById(filter_id);
-			else
-				filter = mFilter.fetchByCurrent(connection_id, project_id);
-		} catch (SQLException e) {
-			Log.e(TAG, "getParameter", e);
-		}
-		if(filter == null)
-			filter = new RedmineFilter();
-		return filter;
+	public int getIssueId(Cursor cursor) {
+		int column_id = cursor.getColumnIndex(ViewIssueList.ISSUE_ID);
+		return cursor.getInt(column_id);
 	}
-
-	@Override
-	protected QueryBuilder<RedmineIssue, Long> getQueryBuilder() throws SQLException {
-		RedmineFilter filter = getParameter();
-		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
-		Where<RedmineIssue, Long> where = builder.where();
-		setupWhere(filter,where);
-		builder.setWhere(where);
-		if(TextUtils.isEmpty(filter.getSort())){
-			builder.orderBy(RedmineIssue.ISSUE_ID, false);
-		} else {
-			for(RedmineFilterSortItem key : filter.getSortList()){
-				builder.orderBy(key.getDbKey(),key.isAscending());
-			}
-		}
-		return builder;
-	}
-	@Override
-	protected QueryBuilder<RedmineIssue, Long> getSearchQueryBuilder(String search) throws SQLException {
-		RedmineFilter filter = getParameter();
-		QueryBuilder<RedmineIssue, Long> builder = dao.queryBuilder();
-		Where<RedmineIssue, Long> where = builder.where();
-		where
-				.like(RedmineIssue.SUBJECT, "%" + search + "%")
-				.or()
-				.like(RedmineIssue.DESCRIPTION, "%" + search + "%")
-		;
-		if(TextUtils.isDigitsOnly(search)){
-			where.or().eq(RedmineIssue.ISSUE_ID, search);
-		}
-		where.and();
-
-		setupWhere(filter, where);
-		builder.setWhere(where);
-		if(TextUtils.isEmpty(filter.getSort())){
-			builder.orderBy(RedmineIssue.ISSUE_ID, false);
-		} else {
-			for(RedmineFilterSortItem key : filter.getSortList()){
-				builder.orderBy(key.getDbKey(),key.isAscending());
-			}
-		}
-		Log.d(TAG, builder.prepareStatementString());
-		return builder;
-	}
-
-	protected void setupWhere(RedmineFilter filter,
-								Where<RedmineIssue, Long> where) throws SQLException {
-		Hashtable<String, Object> dic = new Hashtable<String, Object>();
-		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
-		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
-		if(filter.getTracker()	 != null) dic.put(RedmineFilter.TRACKER,		filter.getTracker()		);
-		if(filter.getAssigned()	 != null) dic.put(RedmineFilter.ASSIGNED,		filter.getAssigned()	);
-		if(filter.getAuthor()	 != null) dic.put(RedmineFilter.AUTHOR,			filter.getAuthor()		);
-		if(filter.getCategory()	 != null) dic.put(RedmineFilter.CATEGORY,		filter.getCategory()	);
-		if(filter.getStatus()	 != null) dic.put(RedmineFilter.STATUS,			filter.getStatus()		);
-		if(filter.getVersion()	 != null) dic.put(RedmineFilter.VERSION,		filter.getVersion()		);
-		if(filter.getPriority()	 != null) dic.put(RedmineFilter.PRIORITY,		filter.getPriority()	);
-	
-		boolean isFirst = true;
-		for(Enumeration<String> e = dic.keys() ; e.hasMoreElements() ;){
-			String key = e.nextElement();
-			if(dic.get(key) == null)
-				continue;
-			if(isFirst){
-				isFirst = false;
-			} else {
-				where.and();
-			}
-			where.eq(key, dic.get(key));
-		}
-		// return no data
-		if(dic.size() < 1){
-			where.eq(RedmineFilter.CONNECTION, -1);
-		}
+	public int getConnectionId(Cursor cursor) {
+		int column_id = cursor.getColumnIndex(ViewIssueList.CONNECTION);
+		return cursor.getInt(column_id);
 	}
 }

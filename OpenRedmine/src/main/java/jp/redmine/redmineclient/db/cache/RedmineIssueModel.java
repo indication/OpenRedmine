@@ -1,24 +1,19 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
-
-import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineFilter;
-import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.entity.RedmineProject;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineProject;
 
 
 public class RedmineIssueModel {
@@ -115,10 +110,15 @@ public class RedmineIssueModel {
 		QueryBuilder<RedmineIssue, Long> builder = builderByIssue(dao, connection,issueId);
 
 		builder.selectRaw(RedmineIssue.ID);
-		GenericRawResults<String[]> result = builder.queryRaw();
-		String[] values = result.getFirstResult();
-		result.close();
-		return (values != null && values[0] != null) ? Long.parseLong(values[0]) : null;
+		try {
+			GenericRawResults<String[]> result = builder.queryRaw();
+			String[] values = result.getFirstResult();
+			result.close();
+			return (values != null && values[0] != null) ? Long.parseLong(values[0]) : null;
+		} catch (SQLException e) {
+
+		}
+		return null;
 	}
 	
 	public RedmineIssue fetchById(long id) throws SQLException{

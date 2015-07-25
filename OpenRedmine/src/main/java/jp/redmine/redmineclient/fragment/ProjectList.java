@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
@@ -94,7 +95,24 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		getLoaderManager().initLoader(0, null, this);
 
 		setListAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		adapter.setFilterQueryProvider(new FilterQueryProvider() {
+			@Override
+			public Cursor runQuery(CharSequence constraint) {
+				ConnectionArgument intent = new ConnectionArgument();
+				intent.setArgument(getArguments());
+				String where = null;
+				String[] wherearg = null;
+
+				if(!TextUtils.isEmpty(constraint)){
+					where = RedmineProject.NAME + " like ?";
+					wherearg = new String[]{ "%" + constraint + "%"};
+				}
+				return getActivity().getContentResolver().query(
+						Uri.parse(Project.PROVIDER_BASE + "/connection/" + String.valueOf(intent.getConnectionId()))
+						, null, where, wherearg, null
+				);
+			}
+		});
 
 		adapter.setOnFavoriteClickListener(new ProjectListAdapter.OnFavoriteClickListener() {
 			@Override

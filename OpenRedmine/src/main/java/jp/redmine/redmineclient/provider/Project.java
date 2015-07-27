@@ -104,7 +104,7 @@ public class Project extends ContentProvider {
 					return null;
 			}
 			if(!StringUtils.isEmpty(selection))
-				where.raw(selection, (ArgumentHolder[]) args.toArray());
+				where.raw(selection, (ArgumentHolder[]) args.toArray(new ArgumentHolder[]{}));
 			if(!StringUtils.isEmpty(sortOrder))
 				builder.orderByRaw(sortOrder);
 			result = (AndroidDatabaseResults)dao.iterator(builder.prepare()).getRawResults();

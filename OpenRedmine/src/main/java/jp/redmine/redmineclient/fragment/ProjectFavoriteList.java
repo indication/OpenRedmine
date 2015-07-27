@@ -1,21 +1,28 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.FavoriteProjectListAdapter;
+import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.provider.Project;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
@@ -50,19 +57,40 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		list.setFastScrollEnabled(true);
 
-		FavoriteProjectListAdapter adapter = new FavoriteProjectListAdapter(getHelper(), getActivity());
+		final FavoriteProjectListAdapter adapter = new FavoriteProjectListAdapter(getActivity(), null, true);
 
-		list.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		getLoaderManager().initLoader(0, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>() {
+
+			@Override
+			public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+				ConnectionArgument intent = new ConnectionArgument();
+				intent.setArgument(args);
+				return new CursorLoader(getActivity()
+						, Uri.parse(Project.PROVIDER_BASE)
+						, null, RedmineProject.FAVORITE + " = 1", null, RedmineProject.CONNECTION);
+			}
+
+			@Override
+			public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+				adapter.swapCursor(data);
+				list.setAdapter(adapter);
+			}
+
+			@Override
+			public void onLoaderReset(Loader<Cursor> loader) {
+				adapter.swapCursor(null);
+			}
+
+		});
 
 		list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-				Object item =  adapterView.getItemAtPosition(i);
-				if(item == null || !(item instanceof RedmineProject))
+				Object item = adapterView.getItemAtPosition(i);
+				if (item == null || !(item instanceof Cursor))
 					return false;
-				RedmineProject project = (RedmineProject)item;
-				mListener.onKanbanList(project.getConnectionId(), project.getId());
+				mListener.onKanbanList(ProjectListAdapter.getConnectionId((Cursor) item), ProjectListAdapter.getProjectId((Cursor) item));
 				return true;
 			}
 		});
@@ -75,21 +103,12 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-				Object item =  adapterView.getItemAtPosition(position);
-				if(item == null || !(item instanceof RedmineProject))
+				Object item = adapterView.getItemAtPosition(position);
+				if (item == null || !(item instanceof Cursor))
 					return;
-				RedmineProject project = (RedmineProject)item;
-				mListener.onIssueList(project.getConnectionId(), project.getId());
+				mListener.onIssueList(ProjectListAdapter.getConnectionId((Cursor) item), ProjectListAdapter.getProjectId((Cursor) item));
 			}
 		});
 		return current;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if(list.getAdapter() != null && list.getAdapter() instanceof  BaseAdapter)
-			((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
-
 	}
 }

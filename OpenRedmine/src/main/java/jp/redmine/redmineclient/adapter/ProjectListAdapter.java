@@ -89,6 +89,11 @@ public class ProjectListAdapter extends CursorAdapter {
 		});
 	}
 
+	public static int getConnectionId(Cursor cursor){
+		int column_id = cursor.getColumnIndex(RedmineProject.CONNECTION);
+		return cursor.getInt(column_id);
+	}
+
 	public static int getProjectId(Cursor cursor){
 		int column_id = cursor.getColumnIndex(RedmineProject.PROJECT_ID);
 		return cursor.getInt(column_id);

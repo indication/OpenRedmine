@@ -75,6 +75,11 @@
 			android:authorities="jp.redmine.redmineclient.issue"
 			android:exported="false"
 			/>
+		<provider
+			android:name=".provider.Wiki"
+			android:authorities="jp.redmine.redmineclient.wiki"
+			android:exported="false"
+			/>
     </application>
 
 </manifest>

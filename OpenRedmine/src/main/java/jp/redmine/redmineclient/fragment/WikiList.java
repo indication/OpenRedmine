@@ -1,18 +1,25 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 
-import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
@@ -24,6 +31,7 @@ import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.provider.Wiki;
 import jp.redmine.redmineclient.task.SelectWikiTask;
 
 public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
@@ -76,15 +84,49 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 
 		getListView().setFastScrollEnabled(true);
 
-		adapter = new WikiListAdapter(getHelper(), getActivity());
-		ProjectArgument intent = new ProjectArgument();
-		intent.setArgument(getArguments());
-		adapter.setupParameter(intent.getConnectionId(),intent.getProjectId());
-		setListAdapter(adapter);
-		adapter.notifyDataSetChanged();
+		adapter = new WikiListAdapter(getActivity(), null, true);
 
-        if(adapter.getCount() == 0)
-            onRefresh();
+		getLoaderManager().initLoader(0, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>() {
+
+			@Override
+			public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+				ProjectArgument intent = new ProjectArgument();
+				intent.setArgument(args);
+				return new CursorLoader(getActivity()
+						, Uri.parse(Wiki.PROVIDER_BASE + "/project/" + String.valueOf(intent.getProjectId()))
+						, null, null, null, null);
+			}
+
+			@Override
+			public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+				adapter.swapCursor(data);
+				if (adapter.getCount() < 1) {
+					onRefresh();
+				}
+				setListAdapter(adapter);
+			}
+
+			@Override
+			public void onLoaderReset(Loader<Cursor> loader) {
+				adapter.swapCursor(null);
+			}
+
+		});
+		adapter.setFilterQueryProvider(new FilterQueryProvider() {
+			@Override
+			public Cursor runQuery(CharSequence constraint) {
+				ProjectArgument intent = new ProjectArgument();
+				intent.setArgument(getArguments());
+				return getActivity().getContentResolver().query(
+						 Uri.parse(Wiki.PROVIDER_BASE + "/project/" + String.valueOf(intent.getProjectId()))
+						, null
+						, TextUtils.isEmpty(constraint) ? null : RedmineWiki.TITLE + " like ?"
+						, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
+						, null);
+			}
+		});
+
 
 	}
 
@@ -99,12 +141,13 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onListItemClick(ListView listView, View v, int position, long id) {
 		super.onListItemClick(listView, v, position, id);
 		Object listitem = listView.getItemAtPosition(position);
-		if(listitem == null || !RedmineWiki.class.isInstance(listitem)  )
+		if(listitem == null || !Cursor.class.isInstance(listitem)  )
 		{
 			return;
 		}
-		RedmineWiki item = (RedmineWiki) listitem;
-		mListener.wiki(item.getConnectionId(),item.getProject().getId(),item.getTitle());
+		ProjectArgument intent = new ProjectArgument();
+		intent.setArgument(getArguments());
+		mListener.wiki(intent.getConnectionId(), intent.getProjectId(), WikiListAdapter.getTitle((Cursor)listitem));
 	}
 
 	private class SelectDataTask extends SelectWikiTask {

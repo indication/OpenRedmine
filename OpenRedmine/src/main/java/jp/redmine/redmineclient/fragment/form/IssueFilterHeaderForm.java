@@ -3,7 +3,6 @@ package jp.redmine.redmineclient.fragment.form;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.entity.IMasterRecord;
-import jp.redmine.redmineclient.entity.RedmineFilter;
-import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 
 public class IssueFilterHeaderForm {
 	TableLayout layoutTable;
@@ -40,26 +37,6 @@ public class IssueFilterHeaderForm {
 			layoutTable.addView(generateRow(layoutTable.getContext(), name, res_id));
 		}
 		item.close();
-	}
-
-	public void setValue(RedmineFilter item) {
-		layoutTable.removeAllViewsInLayout();
-		if(item == null)
-			return;
-		addRow(item.getProject(), R.string.ticket_project);
-		addRow(item.getCategory(), R.string.ticket_category);
-		addRow(item.getAuthor(), R.string.ticket_author);
-		addRow(item.getAssigned(), R.string.ticket_assigned);
-		addRow(item.getPriority(), R.string.ticket_priority);
-		addRow(item.getStatus(), R.string.ticket_status);
-		addRow(item.getTracker(), R.string.ticket_tracker);
-		addRow(item.getVersion(), R.string.ticket_version);
-
-		if (!TextUtils.isEmpty(item.getSort())) {
-			RedmineFilterSortItem sort = RedmineFilterSortItem.setupFilter(new RedmineFilterSortItem(), item.getSort());
-			String sort_name = sort == null ? "" : layoutTable.getContext().getString(sort.getResource());
-			layoutTable.addView(generateRow(layoutTable.getContext(), sort_name, R.string.ticket_sort));
-		}
 	}
 
 	protected void addRow(IMasterRecord changes, int title_id) {

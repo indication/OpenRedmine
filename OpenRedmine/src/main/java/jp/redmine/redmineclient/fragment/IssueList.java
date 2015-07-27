@@ -218,8 +218,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			}
 		});
 
-		onRefreshList();
-
 		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override

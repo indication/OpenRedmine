@@ -145,6 +145,9 @@ public class Issue extends ContentProvider {
 								builder.orderBy(key.getDbKey(),key.isAscending());
 							}
 						}
+					} else {
+						where.eq(RedmineIssue.PROJECT_ID, ContentUris.parseId(uri));
+						builder.orderBy(RedmineIssue.ISSUE_ID, false);
 					}
 					break;
 				case project_detail:
@@ -154,12 +157,14 @@ public class Issue extends ContentProvider {
 									.eq(RedmineFilter.CURRENT, true)
 									.prepare()
 					);
-					if(project_filter != null) {
-						MatrixCursor matrixCursor = new MatrixCursor(new String[] {"_id", "res_id", "res_name", "name"});
+
+					MatrixCursor matrixCursor = new MatrixCursor(new String[] {"_id", "res_id", "res_name", "name"});
+					if(project_filter == null) {
+						addCursorRow(matrixCursor, String.valueOf(ContentUris.parseId(uri)), 1, R.string.ticket_project);
+					} else {
 						addCursorRow(matrixCursor, project_filter);
-						return matrixCursor;
 					}
-					break;
+					return matrixCursor;
 				case filter:
 					RedmineFilter filter = daoFilter.queryForId(ContentUris.parseId(uri));
 					if(filter == null) {
@@ -177,9 +182,9 @@ public class Issue extends ContentProvider {
 					break;
 				case filter_detail:
 					RedmineFilter filter_detail = daoFilter.queryForId(ContentUris.parseId(uri));
-					MatrixCursor matrixCursor = new MatrixCursor(new String[] {"_id", "res_id", "res_name", "name"});
-					addCursorRow(matrixCursor, filter_detail);
-					return matrixCursor;
+					MatrixCursor filterCursor = new MatrixCursor(new String[] {"_id", "res_id", "res_name", "name"});
+					addCursorRow(filterCursor, filter_detail);
+					return filterCursor;
 				case category:
 					where.eq(RedmineIssue.CATEGORY, ContentUris.parseId(uri));
 					builder.orderBy(RedmineIssue.MODIFIED, false);
@@ -241,7 +246,13 @@ public class Issue extends ContentProvider {
 	protected void addCursorRow(MatrixCursor cursor, IMasterRecord changes, int id, int title_id) {
 		if(changes == null)
 			return;
-		cursor.addRow(new Object[] {id, title_id, null, changes.getName()});
+		addCursorRow(cursor, changes.getName(), id, title_id);
+	}
+
+	protected void addCursorRow(MatrixCursor cursor, String changes, int id, int title_id) {
+		if(changes == null)
+			return;
+		cursor.addRow(new Object[] {id, title_id, null, changes});
 	}
 	protected void setupWhere(RedmineFilter filter,
 							  Where<ViewIssueList, Long> where) throws SQLException {

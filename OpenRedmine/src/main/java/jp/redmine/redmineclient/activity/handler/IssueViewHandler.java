@@ -15,6 +15,20 @@ import jp.redmine.redmineclient.param.WikiArgument;
 
 public class IssueViewHandler extends Core
 	implements IssueActionInterface, WebviewActionInterface {
+	@Override
+	public void onIssueList(final int connectionid, final long projectid, final String kind, final long id) {
+		kickActivity(ProjectActivity.class, new IntentFactory() {
+			@Override
+			public void generateIntent(Intent intent) {
+				FilterArgument arg = new FilterArgument();
+				arg.setIntent(intent);
+				arg.setConnectionId(connectionid);
+				arg.setProjectId(projectid);
+				arg.setField(kind, id);
+			}
+		});
+
+	}
 
 	public IssueViewHandler(ActivityRegistry manager) {
 		super(manager);

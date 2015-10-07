@@ -115,7 +115,11 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 				FilterArgument intent = new FilterArgument();
 				intent.setArgument(args);
-				if(intent.hasFilterId()){
+				if(intent.hasField()){
+					return new CursorLoader(getActivity()
+							, Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "/" +intent.getFieldId())
+							, null, null, null, null);
+				} else if (intent.hasFilterId()){
 					return new CursorLoader(getActivity()
 							, Uri.parse(Issue.PROVIDER_BASE + "/filter/" +intent.getFilterId())
 							, null, null, null, null);
@@ -141,57 +145,75 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			}
 
 		});
-		getLoaderManager().initLoader(1, getArguments(), new LoaderManager.LoaderCallbacks<Cursor>(){
 
-			@Override
-			public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+			getLoaderManager().initLoader(1,getArguments(),
+
+			new LoaderManager.LoaderCallbacks<Cursor>()
+
+			{
+
+				@Override
+				public Loader<Cursor> onCreateLoader ( int id, Bundle args){
 
 				FilterArgument intent = new FilterArgument();
 				intent.setArgument(args);
-				if(intent.hasFilterId()){
+				if(intent.hasField()){
 					return new CursorLoader(getActivity()
-							, Uri.parse(Issue.PROVIDER_BASE + "/filter_detail/" +intent.getFilterId())
+							, Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "_detail/" +intent.getFieldId())
+							, null, null, null, null);
+				} else if (intent.hasFilterId()){
+					return new CursorLoader(getActivity()
+							, Uri.parse(Issue.PROVIDER_BASE + "/filter_detail/" + intent.getFilterId())
 							, null, null, null, null);
 				} else {
 					return new CursorLoader(getActivity()
-							, Uri.parse(Issue.PROVIDER_BASE + "/project_detail/" +String.valueOf(intent.getProjectId()))
+							, Uri.parse(Issue.PROVIDER_BASE + "/project_detail/" + String.valueOf(intent.getProjectId()))
 							, null, null, null, null);
 				}
 			}
 
-			@Override
-			public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+				@Override
+				public void onLoadFinished (Loader < Cursor > loader, Cursor data){
 				IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
 				form.setValue(data);
 			}
 
-			@Override
-			public void onLoaderReset(Loader<Cursor> loader) {
+				@Override
+				public void onLoaderReset (Loader < Cursor > loader) {
 				IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
 				form.setValue((Cursor)null);
 			}
 
 		});
-		adapter.setFilterQueryProvider(new FilterQueryProvider() {
-			@Override
-			public Cursor runQuery(CharSequence constraint) {
-				FilterArgument intent = new FilterArgument();
-				intent.setArgument( getArguments() );
-				if(intent.hasFilterId()){
-					return getActivity().getContentResolver().query(
-							  Uri.parse(Issue.PROVIDER_BASE + "/filter/" +intent.getFilterId())
-							, null
-							, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT+ " like ?"
-							, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
-							, null);
-				} else {
-					return getActivity().getContentResolver().query(
-							Uri.parse(Issue.PROVIDER_BASE + "/project/" +String.valueOf(intent.getProjectId()))
-							, null
-							, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT+ " like ?"
-							, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
-							, null);
-				}
+			adapter.setFilterQueryProvider(new
+
+			FilterQueryProvider() {
+				@Override
+				public Cursor runQuery (CharSequence constraint){
+					FilterArgument intent = new FilterArgument();
+					intent.setArgument(getArguments());
+					if(intent.hasField()){
+						return getActivity().getContentResolver().query(
+								Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "/" + intent.getFieldId())
+								, null
+								, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT + " like ?"
+								, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
+								, null);
+					} else if (intent.hasFilterId()){
+						return getActivity().getContentResolver().query(
+								Uri.parse(Issue.PROVIDER_BASE + "/filter/" + intent.getFilterId())
+								, null
+								, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT + " like ?"
+								, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
+								, null);
+					} else {
+						return getActivity().getContentResolver().query(
+								Uri.parse(Issue.PROVIDER_BASE + "/project/" + String.valueOf(intent.getProjectId()))
+								, null
+								, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT + " like ?"
+								, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
+								, null);
+					}
 			}
 		});
 
@@ -466,6 +488,4 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			break;
 		}
 	}
-
-
 }

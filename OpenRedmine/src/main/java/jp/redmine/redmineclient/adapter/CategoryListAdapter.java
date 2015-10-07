@@ -1,72 +1,48 @@
 package jp.redmine.redmineclient.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.j256.ormlite.stmt.QueryBuilder;
-
-import java.sql.SQLException;
-
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
-import jp.redmine.redmineclient.adapter.form.IMasterRecordForm;
 
-public class CategoryListAdapter extends RedmineDaoAdapter<RedmineProjectCategory, Long, DatabaseCacheHelper> {
-	protected Integer connection_id;
-	protected Long project_id;
-	public CategoryListAdapter(DatabaseCacheHelper helper, Context context) {
-		super(helper, context, RedmineProjectCategory.class);
+public class CategoryListAdapter extends CursorAdapter {
+	private static final String TAG = IssueListAdapter.class.getSimpleName();
+
+	public CategoryListAdapter(Context context, Cursor c, boolean autoRequery) {
+		super(context, c, autoRequery);
 	}
 
-	public void setupParameter(int connection, long project){
-		connection_id = connection;
-		project_id = project;
-	}
-
-    @Override
-	public boolean isValidParameter(){
-		if(connection_id == null || project_id == null)
-			return false;
-		else
-			return true;
-	}
-
-	@Override
-	protected int getItemViewId() {
-		return android.R.layout.simple_list_item_1;
-	}
-
-	@Override
-	protected void setupView(View view, RedmineProjectCategory data) {
-		IMasterRecordForm form;
-		if(view.getTag() != null && view.getTag() instanceof IMasterRecordForm){
-			form = (IMasterRecordForm)view.getTag();
-		} else {
-			form = new IMasterRecordForm(view);
+	class ViewHolder {
+		public TextView textText;
+		public void setup(View view){
+			textText = (TextView)view.findViewById(android.R.id.text1);
 		}
-		form.setValue(data);
+	}
+
+
+	@Override
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
+		View view = View.inflate(parent.getContext(), android.R.layout.simple_list_item_1, null);
+		ViewHolder holder = new ViewHolder();
+		holder.setup(view);
+		view.setTag(holder);
+		return view;
 	}
 
 	@Override
-	protected QueryBuilder<RedmineProjectCategory, Long> getQueryBuilder() throws SQLException {
-		QueryBuilder<RedmineProjectCategory, Long> builder = dao.queryBuilder();
-		builder
-				.orderBy(RedmineProjectCategory.NAME, true)
-				.where()
-				.eq(RedmineProjectCategory.CONNECTION, connection_id)
-				.and()
-				.eq(RedmineProjectCategory.PROJECT_ID, project_id)
-		;
-		return builder;
+	public void bindView(final View view, Context context, final Cursor cursor) {
+		final ViewHolder holder = (ViewHolder) view.getTag();
+		CursorHelper.setText(holder.textText, cursor, RedmineProjectCategory.NAME);
 	}
 
-	@Override
-	protected long getDbItemId(RedmineProjectCategory item) {
-		if(item == null){
-			return -1;
-		} else {
-			return item.getId();
-		}
+
+	public static long getId(Cursor cursor){
+		int column_id = cursor.getColumnIndex(RedmineProjectCategory.ID);
+		return cursor.getLong(column_id);
 	}
 
 }

@@ -43,6 +43,10 @@ public class ActivityHandler {
 				public void onIssueFilterList(int connectionid, int filterid) {}
 				@Override
 				public void onIssueList(int connectionid, long projectid) {}
+
+				@Override
+				public void onIssueList(int connectionid, long projectid, String kind, long id) {}
+
 				@Override
 				public void onKanbanList(int connectionid, long projectid) {}
 				@Override

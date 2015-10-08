@@ -80,6 +80,11 @@
 			android:authorities="jp.redmine.redmineclient.wiki"
 			android:exported="false"
 			/>
+		<provider
+			android:name=".provider.Category"
+			android:authorities="jp.redmine.redmineclient.category"
+			android:exported="false"
+			/>
     </application>
 
 </manifest>

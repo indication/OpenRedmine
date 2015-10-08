@@ -19,7 +19,6 @@ import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.stmt.ArgumentHolder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
-import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +44,7 @@ public class Category extends ContentProvider {
 	private enum CategoryUrl {
 		none,
 		id,
+		project,
 		;
 		public static CategoryUrl getEnum(int value){
 			return CategoryUrl.values()[value];
@@ -54,6 +54,7 @@ public class Category extends ContentProvider {
 
 	static {
 		sURIMatcher.addURI(PROVIDER, "id/#", CategoryUrl.id.ordinal());
+		sURIMatcher.addURI(PROVIDER, "project/#", CategoryUrl.project.ordinal());
 		sURIMatcher.addURI(PROVIDER, "/", CategoryUrl.none.ordinal());
 	}
 
@@ -91,6 +92,9 @@ public class Category extends ContentProvider {
 			switch(idtype){
 				case id:
 					where.eq("id", ContentUris.parseId(uri));
+					break;
+				case project:
+					where.eq("project_id", ContentUris.parseId(uri));
 					break;
 				case none:
 

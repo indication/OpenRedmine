@@ -1,5 +1,6 @@
 language: android
 jdk: oraclejdk7
+sudo: no
 cache:
   directories:
   - $HOME/.m2

@@ -15,12 +15,13 @@ import android.util.Log;
 
 
 public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivity> {
+	private final static String TAG = RedmineTimeActivityModel.class.getSimpleName();
 	protected Dao<RedmineTimeActivity, Integer> dao;
 	public RedmineTimeActivityModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineTimeActivity.class);
 		} catch (SQLException e) {
-			Log.e("RedmineTimeActivityModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -43,7 +44,7 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 		.and()
 		.eq(RedmineTimeActivity.ACTIVITY_ID, statusId)
 		.prepare();
-		Log.d("RedmineTimeActivityModel",query.getStatement());
+		Log.d(TAG,query.getStatement());
 		RedmineTimeActivity item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineTimeActivity();

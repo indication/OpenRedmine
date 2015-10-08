@@ -163,8 +163,11 @@ public class Project extends ContentProvider {
 			if(!StringUtils.isEmpty(selection))
 				where.raw(selection, (ArgumentHolder[]) args.toArray());
 
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				//TODO: fix me
 			for(String item : values.keySet()) {
 				builder.updateColumnValue(item, values.get(item));
+			}
 			}
 			return builder.update();
 		} catch (SQLException e) {

@@ -15,12 +15,13 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 
 public class RedmineTimeEntryModel {
+	private final static String TAG = RedmineTimeEntryModel.class.getSimpleName();
 	protected Dao<RedmineTimeEntry, Integer> dao;
 	public RedmineTimeEntryModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineTimeEntry.class);
 		} catch (SQLException e) {
-			Log.e("RedmineTimeEntryModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 

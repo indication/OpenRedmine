@@ -12,12 +12,13 @@ import com.j256.ormlite.stmt.PreparedQuery;
 
 
 public class RedmineJournalModel {
+	private final static String TAG = RedmineJournalModel.class.getSimpleName();
 	protected Dao<RedmineJournal, Long> dao;
 	public RedmineJournalModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineJournal.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(TAG, "RedmineJournalModel", e);
 		}
 	}
 

@@ -17,7 +17,7 @@ public class IssueViewHandler extends Core
 	implements IssueActionInterface, WebviewActionInterface {
 	@Override
 	public void onIssueList(final int connectionid, final long projectid, final String kind, final long id) {
-		kickActivity(ProjectActivity.class, new IntentFactory() {
+		kickActivity(IssueFilterActivity.class, new IntentFactory() {
 			@Override
 			public void generateIntent(Intent intent) {
 				FilterArgument arg = new FilterArgument();

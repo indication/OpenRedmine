@@ -30,6 +30,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.FilterQueryProvider;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
@@ -146,45 +147,45 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 		});
 
-			getLoaderManager().initLoader(1,getArguments(),
+			getLoaderManager().initLoader(1, getArguments(),
 
-			new LoaderManager.LoaderCallbacks<Cursor>()
+					new LoaderManager.LoaderCallbacks<Cursor>()
 
-			{
+					{
 
-				@Override
-				public Loader<Cursor> onCreateLoader ( int id, Bundle args){
+						@Override
+						public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-				FilterArgument intent = new FilterArgument();
-				intent.setArgument(args);
-				if(intent.hasField()){
-					return new CursorLoader(getActivity()
-							, Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "_detail/" +intent.getFieldId())
-							, null, null, null, null);
-				} else if (intent.hasFilterId()){
-					return new CursorLoader(getActivity()
-							, Uri.parse(Issue.PROVIDER_BASE + "/filter_detail/" + intent.getFilterId())
-							, null, null, null, null);
-				} else {
-					return new CursorLoader(getActivity()
-							, Uri.parse(Issue.PROVIDER_BASE + "/project_detail/" + String.valueOf(intent.getProjectId()))
-							, null, null, null, null);
-				}
-			}
+							FilterArgument intent = new FilterArgument();
+							intent.setArgument(args);
+							if (intent.hasField()) {
+								return new CursorLoader(getActivity()
+										, Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "_detail/" + intent.getFieldId())
+										, null, null, null, null);
+							} else if (intent.hasFilterId()) {
+								return new CursorLoader(getActivity()
+										, Uri.parse(Issue.PROVIDER_BASE + "/filter_detail/" + intent.getFilterId())
+										, null, null, null, null);
+							} else {
+								return new CursorLoader(getActivity()
+										, Uri.parse(Issue.PROVIDER_BASE + "/project_detail/" + String.valueOf(intent.getProjectId()))
+										, null, null, null, null);
+							}
+						}
 
-				@Override
-				public void onLoadFinished (Loader < Cursor > loader, Cursor data){
-				IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
-				form.setValue(data);
-			}
+						@Override
+						public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+							IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
+							form.setValue(data);
+						}
 
-				@Override
-				public void onLoaderReset (Loader < Cursor > loader) {
-				IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
-				form.setValue((Cursor)null);
-			}
+						@Override
+						public void onLoaderReset(Loader<Cursor> loader) {
+							IssueFilterHeaderForm form = new IssueFilterHeaderForm(mHeader);
+							form.setValue((Cursor) null);
+						}
 
-		});
+					});
 			adapter.setFilterQueryProvider(new
 
 			FilterQueryProvider() {
@@ -313,6 +314,11 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument(getArguments());
+		if(intent.hasField()) {
+			Toast.makeText(getActivity(), "Sorry, This function is not implemented.",
+					Toast.LENGTH_SHORT).show();
+			return; //TODO: implement fetch data from the filter query
+		}
 		DatabaseCacheHelper helper = getHelper();
 		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 

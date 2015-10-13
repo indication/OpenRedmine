@@ -76,6 +76,11 @@
 			android:exported="false"
 			/>
 		<provider
+			android:name=".provider.IssueFilter"
+			android:authorities="jp.redmine.redmineclient.issuefilter"
+			android:exported="false"
+			/>
+		<provider
 			android:name=".provider.Wiki"
 			android:authorities="jp.redmine.redmineclient.wiki"
 			android:exported="false"

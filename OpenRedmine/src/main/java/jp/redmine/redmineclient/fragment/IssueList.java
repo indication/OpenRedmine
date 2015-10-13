@@ -52,6 +52,7 @@ import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.provider.Issue;
+import jp.redmine.redmineclient.provider.IssueFilter;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
 
@@ -148,9 +149,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		});
 
 			getLoaderManager().initLoader(1, getArguments(),
-
 					new LoaderManager.LoaderCallbacks<Cursor>()
-
 					{
 
 						@Override
@@ -160,15 +159,15 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 							intent.setArgument(args);
 							if (intent.hasField()) {
 								return new CursorLoader(getActivity()
-										, Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "_detail/" + intent.getFieldId())
+										, Uri.parse(IssueFilter.PROVIDER_BASE + "/" + intent.getFieldName() + "/" + intent.getFieldId())
 										, null, null, null, null);
 							} else if (intent.hasFilterId()) {
 								return new CursorLoader(getActivity()
-										, Uri.parse(Issue.PROVIDER_BASE + "/filter_detail/" + intent.getFilterId())
+										, Uri.parse(IssueFilter.PROVIDER_BASE + "/filter/" + intent.getFilterId())
 										, null, null, null, null);
 							} else {
 								return new CursorLoader(getActivity()
-										, Uri.parse(Issue.PROVIDER_BASE + "/project_detail/" + String.valueOf(intent.getProjectId()))
+										, Uri.parse(IssueFilter.PROVIDER_BASE + "/project/" + String.valueOf(intent.getProjectId()))
 										, null, null, null, null);
 							}
 						}

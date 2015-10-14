@@ -42,7 +42,7 @@ public class IssueViewHandler extends Core
 				FilterArgument arg = new FilterArgument();
 				arg.setIntent(intent);
 				arg.setConnectionId(connectionid);
-				arg.setFilterId(filterid);
+				arg.setField("filter", filterid);
 			}
 		});
 	}

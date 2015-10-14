@@ -121,10 +121,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 					return new CursorLoader(getActivity()
 							, Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "/" +intent.getFieldId())
 							, null, null, null, null);
-				} else if (intent.hasFilterId()){
-					return new CursorLoader(getActivity()
-							, Uri.parse(Issue.PROVIDER_BASE + "/filter/" +intent.getFilterId())
-							, null, null, null, null);
 				} else {
 					return new CursorLoader(getActivity()
 							, Uri.parse(Issue.PROVIDER_BASE + "/project/" +String.valueOf(intent.getProjectId()))
@@ -161,10 +157,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 								return new CursorLoader(getActivity()
 										, Uri.parse(IssueFilter.PROVIDER_BASE + "/" + intent.getFieldName() + "/" + intent.getFieldId())
 										, null, null, null, null);
-							} else if (intent.hasFilterId()) {
-								return new CursorLoader(getActivity()
-										, Uri.parse(IssueFilter.PROVIDER_BASE + "/filter/" + intent.getFilterId())
-										, null, null, null, null);
 							} else {
 								return new CursorLoader(getActivity()
 										, Uri.parse(IssueFilter.PROVIDER_BASE + "/project/" + String.valueOf(intent.getProjectId()))
@@ -195,13 +187,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 					if(intent.hasField()){
 						return getActivity().getContentResolver().query(
 								Uri.parse(Issue.PROVIDER_BASE + "/" + intent.getFieldName() + "/" + intent.getFieldId())
-								, null
-								, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT + " like ?"
-								, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
-								, null);
-					} else if (intent.hasFilterId()){
-						return getActivity().getContentResolver().query(
-								Uri.parse(Issue.PROVIDER_BASE + "/filter/" + intent.getFilterId())
 								, null
 								, TextUtils.isEmpty(constraint) ? null : RedmineIssue.SUBJECT + " like ?"
 								, TextUtils.isEmpty(constraint) ? null : new String[]{"%" + constraint + "%"}
@@ -311,7 +296,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument(getArguments());
-		if(intent.hasField()) {
+		if(intent.hasField() && !"filter".equals(intent.getFieldName())) {
 			Toast.makeText(getActivity(), "Sorry, This function is not implemented.",
 					Toast.LENGTH_SHORT).show();
 			return; //TODO: implement fetch data from the filter query

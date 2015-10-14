@@ -33,6 +33,9 @@ public class FilterArgument extends ProjectArgument {
 
 	public void importArgument(FilterArgument arg) {
 		setFilterId(arg.getFilterId());
+		if(arg.hasField()) {
+			setField(arg.getFieldName(), arg.getFieldId());
+		}
 		super.importArgument(arg);
 	}
 }

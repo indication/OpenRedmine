@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -163,11 +164,8 @@ public class Project extends ContentProvider {
 			if(!StringUtils.isEmpty(selection))
 				where.raw(selection, (ArgumentHolder[]) args.toArray());
 
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				//TODO: fix me
-			for(String item : values.keySet()) {
-				builder.updateColumnValue(item, values.get(item));
-			}
+			for(Map.Entry<String, Object> item : values.valueSet()){
+				builder.updateColumnValue(item.getKey(), item.getValue());
 			}
 			return builder.update();
 		} catch (SQLException e) {

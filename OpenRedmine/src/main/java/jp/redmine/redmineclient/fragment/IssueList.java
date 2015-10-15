@@ -41,10 +41,16 @@ import jp.redmine.redmineclient.activity.FilterViewActivity;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.IssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
+import jp.redmine.redmineclient.db.cache.RedmineCategoryModel;
+import jp.redmine.redmineclient.db.cache.RedmineFilterModel;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
+import jp.redmine.redmineclient.db.cache.RedmineVersionModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.RedmineProjectCategory;
+import jp.redmine.redmineclient.entity.RedmineProjectVersion;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
@@ -296,17 +302,43 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 
 		FilterArgument intent = new FilterArgument();
 		intent.setArgument(getArguments());
-		if(intent.hasField() && !"filter".equals(intent.getFieldName())) {
-			Toast.makeText(getActivity(), "Sorry, This function is not implemented.",
-					Toast.LENGTH_SHORT).show();
-			return; //TODO: implement fetch data from the filter query
-		}
 		DatabaseCacheHelper helper = getHelper();
 		RedmineConnection connection = ConnectionModel.getConnectionItem(getActivity().getContentResolver(), intent.getConnectionId());
 
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		if(intent.hasFilterId())
-			task = new SelectDataTask(helper,connection,null,intent.getFilterId());
+		if(intent.hasField()) {
+			if("filter".equals(intent.getFieldName())) {
+				task = new SelectDataTask(helper, connection, null, intent.getFilterId());
+			} else {
+				try {
+					RedmineFilter filter = new RedmineFilter();
+					if ("category".equals(intent.getFieldName())) {
+						RedmineCategoryModel mCategory = new RedmineCategoryModel(helper);
+						RedmineProjectCategory category = mCategory.fetchById(intent.getFilterId());
+						filter.setCategory(category);
+						filter.setProject(category.getProject());
+						filter.setConnectionId(connection.getId());
+					} else if ("version".equals(intent.getFieldName())) {
+						RedmineVersionModel mVersion = new RedmineVersionModel(helper);
+						RedmineProjectVersion version = mVersion.fetchById(intent.getFilterId());
+						filter.setVersion(version);
+						filter.setProject(version.getProject());
+						filter.setConnectionId(connection.getId());
+					}
+					RedmineFilterModel model = new RedmineFilterModel(helper);
+
+					RedmineFilter synonym = model.getSynonym(filter);
+					if (synonym == null) {
+						model.insert(filter);
+						synonym = model.getSynonym(filter);
+					}
+					if(synonym != null)
+					task = new SelectDataTask(helper, connection, null, intent.getFilterId());
+				} catch(SQLException e) {
+					Log.e(TAG, "onRefresh", e);
+				}
+			}
+		}
 		else
 			task = new SelectDataTask(helper,connection,intent.getProjectId());
 

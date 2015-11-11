@@ -9,6 +9,15 @@ TODO
 
 Next Release
 ===========
+
+
+v3.16 - 49 - 2015/11/18
+===========
+- Support date time style "yyyy-MM-dd HH:mm:ss Z" (#157)
+- Support pull-to-refresh-event on IssueView (#157)
+- Migrate to appcompat-v7. Remove actionbarsherlock, actionbarpulltorefresh, Thank you for ever. (#144)
+- Fix NumberFormatException (#161) / NullPointerException on IssueEdit (#162)
+- Reduce permissions (#160)
 - Migrate to appcompat-v7. Remove actionbarsherlock, actionbarpulltorefresh, Thank you for ever. (#144)
 
 v3.15 - 48 - 2015/02/07

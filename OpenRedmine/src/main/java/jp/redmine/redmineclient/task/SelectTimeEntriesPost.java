@@ -67,7 +67,6 @@ public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry>
 				}
 			}
 		}
-		client.close();
 		return null;
 	}
 

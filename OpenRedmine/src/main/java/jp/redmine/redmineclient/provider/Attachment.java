@@ -141,9 +141,6 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 			Log.e(TAG, "SQL Error: " + uri.toString(), e);
 		} catch (InterruptedException e) {
 			Log.e(TAG, "Thread exception", e);
-		} finally {
-			if (client != null)
-				client.close();
 		}
 		return null;
 	}

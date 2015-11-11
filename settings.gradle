@@ -1,1 +1,1 @@
-include ':Transdroid', ':OpenRedmine'
+include ':OpenRedmine'

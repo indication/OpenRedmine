@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -59,7 +58,6 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	private AttachmentActionInterface mAttachmentListener;
 	private IssueViewForm formTitle;
 	private IssueCommentForm formComment;
-	private ProgressDialog dialog;
 
 	public IssueView(){
 		super();
@@ -149,27 +147,22 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 						super.onErrorRequest(statuscode);
 					}
 					@Override
-					protected void onPreExecute() {
-						dialog.show();
-						super.onPreExecute();
-					}
-					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						if (dialog.isShowing())
-							dialog.dismiss();
+						if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing())
+							mSwipeRefreshLayout.setRefreshing(false);
 						if(isSuccess){
 							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 							formComment.clear();
 						}
 					}
 				};
+				if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+					mSwipeRefreshLayout.setRefreshing(true);
 				post.execute(journal);
 			}
 		});
 
-		dialog = new ProgressDialog(getActivity());
-		dialog.setMessage(getString(R.string.menu_settings_uploading));
 
 	}
 	@Override

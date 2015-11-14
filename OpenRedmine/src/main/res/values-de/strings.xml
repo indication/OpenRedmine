@@ -105,7 +105,7 @@
   <string name="input_error_invalid_decimal">Ungültiger Nummerneingabe.</string>
   <string name="input_error_select">Wähle %1$s</string>
   <string name="warning_experimental_feature">Dies ist EXPERIMENTELL. Dieses Feature kann schlechte Auswirkungen auf Ihren Redmine-Server haben.</string>
-  <string name="size">Grösse</string>
+  <string name="size">Größe</string>
   <string name="progress">Fortschritt</string>
   <string name="download">Download</string>
   <string name="download_with_manager">Download via Download Manager</string>

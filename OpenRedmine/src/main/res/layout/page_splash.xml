@@ -14,10 +14,6 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="fill_vertical"
 			android:orientation="vertical" >
-			<LinearLayout
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:orientation="vertical" >
 				<TextView
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
@@ -34,7 +30,6 @@
 					android:layout_marginTop="100dp"
 					android:text="@string/message_first_time" />
 
-			</LinearLayout>
 
 		</LinearLayout>
 	</ScrollView>

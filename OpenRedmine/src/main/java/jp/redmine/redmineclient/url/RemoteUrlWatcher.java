@@ -3,6 +3,8 @@ package jp.redmine.redmineclient.url;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import jp.redmine.redmineclient.entity.TypeConverter;
+
 public class RemoteUrlWatcher extends RemoteUrl {
 	private Integer issue_id;
 	private Integer watcher_id;
@@ -14,7 +16,7 @@ public class RemoteUrlWatcher extends RemoteUrl {
 		if(TextUtils.isEmpty(id))
 			setIssueId((Integer)null);
 		if(id.matches("^-?\\d+$")){
-			setIssueId(Integer.parseInt(id));
+			setIssueId(TypeConverter.parseInteger(id));
 		}
 	}
 	public void setWatcherId(Integer id){
@@ -24,7 +26,7 @@ public class RemoteUrlWatcher extends RemoteUrl {
 		if(TextUtils.isEmpty(id))
 			setWatcherId((Integer)null);
 		if(id.matches("^-?\\d+$")){
-			setWatcherId(Integer.parseInt(id));
+			setWatcherId(TypeConverter.parseInteger(id));
 		}
 	}
 	@Override

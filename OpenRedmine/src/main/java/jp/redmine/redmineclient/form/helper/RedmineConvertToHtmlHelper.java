@@ -99,13 +99,13 @@ class RedmineConvertToHtmlHelper {
 		if(cnt < 3 || action == null){
 			/* do nothing */
 		} else if("issue".equals(items[0])){
-			action.issue(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]));
+			action.issue(TypeConverter.parseInteger(items[1], -1), TypeConverter.parseInteger(items[2], -1));
 			return true;
 		} else if("wiki".equals(items[0]) && cnt >= 3){
 			StringBuilder pagetitle = new StringBuilder();
 			for(int i = 3; i < items.length; i++)
 				pagetitle.append(items[i]);
-			action.wiki(TypeConverter.parseInteger(items[1]), TypeConverter.parseInteger(items[2]), pagetitle.toString());
+			action.wiki(TypeConverter.parseInteger(items[1], -1), TypeConverter.parseInteger(items[2], -1), pagetitle.toString());
 			return true;
 		}
 		return false;

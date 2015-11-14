@@ -1,10 +1,12 @@
 package jp.redmine.redmineclient.url;
 
+import android.net.Uri;
+import android.text.TextUtils;
+
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import android.net.Uri;
-import android.text.TextUtils;
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 public class RemoteUrlIssue extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
@@ -44,7 +46,7 @@ public class RemoteUrlIssue extends RemoteUrl {
 		if(TextUtils.isEmpty(id))
 			setIssueId((Integer)null);
 		if(id.matches("^-?\\d+$")){
-			setIssueId(Integer.parseInt(id));
+			setIssueId(TypeConverter.parseInteger(id));
 		}
 	}
 	@Override

@@ -1,9 +1,9 @@
 package jp.redmine.redmineclient.parser;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProjectVersion;
@@ -29,7 +29,7 @@ public class ParserVersion extends BaseParserInternal<RedmineConnection,RedmineP
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.setVersionId(Integer.parseInt(work));
+			item.setVersionId(TypeConverter.parseInteger(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.setName(getNextText());
 		} else if("status".equalsIgnoreCase(xml.getName())){

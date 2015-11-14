@@ -1,9 +1,9 @@
 package jp.redmine.redmineclient.parser;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
@@ -29,7 +29,7 @@ public class ParserProject extends BaseParserInternal<RedmineConnection,RedmineP
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.setProjectId(Integer.parseInt(work));
+			item.setProjectId(TypeConverter.parseInteger(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.setName(getNextText());
 		} else if("identifier".equalsIgnoreCase(xml.getName())){
@@ -43,7 +43,7 @@ public class ParserProject extends BaseParserInternal<RedmineConnection,RedmineP
 		} else if("parent".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.setParent(Integer.parseInt(work));
+			item.setParent(TypeConverter.parseInteger(work));
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));
 		} else if("updated_on".equalsIgnoreCase(xml.getName())){

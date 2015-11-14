@@ -98,7 +98,11 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		if(intent.getIssueId() != -1){
 			issue = model.fetchById(connectionid, intent.getIssueId());
-			projectid = issue.getProject().getId();
+			if(issue.getProject() != null) {
+				projectid = issue.getProject().getId();
+			} else {
+				projectid = intent.getProjectId();
+			}
 		} else {
 			projectid = intent.getProjectId();
 		}

@@ -46,21 +46,17 @@ public class RedmineWikiModel {
 	}
 
 	public int insert(RedmineWiki item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineWiki item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineWiki item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(long id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public RedmineWiki refreshItem(RedmineConnection info, long project_id, RedmineWiki data) throws SQLException{

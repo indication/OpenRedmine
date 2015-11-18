@@ -1,25 +1,27 @@
 package jp.redmine.redmineclient.db.cache;
 
+import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import android.util.Log;
 
 
 public class RedmineProjectModel{
+	private final static String TAG = RedmineProjectModel.class.getSimpleName();
 	protected Dao<RedmineProject, Long> dao;
 	public RedmineProjectModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineProject.class);
 		} catch (SQLException e) {
-			Log.e("RedmineProjectModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -31,7 +33,7 @@ public class RedmineProjectModel{
 		List<RedmineProject> item;
 		item = dao.queryForEq(RedmineProject.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineProject>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -42,7 +44,7 @@ public class RedmineProjectModel{
 		.and()
 		.eq(RedmineProject.PROJECT_ID, projectId)
 		.prepare();
-		Log.d("RedmineProject",query.getStatement());
+		Log.d(TAG,query.getStatement());
 		RedmineProject item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineProject();
@@ -58,21 +60,17 @@ public class RedmineProjectModel{
 	}
 
 	public int insert(RedmineProject item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineProject item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineProject item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(long id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 	public void refreshItem(RedmineConnection info,RedmineIssue data) throws SQLException{
 		data.setProject(refreshItem(info,data.getProject()));

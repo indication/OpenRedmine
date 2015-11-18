@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineRole;
 import jp.redmine.redmineclient.entity.RedmineStatus;
 
@@ -35,7 +34,7 @@ public class RedmineRoleModel implements IMasterModel<RedmineRole> {
 		List<RedmineRole> item;
 		item = dao.queryForEq(RedmineStatus.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineRole>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -95,21 +94,17 @@ public class RedmineRoleModel implements IMasterModel<RedmineRole> {
 	}
 
 	public int insert(RedmineRole item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineRole item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineRole item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public RedmineRole refreshItem(RedmineConnection info,RedmineRole data) throws SQLException{

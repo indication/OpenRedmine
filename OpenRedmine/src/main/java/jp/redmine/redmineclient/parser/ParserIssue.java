@@ -46,7 +46,7 @@ public class ParserIssue extends BaseParserInternal<RedmineConnection,RedmineIss
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.setIssueId(Integer.parseInt(work));
+			item.setIssueId(TypeConverter.parseInteger(work));
 		} else if("subject".equalsIgnoreCase(xml.getName())){
 			item.setSubject(getNextText());
 		} else if("description".equalsIgnoreCase(xml.getName())){

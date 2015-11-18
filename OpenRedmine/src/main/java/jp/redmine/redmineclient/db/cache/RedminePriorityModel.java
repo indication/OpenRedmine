@@ -1,26 +1,29 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineStatus;
-import android.util.Log;
 
 
 public class RedminePriorityModel implements IMasterModel<RedminePriority> {
+	private final static String TAG = RedminePriorityModel.class.getSimpleName();
 	protected Dao<RedminePriority, Integer> dao;
 	public RedminePriorityModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedminePriority.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(TAG, "getDao", e);
 		}
 	}
 
@@ -32,7 +35,7 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 		List<RedminePriority> item;
 		item = dao.queryForEq(RedmineStatus.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedminePriority>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -43,7 +46,7 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 		.and()
 		.eq(RedminePriority.PRIORITY_ID, statusId)
 		.prepare();
-		Log.d("RedmineProject",query.getStatement());
+		Log.d(TAG,query.getStatement());
 		RedminePriority item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedminePriority();
@@ -59,21 +62,17 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 	}
 
 	public int insert(RedminePriority item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedminePriority item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedminePriority item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public void refreshItem(RedmineIssue data) throws SQLException{

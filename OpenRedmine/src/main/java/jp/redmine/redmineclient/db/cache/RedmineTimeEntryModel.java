@@ -1,5 +1,11 @@
 package jp.redmine.redmineclient.db.cache;
 
+import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,20 +13,16 @@ import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import android.util.Log;
-
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 
 
 public class RedmineTimeEntryModel {
+	private final static String TAG = RedmineTimeEntryModel.class.getSimpleName();
 	protected Dao<RedmineTimeEntry, Integer> dao;
 	public RedmineTimeEntryModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineTimeEntry.class);
 		} catch (SQLException e) {
-			Log.e("RedmineTimeEntryModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -32,7 +34,7 @@ public class RedmineTimeEntryModel {
 		List<RedmineTimeEntry> item;
 		item = dao.queryForEq(RedmineTimeEntry.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineTimeEntry>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -43,7 +45,7 @@ public class RedmineTimeEntryModel {
 		.and()
 		.eq(RedmineTimeEntry.TIMEENTRY_ID, statusId)
 		.prepare();
-		Log.d("RedmineTimeEntryModel",query.getStatement());
+		Log.d(TAG,query.getStatement());
 		RedmineTimeEntry item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineTimeEntry();
@@ -73,21 +75,17 @@ public class RedmineTimeEntryModel {
 	}
 
 	public int insert(RedmineTimeEntry item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineTimeEntry item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineTimeEntry item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public RedmineTimeEntry refreshItem(RedmineConnection info,RedmineTimeEntry data) throws SQLException{

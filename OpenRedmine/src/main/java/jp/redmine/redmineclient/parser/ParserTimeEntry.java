@@ -1,9 +1,9 @@
 package jp.redmine.redmineclient.parser;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;

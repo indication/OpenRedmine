@@ -1,9 +1,9 @@
 package jp.redmine.redmineclient.parser;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProjectCategory;
@@ -30,14 +30,14 @@ public class ParserCategory extends BaseParserInternal<RedmineConnection,Redmine
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.setCategoryId(Integer.parseInt(work));
+			item.setCategoryId(TypeConverter.parseInteger(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.setName(getNextText());
 		} else if("assigned_to".equalsIgnoreCase(xml.getName())){
 			RedmineUser user = new RedmineUser();
 			String data = xml.getAttributeValue("", "id");
 			if(data != null){
-				user.setUserId(Integer.parseInt(data));
+				user.setUserId(TypeConverter.parseInteger(data));
 			}
 			user.setConnectionId(con.getId());
 			user.setName(xml.getAttributeValue("", "name"));

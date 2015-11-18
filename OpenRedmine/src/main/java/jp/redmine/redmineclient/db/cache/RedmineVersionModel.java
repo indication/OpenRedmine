@@ -1,14 +1,14 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -17,12 +17,13 @@ import jp.redmine.redmineclient.entity.RedmineUser;
 
 
 public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> {
+	private final static String TAG = RedmineVersionModel.class.getSimpleName();
 	protected Dao<RedmineProjectVersion, Integer> dao;
 	public RedmineVersionModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineProjectVersion.class);
 		} catch (SQLException e) {
-			Log.e("RedmineVersionModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -34,7 +35,7 @@ public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> 
 		List<RedmineProjectVersion> item;
 		item = dao.queryForEq(RedmineUser.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineProjectVersion>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -94,21 +95,17 @@ public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> 
 	}
 
 	public int insert(RedmineProjectVersion item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineProjectVersion item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineProjectVersion item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public void refreshItem(RedmineIssue data) throws SQLException{

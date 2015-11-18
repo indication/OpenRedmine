@@ -132,7 +132,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				return mVersion.fetchById(connection_id, TypeConverter.parseInteger(input));
+				return mVersion.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 			}
 			@Override
 			public int getResourceNameId() {
@@ -144,7 +144,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				return mUser.fetchById(connection_id, TypeConverter.parseInteger(input));
+				return mUser.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 			}
 			@Override
 			public int getResourceNameId() {
@@ -156,7 +156,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				return mStatus.fetchById(connection_id, TypeConverter.parseInteger(input));
+				return mStatus.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 			}
 			@Override
 			public int getResourceNameId() {
@@ -168,7 +168,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				return mCategory.fetchById(connection_id, TypeConverter.parseInteger(input));
+				return mCategory.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 			}
 			@Override
 			public int getResourceNameId() {
@@ -180,7 +180,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				return mTracker.fetchById(connection_id, TypeConverter.parseInteger(input));
+				return mTracker.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 			}
 			@Override
 			public int getResourceNameId() {
@@ -192,7 +192,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				return mPriority.fetchById(connection_id, TypeConverter.parseInteger(input));
+				return mPriority.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 			}
 			@Override
 			public int getResourceNameId() {
@@ -204,7 +204,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				return mProject.fetchById(connection_id, TypeConverter.parseInteger(input));
+				return mProject.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 			}
 			@Override
 			public int getResourceNameId() {
@@ -228,7 +228,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			protected IMasterRecord getRawItem(String input) throws SQLException {
 				if(connection_id == null)
 					return null;
-				RedmineIssue issue = mIssue.fetchById(connection_id, TypeConverter.parseInteger(input));
+				RedmineIssue issue = mIssue.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 				DummySelection item = new DummySelection();
 				if (issue == null || issue.getId() == null) {
 					item.setName("#" + input);
@@ -297,10 +297,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 
     @Override
 	public boolean isValidParameter(){
-		if(issue_id == null || connection_id == null)
-			return false;
-		else
-			return true;
+		return !(issue_id == null || connection_id == null);
 	}
 
 	@Override
@@ -335,12 +332,8 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 				else
 					Log.w(TAG,"Changes: " + cg.getName() + "," + cg.getProperty());
 			}
-		} catch (IOException e) {
+		} catch (IOException | SQLException | ClassNotFoundException e) {
 			Log.e(TAG,"getDbItem",e);
-		} catch (ClassNotFoundException e) {
-			Log.e(TAG,"getDbItem",e);
-		} catch (SQLException e) {
-			Log.e(TAG, "getDbItem", e);
 		}
 		return item;
 	}
@@ -401,7 +394,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
 		if (convertView != null && (
 				 convertView.getTag() == null
-				|| ! ( (Integer)(convertView.getTag()) != R.layout.listheader_journal)
+				|| (Integer) (convertView.getTag()) == R.layout.listheader_journal
 			)) {
 			convertView = null;
 		}

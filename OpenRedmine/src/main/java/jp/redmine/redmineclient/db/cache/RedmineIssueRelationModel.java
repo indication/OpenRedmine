@@ -1,15 +1,16 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.redmine.redmineclient.entity.RedmineIssueRelation;
 
 
 public class RedmineIssueRelationModel {
@@ -19,7 +20,7 @@ public class RedmineIssueRelationModel {
 		try {
 			dao = helper.getDao(RedmineIssueRelation.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(TAG, "getDao", e);
 		}
 	}
 
@@ -31,7 +32,7 @@ public class RedmineIssueRelationModel {
 		List<RedmineIssueRelation> item;
 		item = dao.queryForEq(RedmineIssueRelation.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineIssueRelation>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -85,7 +86,7 @@ public class RedmineIssueRelationModel {
 				;
 		List<RedmineIssueRelation> item = builder.query();
 		if(item == null){
-			item = new ArrayList<RedmineIssueRelation>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -112,21 +113,17 @@ public class RedmineIssueRelationModel {
 	}
 
 	public int insert(RedmineIssueRelation item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineIssueRelation item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineIssueRelation item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(long id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public RedmineIssueRelation refreshItem(int connection_id,RedmineIssueRelation data) throws SQLException{

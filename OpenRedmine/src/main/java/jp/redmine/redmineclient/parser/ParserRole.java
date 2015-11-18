@@ -29,7 +29,7 @@ public class ParserRole extends BaseParserInternal<RedmineConnection, RedmineRol
 		if (equalsTagName("id")) {
 			String work = getNextText();
 			if ("".equals(work)) return;
-			item.setRoleId(Integer.parseInt(work));
+			item.setRoleId(TypeConverter.parseInteger(work));
 		} else if (equalsTagName("name")) {
 			item.setName(getNextText());
 		} else if (equalsTagName("permissions ")) {

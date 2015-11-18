@@ -188,7 +188,6 @@
 		android:layout_height="18dp"
 		android:max="100"
 		android:progress="30"
-		android:layout_weight="1"
 		android:layout_toRightOf="@+id/textProgress"
 		android:layout_toEndOf="@+id/textProgress"
 		android:layout_below="@+id/textCategory"

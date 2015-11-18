@@ -70,20 +70,22 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 					target = mFilter.getSynonym(filter);
 				}
 
-				FilterArgument argIssue = new FilterArgument();
-				argIssue.setArgument();
-				argIssue.importArgument(intent);
-				argIssue.setFilterId(target.getId());
-				list.add((new CorePage<FilterArgument>() {
-							@Override
-							public Fragment getRawFragment(FilterArgument param) {
-								return IssueList.newInstance(param);
-							}
-						})
-								.setParam(argIssue)
-								.setName(user.getName())
-								.setIcon(R.drawable.ic_action_user)
-				);
+				if(target != null) {
+					FilterArgument argIssue = new FilterArgument();
+					argIssue.setArgument();
+					argIssue.importArgument(intent);
+					argIssue.setFilterId(target.getId());
+					list.add((new CorePage<FilterArgument>() {
+								@Override
+								public Fragment getRawFragment(FilterArgument param) {
+									return IssueList.newInstance(param);
+								}
+							})
+									.setParam(argIssue)
+									.setName(user.getName())
+									.setIcon(R.drawable.ic_action_user)
+					);
+				}
 			}
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);

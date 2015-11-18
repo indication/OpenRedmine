@@ -10,6 +10,7 @@ import java.math.MathContext;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.IMasterRecord;
+import jp.redmine.redmineclient.entity.TypeConverter;
 
 abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> {
 	private ITEM item = null;
@@ -61,7 +62,7 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 	}
 	protected Integer getAttributeInteger(String schema, String attr){
 		String id = xml.getAttributeValue(schema, attr);
-		return TextUtils.isEmpty(id) ? null : Integer.parseInt(id);
+		return TypeConverter.parseInteger(id);
 	}
 
 
@@ -91,7 +92,7 @@ abstract public class BaseParserInternal<CON,ITEM> extends BaseParser<CON,ITEM> 
 	
 	protected Integer getTextInteger() throws XmlPullParserException, IOException{
 		String work = getNextText();
-		return TextUtils.isEmpty(work) ? null : Integer.parseInt(work);
+		return TypeConverter.parseInteger(work);
 	}
 	
 	protected Long getTextLong() throws XmlPullParserException, IOException{

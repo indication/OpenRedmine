@@ -1,14 +1,14 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
@@ -16,12 +16,13 @@ import jp.redmine.redmineclient.entity.RedmineTracker;
 
 
 public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
+	private final static String TAG = RedmineTrackerModel.class.getSimpleName();
 	protected Dao<RedmineTracker, Integer> dao;
 	public RedmineTrackerModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineTracker.class);
 		} catch (SQLException e) {
-			Log.e("RedmineTrackerModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -33,7 +34,7 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 		List<RedmineTracker> item;
 		item = dao.queryForEq(RedmineTracker.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineTracker>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -59,21 +60,17 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 	}
 
 	public int insert(RedmineTracker item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineTracker item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineTracker item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public void refreshItem(RedmineIssue data) throws SQLException{

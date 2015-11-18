@@ -56,7 +56,15 @@ public class TypeConverter {
 	}
 	public static Integer parseInteger(String str){
 		if(TextUtils.isEmpty(str)) return null;
-		return Integer.parseInt(str);
+		try {
+			return Integer.parseInt(str);
+		} catch(NumberFormatException ex){
+			return null;
+		}
+	}
+	public static Integer parseInteger(String str, int default_value){
+		Integer ret = parseInteger(str);
+		return ret == null ? default_value : ret;
 	}
 	@SuppressLint("SimpleDateFormat")
 	public static String getDateString(Date date){

@@ -27,7 +27,7 @@ public class RedmineAttachmentModel {
 			dao = helper.getDao(RedmineAttachment.class);
 			daoData = helper.getDao(RedmineAttachmentData.class);
 		} catch (SQLException e) {
-			Log.e(TAG,TAG,e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -55,21 +55,17 @@ public class RedmineAttachmentModel {
 	}
 
 	public int insert(RedmineAttachment item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineAttachment item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineAttachment item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(long id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	protected <X extends StatementBuilder<T,A>, T,A> X setupWhere(X builder, RedmineAttachment attachment) throws SQLException {

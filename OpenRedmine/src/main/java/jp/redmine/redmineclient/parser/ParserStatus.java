@@ -1,9 +1,9 @@
 package jp.redmine.redmineclient.parser;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.sql.SQLException;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineStatus;
@@ -29,7 +29,7 @@ public class ParserStatus extends BaseParserInternal<RedmineConnection,RedmineSt
 		if("id".equalsIgnoreCase(xml.getName())){
 			String work = getNextText();
 			if("".equals(work))	return;
-			item.setStatusId(Integer.parseInt(work));
+			item.setStatusId(TypeConverter.parseInteger(work));
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.setName(getNextText());
 		} else if("is_closed".equalsIgnoreCase(xml.getName())){

@@ -27,6 +27,7 @@ import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
@@ -212,10 +213,12 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String s) {
-				if (TextUtils.isDigitsOnly(s)){
+				Integer issue_id = TypeConverter.parseInteger(s);
+				if (issue_id != null){
 					ConnectionArgument intent = new ConnectionArgument();
 					intent.setArgument(getArguments());
-					mListener.onIssueSelected(intent.getConnectionId(), Integer.parseInt(s));
+
+					mListener.onIssueSelected(intent.getConnectionId(), issue_id);
 					return true;
 				} else {
 					return onQueryTextChange(s);

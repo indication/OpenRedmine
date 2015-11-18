@@ -1,23 +1,25 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import jp.redmine.redmineclient.entity.RedmineJournal;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.redmine.redmineclient.entity.RedmineJournal;
+
 
 public class RedmineJournalModel {
+	private final static String TAG = RedmineJournalModel.class.getSimpleName();
 	protected Dao<RedmineJournal, Long> dao;
 	public RedmineJournalModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineJournal.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(TAG, "getDao", e);
 		}
 	}
 
@@ -29,7 +31,7 @@ public class RedmineJournalModel {
 		List<RedmineJournal> item;
 		item = dao.queryForEq(RedmineJournal.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineJournal>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -55,21 +57,17 @@ public class RedmineJournalModel {
 	}
 
 	public int insert(RedmineJournal item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineJournal item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineJournal item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(long id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public RedmineJournal refreshItem(int connection_id,RedmineJournal data) throws SQLException{

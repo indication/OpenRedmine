@@ -1,5 +1,12 @@
 package jp.redmine.redmineclient.db.cache;
 
+import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,21 +15,16 @@ import java.util.List;
 import jp.redmine.redmineclient.entity.IMasterRecord;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import android.util.Log;
-
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
 
 
 public class RedmineFilterModel {
+	private final static String TAG = RedmineFilterModel.class.getSimpleName();
 	protected Dao<RedmineFilter, Integer> dao;
 	public RedmineFilterModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineFilter.class);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Log.e(TAG, "getDao", e);
 		}
 	}
 
@@ -50,7 +52,7 @@ public class RedmineFilterModel {
 				.eq(RedmineFilter.CURRENT, true)
 				;
 		builder.setWhere(where);
-		Log.d("RedmineFilter",builder.prepareStatementString());
+		Log.d(TAG,builder.prepareStatementString());
 		item = dao.queryForFirst(builder.prepare());
 		return item;
 	}
@@ -61,10 +63,10 @@ public class RedmineFilterModel {
 				.eq(RedmineFilter.CONNECTION, connection)
 				;
 		builder.setWhere(where);
-		Log.d("RedmineFilter",builder.prepareStatementString());
+		Log.d(TAG,builder.prepareStatementString());
 		list = dao.query(builder.prepare());
 		if(list==null){
-			list = new ArrayList<RedmineFilter>();
+			list = new ArrayList<>();
 		}
 		return list;
 	}
@@ -145,7 +147,7 @@ public class RedmineFilterModel {
 		public boolean isSame(T a,T b){
 			if(isSideNull(a,b))
 				return false;
-			if(isBothNull(a,b))
+			if(isBothNull(a, b))
 				return true;
 			if(!isSameInner(a,b))
 				return false;
@@ -162,25 +164,21 @@ public class RedmineFilterModel {
 	}
 
 	public int insert(RedmineFilter item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineFilter item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int updateOrInsert(RedmineFilter item) throws SQLException{
 		CreateOrUpdateStatus count = dao.createOrUpdate(item);
 		return count.getNumLinesChanged();
 	}
 	public int delete(RedmineFilter item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 }

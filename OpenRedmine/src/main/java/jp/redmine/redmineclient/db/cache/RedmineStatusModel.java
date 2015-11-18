@@ -1,25 +1,28 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineStatus;
-import android.util.Log;
 
 
 public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
+	private final static String TAG = RedmineStatusModel.class.getSimpleName();
 	protected Dao<RedmineStatus, Integer> dao;
 	public RedmineStatusModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineStatus.class);
 		} catch (SQLException e) {
-			Log.e("RedmineStatusModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -31,7 +34,7 @@ public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 		List<RedmineStatus> item;
 		item = dao.queryForEq(RedmineStatus.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineStatus>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -42,7 +45,7 @@ public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 		.and()
 		.eq(RedmineStatus.STATUS_ID, statusId)
 		.prepare();
-		Log.d("RedmineStatusModel",query.getStatement());
+		Log.d(TAG,query.getStatement());
 		RedmineStatus item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineStatus();
@@ -91,21 +94,17 @@ public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 	}
 
 	public int insert(RedmineStatus item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineStatus item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineStatus item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public void refreshItem(RedmineIssue data) throws SQLException{

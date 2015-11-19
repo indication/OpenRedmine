@@ -4,16 +4,17 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import java.sql.SQLException;
@@ -41,13 +42,9 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalPost;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
-import se.emilsjolander.stickylistheaders.PtrStickyListHeadersListView;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
+public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private final String TAG = IssueView.class.getSimpleName();
 	private IssueStickyListAdapter adapter;
     private StickyListHeadersListView list;
@@ -179,13 +176,16 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 		setHasOptionsMenu(true);
 	}
 
+	SwipeRefreshLayout mSwipeRefreshLayout;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-        View current = inflater.inflate(R.layout.page_issue, container, false);
-        list = (StickyListHeadersListView)current.findViewById(R.id.list);
+		View view = inflater.inflate(R.layout.page_issue, container, false);
+		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layoutSwipeRefresh);
+		mSwipeRefreshLayout.setOnRefreshListener(this);
+        list = (StickyListHeadersListView)view.findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -215,41 +215,13 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
                 }
             }
         });
-        return current;
+        return view;
 	}
 
-	private PullToRefreshLayout mPullToRefreshLayout;
+
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		// This is the View which is created by ListFragment
-		ViewGroup viewGroup = (ViewGroup) view;
-
-		// We need to create a PullToRefreshLayout manually
-		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
-
-		// We can now setup the PullToRefreshLayout
-		ActionBarPullToRefresh.from(getActivity())
-
-				// We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-				.insertLayoutInto(viewGroup)
-
-				// We need to mark the ListView and it's Empty View as pullable
-				// This is because they are not dirent children of the ViewGroup
-				.theseChildrenArePullable(R.id.list, android.R.id.empty)
-
-				// We can now complete the setup as desired
-				.listener(new OnRefreshListener() {
-					@Override
-					public void onRefreshStarted(View view) {
-						onFetchRemote();
-					}
-				})
-
-				.useViewDelegate(PtrStickyListHeadersListView.class, (PtrStickyListHeadersListView)view.findViewById(R.id.list))
-		//.options(...)
-		.setup(mPullToRefreshLayout);
+	public void onRefresh() {
+		onFetchRemote();
 	}
 
 	protected void onRefresh(boolean isFetch){
@@ -309,8 +281,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mPullToRefreshLayout != null && !mPullToRefreshLayout.isRefreshing())
-				mPullToRefreshLayout.setRefreshing(true);
+			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+				mSwipeRefreshLayout.setRefreshing(true);
 		}
 
 		// can use UI thread here
@@ -333,8 +305,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> {
 			mFooter.setVisibility(View.GONE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mPullToRefreshLayout != null)
-				mPullToRefreshLayout.setRefreshComplete();
+			if(mSwipeRefreshLayout != null)
+				mSwipeRefreshLayout.setRefreshing(false);
 		}
 	}
 	@Override

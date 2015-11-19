@@ -8,6 +8,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.entity.RedmineAttachment;
@@ -39,14 +40,15 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
     }
-
     public static String getDatabasePath(Context context){
-    	return context.getCacheDir().getPath() + "/" +DB_NAME;
+		File dir = context.getCacheDir();
+		if (dir == null)
+			dir = context.getExternalCacheDir();
+		return dir.getPath() + "/" +DB_NAME;
     }
 	@Override
 	public void onCreate(SQLiteDatabase arg0, ConnectionSource source) {
 		try {
-			//自動生成
 			TableUtils.createTable(source, RedmineProject.class);
 			TableUtils.createTable(source, RedmineUser.class);
 			TableUtils.createTable(source, RedmineProjectCategory.class);

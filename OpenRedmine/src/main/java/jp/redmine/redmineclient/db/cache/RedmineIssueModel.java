@@ -1,34 +1,30 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
-
-import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedmineFilter;
-import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
-import jp.redmine.redmineclient.entity.RedmineIssue;
-import jp.redmine.redmineclient.entity.RedmineProject;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.Where;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.redmine.redmineclient.entity.RedmineConnection;
+import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedmineProject;
 
 
 public class RedmineIssueModel {
+	private final static String TAG = RedmineIssueModel.class.getSimpleName();
 	protected Dao<RedmineIssue, Long> dao;
 
 	public RedmineIssueModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineIssue.class);
 		} catch (SQLException e) {
-			Log.e("RedmineIssueModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -40,7 +36,7 @@ public class RedmineIssueModel {
 		List<RedmineIssue> item;
 		item = dao.queryForEq(RedmineIssue.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineIssue>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -86,7 +82,7 @@ public class RedmineIssueModel {
 		}
 	}
 	protected RedmineIssue fetchBy(QueryBuilder<RedmineIssue, Long> builder) throws SQLException{
-		Log.d("RedmineIssue",builder.prepareStatementString());
+		Log.d(TAG,builder.prepareStatementString());
 		RedmineIssue item = dao.queryForFirst(builder.prepare());
 		if(item == null)
 			item = new RedmineIssue();
@@ -94,17 +90,17 @@ public class RedmineIssueModel {
 	}
 
 	protected List<RedmineIssue> fetchAllBy(QueryBuilder<RedmineIssue, Long> builder) throws SQLException{
-		Log.d("RedmineIssue",builder.prepareStatementString());
+		Log.d(TAG,builder.prepareStatementString());
 		List<RedmineIssue> item = dao.query(builder.prepare());
 		if(item == null)
-			item = new ArrayList<RedmineIssue>();
-		Log.d("RedmineIssue","count:" + item.size());
+			item = new ArrayList<>();
+		Log.d(TAG,"count:" + item.size());
 		return item;
 	}
 
 	public RedmineIssue fetchById(int connection, int issueId) throws SQLException{
 		PreparedQuery<RedmineIssue> query = builderByIssue(dao, connection,issueId).prepare();
-		Log.d("RedmineIssue",query.getStatement());
+		Log.d(TAG,query.getStatement());
 		RedmineIssue item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineIssue();
@@ -129,23 +125,19 @@ public class RedmineIssueModel {
 	}
 
 	public int insert(RedmineIssue item) throws SQLException{
-		Log.d("RedmineIssue","insert");
-		int count = dao.create(item);
-		return count;
+		Log.d(TAG,"insert");
+		return dao.create(item);
 	}
 
 	public int update(RedmineIssue item) throws SQLException{
-		Log.d("RedmineIssue","update");
-		int count = dao.update(item);
-		return count;
+		Log.d(TAG,"update");
+		return dao.update(item);
 	}
 	public int delete(RedmineIssue item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(long id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 	public void refreshItem(RedmineConnection info,RedmineIssue data) throws SQLException{
 		refreshItem(info.getId(),data);

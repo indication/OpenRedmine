@@ -1,26 +1,29 @@
 package jp.redmine.redmineclient.db.cache;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeActivity;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
-import android.text.TextUtils;
-import android.util.Log;
 
 
 public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivity> {
+	private final static String TAG = RedmineTimeActivityModel.class.getSimpleName();
 	protected Dao<RedmineTimeActivity, Integer> dao;
 	public RedmineTimeActivityModel(DatabaseCacheHelper helper) {
 		try {
 			dao = helper.getDao(RedmineTimeActivity.class);
 		} catch (SQLException e) {
-			Log.e("RedmineTimeActivityModel","getDao",e);
+			Log.e(TAG,"getDao",e);
 		}
 	}
 
@@ -32,7 +35,7 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 		List<RedmineTimeActivity> item;
 		item = dao.queryForEq(RedmineTimeActivity.CONNECTION, connection);
 		if(item == null){
-			item = new ArrayList<RedmineTimeActivity>();
+			item = new ArrayList<>();
 		}
 		return item;
 	}
@@ -43,7 +46,7 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 		.and()
 		.eq(RedmineTimeActivity.ACTIVITY_ID, statusId)
 		.prepare();
-		Log.d("RedmineTimeActivityModel",query.getStatement());
+		Log.d(TAG,query.getStatement());
 		RedmineTimeActivity item = dao.queryForFirst(query);
 		if(item == null)
 			item = new RedmineTimeActivity();
@@ -87,21 +90,17 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 	}
 
 	public int insert(RedmineTimeActivity item) throws SQLException{
-		int count = dao.create(item);
-		return count;
+		return dao.create(item);
 	}
 
 	public int update(RedmineTimeActivity item) throws SQLException{
-		int count = dao.update(item);
-		return count;
+		return dao.update(item);
 	}
 	public int delete(RedmineTimeActivity item) throws SQLException{
-		int count = dao.delete(item);
-		return count;
+		return dao.delete(item);
 	}
 	public int delete(int id) throws SQLException{
-		int count = dao.deleteById(id);
-		return count;
+		return dao.deleteById(id);
 	}
 
 	public void refreshItem(RedmineTimeEntry data) throws SQLException{

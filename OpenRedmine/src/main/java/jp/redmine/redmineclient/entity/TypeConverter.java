@@ -15,7 +15,9 @@ public class TypeConverter {
 	//Sat Sep 29 12:03:04 +0200 2007
 	//E   M   d  H :m :s  Z     y
 	//public static final String FORMAT_DATETIME = "E M d H:m:s Z y";
+	//2015-02-05 00:38:50 UTC
 	public static final String FORMAT_DATETIMEZ = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+	public static final String FORMAT_DATETIMESPZ = "yyyy'-'MM'-'dd' 'HH':'mm':'ss Z";
 	public static final String FORMAT_DATETIME = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ";
 	public static final String FORMAT_DATETIMEMS = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSSZ";
 	public static final String FORMAT_DATE = "yyyy-MM-dd";
@@ -25,7 +27,9 @@ public class TypeConverter {
 	public static Date parseDateTime(String datetime){
 		if (TextUtils.isEmpty(datetime))
 			return null;
-		if (datetime.endsWith("Z"))
+		if (datetime.contains(" "))
+			return parseDateTimeFormat(datetime,FORMAT_DATETIMESPZ, false);
+		else if (datetime.endsWith("Z"))
 			return parseDateTimeFormat(datetime,FORMAT_DATETIMEZ, true);
 		else if(datetime.contains("."))
 			return parseDateTimeFormat(datetime,FORMAT_DATETIMEMS, false);
@@ -52,7 +56,15 @@ public class TypeConverter {
 	}
 	public static Integer parseInteger(String str){
 		if(TextUtils.isEmpty(str)) return null;
-		return Integer.parseInt(str);
+		try {
+			return Integer.parseInt(str);
+		} catch(NumberFormatException ex){
+			return null;
+		}
+	}
+	public static Integer parseInteger(String str, int default_value){
+		Integer ret = parseInteger(str);
+		return ret == null ? default_value : ret;
 	}
 	@SuppressLint("SimpleDateFormat")
 	public static String getDateString(Date date){

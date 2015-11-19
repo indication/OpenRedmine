@@ -1,13 +1,11 @@
 package jp.redmine.redmineclient.parser;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.xmlpull.v1.XmlPullParserException;
-
-import android.util.Log;
 
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineJournal;
@@ -67,7 +65,7 @@ public class ParserJournals extends BaseParserInternal<RedmineIssue,RedmineJourn
 
 	protected void setJournalId(RedmineJournal journal, String id){
 		if("".equals(id))	return;
-		journal.setJournalId(Integer.parseInt(id));
+		journal.setJournalId(TypeConverter.parseInteger(id));
 
 	}
 

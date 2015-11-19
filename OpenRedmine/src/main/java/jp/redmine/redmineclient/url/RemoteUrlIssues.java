@@ -1,14 +1,14 @@
 package jp.redmine.redmineclient.url;
 
+import android.net.Uri;
+import android.text.format.DateFormat;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
-
-import android.net.Uri;
-import android.text.format.DateFormat;
 
 public class RemoteUrlIssues extends RemoteUrl {
 	private HashMap<String,String> params = new HashMap<String,String>();
@@ -72,7 +72,7 @@ public class RemoteUrlIssues extends RemoteUrl {
 		params.put("tracker_id", tracker);
 	}
 	public void filterVersion(String version) {
-		params.put("version_id", version);
+		params.put("fixed_version_id", version);
 	}
 
 	public void filterProject(String status){

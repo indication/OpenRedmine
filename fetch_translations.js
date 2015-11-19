@@ -141,7 +141,7 @@ function map(fso,pathFrom,pathToFoler,pathToFile){
 	var folderfiles = new Enumerator(folder.Files);
 	for (; !folderfiles.atEnd(); folderfiles.moveNext()){
 		var pathFromFile = folderfiles.item();
-		var itemname = fso.GetBaseName(pathFromFile);
+		var itemname = fso.GetBaseName(pathFromFile).replace("pt_BR","pt");
 		var pathSendFolder = pathTargetFolder.replace("XX",itemname);
 		var pathSendFile = pathToFile.replace("XX",itemname);
 		if(!fso.FolderExists(pathSendFolder)){

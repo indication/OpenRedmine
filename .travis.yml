@@ -1,28 +1,47 @@
 language: android
 jdk: oraclejdk7
+sudo: false
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.idea
+  - $HOME/.gradle
 
 notifications:
   email: false
-
-env:
-  matrix:
-    - ANDROID_SDKS=android-19,sysimg-19 ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+  webhooks: "https://zapier.com/hooks/catch/opzg6m/"
 
 android:
   components:
-    - build-tools-19.1.0
+    - build-tools-21.1.2
+    - android-19
+    - sys-img-armeabi-v7a-android-19
+    - extra-android-support
+    - extra-android-m2repository
   licenses:
-    - android-sdk-license-5be876d5
+    - 'android-sdk-license-5be876d5'
+#    - 'android-googletv-license-99eda7fb'
+    - 'google-gdk-license-9529f459'
 
 before_script:
   # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
   - adb wait-for-device
   - adb shell input keyevent 82 &
+  # Setup build envrionment
+  - openssl aes-256-cbc -K $encrypted_7fcdb5fbc52e_key -iv $encrypted_7fcdb5fbc52e_iv -in external/localsettings.tar.gz.enc -out localsettings.tar.gz -d
+  - tar xzf localsettings.tar.gz && mv id_edca ~/.ssh/ && mv id_config ~/.ssh/config
 
 script:
-  - ./gradlew assembleDebug
-  - ./gradlew connectedAndroidTest
-  - ./gradlew assembleRelease
-  - ./gradlew lint
+  - ./gradlew build connectedCheck
+  - ./gradlew assembleDebug assembleRelease
+
+after_success:
+  - export BUILD_RESULT="success"
+
+after_failure:
+  - export BUILD_RESULT="ERRORED"
+
+after_script:
+  - ./external/report.sh

@@ -1,6 +1,7 @@
 package com.j256.ormlite.android.apptools;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import android.support.v4.app.Fragment;
+
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
@@ -18,7 +19,7 @@ import com.j256.ormlite.support.ConnectionSource;
  *
  * @author graywatson, kevingalligan
  */
-public abstract class OrmLiteFragment<H extends OrmLiteSqliteOpenHelper> extends SherlockFragment {
+public abstract class OrmLiteFragment<H extends OrmLiteSqliteOpenHelper> extends Fragment {
 	private static Logger logger = LoggerFactory.getLogger(OrmLiteBaseActivity.class);
 
 	/**

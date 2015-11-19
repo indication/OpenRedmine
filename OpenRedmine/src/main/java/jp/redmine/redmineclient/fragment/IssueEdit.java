@@ -5,13 +5,13 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import java.sql.SQLException;
@@ -98,7 +98,11 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		if(intent.getIssueId() != -1){
 			issue = model.fetchById(connectionid, intent.getIssueId());
-			projectid = issue.getProject().getId();
+			if(issue.getProject() != null) {
+				projectid = issue.getProject().getId();
+			} else {
+				projectid = intent.getProjectId();
+			}
 		} else {
 			projectid = intent.getProjectId();
 		}

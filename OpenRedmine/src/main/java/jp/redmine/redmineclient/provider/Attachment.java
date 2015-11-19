@@ -29,6 +29,7 @@ import jp.redmine.redmineclient.db.cache.RedmineAttachmentModel;
 import jp.redmine.redmineclient.entity.RedmineAttachment;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserAttachment;
@@ -235,7 +236,7 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 					List<String> params = uri.getPathSegments();
 					if (params.size() < 3)
 						break;
-					return model.fetchById(Integer.parseInt(params.get(1)),Integer.parseInt(params.get(2)));
+					return model.fetchById(TypeConverter.parseInteger(params.get(1)),TypeConverter.parseInteger(params.get(2)));
 				default:
 					Log.e(TAG, "Not found:" + uri.toString());
 					break;

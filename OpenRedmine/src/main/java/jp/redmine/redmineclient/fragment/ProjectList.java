@@ -1,21 +1,23 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.AsyncTask.Status;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
@@ -25,16 +27,13 @@ import jp.redmine.redmineclient.adapter.ProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.fragment.form.IssueJumpForm;
+import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
+public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = ProjectList.class.getSimpleName();
 	private ProjectListAdapter adapter;
 	private SelectDataTask task;
@@ -42,6 +41,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private View mFooter;
 	private IssueActionInterface mListener;
 	private ConnectionActionInterface mConnectionListener;
+	SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public ProjectList(){
 		super();
@@ -107,20 +107,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			}
 		});
 
-		final IssueJumpForm formJump = new IssueJumpForm(getView());
-
-		formJump.buttonOK.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if(!formJump.Validate())
-					return;
-
-				ConnectionArgument intent = new ConnectionArgument();
-				intent.setArgument(getArguments());
-				mListener.onIssueSelected(intent.getConnectionId(), formJump.getIssueId());
-			}
-		});
 	}
 
 	@Override
@@ -134,7 +120,12 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
-		return inflater.inflate(R.layout.page_project_list, null);
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
+				= ListFragmentSwipeRefreshLayout.inject(container, view);
+		mSwipeRefreshLayout = result.layout;
+		mSwipeRefreshLayout.setOnRefreshListener(this);
+		return result.parent;
 	}
 
 	@Override
@@ -144,35 +135,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			adapter.notifyDataSetChanged();
 	}
 
-	private PullToRefreshLayout mPullToRefreshLayout;
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		// This is the View which is created by ListFragment
-		ViewGroup viewGroup = (ViewGroup) view;
-
-		// We need to create a PullToRefreshLayout manually
-		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
-
-		// We can now setup the PullToRefreshLayout
-		ActionBarPullToRefresh.from(getActivity())
-				// We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-				.insertLayoutInto(viewGroup)
-
-						// We need to mark the ListView and it's Empty View as pullable
-						// This is because they are not dirent children of the ViewGroup
-				.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
-
-						// We can now complete the setup as desired
-				.listener(new OnRefreshListener() {
-					@Override
-					public void onRefreshStarted(View view) {
-						onRefresh();
-					}
-				})
-				.setup(mPullToRefreshLayout);
-	}
 	@Override
 	public void onListItemClick(ListView listView, View v, int position, long id) {
 		super.onListItemClick(listView, v, position, id);
@@ -183,7 +145,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		mListener.onIssueList(project.getConnectionId(), project.getId());
 	}
 
-	protected void onRefresh(){
+	public void onRefresh(){
 		if(task != null && task.getStatus() == Status.RUNNING){
 			return;
 		}
@@ -208,8 +170,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mPullToRefreshLayout != null && !mPullToRefreshLayout.isRefreshing())
-				mPullToRefreshLayout.setRefreshing(true);
+			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+				mSwipeRefreshLayout.setRefreshing(true);
 		}
 
 		// can use UI thread here
@@ -220,8 +182,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			adapter.notifyDataSetChanged();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mPullToRefreshLayout != null)
-				mPullToRefreshLayout.setRefreshComplete();
+			if(mSwipeRefreshLayout != null)
+				mSwipeRefreshLayout.setRefreshing(false);
 		}
 
 		@Override
@@ -239,33 +201,45 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
 
-		if(getActivity() instanceof SherlockFragmentActivity){
-			ActionBar bar = ((SherlockFragmentActivity)getActivity()).getSupportActionBar();
-			SearchView search = new SearchView(bar.getThemedContext());
-			search.setIconifiedByDefault(false);
-			search.setSubmitButtonEnabled(true);
-			search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-				@Override
-				public boolean onQueryTextSubmit(String s) {
+		setupSearchBar(menu);
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	protected void setupSearchBar(Menu menu){
+
+		SearchView search = new SearchView(getActivity());
+		search.setIconifiedByDefault(false);
+		search.setSubmitButtonEnabled(true);
+		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String s) {
+				Integer issue_id = TypeConverter.parseInteger(s);
+				if (issue_id != null){
+					ConnectionArgument intent = new ConnectionArgument();
+					intent.setArgument(getArguments());
+
+					mListener.onIssueSelected(intent.getConnectionId(), issue_id);
+					return true;
+				} else {
 					return onQueryTextChange(s);
 				}
+			}
 
-				@Override
-				public boolean onQueryTextChange(String s) {
-					if (TextUtils.isEmpty(s)) {
-						getListView().clearTextFilter();
-					} else {
-						getListView().setFilterText(s);
-					}
-					return true;
+			@Override
+			public boolean onQueryTextChange(String s) {
+				if (TextUtils.isEmpty(s)) {
+					getListView().clearTextFilter();
+				} else {
+					getListView().setFilterText(s);
 				}
-			});
-			menu.add(android.R.string.search_go)
-					.setIcon(android.R.drawable.ic_menu_search)
-					.setActionView(search)
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-		}
-		super.onCreateOptionsMenu(menu, inflater);
+				return true;
+			}
+		});
+		menu.add(android.R.string.search_go)
+				.setIcon(android.R.drawable.ic_menu_search)
+				.setActionView(search)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+		;
 	}
 
 	@Override

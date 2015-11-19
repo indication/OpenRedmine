@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.adapter.form;
 
 import android.view.View;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
@@ -22,12 +21,14 @@ public class IssueDetailForm extends IssueBaseForm {
 	public TextView textTimeEstimate;
 	public TextView textTimeEntry;
 	public TextView textCategory;
-	public TableRow rowCategory;
-	public TableRow rowDate;
-	public TableRow rowVersion;
-	public TableRow rowAssigned;
-	public TableRow rowTimeEntry;
-	public TableRow rowProject;
+	public TextView labelCategory;
+	public TextView labelDate;
+	public TextView labelDateArrow;
+	public TextView labelVersion;
+	public TextView labelAssignedTo;
+	public TextView labelTime;
+	public TextView labelTimeSlice;
+	public TextView labelProject;
 	public TextView textView;
 	public TextViewHelper textViewHelper;
 	public IssueDetailForm(View activity){
@@ -51,12 +52,14 @@ public class IssueDetailForm extends IssueBaseForm {
 		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
 		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
 		textCategory = (TextView)view.findViewById(R.id.textCategory);
-		rowCategory = (TableRow)view.findViewById(R.id.rowCategory);
-		rowDate = (TableRow)view.findViewById(R.id.rowDate);
-		rowVersion = (TableRow)view.findViewById(R.id.rowVersion);
-		rowAssigned = (TableRow)view.findViewById(R.id.rowAssigned);
-		rowTimeEntry = (TableRow)view.findViewById(R.id.rowTimeEntry);
-		rowProject = (TableRow)view.findViewById(R.id.rowProject);
+		labelCategory = (TextView)view.findViewById(R.id.labelCategory);
+		labelDate = (TextView)view.findViewById(R.id.labelDate);
+		labelDateArrow = (TextView)view.findViewById(R.id.labelDateArrow);
+		labelVersion = (TextView)view.findViewById(R.id.labelVersion);
+		labelAssignedTo = (TextView)view.findViewById(R.id.labelAssignedTo);
+		labelTime = (TextView)view.findViewById(R.id.labelTime);
+		labelTimeSlice = (TextView)view.findViewById(R.id.labelTimeSlice);
+		labelProject = (TextView)view.findViewById(R.id.labelProject);
 		textView = (TextView)view.findViewById(R.id.textView);
 	}
 
@@ -72,20 +75,22 @@ public class IssueDetailForm extends IssueBaseForm {
 		setPrivate(rd.isPrivate());
 		setTime(textTimeEstimate,R.string.ticket_time_estimate,rd.getEstimatedHours());
 		setMasterName(textCategory,rd.getCategory());
-		setVisible(rowCategory,rd.getCategory());
-		setVisible(rowVersion,rd.getVersion());
-		setVisible(rowAssigned,rd.getAssigned());
-		setVisible(rowDate,!(rd.getDateStart() == null && rd.getDateDue() == null));
-		setVisible(rowTimeEntry,rd.getEstimatedHours() != 0);
+		setVisible(rd.getCategory(), labelCategory, textCategory);
+		setVisible(rd.getVersion(), labelVersion, textVersion);
+		setVisible(rd.getAssigned(), labelAssignedTo, textAssignedTo);
+		setVisible(!(rd.getDateStart() == null && rd.getDateDue() == null), labelDate,textDateFrom, textDateTo, labelDateArrow);
+		setVisible(rd.getEstimatedHours() != 0, labelTime, textTimeEstimate, labelTimeSlice);
 		setMasterName(textProject, rd.getProject());
 
 
 	}
-	protected void setVisible(TableRow row, IMasterRecord record){
-		setVisible(row,!(record == null || record.getId() == null));
+	protected void setVisible(IMasterRecord record, View ... views){
+		setVisible(!(record == null || record.getId() == null), views);
 	}
-	protected void setVisible(TableRow row, boolean isVisible){
-		row.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+	protected void setVisible(boolean isVisible, View ... views){
+		for(View view : views){
+			view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+		}
 	}
 	
 	public void setPrivate(boolean isPrivate){
@@ -94,7 +99,7 @@ public class IssueDetailForm extends IssueBaseForm {
 
 	public void setValueTimeEntry(BigDecimal val){
 		setTime(textTimeEntry,R.string.ticket_time_estimate,val.doubleValue());
-		setVisible(rowTimeEntry,val.doubleValue() != 0 || "0".equals(textTimeEstimate.getText().toString()));
+		setVisible(val.doubleValue() != 0 || "0".equals(textTimeEstimate.getText().toString()), labelTime, textTimeEntry);
 	}
 	protected void setUserNameDateTime(TextView v,int format,RedmineUser ct,Date date){
 		String ret = v.getContext().getString(format, convertUserName(v,ct), convertDateTime(v, date));

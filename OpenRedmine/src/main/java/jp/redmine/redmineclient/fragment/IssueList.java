@@ -1,14 +1,22 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask.Status;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -17,12 +25,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import java.sql.SQLException;
@@ -36,18 +38,17 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
+import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
-import uk.co.senab.actionbarpulltorefresh.extras.actionbarsherlock.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
+public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
 	private IssueListAdapter adapter;
@@ -154,44 +155,19 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
-
+	SwipeRefreshLayout mSwipeRefreshLayout;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		mHeader = inflater.inflate(R.layout.listheader_filter,null);
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
-
-	private PullToRefreshLayout mPullToRefreshLayout;
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		// This is the View which is created by ListFragment
-		ViewGroup viewGroup = (ViewGroup) view;
-
-		// We need to create a PullToRefreshLayout manually
-		mPullToRefreshLayout = new PullToRefreshLayout(viewGroup.getContext());
-
-		// We can now setup the PullToRefreshLayout
-		ActionBarPullToRefresh.from(getActivity())
-			// We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-			.insertLayoutInto(viewGroup)
-
-			// We need to mark the ListView and it's Empty View as pullable
-			// This is because they are not dirent children of the ViewGroup
-			.theseChildrenArePullable(android.R.id.list, android.R.id.empty)
-
-			// We can now complete the setup as desired
-			.listener(new OnRefreshListener() {
-				@Override
-				public void onRefreshStarted(View view) {
-					onRefresh(true);
-				}
-			})
-			.setup(mPullToRefreshLayout);
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
+				= ListFragmentSwipeRefreshLayout.inject(container, view);
+		mSwipeRefreshLayout = result.layout;
+		mSwipeRefreshLayout.setOnRefreshListener(this);
+		return result.parent;
 	}
 
 	@Override
@@ -204,7 +180,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		super.onListItemClick(parent, v, position, id);
 		if(v == mHeader){
-			if(adapter != null && adapter.getParameter() != null && adapter.getParameter().isCurrent() == true)
+			if(adapter != null && adapter.getParameter() != null && adapter.getParameter().isCurrent())
 				intentFilterAction();
 			return;
 		}
@@ -266,6 +242,11 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	}
 
+	@Override
+	public void onRefresh() {
+		onRefresh(true);
+	}
+
 	private class SelectDataTask extends SelectIssueTask {
 		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, long project) {
 			super(helper,connection,project);
@@ -280,8 +261,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mPullToRefreshLayout != null && !mPullToRefreshLayout.isRefreshing())
-				mPullToRefreshLayout.setRefreshing(true);
+			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+				mSwipeRefreshLayout.setRefreshing(true);
 		}
 
 		// can use UI thread here
@@ -291,8 +272,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 			onRefreshList();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mPullToRefreshLayout != null)
-				mPullToRefreshLayout.setRefreshComplete();
+			if(mSwipeRefreshLayout != null)
+				mSwipeRefreshLayout.setRefreshing(false);
 		}
 
 		@Override
@@ -315,35 +296,46 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
 
-		if(getActivity() instanceof SherlockFragmentActivity){
-			ActionBar bar = ((SherlockFragmentActivity)getActivity()).getSupportActionBar();
-			SearchView search = new SearchView(bar.getThemedContext());
-			search.setIconifiedByDefault(false);
-			search.setSubmitButtonEnabled(true);
-			search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-				@Override
-				public boolean onQueryTextSubmit(String s) {
-					return false;
-				}
-
-				@Override
-				public boolean onQueryTextChange(String s) {
-					if (TextUtils.isEmpty(s)) {
-						isBlockFetch = false;
-						getListView().clearTextFilter();
-					} else {
-						isBlockFetch = true;
-						getListView().setFilterText(s);
-					}
-					return true;
-				}
-			});
-			menu.add(android.R.string.search_go)
-					.setIcon(android.R.drawable.ic_menu_search)
-					.setActionView(search)
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-		}
+		setupSearchBar(menu);
 		super.onCreateOptionsMenu(menu, inflater);
+	}
+
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	protected void setupSearchBar(Menu menu){
+		SearchView search = new SearchView(getActivity());
+		search.setIconifiedByDefault(false);
+		search.setSubmitButtonEnabled(true);
+		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String s) {
+				Integer issue_id = TypeConverter.parseInteger(s);
+				if (issue_id != null){
+					ConnectionArgument intent = new ConnectionArgument();
+					intent.setArgument(getArguments());
+					mListener.onIssueSelected(intent.getConnectionId(), issue_id);
+					return true;
+				} else {
+					return onQueryTextChange(s);
+				}
+			}
+
+			@Override
+			public boolean onQueryTextChange(String s) {
+				if (TextUtils.isEmpty(s)) {
+					isBlockFetch = false;
+					getListView().clearTextFilter();
+				} else {
+					isBlockFetch = true;
+					getListView().setFilterText(s);
+				}
+				return true;
+			}
+		});
+		menu.add(android.R.string.search_go)
+				.setIcon(android.R.drawable.ic_menu_search)
+				.setActionView(search)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+		;
 	}
 
 	protected void intentFilterAction(){

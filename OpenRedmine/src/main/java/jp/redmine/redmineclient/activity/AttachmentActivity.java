@@ -34,6 +34,7 @@ public class AttachmentActivity extends OrmLiteFragmentActivity<DatabaseCacheHel
 	public void onCreate(Bundle savedInstanceState) {
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
+		getSupportActionBar();
 
 		/**
 		 * Add fragment on first view only

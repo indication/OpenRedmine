@@ -51,6 +51,25 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 		}
 
 		List<CorePage> list = new ArrayList<CorePage>();
+		list.add((new CorePage<Void>() {
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return null;
+					}
+
+					@Override
+					public Runnable getCustomAction() {
+						return new Runnable() {
+							@Override
+							public void run() {
+								finish();
+							}
+						};
+					}
+				})
+						.setName(getString(R.string.ticket_project))
+						.setIcon(android.R.drawable.ic_menu_revert)
+		);
 		// Project list
 		ProjectArgument argList = new ProjectArgument();
 		argList.setArgument();
@@ -64,6 +83,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				.setParam(argList)
 				.setName(getString(R.string.ticket_issue))
 				.setIcon(R.drawable.ic_action_message)
+				.setDefault(true)
 		);
 
 		// current user
@@ -175,6 +195,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				.setParam(argNews)
 				.setName(getString(R.string.news))
 		);
+
 		return list;
 	}
 

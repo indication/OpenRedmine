@@ -70,6 +70,25 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 		boolean isValidIssue = intent.getIssueId() > 0;
 
 		List<CorePage> list = new ArrayList<CorePage>();
+		list.add((new CorePage<Void>() {
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return null;
+					}
+
+					@Override
+					public Runnable getCustomAction() {
+						return new Runnable() {
+							@Override
+							public void run() {
+								finish();
+							}
+						};
+					}
+				})
+						.setName(getString(R.string.ticket_issue))
+						.setIcon(android.R.drawable.ic_menu_revert)
+		);
 		if(isValidIssue) {
 			// Issue view
 			IssueArgument argList = new IssueArgument();
@@ -85,6 +104,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 							.setParam(argList)
 							.setName(getString(R.string.ticket_issue))
 							.setIcon(R.drawable.ic_action_message)
+							.setDefault(true)
 			);
 			// Watchers
 			IssueArgument argWatchers = new IssueArgument();
@@ -131,6 +151,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 							.setParam(argEdit)
 							.setName(getString(R.string.edit))
 							.setIcon(android.R.drawable.ic_menu_edit)
+							.setDefault(true)
 			);
 		}
 

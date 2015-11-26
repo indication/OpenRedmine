@@ -16,6 +16,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineUser;
+import jp.redmine.redmineclient.fragment.ConnectionEdit;
 import jp.redmine.redmineclient.fragment.IssueList;
 import jp.redmine.redmineclient.fragment.ProjectList;
 import jp.redmine.redmineclient.model.ConnectionModel;
@@ -40,6 +41,25 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 			setTitle(con.getName());
 
 		List<CorePage> list = new ArrayList<CorePage>();
+		list.add((new CorePage<Void>() {
+					@Override
+					public Fragment getRawFragment(Void param) {
+						return null;
+					}
+
+					@Override
+					public Runnable getCustomAction() {
+						return new Runnable() {
+							@Override
+							public void run() {
+								finish();
+							}
+						};
+					}
+				})
+						.setName(getString(R.string.connection))
+						.setIcon(android.R.drawable.ic_menu_revert)
+		);
 		// Project list
 		ConnectionArgument argList = new ConnectionArgument();
 		argList.setArgument();
@@ -53,6 +73,7 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				.setParam(argList)
 				.setName(getString(R.string.ticket_project))
 				.setIcon(android.R.drawable.ic_menu_mapmode)
+				.setDefault(true)
 		);
 
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
@@ -90,6 +111,21 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);
 		}
+
+
+		ConnectionArgument argConnection = new ConnectionArgument();
+		argConnection.setArgument();
+		argConnection.importArgument(intent);
+		list.add((new CorePage<ConnectionArgument>() {
+					@Override
+					public Fragment getRawFragment(ConnectionArgument param) {
+						return ConnectionEdit.newInstance(param);
+					}
+				})
+						.setParam(argConnection)
+						.setName(getString(R.string.menu_settings))
+						.setIcon(android.R.drawable.ic_menu_preferences)
+		);
 
 		return list;
 	}

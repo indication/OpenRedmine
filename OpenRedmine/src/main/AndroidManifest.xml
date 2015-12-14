@@ -56,6 +56,8 @@
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
 		<activity android:name=".activity.AboutActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+		<activity android:name=".activity.WebViewActivity"
+				  android:configChanges="orientation|screenSize|keyboardHidden" />
 		<provider
 			android:name=".provider.Attachment"
 			android:authorities="jp.redmine.redmineclient.attachment"

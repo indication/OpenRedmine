@@ -9,6 +9,7 @@ TODO
 
 次期リリース
 ===========
+- appcompat-v7へ移行。感謝と共にactionbarsherlock, actionbarpulltorefreshを削除。 (#144)
 
 
 v3.16 - 49 - 2015/11/18

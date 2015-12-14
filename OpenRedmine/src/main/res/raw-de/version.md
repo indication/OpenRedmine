@@ -9,6 +9,7 @@ Alle
 
 Nächste Veröffentlichung
 ===========
+- Migrate to appcompat-v7. Remove actionbarsherlock, actionbarpulltorefresh, Thank you for ever. (#144)
 
 
 v3.16 - 49 - 2015/11/18

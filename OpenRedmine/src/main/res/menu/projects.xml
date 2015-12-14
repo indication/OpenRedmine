@@ -11,6 +11,4 @@
         android:icon="@drawable/ic_action_refresh"
         android:numericShortcut="5"
         android:alphabeticShortcut="r" />
-
-
 </menu>

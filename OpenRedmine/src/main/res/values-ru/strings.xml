@@ -117,4 +117,5 @@
   <string name="news">Новости</string>
   <string name="activity_not_found">Приложение не найдено за этот файл.</string>
   <string name="recent_issues">Последние вопросы</string>
+  <string name="web">Web</string>
 </resources>

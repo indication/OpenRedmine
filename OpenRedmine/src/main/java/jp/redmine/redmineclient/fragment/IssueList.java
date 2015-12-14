@@ -31,6 +31,7 @@ import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.FilterViewActivity;
+import jp.redmine.redmineclient.activity.WebViewActivity;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.IssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -45,6 +46,7 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
 import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.task.SelectIssueTask;
 import jp.redmine.redmineclient.task.SelectProjectEnumerationTask;
 
@@ -297,6 +299,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			menu_refresh.setEnabled(false);
 
 		setupSearchBar(menu);
+		inflater.inflate( R.menu.web, menu );
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -368,6 +371,29 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 				ProjectArgument intent = new ProjectArgument();
 				intent.setArgument( getArguments() );
 				mListener.onIssueAdd(intent.getConnectionId(), intent.getProjectId());
+				return true;
+			}
+			case R.id.menu_web:
+			{
+				ProjectArgument input = new ProjectArgument();
+				input.setArgument(getArguments());
+				RedmineProject project = null;
+				RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+				try {
+					project = mProject.fetchById(input.getProjectId());
+				} catch (SQLException e) {
+					Log.e(TAG,"onOptionsItemSelected",e);
+					return false;
+				}
+				WebArgument intent = new WebArgument();
+				intent.setIntent(getActivity().getApplicationContext(), WebViewActivity.class);
+				intent.importArgument(input);
+
+				intent.setUrl("/projects/"
+						+ ((project == null || project.getName() == null) ? "" : project.getName())
+						+ "/issues"
+				);
+				getActivity().startActivity(intent.getIntent());
 				return true;
 			}
 

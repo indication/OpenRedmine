@@ -23,6 +23,7 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.WebViewActivity;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.adapter.NewsListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -32,6 +33,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ProjectArgument;
+import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.task.SelectNewsTask;
 
 public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
@@ -193,6 +195,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 			menu_refresh.setEnabled(false);
 
 		setupSearchBar(menu);
+		inflater.inflate( R.menu.web, menu );
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -231,6 +234,29 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 			case R.id.menu_refresh:
 			{
 				this.onRefresh();
+				return true;
+			}
+			case R.id.menu_web:
+			{
+				ProjectArgument input = new ProjectArgument();
+				input.setArgument(getArguments());
+				RedmineProject project = null;
+				RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+				try {
+					project = mProject.fetchById(input.getProjectId());
+				} catch (SQLException e) {
+					Log.e(TAG,"onOptionsItemSelected",e);
+					return false;
+				}
+				WebArgument intent = new WebArgument();
+				intent.setIntent(getActivity().getApplicationContext(), WebViewActivity.class);
+				intent.importArgument(input);
+
+				intent.setUrl("/projects/"
+						+ ((project == null || project.getName() == null) ? "" : project.getName())
+						+ "/news"
+				);
+				getActivity().startActivity(intent.getIntent());
 				return true;
 			}
 		}

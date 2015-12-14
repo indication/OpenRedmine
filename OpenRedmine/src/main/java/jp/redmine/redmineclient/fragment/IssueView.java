@@ -20,6 +20,7 @@ import com.j256.ormlite.android.apptools.OrmLiteFragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.WebViewActivity;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.activity.handler.TimeentryActionInterface;
@@ -40,6 +41,7 @@ import jp.redmine.redmineclient.fragment.form.IssueViewForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
+import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.task.SelectIssueJournalPost;
 import jp.redmine.redmineclient.task.SelectIssueJournalTask;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
@@ -313,6 +315,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
 		inflater.inflate( R.menu.issue_view, menu );
+		inflater.inflate( R.menu.web, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == Status.RUNNING)
 			menu_refresh.setEnabled(false);
@@ -327,6 +330,27 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			case R.id.menu_refresh:
 			{
 				onFetchRemote();
+				return true;
+			}
+			case R.id.menu_web:
+			{
+				IssueArgument input = new IssueArgument();
+				input.setArgument(getArguments());
+				RedmineIssueModel mIssue = new RedmineIssueModel(getHelper());
+				RedmineIssue issue = null;
+				try {
+					issue = mIssue.fetchById(input.getConnectionId(), input.getIssueId());
+				} catch (SQLException e) {
+					Log.e(TAG,"onRefresh",e);
+				}
+				WebArgument intent = new WebArgument();
+				intent.setIntent(getActivity().getApplicationContext(), WebViewActivity.class);
+				intent.importArgument(input);
+				intent.setUrl("/issues/"
+						+ ((issue == null || issue.getIssueId() == null) ? "" :issue.getIssueId())
+						+ ""
+				);
+				getActivity().startActivity(intent.getIntent());
 				return true;
 			}
 		}

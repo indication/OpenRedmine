@@ -19,6 +19,7 @@ import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.WebArgument;
 
 public class WebViewActivity extends ActionBarActivity {
+	private static final String TAG = WebViewActivity.class.getSimpleName();
 	public WebViewActivity(){
 		super();
 	}
@@ -62,6 +63,8 @@ public class WebViewActivity extends ActionBarActivity {
 			String url = "";
 			if(StringUtils.isEmpty(intent.getUrl())){
 				url = con.getUrl();
+			} else if (intent.getUrl().startsWith("/")) {
+				url = con.getUrl() + intent.getUrl();
 			} else if (intent.getUrl().startsWith(con.getUrl())) {
 				url = intent.getUrl();
 			}

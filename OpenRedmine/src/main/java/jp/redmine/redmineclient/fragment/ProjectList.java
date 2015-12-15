@@ -180,7 +180,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		@Override
 		protected void onPostExecute(Void b) {
 			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);

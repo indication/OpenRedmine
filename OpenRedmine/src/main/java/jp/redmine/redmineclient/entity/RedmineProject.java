@@ -16,7 +16,7 @@ public class RedmineProject
 	public final static String ID = "id";
 	public final static String CONNECTION = RedmineConnection.CONNECTION_ID;
 	public final static String PROJECT_ID = "project_id";
-	public final static String NAME = "kind";
+	public final static String NAME = "name";
 	public final static String FAVORITE = "favorite";
 
     @DatabaseField(generatedId = true)

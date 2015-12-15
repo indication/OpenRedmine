@@ -21,6 +21,7 @@ import com.j256.ormlite.android.apptools.OrmLiteFragment;
 import java.sql.SQLException;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.WebViewActivity;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineWikiModel;
@@ -29,6 +30,7 @@ import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.form.helper.WebViewHelper;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
+import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.param.WikiArgument;
 import jp.redmine.redmineclient.task.SelectWikiTask;
 
@@ -186,6 +188,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		menu.clear();
 		inflater.inflate(R.menu.refresh, menu);
+		inflater.inflate( R.menu.web, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING)
 			menu_refresh.setEnabled(false);
@@ -200,6 +203,28 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 			case R.id.menu_refresh:
 			{
 				this.onRefresh();
+				return true;
+			}
+			case R.id.menu_web:
+			{
+				RedmineWikiModel model = new RedmineWikiModel(getHelper());
+				WikiArgument input = new WikiArgument();
+				input.setArgument(getArguments());
+				RedmineWiki wiki = null;
+				try {
+					wiki = model.fetchById(input.getConnectionId(), input.getProjectId(), input.getWikiTitle());
+				} catch (SQLException e) {
+					Log.e(TAG,"onOptionsItemSelected",e);
+					return false;
+				}
+				WebArgument intent = new WebArgument();
+				intent.setIntent(getActivity().getApplicationContext(), WebViewActivity.class);
+				intent.importArgument(input);
+				intent.setUrl("/wiki/"
+						+ ((wiki == null || wiki.getTitle() == null) ? "" :wiki.getTitle())
+						+ ""
+				);
+				getActivity().startActivity(intent.getIntent());
 				return true;
 			}
 		}

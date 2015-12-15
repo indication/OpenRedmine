@@ -21,6 +21,7 @@ import android.widget.ListView;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
+import jp.redmine.redmineclient.activity.WebViewActivity;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.ProjectListAdapter;
@@ -31,6 +32,7 @@ import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
+import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.task.SelectProjectTask;
 
 public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
@@ -202,6 +204,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 			menu_refresh.setEnabled(false);
 
 		setupSearchBar(menu);
+		inflater.inflate( R.menu.web, menu );
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -257,6 +260,17 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 				ConnectionArgument input = new ConnectionArgument();
 				input.setArgument(getArguments());
 				mConnectionListener.onConnectionEdit(input.getConnectionId());
+				return true;
+			}
+			case R.id.menu_web:
+			{
+				ConnectionArgument input = new ConnectionArgument();
+				input.setArgument(getArguments());
+				WebArgument intent = new WebArgument();
+				intent.setIntent(getActivity().getApplicationContext(), WebViewActivity.class);
+				intent.importArgument(input);
+				intent.setUrl("/projects");
+				getActivity().startActivity(intent.getIntent());
 				return true;
 			}
 		}

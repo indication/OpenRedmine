@@ -33,7 +33,7 @@ public class WebViewHelper {
 				if(m.find()){
 					return  RedmineConvertToHtmlHelper.kickAction(action, m.replaceAll(""));
 				} else if (action != null) {
-					return action.url(url);
+					return action.url(url, null);
 				} else {
 					return super.shouldOverrideUrlLoading(view, url);
 				}

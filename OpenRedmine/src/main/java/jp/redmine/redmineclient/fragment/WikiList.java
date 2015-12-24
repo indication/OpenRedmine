@@ -1,9 +1,14 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import jp.redmine.redmineclient.R;
@@ -75,6 +79,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		super.onActivityCreated(savedInstanceState);
 
 		getListView().setFastScrollEnabled(true);
+		getListView().setTextFilterEnabled(true);
 
 		adapter = new WikiListAdapter(getHelper(), getActivity());
 		ProjectArgument intent = new ProjectArgument();
@@ -173,6 +178,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING)
 			menu_refresh.setEnabled(false);
+		setupSearchBar(menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -188,5 +194,33 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	protected void setupSearchBar(Menu menu){
+
+		SearchView search = new SearchView(getActivity());
+		search.setIconifiedByDefault(false);
+		search.setSubmitButtonEnabled(true);
+		search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String s) {
+				return onQueryTextChange(s);
+			}
+
+			@Override
+			public boolean onQueryTextChange(String s) {
+				if (TextUtils.isEmpty(s)) {
+					getListView().clearTextFilter();
+				} else {
+					getListView().setFilterText(s);
+				}
+				return true;
+			}
+		});
+		menu.add(android.R.string.search_go)
+				.setIcon(android.R.drawable.ic_menu_search)
+				.setActionView(search)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+		;
 	}
 }

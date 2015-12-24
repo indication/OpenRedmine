@@ -9,7 +9,8 @@ TODO
 
 Next Release
 ===========
-
+- Fix search on project list
+- Add search on wiki list
 
 v3.16 - 49 - 2015/11/18
 ===========

@@ -1,45 +1,42 @@
 OpenRedmine
 ===========
-Release history
+Histórico de releases
 
-TODO
+Coisas a serem feitas
 ===========
-- Check date to update bug (#83)
-- Add share button on issue (#18)
+- Verificar data para o bug de atualização (#83)
+- Adicionar botão de compartilhamento na tarefa (#18)
 
-Next Release
+Próxima Release
 ===========
-- Add Portuguese-Brazil translation by etcho (#169)
-- Fix search on project list (#168)
-- Add search on wiki list (#168)
-- Add webview to menu (#167)
 
-v3.16 - 49 - 2015/11/18
+
+v3.16 - 49 - 18/11/2015
 ===========
-- Support date time style "yyyy-MM-dd HH:mm:ss Z" (#157)
+- Suporte ao estilo de exibição de data e hora "yyyy-MM-dd HH:mm:ss Z" (#157)
 - Support pull-to-refresh-event on IssueView (#157)
-- Fix NumberFormatException (#161) / NullPointerException on IssueEdit (#162)
-- Reduce permissions (#160)
-- Migrate to appcompat-v7. Remove actionbarsherlock, actionbarpulltorefresh, Thank you for ever. (#144)
+- Corrigida NumberFormatException (#161) / NullPointerException em IssueEdit (#162)
+- Reduzir permissões (#160)
+- Migrar para appcompat-v7. Remover actionbarsherlock, actionbarpulltorefresh. Obrigado eterno. (#144)
 
-v3.15 - 48 - 2015/02/07
+v3.15 - 48 - 07/02/2015
 ===========
-- Add German translation by markusr
-- Support journal relations (#151)
+- Adicionada tradução para Alemão feita por markusr
+- Suporte a relações entre diários (#151)
 
-v3.14 - 47 - 2014/10/29
+v3.14 - 47 - 29/10/2014
 ===========
-- Fetch watchers (#132)
-- Fix misc (#142)
- - Support new API on WebView fragment
- - Close connection
- - Delete unused code
- - Support android studio 0.9.1
+- Obter observadores (#132)
+- Corrigir misc (#142)
+ - Suporte à nova API no fragmento WebView
+ - Fechar conexão
+ - Remover código não utilizado
+ - Suporte ao android studio 0.9.1
 
 
-v3.13 - 45 - 2014/10/04
+v3.13 - 45 - 04/10/2014
 ===========
-- Put jump area to issue  on the project list (#130)
+- Colocar acesso fácil à tarefas na lista de projetos (#130)
 - Supported attachment provider (#131, #135)
 - Add recently viewed issue list (#137)
 - Supported deleting connection (#138)

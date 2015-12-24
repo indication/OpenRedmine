@@ -9,16 +9,14 @@ TODO
 
 次期リリース
 ===========
-- appcompat-v7へ移行。感謝と共にactionbarsherlock, actionbarpulltorefreshを削除。 (#144)
 
 
 v3.16 - 49 - 2015/11/18
 ===========
-- Support date time style "yyyy-MM-dd HH:mm:ss Z" (#157)
-- Support pull-to-refresh-event on IssueView (#157)
-- Migrate to appcompat-v7. Remove actionbarsherlock, actionbarpulltorefresh, Thank you for ever. (#144)
-- Fix NumberFormatException (#161) / NullPointerException on IssueEdit (#162)
-- Reduce permissions (#160)
+- 日付形式"yyyy-MM-dd HH:mm:ss Z"に対応 (#157)
+- IssueViewでpull-to-refresh-eventに対応 (#157)
+- NumberFormatException (#161) / IssueEdit  での NullPointerException(#162) に対応
+- 権限の削減 (#160)
 - appcompat-v7へ移行。感謝と共にactionbarsherlock, actionbarpulltorefreshを削除。 (#144)
 
 v3.15 - 48 - 2015/02/07

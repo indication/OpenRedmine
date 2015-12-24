@@ -59,6 +59,19 @@ public class WikiListAdapter extends RedmineDaoAdapter<RedmineWiki, Long, Databa
 		;
 		return builder;
 	}
+	@Override
+	protected QueryBuilder<RedmineWiki, Long> getSearchQueryBuilder(String search) throws SQLException {
+		QueryBuilder<RedmineWiki, Long> builder = getQueryBuilder();
+		builder.where()
+				.like(RedmineWiki.TITLE, "%"+search+"%")
+				.and()
+				.eq(RedmineWiki.CONNECTION, connection_id)
+				.and()
+				.eq(RedmineWiki.PROJECT_ID, project_id)
+		;
+		builder.orderBy(RedmineWiki.TITLE, true);
+		return builder;
+	}
 
 	@Override
 	protected long getDbItemId(RedmineWiki item) {

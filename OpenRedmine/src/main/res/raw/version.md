@@ -9,6 +9,9 @@ TODO
 
 Next Release
 ===========
+
+v3.17 - 50 - 2015/12/31
+===========
 - Add Portuguese-Brazil translation by etcho (#169)
 - Fix search on project list (#168)
 - Add search on wiki list (#168)

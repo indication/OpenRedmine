@@ -10,6 +10,12 @@ Coisas a serem feitas
 Próxima Release
 ===========
 
+v3.17 - 50 - 31/12/2015
+===========
+- Add Portuguese-Brazil translation by etcho (#169)
+- Fix search on project list (#168)
+- Add search on wiki list (#168)
+- Add webview to menu (#167)
 
 v3.16 - 49 - 18/11/2015
 ===========

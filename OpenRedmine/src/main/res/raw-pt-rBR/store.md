@@ -43,6 +43,6 @@ Se você detectar algum bug, nos comunique via twitter, github ou avaliação co
 
 Nota:
 * Este aplicativo é de código aberto (GPL exceto bibliotecas), então você pode contribuir.
-* Você pode traduzir para sua língua através de https://www.transifex.com/projects/p/openredmine/ .
+* Você pode traduzir para sua língua através de https://www.transifex.com/projects/p/openredmine/ . (pr-BR: etcho)
 * Nos informe via https://github.com/indication/OpenRedmine ou twitter @OpenRedmine caso tenha alguma sugestão ou crítica.
-* Versão beta deve ser lançada em https://plus.google.com/u/0/communities/118409948481316268572
+* Versão beta deve ser lançada em  https://play.google.com/apps/testing/jp.redmine.redmineclient .

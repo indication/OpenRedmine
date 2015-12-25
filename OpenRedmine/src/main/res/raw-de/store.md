@@ -43,6 +43,6 @@ Sollte die Applikation abstürzen, bitte schicken Sie uns die Fehlerbeschreibung
 
 Notiz:
 * Diese App ist open source (GPL ohne Libraries). Bitte helfen Sie mit.
-* Sie können die App in Ihre Sprache übersetzen oder die Übersetzung verbessern unter: https://www.transifex.com/projects/p/openredmine/ .
+* Sie können die App in Ihre Sprache übersetzen oder die Übersetzung verbessern unter: https://www.transifex.com/projects/p/openredmine/ . (de: markusr,  Atalanttore, DJaeger)
 * Bitte Fehlerberichte, Anmerkungen, Neue Feature via https://github.com/indication/OpenRedmine oder Twitter @OpenRedmine
-* Beta-Versionen werden hier veröffentlicht: https://plus.google.com/u/0/communities/118409948481316268572
+* Beta-Versionen werden hier veröffentlicht: https://play.google.com/apps/testing/jp.redmine.redmineclient

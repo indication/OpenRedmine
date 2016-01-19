@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-	<string name="app_name">OpenRedmine</string>
-	<string name="app_description"><![CDATA[
+  <string name="app_name">OpenRedmine</string>
+  <string name="app_description"><![CDATA[
 OpenRedmine 是一个 Android Redmine 客户端.
 ]]></string>
-	<string name="product">Product</string>
-	<string name="message_first_time"><![CDATA[感谢下载.
+  <string name="product">Product</string>
+  <string name="message_first_time"><![CDATA[感谢下载.
 
 ]]></string>
-	<string name="license">License</string>
-	<string name="footer_version">%1$s v%2$s[%3$d] - %4$s</string>
-
+  <string name="license">License</string>
+  <string name="footer_version">%1$s v%2$s[%3$d] - %4$s</string>
 </resources>

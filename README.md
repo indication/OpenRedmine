@@ -30,6 +30,7 @@ Contributors
 *  [box789](https://github.com/box789) - Add russian translation
 *  [ironAss](https://github.com/ironAss) - Screen rotation support #88
 *  [markusr](https://github.com/markusr) - Add german translation
+*  [StevenGape](https://github.com/StevenGape) - Add chinese translation #171
 
 Used references
 ==========

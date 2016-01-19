@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <resources>
-	<string-array name="preference_appearance_themes_entries">
-		<item >Default</item>
-		<item >Dark</item>
-		<item >Light</item>
-		<item >Holo Light</item>
-	</string-array>
-	<string-array name="preference_appearance_themes_values">
-		<item >default</item>
-		<item >dark</item>
-		<item >light</item>
-		<item >hololight</item>
-	</string-array>
+  <string-array name="preference_appearance_themes_entries">
+    <item>Default</item>
+    <item>Dark</item>
+    <item>Light</item>
+    <item>Holo Light</item>
+  </string-array>
+  <string-array name="preference_appearance_themes_values">
+    <item>default</item>
+    <item>dark</item>
+    <item>light</item>
+    <item>hololight</item>
+  </string-array>
 </resources>

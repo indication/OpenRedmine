@@ -9,6 +9,7 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+- Add Chinese translation by StevenGape (#171)
 
 v3.17 - 50 - 31/12/2015
 ===========

@@ -9,6 +9,7 @@ Alle
 
 Nächste Veröffentlichung
 ===========
+- Add Chinese translation by StevenGape (#171)
 
 v3.17 - 50 - 2015/12/31
 ===========

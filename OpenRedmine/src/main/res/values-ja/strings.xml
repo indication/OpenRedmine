@@ -118,4 +118,5 @@
   <string name="activity_not_found">このファイルに対応したアプリを見つけることができません。</string>
   <string name="recent_issues">最近のチケット</string>
   <string name="web">ウェブ</string>
+  <string name="contributors">Contributors</string>
 </resources>

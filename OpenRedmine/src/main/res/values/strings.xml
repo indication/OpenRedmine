@@ -121,5 +121,6 @@
 	<string name="activity_not_found">The activity is not found for this file.</string>
 	<string name="recent_issues">Resent issues</string>
 	<string name="web">Web</string>
+	<string name="contributors">Contributors</string>
 
 </resources>

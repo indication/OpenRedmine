@@ -118,4 +118,5 @@
   <string name="activity_not_found">A atividade não foi encontrada para este arquivo.</string>
   <string name="recent_issues">Tarefas recentes</string>
   <string name="web">Web</string>
+  <string name="contributors">Contributors</string>
 </resources>

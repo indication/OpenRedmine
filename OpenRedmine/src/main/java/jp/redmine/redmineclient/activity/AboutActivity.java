@@ -46,6 +46,14 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 
 		intent = new ResourceArgument();
 		intent.setArgument();
+		intent.setResource(R.raw.contributors);
+		list.add((new PageMarkdown()).setParam(intent)
+				.setName(getString(R.string.contributors))
+				.setIcon(android.R.drawable.ic_menu_compass)
+		);
+
+		intent = new ResourceArgument();
+		intent.setArgument();
 		intent.setResource(R.raw.version);
 		list.add((new PageMarkdown()).setParam(intent)
 						.setName(getString(R.string.ticket_version))

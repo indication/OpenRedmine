@@ -9,19 +9,19 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
-- Add Chinese translation by StevenGape (#171)
+- Adicionada tradução para chinês feita por StevenGape (#171)
 
 v3.17 - 50 - 31/12/2015
 ===========
-- Add Portuguese-Brazil translation by etcho (#169)
-- Fix search on project list (#168)
-- Add search on wiki list (#168)
-- Add webview to menu (#167)
+- Adicionada tradução para português do Brasil feita por etcho (#169)
+- Corrigida a busca na lista de projetos (#168)
+- Adicionada busca na lista de wikis (#168)
+- Adicionado webview no menu (#167)
 
 v3.16 - 49 - 18/11/2015
 ===========
 - Suporte ao estilo de exibição de data e hora "yyyy-MM-dd HH:mm:ss Z" (#157)
-- Support pull-to-refresh-event on IssueView (#157)
+- Suporte a pull-to-refresh-event na Visualização de Tarefa (#157)
 - Corrigida NumberFormatException (#161) / NullPointerException em IssueEdit (#162)
 - Reduzir permissões (#160)
 - Migrar para appcompat-v7. Remover actionbarsherlock, actionbarpulltorefresh. Obrigado eterno. (#144)
@@ -44,24 +44,24 @@ v3.14 - 47 - 29/10/2014
 v3.13 - 45 - 04/10/2014
 ===========
 - Colocar acesso fácil à tarefas na lista de projetos (#130)
-- Supported attachment provider (#131, #135)
-- Add recently viewed issue list (#137)
-- Supported deleting connection (#138)
+- Adicionado suporte para informar o provedor do anexo (#131, #135)
+- Adicionada lista de tarefas vistas recentemente (#137)
+- Adicionado suporte a remoção de conexão (#138)
 
 
-v3.12 - 44 - 2014/09/06
+v3.12 - 44 - 06/09/2014
 ===========
-- Support parse Project Status on Redmine 2.5.0 (#71)
-- Show Ndays before ... etc (#28)
+- Adicionado suporte ao acesso dos Status de Projeto no Redmine 2.5.0 (#71)
+- Exibir Ndias atrás ... etc (#28)
 
-v3.11 - 43 - 2014/08/16
+v3.11 - 43 - 16/08/2014
 ===========
-- Show project news (#17,#118)
--  Add projectpage (#116)
--  Refactor wiki (#114)
- - Support for issue id with brackets
- - Use factory method about XmlPullParser
- -  Add parent page
+- Mostrar notícias do projeto (#17,#118)
+-  Adicionada página do projeto (#116)
+-  Refatoração da wiki (#114)
+ - Adicionado suporte a id de tarefas com colchetes
+ - Uso de factory method no que diz respeito a XmlPullParser
+ - Adicionada página pai
  - Refactor wiki
 - Fix builds (#115,#119)
 

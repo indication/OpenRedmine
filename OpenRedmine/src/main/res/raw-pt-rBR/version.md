@@ -9,6 +9,10 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+
+v3.18 - 51 - 31/01/2016
+===========
+- Update Portuguese-Brazil translation by etcho
 - Adicionada tradução para chinês feita por StevenGape (#171)
 
 v3.17 - 50 - 31/12/2015

@@ -9,6 +9,10 @@ OpenRedmine
 
 下一发布版本
 ===========
+
+v3.18 - 51 - 2016/01/31
+===========
+- Update Portuguese-Brazil translation by etcho
 -StevenGape 添加中文翻译(#171)
 
 v3.17 - 50 - 2015/12/31

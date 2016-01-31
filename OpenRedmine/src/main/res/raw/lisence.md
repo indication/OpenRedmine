@@ -48,3 +48,21 @@ Using Icons
 
 - [Action Bar Icon Pack](http://developer.android.com/design/downloads/) ([by/2.5](http://creativecommons.org/licenses/by/2.5/))
 
+Used references
+==========
+- [DefaultHttpClient and Deflate settings and guide to better code inherit](http://terurou.hateblo.jp/entry/20110702/1309541200) from "DenkiYagi"
+- [Expanded list ideas](http://mylifewithandroid.blogspot.jp/2010/12/expandable-list-and-checkboxes.html) from "My life with Android :-)"
+- [ListView crashes while adding data background task ideas](http://www.mumei-himazin.info/blog/?p=96) from "A Notepad blog"
+- [Textile useage](http://d.hatena.ne.jp/tanamon/20090723/1248322655) from "Diary of tanamon"
+- [Table layout(timeentryitem) usecase](http://suka4.blogspot.jp/2011/03/android-tablelayout.html) from "Setagaya Enginner Blog"
+- [URI handling on TextileHelper](http://www.din.or.jp/~ohzaki/perl.htm#URI) from "Perl note"
+- [Detect MIME type on opening file](http://ac-mopp.blogspot.jp/2011/12/android-mime-type.html) from "moplog"
+- [Open file via intent](http://d.hatena.ne.jp/hikaruright/20120119/1326965685) from "PG Senki hikaruright"
+- [Support gradle release](http://ogaclejapan.com/android/2013/07/07/new-build-system-part2-for-gradle/) from "ogaclejapan"
+- [Add feature about FragmentBreadCrumbs](http://techbooster.org/android/application/15499/) from "techbooster"
+- Support Link on TextView from "StackOverFlow"
+-- [Android TextView with Clickable Links: how to capture clicks?](http://stackoverflow.com/questions/12418279/android-textview-with-clickable-links-how-to-capture-clicks)
+-- [Html List tag not working in android textview. what can i do?](http://stackoverflow.com/questions/3150400/html-list-tag-not-working-in-android-textview-what-can-i-do)
+- [Support Travis CI integration test(MIT)](https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml)
+
+

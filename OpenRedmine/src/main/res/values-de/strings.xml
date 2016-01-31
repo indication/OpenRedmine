@@ -117,5 +117,6 @@
   <string name="news">News</string>
   <string name="activity_not_found">Die Aktivität für diese Datei wurde nicht gefunden.</string>
   <string name="recent_issues">Wiedergeschickte Tickets</string>
-  <string name="web">Web</string>
+  <string name="web">Netz</string>
+  <string name="contributors">Contributors</string>
 </resources>

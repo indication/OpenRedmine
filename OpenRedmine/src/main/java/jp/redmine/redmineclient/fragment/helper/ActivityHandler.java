@@ -1,6 +1,6 @@
 package jp.redmine.redmineclient.fragment.helper;
 
-import android.app.Activity;
+import android.content.Context;
 
 import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
@@ -11,7 +11,7 @@ import jp.redmine.redmineclient.fragment.ActivityInterface;
 
 public class ActivityHandler {
 	@SuppressWarnings("unchecked")
-	static public <T> T getHandler(Activity activity, Class<T> cls){
+	static public <T> T getHandler(Context activity, Class<T> cls){
 		if(activity instanceof ActivityInterface) {
 			T handler = ((ActivityInterface) activity).getHandler(cls);
 			if (handler != null) return handler;

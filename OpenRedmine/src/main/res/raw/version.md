@@ -9,6 +9,10 @@ TODO
 
 Next Release
 ===========
+
+v3.18 - 51 - 2016/01/31
+===========
+- Update Portuguese-Brazil translation by etcho
 - Add Chinese translation by StevenGape (#171)
 
 v3.17 - 50 - 2015/12/31

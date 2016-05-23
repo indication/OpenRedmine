@@ -9,6 +9,10 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+
+v3.18 - 51 - 31/01/2016
+===========
+- Update Portuguese-Brazil translation by etcho
 - Adicionada tradução para chinês feita por StevenGape (#171)
 
 v3.17 - 50 - 31/12/2015
@@ -62,197 +66,197 @@ v3.11 - 43 - 16/08/2014
  - Adicionado suporte a id de tarefas com colchetes
  - Uso de factory method no que diz respeito a XmlPullParser
  - Adicionada página pai
- - Refactor wiki
-- Fix builds (#115,#119)
+ - Refatoração da wiki
+- Correção de builds (#115, #119)
 
-v3.10 - 42 - 2014/06/28
+v3.10 - 42 - 28/06/2014
 ===========
-- Add kanban view by long tap project (#108)
-- Fix crashed when tap the recorded time (#103)
-- Category list is not applied theme (#102)
-- Fix not fetch issue detail from remote by pulling ... and more minor bug fix (#112)
-- Allow input certification fingerprint to connection (#112)
+- Adicionada visualização do kanban ao pressionar e segurar um projeto (#108)
+- Corrigido crash que ocorria ao pressionar a hora gravada (#103)
+- Lista de categorias não sofre efeito do tema (#102)
+- Corrigido bug que não trazia os detalhes de tarefas remotas ao fazer um pulling ... e outras correções menores (#112)
+- Permitido informar certificação fingerprint para as conexões (#112)
 
-v3.9 - 41 - 2014/05/17
+v3.9 - 41 - 17/05/2014
 ===========
-- Fix issue view icons
-- Fix wiki link expressions
-- Improved performance by changing issue detail from WebView to TextView
+- Corrigidos ícones da visualização da tarefa
+- Corrigidas expressões de link da wiki
+- Performance melhorada ao substituir os detalhes da tarefa de WebView por TextView
 
-v3.8 - 40 - 2014/03/27
+v3.8 - 40 - 27/03/2014
 ===========
-- Add search interface on issues, projects
-- (Internal changes) Update Android Studio from 0.4.2 to 0.5.1
-- Bug fix crash on android 2.2 (#79,#56)
-- Bug fix show journal changes (#81)
-- Reduce URL validation on add connection (#84)
+- Adicionada interface de busca em tarefas e projetos
+- (Mudanças internas) Atualização do Android Studio de 0.4.2 para 0.5.1
+- Corrigido bug de crash no android 2.2 (#79, #56)
+- Corrigido bug na exibição de mudanças no journal (#81)
+- Redução da validação de URL na tela de adicionar conexão (#84)
 
-v3.7 - 39 - 2014/02/28
+v3.7 - 39 - 28/02/2014
 ===========
-- Fix crash on fetch remote first time (#68)
-- (Internal changes) Move DAO into adapter (#61)
-- Add URL validation (start with schema) to avoid to crash (#67)
+- Corrigido bug de crash ao obter dados remotos pela primeira vez (#68)
+- (Mudanças internas) DAO foi movido para adapter (#61)
+- Adicionada validação de URL (inicia com schema) para evitar crash (#67)
 
-v3.6 - 38 - 2014/02/15
+v3.6 - 38 - 15/02/2014
 ===========
-- Add russian translation by box789
-- Add project favorites list
-- Fix appearance on edit connection
+- Adicionada tradução para russo por box789
+- Adicionada lista de projetos favoritos
+- Correções de aparência na edição de conexão
 
-v3.5 - 37 - 2014/02/02
+v3.5 - 37 - 02/02/2014
 ===========
-- Fetch wiki when there is no item
-- Open activity on select issue
-- Fix add new issue
+- Obtém a wiki quando não houver itens
+- Abrir atividade na tarefa selecionada
+- Correção na tela de criar tarefa
 
-v3.5 - 36 - 2014/01/24
+v3.5 - 36 - 24/01/2014
 ===========
-- Support wiki view
-- Add tabs
+- Suporte a visualização de wiki
+- Adição de abas
 
-v3.4 - 35 - 2013/12/10
+v3.4 - 35 - 10/12/2013
 ===========
-- Fix crash on Android 2.3
+- Correção de crash no Android 2.3
 
-v3.4 - 34 - 2013/12/09
+v3.4 - 34 - 09/12/2013
 ===========
-- Switch list via swipe
-- Support pull to refresh
-- (Internal changes) Port to Android Studio
+- Alternar entre listas usando swipe
+- Suporte a "puxe para atualizar"
+- (Mudanças internas) Porte para o Android Studio
 
-v3.3 - 33 - 2013/11/06
+v3.3 - 33 - 06/11/2013
 ===========
-- Download file related with issues
-- Fixes crash on showing unknown relation type
+- Download de arquivos relacionados às tarefas
+- Correção de crash ao exibir tipo de relação desconhecido
 
-v3.2 - 32 - 2013/09/09
+v3.2 - 32 - 09/09/2013
 ===========
-- Fix crashes on fetching issue from remote - relative issue reference was wrong
-- Update submodule - android-form-edittext
+- Correção de crashes ao obter uma tarefa remota - referências à tarefas relativas estavam erradas
+- Atualização de submódulo - android-form-edittext
 
-v3.1 - 31 - 2013/09/05
+v3.1 - 31 - 05/09/2013
 ===========
-- Add sticky view on issue
-- Renewal issue list view
+- Adicionado suporte a sticky view na tarefa
+- Melhorias na exibição da lista de tarefas
 
-v3.0 - 30 - 2013/08/12
+v3.0 - 30 - 12/08/2013
 ===========
-- Support fragment (internal codes)
-- Fix timezone when fetch items
-- Fix issue view to align to center
-- Show current user on project list
+- Suporte a fragmentos (códigos internos)
+- Correção de timezone ao obter itens
+- Correção do alinhamento na tela de visualização de tarefa para centralizado
+- Mostra o usuário atual na lista de projetos
 
-v2.5 - 29 - 2013/07/03
+v2.5 - 29 - 03/07/2013
 ===========
-- Show comment area always
+- Área de comentários agora é exibida sempre
 
-v2.4 - 28 - 2013/06/06
+v2.4 - 28 - 06/06/2013
 ===========
-- Fix sync issues (loop forever)
-- Fix posting in android 2.2 (v1.XmlPullParser support)
+- Correção na sincronização de tarefas (loop eterno)
+- Correção nas postagens no android 2.2 (suporte a v1.XmlPullParser)
 
-v2.3 - 27 - 2013/05/29
+v2.3 - 27 - 29/05/2013
 ===========
-- Add post notes to issue
-- Fix edit issue about version/estimated time
-- Add sort key
- - start/due/close date
- - priority/status/tracker
- - fixed_version/category
- - assigned to/author
- - done rate
+- Adicionado suporte a postagem de notas nas tarefas
+- Correção na tela de edição de tarefa na parte de versão e tempo estimado
+- Adicionada chave de ordenação
+ - Suporte a datas de início/prazo/fechamento
+ - Suporte a prioridade, situação e rastreadores de tarefas
+ - Correção de versão/categoria
+ - Suporte a atribuído para e autor
+ - Suporte a percentual de conclusão
 
-v2.2 - 26 - 2013/05/25
+v2.2 - 26 - 25/05/2013
 ===========
-- Add post or modify issue
-- Fix issue list
+- Adicionado suporte a postar ou modificar tarefas
+- Correção na lista de tarefas
 
-v2.1 - 23 - 2013/05/20
+v2.1 - 23 - 20/05/2013
 ===========
-- Fix sync project via http
+- Correção na sincronização de projetos via http
 
-v2.0 - 22 - 2013/05/14
+v2.0 - 22 - 14/05/2013
 ===========
-- Add post or modify time entry
-- Fetch all of projects
+- Adicionado suporte a postar ou modificar registros de tempo
+- Adicionada opção de obter todos os projetos
 
-v1.14 - 21 - 2013/05/01
+v1.14 - 21 - 01/05/2013
 ===========
-- Add sort feature
-- Show changes on journals
-- Show link (URLs) on issue details
+- Adicionada função de ordenação
+- Suporte a exibição de alterações e journals
+- Suporte a exibição de links (URLs) nos detalhes da tarefa
 
-v1.13 - 20 - 2013/04/19
+v1.13 - 20 - 19/04/2013
 ===========
-- Fix fetch issue
-- Jump to issue from project list
-- Add url input helper on connection
+- Correção na obtenção de tarefa
+- Adicionada função de ir para a tarefa a partir da lista de projetos
+- A inserção de url na conexão foi facilitada
 
-v1.12 - 19 - 2013/04/17
+v1.12 - 19 - 17/04/2013
 ===========
-- Fix update issue
-- Jump to issue from description or journal
-- Add tracker to issues list
-- Refresh icons
+- Correção na atualização de tarefas
+- Adicionada função de ir para a tarefa a partir de sua descrição ou journal
+- Suporte a adicionar rastreador na lista de tarefas
+- Atualização de ícones
 
-v1.11 - 18 - 2013/04/08
+v1.11 - 18 - 08/04/2013
 ===========
-- Add time entries
+- Suporte a adição de registros de tempo
 
-v1.10 - 17 - 2013/03/31
+v1.10 - 17 - 31/03/2013
 ===========
-- Fix update issue
+- Correção na atualização de tarefas
 
-v1.9 - 15 - 2013/03/25
+v1.9 - 15 - 25/03/2013
 ===========
-- Add filter about Priority/Author/Assined
--  Fix update issue attributes
+- Adicionado filtro por Prioridade/Autor/Atribuído para
+- Correção na atualização de atributos das tarefas
 
-v1.8 - 14 - 2013/03/17
+v1.8 - 14 - 17/03/2013
 ===========
-- Add settings
-- Fetch all issues(closed issues) by setting. By default fetches only unclosed issues.
-- Add theme switcher
+- Adicionada tela de configurações
+- Suporte a configuração para obter todas as tarefas(tarefas fechadas) ou não. Por padrão serão obtidas somente tarefas que não estiverem fechadas.
+- Adiciona opção para mudança de tema
 
-v1.7 - 13 - 2013/03/14
+v1.7 - 13 - 14/03/2013
 ===========
-- Supports textile in issue detail
+- Suporte a textile nos detalhes da tarefa
 
-v1.6 - 12 - 2013/02/27
+v1.6 - 12 - 27/02/2013
 ===========
-- Issue list keep scroll point.
-- Fix filter shows nothing on the list.
-- Upgeade android api level.
+- A lista de tarefas mantém a localização da rolagem.
+- Correção de filtros que não exibem nada na lista.
+- Atualização do nível da api do android.
 
-v1.5 - 10 - 2013/02/23
+v1.5 - 10 - 23/02/2013
 ===========
-- Support journals
-- Changed fetching issues from remote
+- Suporte a journals
+- Alteração no processo de obtenção de tarefas remotas
 
-v1.4 - 9 - 2013/01/14
+v1.4 - 9 - 14/01/2013
 ===========
-- Reduce permission to write sd card.
+- Simplificação de permissões para escrita no cartão sd.
 
-v1.3 - 8 - 2012/12/01
+v1.3 - 8 - 01/12/2012
 ===========
-- Fix transfer authentications on getting information via web site
-- Add feature filter
+- Correção nas autenticações de transferência durante a obtenção de informações via website
+- Adicionada função de filtro
 
-v1.2 - 7 - 2012/12/01
+v1.2 - 7 - 01/12/2012
 ===========
-- Fixes crash on startup.(build was failed)
+- Correções de crash na inicialização.(houve falha na build)
 
-v1.1 - 6 - 2012/12/01
+v1.1 - 6 - 01/12/2012
 ===========
-- Rewrite HTTP transport
-- Connection via gzip
-- Get versions on loading projects
-- Add footer on ConnectionList
-- Fix parse error on timezones
-- Reconfigure splash activity
+- Sobrescrita do HTTP transport
+- Suporte a conexão via gzip
+- Suporte a obter versões no carregamento de projetos
+- Adicionado rodapé na Lista de Conexões
+- Correção de erros na manipulação de timezones
+- Reconfiguração da atividade splash
 
-v1.0 - 1 - 2012/10/31
+v1.0 - 1 - 31/10/2012
 ===========
-- Fixes crash on startup.
-- Fixes buttons when save connection.
-- Creates new.
+- Correção de crash na inicialização.
+- Correções nos botões ao salvar a conexão.
+- Criação de novas.

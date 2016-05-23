@@ -84,6 +84,7 @@ map(objFSO,pathTranslation+"/openredmine.strings_themesxml",pathRoot+"/OpenRedmi
 map(objFSO,pathTranslation+"/openredmine.stringsxml-49",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings.xml");
 map(objFSO,pathTranslation+"/openredmine.storemd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","store.md");
 map(objFSO,pathTranslation+"/openredmine.versionmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","version.md");
+map(objFSO,pathTranslation+"/openredmine.contributorsmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","contributors.md");
 
 //WScript.Echo("DONE!");
 

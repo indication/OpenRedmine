@@ -107,9 +107,7 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 			return null;
 		}
 		try {
-			ConnectionModel mConnection = new ConnectionModel(getContext());
-			RedmineConnection connection = mConnection.getItem(attachment.getConnectionId());
-			mConnection.finalize();
+			RedmineConnection connection = ConnectionModel.getItem(getContext(), attachment.getConnectionId());
 			client = new SelectDataTaskRedmineConnectionHandler(connection);
 			Fetcher.ContentResponseErrorHandler errorHandler = new Fetcher.ContentResponseErrorHandler() {
 				@Override

@@ -39,6 +39,12 @@ public class ConnectionModel extends Connector {
 	public ConnectionModel(Context context) {
 		super(context);
 	}
+	public static RedmineConnection getItem(Context context, int item_id){
+		ConnectionModel mConnection = new ConnectionModel(context);
+		RedmineConnection connection = mConnection.getItem(item_id);
+		mConnection.close();
+		return connection;
+	}
 
 	public RedmineConnection getItem(int itemid){
 		RedmineConnectionModel model = new RedmineConnectionModel(helperStore);

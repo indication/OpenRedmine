@@ -121,10 +121,7 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 				TimeEntryArgument intent = new TimeEntryArgument();
 				intent.setArgument(getArguments());
 				int connectionid = intent.getConnectionId();
-				RedmineConnection connection = null;
-				ConnectionModel mConnection = new ConnectionModel(getActivity());
-				connection = mConnection.getItem(connectionid);
-				mConnection.finalize();
+				RedmineConnection connection = ConnectionModel.getItem(getActivity(), connectionid);
 
 				RedmineTimeEntry timeentry = new RedmineTimeEntry();
 				RedmineTimeEntryModel model = new RedmineTimeEntryModel(getHelper());

@@ -154,9 +154,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-			mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		task = new SelectDataTask(getHelper());
 		task.execute(connection);
 	}

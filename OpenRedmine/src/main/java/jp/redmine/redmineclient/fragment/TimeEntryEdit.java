@@ -1,8 +1,7 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,7 +29,7 @@ import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
 
 public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private TimeEntryEditForm form;
-	private ProgressDialog dialog;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public TimeEntryEdit(){
 		super();
@@ -46,7 +45,10 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.input_timeentry, container, false);
+		View view = inflater.inflate(R.layout.input_timeentry, container, false);
+		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layoutSwipeRefresh);
+		mSwipeRefreshLayout.setEnabled(false);
+		return view;
 	}
 
 	@Override
@@ -61,17 +63,6 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-	}
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if(activity instanceof ActivityInterface){
-			//mListener = ((ActivityInterface)activity).getHandler(OnArticleSelectedListener.class);
-		}
-
-		dialog = new ProgressDialog(activity);
-		dialog.setMessage(getString(R.string.menu_settings_uploading));
-
 	}
 
 	@Override
@@ -150,16 +141,22 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 					}
 					@Override
 					protected void onPreExecute() {
-						dialog.show();
+						if(mSwipeRefreshLayout != null) {
+							mSwipeRefreshLayout.setEnabled(true);
+							mSwipeRefreshLayout.setRefreshing(true);
+						}
 						super.onPreExecute();
 					}
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						if (dialog.isShowing())
-							dialog.dismiss();
+						if(mSwipeRefreshLayout != null) {
+							mSwipeRefreshLayout.setEnabled(false);
+							mSwipeRefreshLayout.setRefreshing(false);
+						}
 						if(isSuccess){
-							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							if(getActivity() != null)
+								Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 							getFragmentManager().popBackStack();
 						}
 					}

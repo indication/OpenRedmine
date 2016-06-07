@@ -148,7 +148,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 						if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing())
 							mSwipeRefreshLayout.setRefreshing(false);
 						if(isSuccess){
-							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 							formComment.clear();
 						}
 					}
@@ -270,8 +270,13 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
+			if(mSwipeRefreshLayout != null)
+				mSwipeRefreshLayout.post(new Runnable() {
+					@Override
+					public void run() {
+						mSwipeRefreshLayout.setRefreshing(true);
+					}
+				});
 		}
 
 		// can use UI thread here
@@ -295,7 +300,12 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
+				mSwipeRefreshLayout.post(new Runnable() {
+					@Override
+					public void run() {
+						mSwipeRefreshLayout.setRefreshing(false);
+					}
+				});
 		}
 	}
 	@Override

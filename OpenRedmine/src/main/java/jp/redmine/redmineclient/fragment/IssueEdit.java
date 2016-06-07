@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.fragment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,8 +37,8 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private static final String TAG = "IssueEdit";
 
 	private IssueEditForm form;
-	private ProgressDialog dialog;
 	private IssueActionInterface mListener;
+	private SwipeRefreshLayout mSwipeRefreshLayout;
 
 	public IssueEdit(){
 		super();
@@ -58,7 +59,10 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.input_issue, container, false);
+		View view = inflater.inflate(R.layout.input_issue, container, false);
+		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layoutSwipeRefresh);
+		mSwipeRefreshLayout.setEnabled(false);
+		return view;
 	}
 
 	@Override
@@ -66,10 +70,6 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		super.onActivityCreated(savedInstanceState);
 		form = new IssueEditForm(getView());
 		form.setupDatabase(getHelper());
-
-
-		dialog = new ProgressDialog(getActivity());
-		dialog.setMessage(getString(R.string.menu_settings_uploading));
 	}
 	@Override
 	public void onStart() {
@@ -167,22 +167,24 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 						super.onErrorRequest(statuscode);
 					}
 					@Override
-					protected void onPreExecute() {
-						dialog.show();
-						super.onPreExecute();
-					}
-					@Override
 					protected void onPostExecute(List<RedmineIssue> result) {
 						super.onPostExecute(result);
-						if (dialog.isShowing())
-							dialog.dismiss();
+						if(mSwipeRefreshLayout != null) {
+							mSwipeRefreshLayout.setRefreshing(false);
+							mSwipeRefreshLayout.setEnabled(false);
+						}
 						if(isSuccess){
-							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							if(getActivity() != null)
+								Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 							if(result.size() == 1)
 								mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
 						}
 					}
 				};
+				if(mSwipeRefreshLayout != null) {
+					mSwipeRefreshLayout.setEnabled(true);
+					mSwipeRefreshLayout.setRefreshing(true);
+				}
 				post.execute(issue);
 
 				return true;

@@ -55,12 +55,6 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
-	}
-
-	@Override
 	public void onDestroyView() {
 		cancelTask();
 		setListAdapter(null);
@@ -76,6 +70,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), WebviewActionInterface.class);
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
 

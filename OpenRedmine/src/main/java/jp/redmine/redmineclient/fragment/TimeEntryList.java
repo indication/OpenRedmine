@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,12 +35,6 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, TimeentryActionInterface.class);
-
-	}
-	@Override
 	public void onDestroyView() {
 		setListAdapter(null);
 		super.onDestroyView();
@@ -50,6 +43,7 @@ public class TimeEntryList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), TimeentryActionInterface.class);
 		getListView().addFooterView(mFooter);
 
 		adapter = new IssueTimeEntryListAdapter(getHelper(),getActivity());

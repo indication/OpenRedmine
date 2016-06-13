@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,11 +25,6 @@ public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
 
 	private IssueActionInterface mListener;
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
-	}
 	public VersionList(){
 		super();
 	}
@@ -50,6 +44,7 @@ public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), IssueActionInterface.class);
 		getListView().setFastScrollEnabled(true);
 
 		adapter = new VersionListAdapter(getHelper());

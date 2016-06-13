@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,12 +49,6 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		setHasOptionsMenu(true);
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
-
-	}
 	protected void cancelTask(){
 		// cleanup task
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
@@ -89,6 +82,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), WebviewActionInterface.class);
 		webViewHelper.setAction(mListener);
 		webViewHelper.setup(webView);
 		loadWebView(true);

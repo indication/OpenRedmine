@@ -89,20 +89,18 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		Activity activity = getActivity();
 		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 		mActionListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
 		mTimeEntryListener = ActivityHandler.getHandler(activity, TimeentryActionInterface.class);
 		mAttachmentListener = ActivityHandler.getHandler(activity, AttachmentActionInterface.class);
-	}
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
 
         list.addFooterView(mFooter);
 
-		adapter = new IssueStickyListAdapter(getHelper(),getActivity(), mActionListener);
+		adapter = new IssueStickyListAdapter(getHelper(),activity, mActionListener);
         list.setAdapter(adapter);
 		
         list.setFastScrollEnabled(true);

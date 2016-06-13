@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,11 +34,6 @@ public class ResourceMarkdown extends OrmLiteFragment<DatabaseCacheHelper> {
 		setHasOptionsMenu(true);
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
-	}
 	public ResourceMarkdown(){
 		super();
 	}
@@ -54,6 +48,7 @@ public class ResourceMarkdown extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), WebviewActionInterface.class);
 		webViewHelper.setAction(mListener);
 		webViewHelper.setup(webView);
 		ResourceArgument arg = new ResourceArgument();

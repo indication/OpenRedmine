@@ -46,12 +46,6 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		setHasOptionsMenu(true);
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
-
-	}
 	protected void cancelTask(){
 		// cleanup task
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
@@ -78,6 +72,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), WebviewActionInterface.class);
 		getListView().setFastScrollEnabled(true);
 		getListView().setTextFilterEnabled(true);
 

@@ -63,12 +63,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 	private boolean isBlockFetch = false;
 
 	private IssueActionInterface mListener;
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
-	}
 	public IssueList(){
 		super();
 	}
@@ -95,6 +89,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), IssueActionInterface.class);
 		getListView().addFooterView(mFooter);
 		getListView().addHeaderView(mHeader);
 

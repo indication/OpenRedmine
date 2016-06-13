@@ -61,6 +61,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		modelConnection = new ConnectionModel(getActivity());
+		mListener = ActivityHandler.getHandler(getActivity(), ConnectionActionInterface.class);
 
 		form = new ConnectionForm(getView());
 		form.setupEvents();
@@ -85,11 +86,6 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 				startActivityForResult(load.getIntent(), ACTIVITY_SUB);
 			}
 		});
-	}
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, ConnectionActionInterface.class);
 	}
 
 	@Override

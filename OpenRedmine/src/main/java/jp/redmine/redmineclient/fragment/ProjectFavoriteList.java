@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,12 +32,6 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
-	}
-
-	@Override
 	public void onDestroyView() {
 		if(list  != null)
 			list.setAdapter(null);
@@ -48,6 +41,7 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), IssueActionInterface.class);
 		list.setFastScrollEnabled(true);
 
 		FavoriteProjectListAdapter adapter = new FavoriteProjectListAdapter(getHelper(), getActivity());

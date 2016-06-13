@@ -1,7 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -68,6 +66,8 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
+		mListener = ActivityHandler.getHandler(getActivity(), IssueActionInterface.class);
 		form = new IssueEditForm(getView());
 		form.setupDatabase(getHelper());
 	}
@@ -79,12 +79,6 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		} catch (SQLException e) {
 			Log.e(TAG,"onStart",e);
 		}
-	}
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
-
 	}
 
 	protected void onRefresh(boolean isFetch) throws SQLException{

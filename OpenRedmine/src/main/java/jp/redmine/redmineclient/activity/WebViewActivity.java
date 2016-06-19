@@ -55,9 +55,7 @@ public class WebViewActivity extends ActionBarActivity {
 
 		WebArgument intent = new WebArgument();
 		intent.setIntent(getIntent());
-		ConnectionModel mConnection = new ConnectionModel(this);
-		RedmineConnection con = mConnection.getItem(intent.getConnectionId());
-		mConnection.finalize();
+		RedmineConnection con = ConnectionModel.getItem(this, intent.getConnectionId());
 
 		if (con.getId() != null) {
 			String url = "";

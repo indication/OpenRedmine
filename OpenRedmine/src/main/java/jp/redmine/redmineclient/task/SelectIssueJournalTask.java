@@ -47,7 +47,6 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		doInBackgroundIssue(client, params);
 		doInBackgroundTimeEntry(client, params);
-		client.close();
 		return null;
 	}
 

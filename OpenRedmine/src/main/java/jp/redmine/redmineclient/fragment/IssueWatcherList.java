@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import com.j256.ormlite.android.apptools.OrmLiteListFragment;
@@ -13,11 +12,6 @@ public class IssueWatcherList extends OrmLiteListFragment<DatabaseCacheHelper> {
 	private static final String TAG = IssueWatcherList.class.getSimpleName();
 	private IssueWatcherListAdapter adapter;
 
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-	}
 	public IssueWatcherList(){
 		super();
 	}

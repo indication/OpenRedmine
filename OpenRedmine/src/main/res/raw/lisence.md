@@ -23,10 +23,6 @@ Using Libraries
 ==========
 - [android-form-edittext](https://github.com/vekexasia/android-form-edittext) (MIT) - needs verification about inputs
 
-- [Transdroid](http://transdroid.googlecode.com) (GPL) - needs to access untrusted ca.
--- [FakeSocketFactory](http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeSocketFactory.java)	(r1de55ccfce7b)
--- [FakeTrustManager](http://transdroid.googlecode.com/hg/lib/src/org/transdroid/daemon/util/FakeTrustManager.java)	(rfa98b5bb5624)
-
 - [MyWebViewClient](https://github.com/potaka001/WebViewBasicAuthTest/blob/master/src/com/webviewbasicauthtest/MyWebViewClient.java) (unknown) - needs to access redmine by webview
 
 - [LRUCache](http://ttimez.blogspot.jp/2011/07/java.html) (unknown) from "Play History of development" - cache access by listview

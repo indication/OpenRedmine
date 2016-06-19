@@ -9,6 +9,8 @@ TODO
 
 Next Release
 ===========
+- Changed connection method to android default (Remove org.apache.http.legacy)
+- Fix crash on update issue/time entry
 
 v3.18 - 51 - 2016/01/31
 ===========

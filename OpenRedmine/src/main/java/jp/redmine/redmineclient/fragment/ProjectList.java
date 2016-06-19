@@ -56,13 +56,6 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
-		mConnectionListener = ActivityHandler.getHandler(activity, ConnectionActionInterface.class);
-	}
-
-	@Override
 	public void onDestroyView() {
 		cancelTask();
 		setListAdapter(null);
@@ -78,11 +71,12 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), IssueActionInterface.class);
+		mConnectionListener = ActivityHandler.getHandler(getActivity(), ConnectionActionInterface.class);
+
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
-
 		getListView().setTextFilterEnabled(true);
-
 
 		adapter = new ProjectListAdapter(getHelper(), getActivity());
 
@@ -154,9 +148,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-			mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		task = new SelectDataTask(getHelper());
 		task.execute(connection);
 	}

@@ -1,8 +1,10 @@
 package jp.redmine.redmineclient.task;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.io.IOException;
-import java.io.StringWriter;
-import java.sql.SQLException;
+import java.net.HttpURLConnection;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,13 +15,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.entity.StringEntity;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import android.util.Log;
-import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.entity.IPostingRecord;
 
 
@@ -29,8 +24,7 @@ abstract public class SelectDataPost<X,Y extends IPostingRecord> extends SelectD
 		return new SelectDataTaskPutHandler() {
 
 			@Override
-			public HttpEntity getContent() throws IOException,
-					SQLException, IllegalArgumentException, ParserConfigurationException, TransformerException {
+			public void getContent(HttpURLConnection con) throws ParserConfigurationException, TransformerException, IOException {
 				DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
 				Document document = dbuilder.newDocument();
@@ -39,14 +33,9 @@ abstract public class SelectDataPost<X,Y extends IPostingRecord> extends SelectD
 
 				TransformerFactory transFactory = TransformerFactory.newInstance();
 				Transformer transformer = transFactory.newTransformer();
-				StringWriter writer = new StringWriter();
-				transformer.transform(new DOMSource(document), new StreamResult(writer));
-				String data = writer.toString();
-				StringEntity  entity = new StringEntity(data,"UTF-8");
-				entity.setContentType("application/xml");
+				con.setRequestProperty("Content-Type", "application/xml");
+				transformer.transform(new DOMSource(document), new StreamResult(con.getOutputStream()));
 
-				if(BuildConfig.DEBUG) Log.d("post",entity.getContent().toString());
-				return entity;
 			}
 		};
 	}

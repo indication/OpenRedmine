@@ -4,7 +4,6 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
     testBuildType "debug"
-    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 23
@@ -51,11 +50,10 @@ android {
 }
 
 dependencies {
-    compile project(':Transdroid')
     androidTestCompile 'com.google.guava:guava:19.0'
     androidTestCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.andreabaccega:android-form-edittext:1.2.1'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'com.j256.ormlite:ormlite-core:4.48'

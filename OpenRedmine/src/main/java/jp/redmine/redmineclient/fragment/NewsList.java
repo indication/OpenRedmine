@@ -55,12 +55,6 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
-	}
-
-	@Override
 	public void onDestroyView() {
 		cancelTask();
 		setListAdapter(null);
@@ -76,6 +70,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), WebviewActionInterface.class);
 		getListView().addFooterView(mFooter);
 		getListView().setFastScrollEnabled(true);
 
@@ -141,9 +136,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-			mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
 		try {
 			RedmineProject proj = mProject.fetchById(intent.getProjectId());

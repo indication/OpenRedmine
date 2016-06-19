@@ -64,7 +64,6 @@ public class SelectIssueJournalPost extends SelectDataPost<Void,RedmineJournal> 
 				}
 			}
 		}
-		client.close();
 		return null;
 	}
 

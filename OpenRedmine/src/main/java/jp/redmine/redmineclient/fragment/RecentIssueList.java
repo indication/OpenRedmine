@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +22,6 @@ public class RecentIssueList extends OrmLiteFragment<DatabaseCacheHelper> {
 	private IssueActionInterface mListener;
 	private StickyListHeadersListView list;
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
-	}
 	public RecentIssueList(){
 		super();
 	}
@@ -46,6 +40,7 @@ public class RecentIssueList extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), IssueActionInterface.class);
 		list.setFastScrollEnabled(true);
 
 		adapter = new RecentIssueListAdapter(getHelper(), getActivity());

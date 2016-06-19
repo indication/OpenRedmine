@@ -12,7 +12,7 @@ abstract public class Connector {
 		helperStore = new DatabaseHelper(context);
 	}
 
-	public void finalize(){
+	public void close() {
 		if(helperCache != null){
 			helperCache.close();
 			helperCache = null;
@@ -21,5 +21,11 @@ abstract public class Connector {
 			helperStore.close();
 			helperStore = null;
 		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		close();
+		super.finalize();
 	}
 }

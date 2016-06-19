@@ -8,6 +8,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.http.SslError;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -33,9 +34,14 @@ public class MyWebViewClient extends WebViewClient {
 		mWebView = webview;
 	}
 
-	public void Destroy(){
+	public void resetCookie(){
 		if(cookieManager!=null){
-			cookieManager.removeSessionCookie();
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				cookieManager.removeAllCookies(null);
+			} else {
+				//noinspection deprecation
+				cookieManager.removeAllCookie();
+			}
 			cookieManager = null;
 		}
 	}

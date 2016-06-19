@@ -17,6 +17,7 @@ import jp.redmine.redmineclient.form.helper.RedmineWebViewClient;
 public class RedmineWebviewForm extends FormHelper {
 	private static String DB_NAME="RedmineWebViewCache.db";
 	public WebView  webView ;
+	RedmineWebViewClient webClient;
 
 	public RedmineWebviewForm(Activity view){
 		setup(view);
@@ -28,12 +29,10 @@ public class RedmineWebviewForm extends FormHelper {
 
 	@SuppressLint({ "SetJavaScriptEnabled" })
 	public void setupEvents(){
-		webView.setVerticalScrollbarOverlay(true);
 		WebChromeClient client = new WebChromeClient();
 		webView.setWebChromeClient(client);
 		android.webkit.WebSettings setting = webView.getSettings();
 		//Setup built-in features
-		setting.setBuiltInZoomControls(true);
 		setting.setUseWideViewPort(true);
 		setting.setLoadWithOverviewMode(true);
 		setting.setDomStorageEnabled(true);
@@ -63,14 +62,19 @@ public class RedmineWebviewForm extends FormHelper {
 			webView.destroy();
 			webView = null;
 		}
+		if(webClient != null){
+			webClient.resetCookie();
+			webClient = null;
+		}
 	}
 
 	public void loadUrl(RedmineConnection con, String url, RedmineWebViewClient.IConnectionEventHadler handler){
 		Builder data = Uri.parse(url).buildUpon();
-		RedmineWebViewClient webClient = new RedmineWebViewClient(con);
+		webClient = new RedmineWebViewClient(con);
 		webClient.setEventHandler(handler);
 		webView.setWebViewClient(webClient);
 		webView.loadUrl(data.toString(), RedmineWebViewClient.generateRedmineHeader(con));
+
 	}
 
 	public String getUrl(){

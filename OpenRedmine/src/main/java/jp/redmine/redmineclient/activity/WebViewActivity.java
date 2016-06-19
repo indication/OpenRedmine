@@ -43,7 +43,8 @@ public class WebViewActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.page_connection_web);
 		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
+	    if(actionBar != null)
+			actionBar.setDisplayHomeAsUpEnabled(true);
 
 		form = new RedmineWebviewForm(this);
 		form.setupEvents();

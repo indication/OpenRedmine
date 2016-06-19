@@ -230,7 +230,7 @@ v1.6 - 12 - 2013/02/27
 ===========
 - Issue list keep scroll point.
 - Fix filter shows nothing on the list.
-- Upgeade android api level.
+- Upgrade android api level.
 
 v1.5 - 10 - 2013/02/23
 ===========

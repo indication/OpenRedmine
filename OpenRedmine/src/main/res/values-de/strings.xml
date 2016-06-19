@@ -28,6 +28,8 @@
   <string name="preference_category_appearance">Aussehen</string>
   <string name="preference_category_appearance_themes">Theme</string>
   <string name="menu_refresh">Aktualisierungsliste</string>
+  <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
+  <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="menu_setting_permit_unsafe">Erlaube unsichere SSL Verbindung</string>
   <string name="menu_setting_label_certkey">Zertifikatdatei (Optional)</string>
   <string name="menu_setting_message_certkey">HINWEIS: Wenn Sie einen MD5 Zertifikatswert eingeben, überprüfen Sie, dass dieser den gleichen Fingerabdruck hat.</string>

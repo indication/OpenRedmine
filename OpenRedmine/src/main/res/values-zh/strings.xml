@@ -28,6 +28,8 @@
   <string name="preference_category_appearance">外观</string>
   <string name="preference_category_appearance_themes">主题</string>
   <string name="menu_refresh">刷新列表</string>
+  <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
+  <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="menu_setting_permit_unsafe">允许不安全的SSL连接</string>
   <string name="menu_setting_label_certkey">认证密钥（可选）</string>
   <string name="menu_setting_message_certkey">NOTE: 如果你使用 MD5 认证, 验证认证同指纹.</string>

@@ -28,6 +28,8 @@
   <string name="preference_category_appearance">表示</string>
   <string name="preference_category_appearance_themes">テーマ</string>
   <string name="menu_refresh">更新</string>
+  <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
+  <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="menu_setting_permit_unsafe">信頼できないSSL接続を許可する</string>
   <string name="menu_setting_label_certkey">証明書キー (オプション)</string>
   <string name="menu_setting_message_certkey">メモ: 証明書のMD5キーを入力した場合、証明書が同じであるか検証します</string>

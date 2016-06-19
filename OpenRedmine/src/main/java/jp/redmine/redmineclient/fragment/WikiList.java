@@ -171,7 +171,9 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING)
 			menu_refresh.setEnabled(false);
-		setupSearchBar(menu);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			setupSearchBar(menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 

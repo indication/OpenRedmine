@@ -120,5 +120,5 @@
   <string name="activity_not_found">没有找到这个文件.</string>
   <string name="recent_issues">最近的任务</string>
   <string name="web">网页</string>
-  <string name="contributors">Contributors</string>
+  <string name="contributors">贡献者</string>
 </resources>

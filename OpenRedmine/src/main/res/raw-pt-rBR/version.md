@@ -9,6 +9,10 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+- Changed connection method to android default (Remove org.apache.http.legacy)
+- Fix crash on update issue/time entry
+- Fix remove cookies when access via webclient (#180)
+- Fix Google Play Warning: SSL Error Handler Vulnerability (#174)
 
 v3.18 - 51 - 31/01/2016
 ===========

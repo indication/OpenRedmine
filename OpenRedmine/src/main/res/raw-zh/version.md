@@ -10,6 +10,14 @@ OpenRedmine
 下一发布版本
 ===========
 
+v3.19 - 52 - 2016/06/30
+===========
+- Changed connection method to android default (Remove org.apache.http.legacy)
+- Fix crash on update issue/time entry
+- Fix remove cookies when access via webclient (#180)
+- Fix Google Play Warning: SSL Error Handler Vulnerability (#174)
+- Update German translation by Atalanttore
+
 v3.18 - 51 - 2016/01/31
 ===========
 - Update Portuguese-Brazil translation by etcho
@@ -38,8 +46,8 @@ v3.15 - 48 - 2015/02/07
 v3.14 - 47 - 2014/10/29
 ===========
 - 获取观察者(#132)
-- Fix misc (#142)
- - Support new API on WebView fragment
+- 修复 misc(#142)
+ - 在WebView分段支持新的API
  - 关闭连接
  - 删除无用代码
  - 支持 android studio 0.9.1
@@ -99,8 +107,8 @@ v3.7 - 39 - 2014/02/28
 
 v3.6 - 38 - 2014/02/15
 ===========
-- Add russian translation by box789
-- Add project favorites list
+- box789增加russian翻译
+- 增加项目收藏列表
 - Fix appearance on edit connection
 
 v3.5 - 37 - 2014/02/02

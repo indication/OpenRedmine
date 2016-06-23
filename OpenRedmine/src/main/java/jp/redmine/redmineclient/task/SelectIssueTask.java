@@ -138,8 +138,6 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 			updateFilter(mFilter,filter);
 		} catch (InterruptedException e) {
 			publishError(e);
-		} finally {
-			client.close();
 		}
 
 		return null;

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OpenRedmine/OpenRedmine.iml" filepath="$PROJECT_DIR$/OpenRedmine/OpenRedmine.iml" />
       <module fileurl="file://$PROJECT_DIR$/OpenRedmineProject.iml" filepath="$PROJECT_DIR$/OpenRedmineProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Transdroid/Transdroid.iml" filepath="$PROJECT_DIR$/Transdroid/Transdroid.iml" />
     </modules>
   </component>
 </project>

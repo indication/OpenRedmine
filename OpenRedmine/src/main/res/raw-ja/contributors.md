@@ -2,36 +2,36 @@
 ==========
 - [Github](https://github.com/indication/OpenRedmine)
 
-Contributors
+投稿者
 ==========
 
-Thank you for contribution.
+投稿していただきありがとうございます
 
-## Production
+## 製作
 
 - [insink71](https://twitter.com/insink71/statuses/425297982078996480) - Promotion in [redmine wiki](http://www.redmine.org/projects/redmine/wiki/ThirdPartyTools)
 - [ironAss](https://github.com/ironAss) - Screen rotation support #88
 
-## Localization
+## 多言語化
 
-#### Russian
+#### ロシア語
 - [box789](https://github.com/box789)
 
-#### German
+#### ドイツ語
 - [markusr](https://github.com/markusr)
 - [Atalanttore](https://www.transifex.com/user/profile/Atalanttore/)
 - [DJaeger](https://www.transifex.com/user/profile/DJaeger/)
 
-#### Portuguese (Brazil)
+#### ポルトガル語 (ブラジル)
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
-#### Chinese (China)
+#### 中国語 (中国)
 *  [StevenGape](https://github.com/StevenGape) - #171
 
-#### Japanese
+#### 日本語
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 
-#### English
-- (base language)
+#### 英語
+- (ネイティブ)
 
-[You can join localization team via Transifex.](https://www.transifex.com/indication/openredmine/)
+[Transifesを通して翻訳チームに参加することができます。](https://www.transifex.com/indication/openredmine/)

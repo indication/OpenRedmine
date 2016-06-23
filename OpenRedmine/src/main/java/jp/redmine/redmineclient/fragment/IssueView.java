@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -59,7 +58,6 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	private AttachmentActionInterface mAttachmentListener;
 	private IssueViewForm formTitle;
 	private IssueCommentForm formComment;
-	private ProgressDialog dialog;
 
 	public IssueView(){
 		super();
@@ -91,20 +89,18 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		Activity activity = getActivity();
 		mListener = ActivityHandler.getHandler(activity, IssueActionInterface.class);
 		mActionListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
 		mTimeEntryListener = ActivityHandler.getHandler(activity, TimeentryActionInterface.class);
 		mAttachmentListener = ActivityHandler.getHandler(activity, AttachmentActionInterface.class);
-	}
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
 
         list.addFooterView(mFooter);
 
-		adapter = new IssueStickyListAdapter(getHelper(),getActivity(), mActionListener);
+		adapter = new IssueStickyListAdapter(getHelper(),activity, mActionListener);
         list.setAdapter(adapter);
 		
         list.setFastScrollEnabled(true);
@@ -125,11 +121,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 				IssueArgument intent = new IssueArgument();
 				intent.setArgument(getArguments());
 
-				RedmineConnection connection = null;
-				ConnectionModel mConnection = new ConnectionModel(getActivity());
-				connection = mConnection.getItem(intent.getConnectionId());
-				mConnection.finalize();
-
+				RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
 				RedmineJournal journal = new RedmineJournal();
 				journal.setIssueId((long) intent.getIssueId());
 				formComment.getValue(journal);
@@ -149,27 +141,22 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 						super.onErrorRequest(statuscode);
 					}
 					@Override
-					protected void onPreExecute() {
-						dialog.show();
-						super.onPreExecute();
-					}
-					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						if (dialog.isShowing())
-							dialog.dismiss();
+						if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing())
+							mSwipeRefreshLayout.setRefreshing(false);
 						if(isSuccess){
-							Toast.makeText(getActivity(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 							formComment.clear();
 						}
 					}
 				};
+				if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+					mSwipeRefreshLayout.setRefreshing(true);
 				post.execute(journal);
 			}
 		});
 
-		dialog = new ProgressDialog(getActivity());
-		dialog.setMessage(getString(R.string.menu_settings_uploading));
 
 	}
 	@Override
@@ -273,9 +260,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			IssueArgument intent = new IssueArgument();
 			intent.setArgument(getArguments());
 			int connectionid = intent.getConnectionId();
-			ConnectionModel mConnection = new ConnectionModel(getActivity());
-			connection = mConnection.getItem(connectionid);
-			mConnection.finalize();
+			connection = ConnectionModel.getItem(getActivity(), connectionid);
 		}
 		// can use UI thread here
 		@Override
@@ -283,8 +268,13 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
+			if(mSwipeRefreshLayout != null)
+				mSwipeRefreshLayout.post(new Runnable() {
+					@Override
+					public void run() {
+						mSwipeRefreshLayout.setRefreshing(true);
+					}
+				});
 		}
 
 		// can use UI thread here
@@ -308,7 +298,12 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
+				mSwipeRefreshLayout.post(new Runnable() {
+					@Override
+					public void run() {
+						mSwipeRefreshLayout.setRefreshing(false);
+					}
+				});
 		}
 	}
 	@Override

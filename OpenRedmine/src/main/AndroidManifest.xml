@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jp.redmine.redmineclient"
+		  xmlns:tools="http://schemas.android.com/tools"
+		  package="jp.redmine.redmineclient"
 	android:installLocation="auto" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,36 +32,50 @@
 			</intent-filter>
         </activity>
         <activity android:name=".activity.ConnectionListActivity"
-                  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 	    <activity android:name=".activity.ConnectionActivity"
-                      android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+                      android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 		<activity android:name=".activity.ConnectionEditActivity"
-                	  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+                	  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 	    <activity android:name=".activity.ProjectActivity"
-        	      android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+        	      android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 	    <activity android:name=".activity.IssueActivity"
-                      android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+                      android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 	    <activity android:name=".activity.IssueFilterActivity"
-	              android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+	              android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 		<activity android:name=".activity.WikiViewActivity"
-                          android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+                          android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
         <activity android:name=".activity.ConnectionNaviActivity"
-		  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+		  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
         <activity android:name=".activity.FilterViewActivity"
-        	  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+        	  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 		<activity android:name=".activity.AttachmentActivity"
-				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+				  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 		<activity android:name=".activity.TimeEntryActivity"
-				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+				  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 		<activity android:name=".activity.KanbanActivity"
-				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+				  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 		<activity android:name=".activity.AboutActivity"
-				  android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+				  android:configChanges="orientation|screenSize|keyboardHidden"
+			/>
 		<activity android:name=".activity.WebViewActivity"
 				  android:configChanges="orientation|screenSize|keyboardHidden" />
 		<provider
 			android:name=".provider.Attachment"
 			android:authorities="jp.redmine.redmineclient.attachment"
+			tools:ignore="ExportedContentProvider"
 			/>
     </application>
 

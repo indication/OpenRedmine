@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.form.helper;
 
 import android.net.http.SslError;
+import android.os.Build;
 import android.webkit.CookieManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
@@ -34,13 +35,14 @@ public class RedmineWebViewClient extends WebViewClient {
 		mHandler = handler;
 	}
 
-	public void Destroy(){
-		resetCookie();
-	}
-
-	protected void resetCookie(){
+	public void resetCookie(){
 		if(cookieManager!=null){
-			cookieManager.removeSessionCookie();
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				cookieManager.removeAllCookies(null);
+			} else {
+				//noinspection deprecation
+				cookieManager.removeAllCookie();
+			}
 			cookieManager = null;
 		}
 	}

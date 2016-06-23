@@ -28,6 +28,8 @@
 	<string name="preference_category_appearance">Appearance</string>
 	<string name="preference_category_appearance_themes">Theme</string>
 	<string name="menu_refresh">Refresh list</string>
+	<string name="menu_setting_unsafe_title">Unsafe SSL site</string>
+	<string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
 	<string name="menu_setting_permit_unsafe">Permit unsafe SSL connection</string>
 	<string name="menu_setting_label_certkey">Certification key (Optional)</string>
 	<string name="menu_setting_message_certkey">NOTE: If you input certification MD5 key, validate certification is same fingerprint.</string>

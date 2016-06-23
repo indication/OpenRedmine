@@ -57,26 +57,25 @@ public class SelectIssuePost extends SelectDataPost<List<RedmineIssue>,RedmineIs
 		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		RedmineIssueModel mIssue = new RedmineIssueModel(helper);
 		RemoteUrlIssue url = new RemoteUrlIssue();
-		for(final RedmineIssue item : params){
+		for(final RedmineIssue item : params) {
 			SelectDataTaskPutHandler puthandler = getPutHandler(item);
-			if(item.getIssueId() == null){
-				url.setIssueId((Integer)null);
+			if (item.getIssueId() == null) {
+				url.setIssueId((Integer) null);
 
 				postData(client, url, handler, puthandler);
 			} else {
 				url.setIssueId(item.getIssueId());
 				boolean isSuccess = putData(client, url, handler, puthandler);
-				if(isSuccess && parser.getCount() < 1){
+				if (isSuccess && parser.getCount() < 1) {
 					try {
 						mIssue.refreshItem(connection, item);
 						list.add(item);
 					} catch (SQLException e) {
-						Log.e(TAG,"update issue",e);
+						Log.e(TAG, "update issue", e);
 					}
 				}
 			}
 		}
-		client.close();
 		return list;
 	}
 

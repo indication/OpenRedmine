@@ -28,6 +28,8 @@
   <string name="preference_category_appearance">Оформление</string>
   <string name="preference_category_appearance_themes">Тема</string>
   <string name="menu_refresh">Обновить список</string>
+  <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
+  <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="menu_setting_permit_unsafe">Разрешить небезопасное SSL-соединение</string>
   <string name="menu_setting_label_certkey">Ключ сертификации (необязательно)</string>
   <string name="menu_setting_message_certkey">ВНИМАНИЕ: При вводе сертификации ключ MD5, проверки сертификация же отпечатков пальцев.</string>

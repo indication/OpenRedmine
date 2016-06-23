@@ -46,12 +46,6 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		setHasOptionsMenu(true);
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
-
-	}
 	protected void cancelTask(){
 		// cleanup task
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING){
@@ -78,6 +72,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), WebviewActionInterface.class);
 		getListView().setFastScrollEnabled(true);
 		getListView().setTextFilterEnabled(true);
 
@@ -165,9 +160,7 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
-		ConnectionModel mConnection = new ConnectionModel(getActivity());
-		RedmineConnection connection = mConnection.getItem(id);
-		mConnection.finalize();
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
 		task.execute("");
 	}
@@ -178,7 +171,9 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		menu_refresh = menu.findItem(R.id.menu_refresh);
 		if(task != null && task.getStatus() == AsyncTask.Status.RUNNING)
 			menu_refresh.setEnabled(false);
-		setupSearchBar(menu);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			setupSearchBar(menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 

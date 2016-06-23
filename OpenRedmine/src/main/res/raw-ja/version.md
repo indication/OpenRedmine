@@ -10,6 +10,14 @@ TODO
 次期リリース
 ===========
 
+v3.19 - 52 - 2016/06/30
+===========
+- Changed connection method to android default (Remove org.apache.http.legacy)
+- Fix crash on update issue/time entry
+- webclient経由でアクセスした際に、クッキーを削除 (#180)
+- Google Play警告: SSLエラーハンドラの脆弱性を修正 (#174)
+- Update German translation by Atalanttore
+
 v3.18 - 51 - 2016/01/31
 ===========
 - Update Portuguese-Brazil translation by etcho

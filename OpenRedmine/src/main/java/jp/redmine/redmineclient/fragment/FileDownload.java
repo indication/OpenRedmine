@@ -92,9 +92,7 @@ public class FileDownload extends OrmLiteFragment<DatabaseCacheHelper> {
 				RedmineAttachmentModel modelAttachemnt = new RedmineAttachmentModel(getHelper());
 				try {
 					RedmineAttachment attachment = modelAttachemnt.fetchById(instance.getConnectionId(), instance.getAttachmentId());
-					ConnectionModel mConnection = new ConnectionModel(getActivity());
-					RedmineConnection connection = mConnection.getItem(attachment.getConnectionId());
-					mConnection.finalize();
+					RedmineConnection connection = ConnectionModel.getItem(getActivity(), attachment.getConnectionId());
 
 					Uri uri = Uri.parse(attachment.getContentUrl());
 					DownloadManager.Request r = new DownloadManager.Request(uri);

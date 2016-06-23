@@ -52,7 +52,6 @@ public class SelectNewsTask extends SelectDataTask<Void,RedmineProject> {
 			url.setProject(item);
 			fetchData(client, url, handler);
 		}
-		client.close();
 		return null;
 	}
 

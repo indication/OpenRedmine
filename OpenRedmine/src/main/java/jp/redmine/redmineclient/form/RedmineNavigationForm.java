@@ -103,6 +103,10 @@ public class RedmineNavigationForm extends FormHelper {
 			webView.destroy();
 			webView = null;
 		}
+		if(webClient != null){
+			webClient.resetCookie();
+			webClient = null;
+		}
 	}
 
 	protected void stopActivity(){
@@ -163,7 +167,7 @@ public class RedmineNavigationForm extends FormHelper {
 
 		@Override
 		public void onReceivedError( WebView view, int errorCode, String description, String failingUrl ) {
-			Toast.makeText(activity.getApplicationContext(), "ページ読み込みエラー", Toast.LENGTH_LONG).show();
+			Toast.makeText(activity.getApplicationContext(), "Page error", Toast.LENGTH_LONG).show();
 			stopActivity();
 		}
 	}

@@ -40,7 +40,6 @@ public class SelectProjectEnumerationTask extends SelectDataTask<Void,Integer> {
 		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		fetchVersions(client,project);
 		fetchCategory(client,project);
-		client.close();
 		return null;
 	}
 

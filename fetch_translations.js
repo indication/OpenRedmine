@@ -93,12 +93,12 @@ map(objFSO,pathTranslation+"/openredmine.contributorsmd",pathRoot+"/OpenRedmine/
  * inherit from http://stackoverflow.com/questions/4164400/windows-script-host-jscript-how-do-i-download-a-binary-file
  */
 function downloadFile(File,Source,Target){
-	var Object = WScript.CreateObject('MSXML2.XMLHTTP');
+	var Object = WScript.CreateObject('Msxml2.ServerXMLHTTP');
 
-	Object.Open('GET', Source, false);
-	Object.Send();
+	Object.open('GET', Source, false);
+	Object.send();
 
-	if (Object.Status != 200)
+	if (Object.status != 200)
 	{
 		return false;
 	}
@@ -109,7 +109,7 @@ function downloadFile(File,Source,Target){
 	// Establish the Stream
 	Stream.Open();
 	Stream.Type = 1; // adTypeBinary
-	Stream.Write(Object.ResponseBody);
+	Stream.Write(Object.responseBody);
 	Stream.Position = 0;
 
 	// Create an Empty Target File

@@ -98,7 +98,6 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 				offset += parser.getCount() + 1;
 			} while(parser.getCount() == LIMIT);
 		}
-		client.close();
 		return null;
 	}
 

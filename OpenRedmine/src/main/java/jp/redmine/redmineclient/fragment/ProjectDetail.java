@@ -1,6 +1,5 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,12 +29,6 @@ public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	private WebviewActionInterface mListener;
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mListener = ActivityHandler.getHandler(activity, WebviewActionInterface.class);
-
-	}
 	public ProjectDetail(){
 		super();
 	}
@@ -55,6 +48,7 @@ public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
+		mListener = ActivityHandler.getHandler(getActivity(), WebviewActionInterface.class);
 
 		ProjectArgument intent = new ProjectArgument();
 		intent.setArgument(getArguments());

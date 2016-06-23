@@ -8,6 +8,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.http.SslError;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -33,9 +34,14 @@ public class MyWebViewClient extends WebViewClient {
 		mWebView = webview;
 	}
 
-	public void Destroy(){
+	public void resetCookie(){
 		if(cookieManager!=null){
-			cookieManager.removeSessionCookie();
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				cookieManager.removeAllCookies(null);
+			} else {
+				//noinspection deprecation
+				cookieManager.removeAllCookie();
+			}
 			cookieManager = null;
 		}
 	}
@@ -58,9 +64,28 @@ public class MyWebViewClient extends WebViewClient {
 	}
 
 	@Override
-	public void onReceivedSslError( WebView view, SslErrorHandler handler, SslError error ) {
+	public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error ) {
 		isSSLError = true;
-		handler.proceed();
+
+		final Builder dialog = new AlertDialog.Builder(mContext);
+		dialog.setTitle(R.string.menu_setting_unsafe_title)
+				.setView(view)
+				.setMessage(R.string.menu_setting_unsafe_confimation)
+				.setCancelable(false)
+				.setPositiveButton(view.getContext().getString(android.R.string.ok)
+						, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								handler.proceed();
+							}
+						})
+				.setNegativeButton(view.getContext().getString(android.R.string.cancel)
+						, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								handler.cancel();
+							}
+						})
+				.create().show();
 	}
 
 	@Override
@@ -96,9 +121,9 @@ public class MyWebViewClient extends WebViewClient {
 		final HttpAuthDialogForm form = new HttpAuthDialogForm(view);
 		form.setUserID(UserID);
 		form.setPassword(Password);
-		final Builder mHttpAuthDialog = new AlertDialog.Builder((Activity)mContext);
+		final Builder mHttpAuthDialog = new AlertDialog.Builder(mContext);
 
-		mHttpAuthDialog.setTitle(view.getContext().getString(R.string.menu_setting_check_auth))
+		mHttpAuthDialog.setTitle(R.string.menu_setting_check_auth)
 			.setView(view)
 			.setCancelable(false)
 			.setPositiveButton(view.getContext().getString(android.R.string.ok)

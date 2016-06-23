@@ -75,7 +75,6 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 				}
 				offset += limit;
 			} while(count >= limit);
-			client.close();
 		}
 		return null;
 	}

@@ -10,6 +10,14 @@ Coisas a serem feitas
 Próxima Release
 ===========
 
+v3.19 - 52 - 2016/06/30
+===========
+- Changed connection method to android default (Remove org.apache.http.legacy)
+- Fix crash on update issue/time entry
+- Fix remove cookies when access via webclient (#180)
+- Fix Google Play Warning: SSL Error Handler Vulnerability (#174)
+- Update German translation by Atalanttore
+
 v3.18 - 51 - 31/01/2016
 ===========
 - Update Portuguese-Brazil translation by etcho

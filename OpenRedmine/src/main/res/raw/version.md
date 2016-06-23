@@ -10,6 +10,14 @@ TODO
 Next Release
 ===========
 
+v3.19 - 52 - 2016/06/30
+===========
+- Changed connection method to android default (Remove org.apache.http.legacy)
+- Fix crash on update issue/time entry
+- Fix remove cookies when access via webclient (#180)
+- Fix Google Play Warning: SSL Error Handler Vulnerability (#174)
+- Update German translation by Atalanttore
+
 v3.18 - 51 - 2016/01/31
 ===========
 - Update Portuguese-Brazil translation by etcho
@@ -226,7 +234,7 @@ v1.6 - 12 - 2013/02/27
 ===========
 - Issue list keep scroll point.
 - Fix filter shows nothing on the list.
-- Upgeade android api level.
+- Upgrade android api level.
 
 v1.5 - 10 - 2013/02/23
 ===========

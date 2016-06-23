@@ -1,6 +1,6 @@
 package jp.redmine.redmineclient.fragment;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -42,7 +42,7 @@ public class ConnectionList extends ListFragment {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
+	public void onAttach(Context activity) {
 		super.onAttach(activity);
 		mListener = ActivityHandler.getHandler(activity, ConnectionActionInterface.class);
 
@@ -136,8 +136,9 @@ public class ConnectionList extends ListFragment {
 			{
 				String path = DatabaseCacheHelper.getDatabasePath(getActivity().getApplicationContext());
 				File file = new File(path);
-				file.delete();
-				Log.d("Cache Deleted",path);
+				if(file.delete()) {
+					Log.d("Cache Deleted", path);
+				}
 				getActivity().finish();
 				//@todo show dialog
 				return true;

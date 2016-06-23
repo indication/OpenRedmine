@@ -58,7 +58,6 @@ public class SelectTimeEntriesTask extends SelectDataTask<Void,Integer> {
 				offset += parser.getCount() + 1;
 			} while(parser.getCount() == LIMIT);
 		}
-		client.close();
 		return null;
 	}
 

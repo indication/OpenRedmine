@@ -107,9 +107,7 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 			return null;
 		}
 		try {
-			ConnectionModel mConnection = new ConnectionModel(getContext());
-			RedmineConnection connection = mConnection.getItem(attachment.getConnectionId());
-			mConnection.finalize();
+			RedmineConnection connection = ConnectionModel.getItem(getContext(), attachment.getConnectionId());
 			client = new SelectDataTaskRedmineConnectionHandler(connection);
 			Fetcher.ContentResponseErrorHandler errorHandler = new Fetcher.ContentResponseErrorHandler() {
 				@Override
@@ -141,9 +139,6 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 			Log.e(TAG, "SQL Error: " + uri.toString(), e);
 		} catch (InterruptedException e) {
 			Log.e(TAG, "Thread exception", e);
-		} finally {
-			if (client != null)
-				client.close();
 		}
 		return null;
 	}

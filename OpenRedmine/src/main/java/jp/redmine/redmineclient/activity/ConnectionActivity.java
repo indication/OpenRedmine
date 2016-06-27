@@ -17,6 +17,7 @@ import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.IssueList;
+import jp.redmine.redmineclient.fragment.ProjectFavoriteList;
 import jp.redmine.redmineclient.fragment.ProjectList;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
@@ -89,6 +90,20 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 		} catch (SQLException e) {
 			Log.e(TAG,"fetchCurrentUser", e);
 		}
+
+		ConnectionArgument argFavorite = new ConnectionArgument();
+		argFavorite.setArgument();
+		argFavorite.importArgument(intent);
+		list.add((new CorePage<ConnectionArgument>() {
+					@Override
+					public Fragment getRawFragment(ConnectionArgument param) {
+						return ProjectFavoriteList.newInstance(param);
+					}
+				})
+						.setParam(argFavorite)
+						.setName(getString(R.string.favorite))
+						.setIcon(android.R.drawable.btn_star)
+		);
 
 		return list;
 	}

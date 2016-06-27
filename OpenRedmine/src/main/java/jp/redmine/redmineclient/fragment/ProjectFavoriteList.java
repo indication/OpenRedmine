@@ -15,6 +15,7 @@ import jp.redmine.redmineclient.adapter.FavoriteProjectListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
@@ -27,7 +28,11 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 	}
 
 	static public ProjectFavoriteList newInstance(){
+		return new ProjectFavoriteList();
+	}
+	static public ProjectFavoriteList newInstance(ConnectionArgument arg){
 		ProjectFavoriteList instance = new ProjectFavoriteList();
+		instance.setArguments(arg.getArgument());
 		return instance;
 	}
 
@@ -45,6 +50,10 @@ public class ProjectFavoriteList extends OrmLiteFragment<DatabaseCacheHelper> {
 		list.setFastScrollEnabled(true);
 
 		FavoriteProjectListAdapter adapter = new FavoriteProjectListAdapter(getHelper(), getActivity());
+		ConnectionArgument arg = new ConnectionArgument();
+		arg.setArgument(getArguments());
+		if(arg.getConnectionId() != -1)
+			adapter.setupParameter(arg.getConnectionId());
 
 		list.setAdapter(adapter);
 		adapter.notifyDataSetChanged();

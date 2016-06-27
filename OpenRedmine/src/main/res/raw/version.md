@@ -9,6 +9,7 @@ TODO
 
 Next Release
 ===========
+- Add favorite list to connection
 
 v3.19 - 52 - 2016/06/30
 ===========

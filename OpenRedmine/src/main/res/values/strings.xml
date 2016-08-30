@@ -100,7 +100,7 @@
 	<string name="changes_remove_from">Remove <s>%2$s</s> from <b>%1$s</b></string>
 	<string name="remote_401">Authentication is required. Check your role or API key.</string>
 	<string name="remote_403">Something wrong with connection settings.</string>
-	<string name="remote_404">Something with wrong with connection. Try later.</string>
+	<string name="remote_404">Something went wrong with connection. Try later.</string>
 	<string name="remote_407">Proxy connection is not supported yet</string>
 	<string name="remote_4xx">Something wrong with connection. Please check access by browser.</string>
 	<string name="remote_5xx">Something wrong with server. Please check access by browser.</string>

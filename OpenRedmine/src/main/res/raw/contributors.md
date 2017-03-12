@@ -28,6 +28,9 @@ Thank you for contribution.
 #### Chinese (China)
 *  [StevenGape](https://github.com/StevenGape) - #171
 
+#### Turkish (Turkey)
+- [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
+
 #### French
 - [MagicFab](https://www.transifex.com/user/profile/MagicFab/)
 

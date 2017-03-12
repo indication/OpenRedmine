@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="preference_appearance_themes_entries">
+    <item>Varsayılan</item>
+    <item>Koyu</item>
+    <item>Aydınlık</item>
+    <item>Tamamen Aydınlık</item>
+  </string-array>
+  <string-array name="preference_appearance_themes_values">
+    <item>default</item>
+    <item>dark</item>
+    <item>light</item>
+    <item>hololight</item>
+  </string-array>
+</resources>

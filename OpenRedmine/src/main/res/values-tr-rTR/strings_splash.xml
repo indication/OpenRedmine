@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">OpenRedmine</string>
+  <string name="app_description"><![CDATA[
+OpenRedmine, android Redmine istemcisidir.
+]]></string>
+  <string name="product">Ürün</string>
+  <string name="message_first_time"><![CDATA[İndirdiğiniz için Teşekkürler.
+
+]]></string>
+  <string name="license">Lisans</string>
+  <string name="footer_version">%1$s v%2$s[%3$d] - %4$s</string>
+</resources>

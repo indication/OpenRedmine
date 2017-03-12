@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '25.0.0'
     testBuildType "debug"
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 23
 
         versionCode 52
@@ -50,10 +50,12 @@ android {
 }
 
 dependencies {
-    androidTestCompile 'com.google.guava:guava:19.0'
+    androidTestCompile 'com.google.guava:guava:20.0'
     androidTestCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:animated-vector-drawable:23.2.0'
+    compile 'com.android.support:design:23.2.0'
     compile 'com.andreabaccega:android-form-edittext:1.2.1'
     compile 'se.emilsjolander:stickylistheaders:2.7.0'
     compile 'com.j256.ormlite:ormlite-core:4.48'

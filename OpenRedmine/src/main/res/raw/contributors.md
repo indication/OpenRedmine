@@ -28,6 +28,9 @@ Thank you for contribution.
 #### Chinese (China)
 *  [StevenGape](https://github.com/StevenGape) - #171
 
+#### French
+- [MagicFab](https://www.transifex.com/user/profile/MagicFab/)
+
 #### Japanese
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

@@ -1,0 +1,37 @@
+Projet
+==========
+- [Github](https://github.com/indication/OpenRedmine)
+
+Contributeurs
+==========
+
+Merci pour votre contribution
+
+## Production
+
+- [insink71](https://twitter.com/insink71/statuses/425297982078996480) - Promotion sur [le wiki Redmine wiki](http://www.redmine.org/projects/redmine/wiki/ThirdPartyTools)
+- [ironAss](https://github.com/ironAss) - Support de rotation d'écran #88
+
+## Localization
+
+#### Russe
+- [box789](https://github.com/box789)
+
+#### Allemand
+- [markusr](https://github.com/markusr)
+- [Atalanttore](https://www.transifex.com/user/profile/Atalanttore/)
+- [DJaeger](https://www.transifex.com/user/profile/DJaeger/)
+
+#### Portugais (Brésil)
+- [etcho](https://www.transifex.com/user/profile/etcho/)
+
+#### Chinois (Chine)
+*  [StevenGape](https://github.com/StevenGape) - #171
+
+#### Japonais
+- [in_dow](https://www.transifex.com/user/profile/in_dow/)
+
+#### Anglais
+- (langue de base)
+
+[Vous pouvez rejoindre l'équipe de traduction via Transifex.](https://www.transifex.com/indication/openredmine/)

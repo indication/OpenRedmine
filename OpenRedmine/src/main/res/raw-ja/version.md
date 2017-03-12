@@ -12,16 +12,16 @@ TODO
 
 v3.19 - 52 - 2016/06/30
 ===========
-- Changed connection method to android default (Remove org.apache.http.legacy)
-- Fix crash on update issue/time entry
+- 接続方法をandroid標準へ変更 (org.apache.http.legacyを削除)
+- チケット/時間記録の更新時にクラッシュする不具合を修正
 - webclient経由でアクセスした際に、クッキーを削除 (#180)
 - Google Play警告: SSLエラーハンドラの脆弱性を修正 (#174)
-- Update German translation by Atalanttore
+- Atalanttoreによってドイツ語を更新 
 
 v3.18 - 51 - 2016/01/31
 ===========
-- Update Portuguese-Brazil translation by etcho
-- Add Chinese translation by StevenGape (#171)
+- etchoによってポルトガル語(ブラジル)を更新
+- StevenGape により中国語翻訳を追加(#171)
 
 v3.17 - 50 - 2015/12/31
 ===========

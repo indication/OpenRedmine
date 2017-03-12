@@ -1,8 +1,11 @@
 //var Source = WScript.Arguments.Item(0);
 //var Target = WScript.Arguments.Item(1);
 var settingTransifexProjectUrl = "https://www.transifex.com/projects/p/openredmine";
-var settingTransifexClient = "http://files.transifex.com/transifex-client/0.10/tx.exe";
+var settingTransifexClient = "http://files.transifex.com/transifex-client/0.11/tx.exe";
+var settingTransifexName = "tx.exe";
 var settingTransifexHost = "https://www.transifex.com";
+var settingXmlComplexClient = "https://github.com/indication/XmlComplex/releases/download/v1.0.1.0/XmlComplex.exe";
+var settingXmlComplexName = "XmlComplex.exe";
 
 
 var objWS = WScript.CreateObject("WScript.Shell");
@@ -19,7 +22,7 @@ if(!objFSO.FolderExists(pathWork)){
 }
 
 //fetch tx client
-var pathTxClient = objFSO.BuildPath(pathWork,"tx.exe");
+var pathTxClient = objFSO.BuildPath(pathWork,settingTransifexName);
 if(!objFSO.FileExists(pathTxClient)){
 	d("Download",settingTransifexClient);
 	if(!downloadFile(objFSO, settingTransifexClient ,pathTxClient)){
@@ -27,6 +30,17 @@ if(!objFSO.FileExists(pathTxClient)){
 	}
 	d("Download done",pathTxClient);
 }
+//fetch xmlcmplex
+var pathXmlComplex = objFSO.BuildPath(pathWork,settingXmlComplexName);
+if(!objFSO.FileExists(pathXmlComplex))
+{
+	d("Download",settingXmlComplexClient);
+	if(!downloadFile(objFSO, settingXmlComplexClient ,pathXmlComplex)){
+		e("Cannot download client. Abort",settingXmlComplexClient);
+	}
+	d("Download done",pathXmlComplex);
+}
+
 
 //create manifest to setup transifex
 var pathBatch = objFSO.BuildPath(pathWork,"fetch.bat");
@@ -47,7 +61,7 @@ var objTextFile = objFSO.CreateTextFile(pathBatch, true);
 objTextFile.WriteLine("@echo off");
 objTextFile.WriteLine("cd " + pathWork);
 objTextFile.WriteLine(isSkipInit + "echo transifex initalize...");
-objTextFile.WriteLine(isSkipInit + "tx init --host=" + settingTransifexHost);
+objTextFile.WriteLine(isSkipInit + settingTransifexName + " init --host=" + settingTransifexHost);
 objTextFile.WriteLine(isSkipInit + "echo.");
 objTextFile.WriteLine(isSkipInit + "echo.");
 objTextFile.WriteLine("echo setup transifex: " + settingTransifexProjectUrl);
@@ -55,9 +69,9 @@ objTextFile.WriteLine("tx set --auto-remote " + settingTransifexProjectUrl);
 objTextFile.WriteLine("echo.");
 objTextFile.WriteLine("echo.");
 objTextFile.WriteLine("echo fetch data...");
-objTextFile.WriteLine("tx pull  -a -s");
-objTextFile.WriteLine("echo done. Press ANY key to continue");
-objTextFile.WriteLine("pause");
+objTextFile.WriteLine(settingTransifexName + " pull  -a -s");
+//objTextFile.WriteLine("echo done. Press ANY key to continue");
+//objTextFile.WriteLine("pause");
 objTextFile.WriteLine("");
 objTextFile.Close();
 
@@ -78,14 +92,19 @@ if(!objFSO.FolderExists(pathTranslation)){
 	e("Folder is not exists. Failed to fetch data",pathTranslation);
 }
 
+//pre-check translation files is complete (xml only)
+mergeTranslation(objFSO, objWS, pathXmlComplex, pathTranslation+"/openredmine.strings_splashxml", pathTranslation+"/openredmine.strings_splashxml_merge", "en.xml");
+mergeTranslation(objFSO, objWS, pathXmlComplex, pathTranslation+"/openredmine.strings_themesxml", pathTranslation+"/openredmine.strings_themesxml_merge", "en.xml");
+mergeTranslation(objFSO, objWS, pathXmlComplex, pathTranslation+"/openredmine.stringsxml-49", pathTranslation+"/openredmine.stringsxml-49_merge", "en.xml");
+
+
 //distribute translations to specific place
-map(objFSO,pathTranslation+"/openredmine.strings_splashxml",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings_splash.xml");
-map(objFSO,pathTranslation+"/openredmine.strings_themesxml",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings_themes.xml");
-map(objFSO,pathTranslation+"/openredmine.stringsxml-49",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings.xml");
+map(objFSO,pathTranslation+"/openredmine.strings_splashxml_merge",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings_splash.xml");
+map(objFSO,pathTranslation+"/openredmine.strings_themesxml_merge",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings_themes.xml");
+map(objFSO,pathTranslation+"/openredmine.stringsxml-49_merge",pathRoot+"/OpenRedmine/src/main/res/values-XX","strings.xml");
 map(objFSO,pathTranslation+"/openredmine.storemd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","store.md");
 map(objFSO,pathTranslation+"/openredmine.versionmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","version.md");
 map(objFSO,pathTranslation+"/openredmine.contributorsmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","contributors.md");
-
 //WScript.Echo("DONE!");
 
 
@@ -135,9 +154,35 @@ function e(title,str){
 	WScript.Quit();
 }
 
+function mergeTranslation(fso, objWS, merger, pathInput, pathExport, basefile){
+	var folderpath = parsePath(fso, pathInput);
+	var folderfiles = new Enumerator(fso.GetFolder(folderpath).Files);
+	if(!fso.FolderExists(pathExport)){
+		fso.CreateFolder(pathExport);
+	}
+	for (; !folderfiles.atEnd(); folderfiles.moveNext()){
+		var pathFromFile = folderfiles.item();
+		var itemname = fso.GetFileName(pathFromFile);
+		var pathTargetFile = parsePath(fso, pathExport + "/" + itemname);
+		if (itemname.toLowerCase() == basefile.toLowerCase())
+			continue;
+		var cmd = (new Array(merger, 
+				"-e=UTF-8",
+				"-n=LF",
+				"\"-o=" + pathTargetFile + "\"",
+				"\"" + pathFromFile + "\"",
+				"\"" + parsePath(fso, pathInput + "/" + basefile) + "\"",
+				""
+			)).join(" ");
+		d("transcode",cmd);
+		//WScript.Echo("transcode" + ": " + cmd);
+		objWS.Run(cmd,1,true);
+	}
+}
 
-function map(fso,pathFrom,pathToFoler,pathToFile){
-	var pathTargetFolder = parsePath(fso, pathToFoler);
+
+function map(fso,pathFrom,pathToFolder,pathToFile){
+	var pathTargetFolder = parsePath(fso, pathToFolder);
 	var folder = fso.GetFolder(parsePath(fso, pathFrom));
 	var folderfiles = new Enumerator(folder.Files);
 	for (; !folderfiles.atEnd(); folderfiles.moveNext()){

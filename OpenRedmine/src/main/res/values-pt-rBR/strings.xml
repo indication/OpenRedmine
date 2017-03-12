@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="menu_settings">Configurações</string>
   <string name="menu_access_to">Acessar</string>
@@ -28,8 +28,8 @@
   <string name="preference_category_appearance">Aparência</string>
   <string name="preference_category_appearance_themes">Tema</string>
   <string name="menu_refresh">Atualizar lista</string>
-  <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
-  <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
+  <string name="menu_setting_unsafe_title">Site sem segurança SSL</string>
+  <string name="menu_setting_unsafe_confimation">Conectar no site sem segurança SSL</string>
   <string name="menu_setting_permit_unsafe">Permitir conexão através de SSL não seguro</string>
   <string name="menu_setting_label_certkey">Chave de certificação (Opcional)</string>
   <string name="menu_setting_message_certkey">NOTA: Caso você informe uma chave de certificação MD5, a certificação de validade é a mesma chave.</string>
@@ -97,7 +97,7 @@
   <string name="changes_remove_from">Remover <s>%2$s</s> de <b>%1$s</b></string>
   <string name="remote_401">É preciso se autenticar. Verifique seu papel ou chave de API.</string>
   <string name="remote_403">Existe algo de errado com as configurações de conexão.</string>
-  <string name="remote_404">Existe algo de errado com sua conexão. Tente novamente mais tarde.</string>
+  <string name="remote_404">Ocorreu um erro durante a conexão. Tente mais tarde.</string>
   <string name="remote_407">Conexão por proxy ainda não é suportada</string>
   <string name="remote_4xx">Existe algum problema com a conexão. Por favor tente acessar via navegador.</string>
   <string name="remote_5xx">Existe algum problema com o servidor. Por favor tente acessar pelo navegador.</string>

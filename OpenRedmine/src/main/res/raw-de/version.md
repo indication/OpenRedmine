@@ -41,7 +41,7 @@ v3.16 - 49 - 18.11.2015
 v3.15 - 48 - 07.02.2015
 ===========
 - Deutsche Übersetzung von markusr hinzufügen
-- Support journal relations (#151)
+- Journal-Relationen unterstützen (#151)
 
 v3.14 - 47 - 29.10.2014
 ===========
@@ -156,7 +156,7 @@ v3.0 - 30 - 12.08.2013
 
 v2.5 - 29 - 03.07.2013
 ===========
-- Show comment area always
+- Kommentarbereich immer anzeigen
 
 v2.4 - 28 - 06.06.2013
 ===========

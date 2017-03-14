@@ -1,16 +1,16 @@
 OpenRedmine
 ===========
-Veröffentlichungschronik
+Release history
 
-NOCH ZU MACHEN
+TODO
 ===========
-- Datum überprüfen, um Fehler zu aktualisieren (#83)
-- Teilen-Schaltfläche auf Frage hinzufügen (#18)
+- Check date to update bug (#83)
+- Add share button on issue (#18)
 
-Nächste Veröffentlichung
+Next Release
 ===========
 
-v3.19 - 52 - 30.06.2016
+v3.19 - 52 - 2016/06/30
 ===========
 - Changed connection method to android default (Remove org.apache.http.legacy)
 - Fix crash on update issue/time entry
@@ -18,66 +18,66 @@ v3.19 - 52 - 30.06.2016
 - Fix Google Play Warning: SSL Error Handler Vulnerability (#174)
 - Update German translation by Atalanttore
 
-v3.18 - 51 - 31.01.2016
+v3.18 - 51 - 2016/01/31
 ===========
-- Übersetzung für Brasilianisches Portugiesisch von etcho aktualisieren
-- Chinesische Übersetzung von StevenGape hinzufügen (#171)
+- Update Portuguese-Brazil translation by etcho
+- Add Chinese translation by StevenGape (#171)
 
-v3.17 - 50 - 31.12.2015
+v3.17 - 50 - 2015/12/31
 ===========
-- Übersetzung für Brasilianisches Portugiesisch von etcho hinzufügen (#169)
-- Suche in Projektliste reparieren (#168)
-- Suche in Wikiliste hinzufügen (#168)
-- Webansicht zu Menü hinzufügen (#167)
+- Add Portuguese-Brazil translation by etcho (#169)
+- Fix search on project list (#168)
+- Add search on wiki list (#168)
+- Add webview to menu (#167)
 
-v3.16 - 49 - 18.11.2015
+v3.16 - 49 - 2015/11/18
 ===========
-- Datumszeitstil "jjjj-MM-tt HH:mm:ss Z" unterstützen (#157)
+- Support date time style "yyyy-MM-dd HH:mm:ss Z" (#157)
 - Support pull-to-refresh-event on IssueView (#157)
 - Fix NumberFormatException (#161) / NullPointerException on IssueEdit (#162)
-- Berechtigungen reduzieren (#160)
+- Reduce permissions (#160)
 - Migrate to appcompat-v7. Remove actionbarsherlock, actionbarpulltorefresh, Thank you for ever. (#144)
 
-v3.15 - 48 - 07.02.2015
+v3.15 - 48 - 2015/02/07
 ===========
-- Deutsche Übersetzung von markusr hinzufügen
-- Journal-Relationen unterstützen (#151)
+- Add German translation by markusr
+- Support journal relations (#151)
 
-v3.14 - 47 - 29.10.2014
+v3.14 - 47 - 2014/10/29
 ===========
-- Abrufbeobachter (#132)
-- Verschiedenes reparieren (#142)
- - Neue API in WebAnsicht-Fragment unterstützen
- - enge Verbindung
- - Nicht verwendeten Code löschen
- - Android Studio 0.9.1 unterstützen
+- Fetch watchers (#132)
+- Fix misc (#142)
+ - Support new API on WebView fragment
+ - Close connection
+ - Delete unused code
+ - Support android studio 0.9.1
 
 
-v3.13 - 45 - 04.10.2014
+v3.13 - 45 - 2014/10/04
 ===========
 - Put jump area to issue  on the project list (#130)
-- Unterstützte Anhangsanbieter (#131, #135)
+- Supported attachment provider (#131, #135)
 - Add recently viewed issue list (#137)
 - Supported deleting connection (#138)
 
 
-v3.12 - 44 - 06.09.2014
+v3.12 - 44 - 2014/09/06
 ===========
 - Support parse Project Status on Redmine 2.5.0 (#71)
 - Show Ndays before ... etc (#28)
 
-v3.11 - 43 - 16.08.2014
+v3.11 - 43 - 2014/08/16
 ===========
-- Projektneuigkeiten anzeigen (#17,#118)
--  Projektseite hinzufügen (#116)
+- Show project news (#17,#118)
+-  Add projectpage (#116)
 -  Refactor wiki (#114)
  - Support for issue id with brackets
  - Use factory method about XmlPullParser
- -  Übergeordnete Seite hinzufügen
+ -  Add parent page
  - Refactor wiki
 - Fix builds (#115,#119)
 
-v3.10 - 42 - 28.06.2014
+v3.10 - 42 - 2014/06/28
 ===========
 - Add kanban view by long tap project (#108)
 - Fix crashed when tap the recorded time (#103)
@@ -85,186 +85,186 @@ v3.10 - 42 - 28.06.2014
 - Fix not fetch issue detail from remote by pulling ... and more minor bug fix (#112)
 - Allow input certification fingerprint to connection (#112)
 
-v3.9 - 41 - 17.05.2014
+v3.9 - 41 - 2014/05/17
 ===========
-- Problemansichtssymbole reparieren
-- Wikilinkausdrücke reparieren
+- Fix issue view icons
+- Fix wiki link expressions
 - Improved performance by changing issue detail from WebView to TextView
 
-v3.8 - 40 - 27.03.2014
+v3.8 - 40 - 2014/03/27
 ===========
-- Suchoberflächen bei Problemen, Projekten hinzufügen
-- (Interne Änderungen) Android Studio von 0.4.2 auf 0.5.1 aktualisieren
-- Absturz auf Android 2.2 Fehler reparieren (#79,#56)
+- Add search interface on issues, projects
+- (Internal changes) Update Android Studio from 0.4.2 to 0.5.1
+- Bug fix crash on android 2.2 (#79,#56)
 - Bug fix show journal changes (#81)
 - Reduce URL validation on add connection (#84)
 
-v3.7 - 39 - 28.02.2014
+v3.7 - 39 - 2014/02/28
 ===========
 - Fix crash on fetch remote first time (#68)
 - (Internal changes) Move DAO into adapter (#61)
 - Add URL validation (start with schema) to avoid to crash (#67)
 
-v3.6 - 38 - 15.02.2014
+v3.6 - 38 - 2014/02/15
 ===========
-- Russische Übersetzung von box789 hinzufügen
-- Projektfavoritenliste hinzufügen
-- Erscheinungsbild bei Verbindung bearbeiten reparieren
+- Add russian translation by box789
+- Add project favorites list
+- Fix appearance on edit connection
 
-v3.5 - 37 - 02.02.2014
+v3.5 - 37 - 2014/02/02
 ===========
 - Fetch wiki when there is no item
 - Open activity on select issue
 - Fix add new issue
 
-v3.5 - 36 - 24.01.2014
+v3.5 - 36 - 2014/01/24
 ===========
-- Wikiansicht unterstützen
-- Tabs hinzufügen
+- Support wiki view
+- Add tabs
 
-v3.4 - 35 - 10.12.2013
+v3.4 - 35 - 2013/12/10
 ===========
-- Absturz auf Android 2.3 reparieren
+- Fix crash on Android 2.3
 
-v3.4 - 34 - 09.12.2013
+v3.4 - 34 - 2013/12/09
 ===========
 - Switch list via swipe
 - Support pull to refresh
-- (Interne Änderungen) Auf Android Studio portieren
+- (Internal changes) Port to Android Studio
 
-v3.3 - 33 - 06.11.2013
+v3.3 - 33 - 2013/11/06
 ===========
 - Download file related with issues
 - Fixes crash on showing unknown relation type
 
-v3.2 - 32 - 09.09.2013
+v3.2 - 32 - 2013/09/09
 ===========
 - Fix crashes on fetching issue from remote - relative issue reference was wrong
 - Update submodule - android-form-edittext
 
-v3.1 - 31 - 05.09.2013
+v3.1 - 31 - 2013/09/05
 ===========
 - Add sticky view on issue
 - Renewal issue list view
 
-v3.0 - 30 - 12.08.2013
+v3.0 - 30 - 2013/08/12
 ===========
 - Support fragment (internal codes)
 - Fix timezone when fetch items
 - Fix issue view to align to center
 - Show current user on project list
 
-v2.5 - 29 - 03.07.2013
+v2.5 - 29 - 2013/07/03
 ===========
-- Kommentarbereich immer anzeigen
+- Show comment area always
 
-v2.4 - 28 - 06.06.2013
+v2.4 - 28 - 2013/06/06
 ===========
 - Fix sync issues (loop forever)
 - Fix posting in android 2.2 (v1.XmlPullParser support)
 
-v2.3 - 27 - 29.05.2013
+v2.3 - 27 - 2013/05/29
 ===========
 - Add post notes to issue
 - Fix edit issue about version/estimated time
-- Sortierungsschlüssel hinzufügen
+- Add sort key
  - start/due/close date
  - priority/status/tracker
  - fixed_version/category
  - assigned to/author
  - done rate
 
-v2.2 - 26 - 25.05.2013
+v2.2 - 26 - 2013/05/25
 ===========
 - Add post or modify issue
-- Problemliste reparieren
+- Fix issue list
 
-v2.1 - 23 - 20.05.2013
+v2.1 - 23 - 2013/05/20
 ===========
-- Projekt über http synchronisieren reparieren
+- Fix sync project via http
 
-v2.0 - 22 - 14.05.2013
+v2.0 - 22 - 2013/05/14
 ===========
 - Add post or modify time entry
-- Alles der Projekte abrufen
+- Fetch all of projects
 
-v1.14 - 21 - 01.05.2013
+v1.14 - 21 - 2013/05/01
 ===========
-- Sortierungsfunktion hinzufügen
+- Add sort feature
 - Show changes on journals
 - Show link (URLs) on issue details
 
-v1.13 - 20 - 19.04.2013
+v1.13 - 20 - 2013/04/19
 ===========
-- Abrufproblem reparieren
+- Fix fetch issue
 - Jump to issue from project list
 - Add url input helper on connection
 
-v1.12 - 19 - 17.04.2013
+v1.12 - 19 - 2013/04/17
 ===========
-- Aktualisierungsproblem reparieren
+- Fix update issue
 - Jump to issue from description or journal
 - Add tracker to issues list
-- Symbole aktualisieren
+- Refresh icons
 
-v1.11 - 18 - 08.04.2013
+v1.11 - 18 - 2013/04/08
 ===========
-- Zeiteinträge hinzufügen
+- Add time entries
 
-v1.10 - 17 - 31.03.2013
+v1.10 - 17 - 2013/03/31
 ===========
-- Aktualisierungsproblem reparieren
+- Fix update issue
 
-v1.9 - 15 - 25.03.2013
+v1.9 - 15 - 2013/03/25
 ===========
 - Add filter about Priority/Author/Assined
 -  Fix update issue attributes
 
-v1.8 - 14 - 17.03.2013
+v1.8 - 14 - 2013/03/17
 ===========
-- Einstellungen hinzufügen
+- Add settings
 - Fetch all issues(closed issues) by setting. By default fetches only unclosed issues.
 - Add theme switcher
 
-v1.7 - 13 - 14.03.2013
+v1.7 - 13 - 2013/03/14
 ===========
 - Supports textile in issue detail
 
-v1.6 - 12 - 27.02.2013
+v1.6 - 12 - 2013/02/27
 ===========
 - Issue list keep scroll point.
 - Fix filter shows nothing on the list.
 - Upgrade android api level.
 
-v1.5 - 10 - 23.02.2013
+v1.5 - 10 - 2013/02/23
 ===========
 - Support journals
 - Changed fetching issues from remote
 
-v1.4 - 9 - 14.01.2013
+v1.4 - 9 - 2013/01/14
 ===========
 - Reduce permission to write sd card.
 
-v1.3 - 8 - 01.12.2012
+v1.3 - 8 - 2012/12/01
 ===========
 - Fix transfer authentications on getting information via web site
-- Funktionsfilter hinzugefügt
+- Add feature filter
 
-v1.2 - 7 - 01.12.2012
+v1.2 - 7 - 2012/12/01
 ===========
 - Fixes crash on startup.(build was failed)
 
-v1.1 - 6 - 01.12.2012
+v1.1 - 6 - 2012/12/01
 ===========
-- HTTP-Übertragung neu schreiben
-- Verbindung über gzip
+- Rewrite HTTP transport
+- Connection via gzip
 - Get versions on loading projects
 - Add footer on ConnectionList
 - Fix parse error on timezones
 - Reconfigure splash activity
 
-v1.0 - 1 - 31.10.2012
+v1.0 - 1 - 2012/10/31
 ===========
-- Repariert Abstürze beim Start.
+- Fixes crash on startup.
 - Fixes buttons when save connection.
 - Creates new.

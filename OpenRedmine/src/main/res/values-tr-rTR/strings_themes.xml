@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string-array name="preference_appearance_themes_entries">
-    <item>デフォルト</item>
-    <item>暗い</item>
-    <item>明るい</item>
-    <item>Holo 明るい</item>
+    <item>Varsayılan</item>
+    <item>Koyu</item>
+    <item>Aydınlık</item>
+    <item>Tamamen Aydınlık</item>
   </string-array>
   <string-array name="preference_appearance_themes_values">
     <item>default</item>

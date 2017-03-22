@@ -69,6 +69,7 @@
   <string name="ticket_attachments">附件</string>
   <string name="ticket_jump">跳转</string>
   <string name="ticket_watcher">观察者</string>
+  <string name="ticket_journal_id">#%1$d</string>
   <string name="relation_none"></string>
   <string name="relation_relates">关系</string>
   <string name="relation_duplicates">复制</string>

@@ -69,6 +69,7 @@
   <string name="ticket_attachments">Вложения</string>
   <string name="ticket_jump">Перейти</string>
   <string name="ticket_watcher">наблюдатель</string>
+  <string name="ticket_journal_id">#%1$d</string>
   <string name="relation_none"></string>
   <string name="relation_relates">Связана с</string>
   <string name="relation_duplicates">Дублирует</string>

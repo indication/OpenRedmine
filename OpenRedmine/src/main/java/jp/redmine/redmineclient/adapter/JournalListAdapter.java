@@ -399,14 +399,14 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 			convertView = null;
 		}
 		if (convertView == null) {
-			convertView = infrator.inflate(R.layout.listheader_journal, null);
+			convertView = infrator.inflate(R.layout.listheader_journal, parent, false);
 			convertView.setTag(R.layout.listheader_journal);
 		}
-		if(convertView != null){
-			RedmineJournal rec = getDbItem(position);
-			IssueJournalHeaderForm form = new IssueJournalHeaderForm(convertView);
-			form.setValue(rec);
-		}
+
+		RedmineJournal rec = getDbItem(position);
+		IssueJournalHeaderForm form = new IssueJournalHeaderForm(convertView);
+		form.setValue(rec);
+		form.setJournalNo(position + 1);
 		return convertView;
 	}
 

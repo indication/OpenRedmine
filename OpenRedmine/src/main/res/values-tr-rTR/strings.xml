@@ -57,6 +57,7 @@
   <string name="ticket_attachments">Ekler</string>
   <string name="ticket_jump">Git</string>
   <string name="ticket_watcher">Takipçiler</string>
+  <string name="ticket_journal_id">#%1$d</string>
   <string name="relation_none"></string>
   <string name="relation_duplicates">Yinelenmiş</string>
   <string name="relation_duplicated">Kopyalanmış</string>

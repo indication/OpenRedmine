@@ -71,6 +71,7 @@
   <string name="ticket_attachments">添付ファイル</string>
   <string name="ticket_jump">ジャンプ</string>
   <string name="ticket_watcher">ウォッチャー</string>
+  <string name="ticket_journal_id">#%1$d</string>
   <string name="relation_none"></string>
   <string name="relation_relates">関係する</string>
   <string name="relation_duplicates">重複する</string>

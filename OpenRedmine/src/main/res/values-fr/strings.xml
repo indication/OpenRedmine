@@ -76,6 +76,7 @@
   <string name="ticket_attachments">Attachments</string>
   <string name="ticket_jump">Jump</string>
   <string name="ticket_watcher">Watchers</string>
+  <string name="ticket_journal_id">#%1$d</string>
   <string name="relation_relates">Relate</string>
   <string name="relation_duplicates">Duplicates</string>
   <string name="relation_duplicated">Duplicated</string>

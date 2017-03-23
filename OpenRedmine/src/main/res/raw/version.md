@@ -9,7 +9,8 @@ TODO
 
 Next Release
 ===========
-- Add favorite list to connection
+- Add favorite project list to connection
+- Add recent issue list to connection
 
 v3.19 - 52 - 2016/06/30
 ===========

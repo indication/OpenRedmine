@@ -9,8 +9,10 @@ TODO
 
 Next Release
 ===========
-- Add favorite project list to connection
-- Add recent issue list to connection
+
+- Add journal id to header and performance up　(#195)
+- Add favorite project list to connection (#194)
+- Add recent issue list to connection (#194)
 
 v3.19 - 52 - 2016/06/30
 ===========

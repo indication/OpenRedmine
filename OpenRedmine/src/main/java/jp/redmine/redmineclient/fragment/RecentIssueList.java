@@ -5,20 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
+import jp.redmine.redmineclient.adapter.RecentConnectionIssueListAdapter;
 import jp.redmine.redmineclient.adapter.RecentIssueListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.entity.RedmineRecentIssue;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
-import jp.redmine.redmineclient.param.FilterArgument;
+import jp.redmine.redmineclient.param.ConnectionArgument;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class RecentIssueList extends OrmLiteFragment<DatabaseCacheHelper> {
-	private RecentIssueListAdapter adapter;
+	private BaseAdapter adapter;
 	private IssueActionInterface mListener;
 	private StickyListHeadersListView list;
 
@@ -28,6 +30,12 @@ public class RecentIssueList extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	static public RecentIssueList newInstance(){
 		RecentIssueList fragment = new RecentIssueList();
+		return fragment;
+	}
+
+	static public RecentIssueList newInstance(ConnectionArgument intent){
+		RecentIssueList fragment = new RecentIssueList();
+		fragment.setArguments(intent.getArgument());
 		return fragment;
 	}
 
@@ -43,11 +51,19 @@ public class RecentIssueList extends OrmLiteFragment<DatabaseCacheHelper> {
 		mListener = ActivityHandler.getHandler(getActivity(), IssueActionInterface.class);
 		list.setFastScrollEnabled(true);
 
-		adapter = new RecentIssueListAdapter(getHelper(), getActivity());
-		FilterArgument intent = new FilterArgument();
+		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument( getArguments() );
+		if (intent.getConnectionId() == -1){
+			RecentIssueListAdapter _adapter = new RecentIssueListAdapter(getHelper(), getActivity());
+			adapter = _adapter;
+			list.setAdapter(_adapter);
+		} else {
+			RecentConnectionIssueListAdapter _adapter = new RecentConnectionIssueListAdapter(getHelper(), getActivity());
+			_adapter.setParameter(intent.getConnectionId());
+			adapter = _adapter;
+			list.setAdapter(_adapter);
+		}
 		onRefreshList();
-		list.setAdapter(adapter);
 
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override

@@ -31,10 +31,10 @@ public class RecentIssueListAdapter extends RedmineDaoAdapter<RedmineRecentIssue
 	@Override
 	public View getHeaderView(int i, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = infrator.inflate(R.layout.listheader_connection, null);
+			convertView = infrator.inflate(R.layout.listheader_connection, parent, false);
+			if (convertView == null)
+				return null;
 		}
-		if(convertView == null)
-			return null;
 		RedmineConnection connection = mConnection.getItem((int)getHeaderId(i));
 		TextView text = (TextView)convertView.findViewById(R.id.name);
 		if(text != null)

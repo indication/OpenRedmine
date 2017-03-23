@@ -9,6 +9,7 @@ TODO
 
 Next Release
 ===========
+- Add journal id to header and performance up
 
 v3.19 - 52 - 2016/06/30
 ===========

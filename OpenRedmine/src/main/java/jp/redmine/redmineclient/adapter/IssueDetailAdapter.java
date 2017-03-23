@@ -87,21 +87,16 @@ class IssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseC
 
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
-		if (convertView != null && (
-				 convertView.getTag() == null
-				|| ! ( (Integer)(convertView.getTag()) != R.layout.listheader_journal)
-			)) {
-			convertView = null;
+		IssueJournalHeaderForm form;
+		if (convertView != null && convertView.getTag() instanceof IssueJournalHeaderForm ) {
+			form = (IssueJournalHeaderForm)convertView.getTag();
+		} else {
+			convertView = infrator.inflate(R.layout.listheader_journal, parent, false);
+			form = new IssueJournalHeaderForm(convertView);
+			convertView.setTag(form);
 		}
-		if (convertView == null) {
-			convertView = infrator.inflate(R.layout.listheader_journal, null);
-			convertView.setTag(R.layout.listheader_journal);
-		}
-		if(convertView != null){
-			RedmineIssue rec = super.getDbItem(position);
-			IssueJournalHeaderForm form = new IssueJournalHeaderForm(convertView);
-			form.setValue(rec);
-		}
+		RedmineIssue rec = super.getDbItem(position);
+		form.setValue(rec);
 		return convertView;
 	}
 

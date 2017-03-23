@@ -129,7 +129,7 @@ abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper>
 				convertView = null;
 		}
 		if (convertView == null) {
-			convertView = getItemView(infrator);
+			convertView = getItemView(infrator, parent);
 			convertView.setTag(R.id.list, getItemViewId());
 		}
 		if(convertView != null){
@@ -142,8 +142,8 @@ abstract class RedmineDaoAdapter<T, ID, H extends OrmLiteSqliteOpenHelper>
 		}
 		return convertView;
 	}
-	protected View getItemView(LayoutInflater infalInflater){
-		return infalInflater.inflate(getItemViewId(), null);
+	protected View getItemView(LayoutInflater infalInflater, ViewGroup parent){
+		return infalInflater.inflate(getItemViewId(), parent, false);
 	}
 	
 	@Override

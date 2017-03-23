@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
 import java.sql.SQLException;
 
@@ -20,10 +21,20 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 public class FavoriteProjectListAdapter extends RedmineDaoAdapter<RedmineProject, Long, DatabaseCacheHelper> implements StickyListHeadersAdapter {
 	private ConnectionModel mConnection;
+	protected Integer connection_id;
 
 	public FavoriteProjectListAdapter(DatabaseCacheHelper helper, Context context){
 		super(helper, context, RedmineProject.class);
 		mConnection = new ConnectionModel(context);
+	}
+
+	/**
+	 * Setup parameter
+	 * this method is optional.
+	 * @param connection connection id
+	 */
+	public void setupParameter(int connection){
+		connection_id = connection;
 	}
 	@Override
 	public View getHeaderView(int i, View convertView, ViewGroup parent) {
@@ -64,9 +75,15 @@ public class FavoriteProjectListAdapter extends RedmineDaoAdapter<RedmineProject
 	}
 
 	@Override
-	protected QueryBuilder getQueryBuilder() throws SQLException {
+	protected QueryBuilder<RedmineProject, Long> getQueryBuilder() throws SQLException {
 		QueryBuilder<RedmineProject, Long> builder = dao.queryBuilder();
-		builder.setWhere(builder.where().gt(RedmineProject.FAVORITE, 0));
+
+		Where<RedmineProject, Long> where = builder.where()
+			.gt(RedmineProject.FAVORITE, 0);
+		if(connection_id != null)
+			where.and().eq(RedmineProject.CONNECTION, connection_id);
+
+		builder.setWhere(where);
 		builder.orderBy(RedmineProject.CONNECTION, true);
 		return builder;
 	}

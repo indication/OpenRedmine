@@ -10,6 +10,20 @@ TODO
 次期リリース
 ===========
 
+
+v3.20 - 53 - 2017/04/01
+===========
+- Add journal id to header and performance up (#195)
+- 接続にお気に入りのプロジェクト一覧を追加 (#194)
+- 接続に最近閲覧したチケット一覧を追加 (#194)
+- Update German translation by Atalanttore (#193)
+- Update Portuguese(BR) translation by etcho (#193)
+- Add french translations by MagicFab (#193)
+- Add Turkish (Turkey) translations by halis.simsek (#193)
+- Add Spanish (Spain) translations by Bernat13 (#193)
+- Update minimum API version from 8 to 9 (Android 2.2 no more supported by support-library)
+- Fix little mistake by elmanytas (#191)
+
 v3.19 - 52 - 2016/06/30
 ===========
 - 接続方法をandroid標準へ変更 (org.apache.http.legacyを削除)

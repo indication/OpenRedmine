@@ -28,6 +28,15 @@ Katkınız için teşekkürler.
 #### Çince (Çin)
 *  [StevenGape](https://github.com/StevenGape) - #171
 
+#### Turkish (Turkey)
+- [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
+
+#### French
+- [MagicFab](https://www.transifex.com/user/profile/MagicFab/)
+
+#### Spanish (Spain)
+- [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
+
 #### Japonca
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

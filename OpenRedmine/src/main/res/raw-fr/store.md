@@ -43,6 +43,6 @@ If you detect the crash, bless us by the report via twitter, github, reviews wit
 
 Note:
 * This app is open source(GPL exclude libraries), you can contribute.
-* You can translate your language via https://www.transifex.com/projects/p/openredmine/ . (language: translator names)
+* You can translate your language via https://www.transifex.com/projects/p/openredmine/ . (fr: MagicFab)
 * Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
 * Beta would be released on https://play.google.com/apps/testing/jp.redmine.redmineclient .

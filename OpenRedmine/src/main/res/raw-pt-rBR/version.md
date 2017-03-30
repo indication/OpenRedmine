@@ -10,17 +10,31 @@ Coisas a serem feitas
 Próxima Release
 ===========
 
-v3.19 - 52 - 2016/06/30
+
+v3.20 - 53 - 2017/04/01
 ===========
-- Changed connection method to android default (Remove org.apache.http.legacy)
-- Fix crash on update issue/time entry
-- Fix remove cookies when access via webclient (#180)
-- Fix Google Play Warning: SSL Error Handler Vulnerability (#174)
-- Update German translation by Atalanttore
+- Add journal id to header and performance up (#195)
+- Adicionada lista de projetos favoritos na conexão (#194)
+- Adicionada lista de tarefas recentes na conexão (#194)
+- Update German translation by Atalanttore (#193)
+- Update Portuguese(BR) translation by etcho (#193)
+- Add french translations by MagicFab (#193)
+- Add Turkish (Turkey) translations by halis.simsek (#193)
+- Add Spanish (Spain) translations by Bernat13 (#193)
+- Update minimum API version from 8 to 9 (Android 2.2 no more supported by support-library)
+- Fix little mistake by elmanytas (#191)
+
+v3.19 - 52 - 30/06/2016
+===========
+- Alterado o método de conexão para o padrão android (removido org.apache.http.legacy)
+- Corrigido bug ao atualizar tarefa/registro de tempo
+- Corrigido remoção de cookies ao acessar via webclient (#180)
+- Corrigido Alerta do Google Play: SSL Error Handler Vulnerability (#174)
+- Tradução para alemão atualizada por Atalanttore
 
 v3.18 - 51 - 31/01/2016
 ===========
-- Update Portuguese-Brazil translation by etcho
+- Tradução para Português-Brasil atualizada por etcho
 - Adicionada tradução para chinês feita por StevenGape (#171)
 
 v3.17 - 50 - 31/12/2015

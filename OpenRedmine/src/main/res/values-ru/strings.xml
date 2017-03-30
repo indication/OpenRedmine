@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="menu_settings">Настройки</string>
   <string name="menu_access_to">Доступ</string>
@@ -28,8 +28,6 @@
   <string name="preference_category_appearance">Оформление</string>
   <string name="preference_category_appearance_themes">Тема</string>
   <string name="menu_refresh">Обновить список</string>
-  <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
-  <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="menu_setting_permit_unsafe">Разрешить небезопасное SSL-соединение</string>
   <string name="menu_setting_label_certkey">Ключ сертификации (необязательно)</string>
   <string name="menu_setting_message_certkey">ВНИМАНИЕ: При вводе сертификации ключ MD5, проверки сертификация же отпечатков пальцев.</string>
@@ -71,6 +69,11 @@
   <string name="ticket_attachments">Вложения</string>
   <string name="ticket_jump">Перейти</string>
   <string name="ticket_watcher">наблюдатель</string>
+  <string name="ticket_journal_id">#%1$d</string>
+  <string name="issue_id_string">#%1s</string>
+  <string name="issue_id">#%1$d</string>
+  <string name="issue_id_subject">#%1$d %2$s</string>
+  <string name="issue_id_tracker_subject">%3$s #%1$d %2$s</string>
   <string name="relation_none"></string>
   <string name="relation_relates">Связана с</string>
   <string name="relation_duplicates">Дублирует</string>
@@ -120,5 +123,7 @@
   <string name="activity_not_found">Приложение не найдено за этот файл.</string>
   <string name="recent_issues">Последние вопросы</string>
   <string name="web">сеть</string>
+  <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
+  <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="contributors">Contributors</string>
 </resources>

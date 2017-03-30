@@ -54,7 +54,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 	protected WebviewActionInterface action;
 	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, JournalListAdapter.fetchHelper>();
 
-	protected void setupHashmap(){
+	protected void setupHashmap(final Context context){
 		fetchMap.put("is_private", new fetchHelper(){
 			@Override
 			protected IMasterRecord getRawItem(String input) {
@@ -231,19 +231,14 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 				RedmineIssue issue = mIssue.fetchById(connection_id, TypeConverter.parseInteger(input, -1));
 				DummySelection item = new DummySelection();
 				if (issue == null || issue.getId() == null) {
-					item.setName("#" + input);
+					item.setName(context.getString(R.string.issue_id_string, input));
 				} else {
 					item.setId(issue.getId());
-					StringBuilder sb = new StringBuilder();
 					if(issue.getTracker() != null) {
-						sb.append(issue.getTracker().getName());
-						sb.append(" ");
+						item.setName(context.getString(R.string.issue_id_tracker_subject, issue.getIssueId(), issue.getSubject(), issue.getTracker().getName()));
+					} else {
+						item.setName(context.getString(R.string.issue_id_subject, issue.getIssueId(), issue.getSubject()));
 					}
-					sb.append("#");
-					sb.append(input);
-					sb.append(" ");
-					sb.append(issue.getSubject());
-					item.setName(sb.toString());
 				}
 				return item;
 			}
@@ -285,7 +280,7 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 		mProject = new RedmineProjectModel(m);
 		mIssue = new RedmineIssueModel(m);
 		action = act;
-		setupHashmap();
+		setupHashmap(context);
 	}
 
 
@@ -392,21 +387,18 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
-		if (convertView != null && (
-				 convertView.getTag() == null
-				|| (Integer) (convertView.getTag()) == R.layout.listheader_journal
-			)) {
-			convertView = null;
+		IssueJournalHeaderForm form;
+		if (convertView != null && convertView.getTag() instanceof IssueJournalHeaderForm) {
+			form = (IssueJournalHeaderForm) convertView.getTag();
+		} else {
+			convertView = infrator.inflate(R.layout.listheader_journal, parent, false);
+			form = new IssueJournalHeaderForm(convertView);
+			convertView.setTag(form);
 		}
-		if (convertView == null) {
-			convertView = infrator.inflate(R.layout.listheader_journal, null);
-			convertView.setTag(R.layout.listheader_journal);
-		}
-		if(convertView != null){
-			RedmineJournal rec = getDbItem(position);
-			IssueJournalHeaderForm form = new IssueJournalHeaderForm(convertView);
-			form.setValue(rec);
-		}
+
+		RedmineJournal rec = getDbItem(position);
+		form.setValue(rec);
+		form.setJournalNo(position + 1);
 		return convertView;
 	}
 

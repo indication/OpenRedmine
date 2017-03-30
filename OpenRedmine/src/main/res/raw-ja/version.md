@@ -10,18 +10,32 @@ TODO
 次期リリース
 ===========
 
+
+v3.20 - 53 - 2017/04/01
+===========
+- Add journal id to header and performance up (#195)
+- 接続にお気に入りのプロジェクト一覧を追加 (#194)
+- 接続に最近閲覧したチケット一覧を追加 (#194)
+- Update German translation by Atalanttore (#193)
+- Update Portuguese(BR) translation by etcho (#193)
+- Add french translations by MagicFab (#193)
+- Add Turkish (Turkey) translations by halis.simsek (#193)
+- Add Spanish (Spain) translations by Bernat13 (#193)
+- Update minimum API version from 8 to 9 (Android 2.2 no more supported by support-library)
+- Fix little mistake by elmanytas (#191)
+
 v3.19 - 52 - 2016/06/30
 ===========
-- Changed connection method to android default (Remove org.apache.http.legacy)
-- Fix crash on update issue/time entry
+- 接続方法をandroid標準へ変更 (org.apache.http.legacyを削除)
+- チケット/時間記録の更新時にクラッシュする不具合を修正
 - webclient経由でアクセスした際に、クッキーを削除 (#180)
 - Google Play警告: SSLエラーハンドラの脆弱性を修正 (#174)
-- Update German translation by Atalanttore
+- Atalanttoreによってドイツ語を更新 
 
 v3.18 - 51 - 2016/01/31
 ===========
-- Update Portuguese-Brazil translation by etcho
-- Add Chinese translation by StevenGape (#171)
+- etchoによってポルトガル語(ブラジル)を更新
+- StevenGape により中国語翻訳を追加(#171)
 
 v3.17 - 50 - 2015/12/31
 ===========

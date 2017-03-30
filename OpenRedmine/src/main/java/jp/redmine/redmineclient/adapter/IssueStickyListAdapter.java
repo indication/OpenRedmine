@@ -37,7 +37,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 	private IssueRelativeListAdapter adapterRelation;
 	private IssueTimeEntryListAdapter adapterTimeEntry;
 	private AttachmentListAdapter adapterAttachment;
-	private final List<AggrigateAdapter> mapAdapters = new ArrayList<AggrigateAdapter>();
+	private final List<AggrigateAdapter> mapAdapters = new ArrayList<>();
 
 	public IssueStickyListAdapter(DatabaseCacheHelper m, Context context, WebviewActionInterface act){
 		adapterJournal = new JournalListAdapter(m,context, act);
@@ -134,7 +134,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 		} else {
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.listheader_issuetitle, null);
+			convertView = infalInflater.inflate(R.layout.listheader_issuetitle, parent, false);
 			if (convertView != null){
 				TextView text = (TextView) convertView.findViewById(R.id.textTitle);
 				text.setText(adapter == null ? "" : convertView.getContext().getString(getInner(position).res));

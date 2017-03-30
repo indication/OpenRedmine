@@ -71,6 +71,11 @@
 	<string name="ticket_attachments">Attachments</string>
 	<string name="ticket_jump">Jump</string>
 	<string name="ticket_watcher">Watchers</string>
+	<string name="ticket_journal_id">#%1$d</string>
+	<string name="issue_id_string">#%1s</string>
+	<string name="issue_id">#%1$d</string>
+	<string name="issue_id_subject">#%1$d %2$s</string>
+	<string name="issue_id_tracker_subject">%3$s #%1$d %2$s</string>
 
 	<string name="relation_none"></string>
 	<string name="relation_relates">Relate</string>
@@ -100,7 +105,7 @@
 	<string name="changes_remove_from">Remove <s>%2$s</s> from <b>%1$s</b></string>
 	<string name="remote_401">Authentication is required. Check your role or API key.</string>
 	<string name="remote_403">Something wrong with connection settings.</string>
-	<string name="remote_404">Something with wrong with connection. Try later.</string>
+	<string name="remote_404">Something went wrong with connection. Try later.</string>
 	<string name="remote_407">Proxy connection is not supported yet</string>
 	<string name="remote_4xx">Something wrong with connection. Please check access by browser.</string>
 	<string name="remote_5xx">Something wrong with server. Please check access by browser.</string>

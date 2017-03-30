@@ -13,6 +13,7 @@
 		android:src="@drawable/ic_action_message"
 		android:contentDescription="@string/ticket_attachments"
 		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
 		android:layout_margin="10dp"/>
 
 	<TextView
@@ -22,9 +23,22 @@
 		android:text="User Name"
 		tools:ignore="HardcodedText"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:layout_toLeftOf="@+id/date"
+		android:layout_toStartOf="@+id/no"
+		android:layout_toLeftOf="@+id/no"
 		android:layout_centerVertical="true"
-		android:layout_toRightOf="@+id/image"/>
+		android:layout_toRightOf="@+id/image"
+		android:layout_toEndOf="@+id/image"/>
+
+	<TextView
+		android:id="@+id/no"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="#1"
+		tools:ignore="HardcodedText"
+		android:layout_centerVertical="true"
+		android:layout_toStartOf="@+id/date"
+		android:layout_toLeftOf="@+id/date"
+		android:layout_margin="10dp"/>
 
 	<TextView
 		android:id="@+id/date"

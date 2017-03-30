@@ -28,6 +28,15 @@
 #### 中国語 (中国)
 *  [StevenGape](https://github.com/StevenGape) - #171
 
+#### トルコ語 (トルコ)
+- [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
+
+#### フランス語
+- [MagicFab](https://www.transifex.com/user/profile/MagicFab/)
+
+#### スペイン語 (スペイン)
+- [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
+
 #### 日本語
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

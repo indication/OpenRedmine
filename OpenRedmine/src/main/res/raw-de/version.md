@@ -10,6 +10,20 @@ NOCH ZU MACHEN
 Nächste Veröffentlichung
 ===========
 
+
+v3.20 - 53 - 2017/04/01
+===========
+- Add journal id to header and performance up (#195)
+- Add favorite project list to connection (#194)
+- Add recent issue list to connection (#194)
+- Update German translation by Atalanttore (#193)
+- Update Portuguese(BR) translation by etcho (#193)
+- Add french translations by MagicFab (#193)
+- Add Turkish (Turkey) translations by halis.simsek (#193)
+- Add Spanish (Spain) translations by Bernat13 (#193)
+- Update minimum API version from 8 to 9 (Android 2.2 no more supported by support-library)
+- Fix little mistake by elmanytas (#191)
+
 v3.19 - 52 - 30.06.2016
 ===========
 - Changed connection method to android default (Remove org.apache.http.legacy)
@@ -41,7 +55,7 @@ v3.16 - 49 - 18.11.2015
 v3.15 - 48 - 07.02.2015
 ===========
 - Deutsche Übersetzung von markusr hinzufügen
-- Support journal relations (#151)
+- Journal-Relationen unterstützen (#151)
 
 v3.14 - 47 - 29.10.2014
 ===========
@@ -156,7 +170,7 @@ v3.0 - 30 - 12.08.2013
 
 v2.5 - 29 - 03.07.2013
 ===========
-- Show comment area always
+- Kommentarbereich immer anzeigen
 
 v2.4 - 28 - 06.06.2013
 ===========

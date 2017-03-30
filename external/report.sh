@@ -9,9 +9,10 @@ git config --global user.email "$WORK_EMAIL"
 git config --global user.name "$WORK_COMMTER"
 cd indication/builds
 ! test -d OpenRedmine && mkdir OpenRedmine
+test -d OpenRedmine/outputs && rm -rf OpenRedmine/outputs
 cp -R $WORKDIR/OpenRedmine/build/outputs OpenRedmine
-! test -d Transdroid && mkdir Transdroid
-cp -R $WORKDIR/Transdroid/build/outputs Transdroid
+test -d OpenRedmine/reports && rm -rf OpenRedmine/reports
+cp -R $WORKDIR/OpenRedmine/build/reports OpenRedmine
 git add -A 
 git commit -a -m "Update $BUILD_RESULT build from Travis-CI $TRAVIS_JOB_ID $TRAVIS_BRANCH $TRAVIS_TAG $TRAVIS_COMMIT_RANGE current $TRAVIS_COMMIT"
 git push origin travis-ci

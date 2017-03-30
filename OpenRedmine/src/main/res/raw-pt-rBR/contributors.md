@@ -28,6 +28,15 @@ Obrigado pela contribuição de vocês.
 #### Chinês (China)
 *  [StevenGape](https://github.com/StevenGape) - #171
 
+#### Turco (Turquia)
+- [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
+
+#### Francês
+- [MagicFab](https://www.transifex.com/user/profile/MagicFab/)
+
+#### Espanhol (Espanha)
+- [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
+
 #### Japonês
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

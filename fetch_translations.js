@@ -60,7 +60,7 @@ if(objFSO.FolderExists(pathTxConfig)){
 var objTextFile = objFSO.CreateTextFile(pathBatch, true);
 objTextFile.WriteLine("@echo off");
 objTextFile.WriteLine("cd " + pathWork);
-objTextFile.WriteLine(isSkipInit + "echo transifex initalize...");
+objTextFile.WriteLine(isSkipInit + "echo transifex initialize...");
 objTextFile.WriteLine(isSkipInit + settingTransifexName + " init --host=" + settingTransifexHost);
 objTextFile.WriteLine(isSkipInit + "echo.");
 objTextFile.WriteLine(isSkipInit + "echo.");

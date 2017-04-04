@@ -63,6 +63,7 @@
   <string name="ticket_activity">Aktivität</string>
   <string name="ticket_issue">Ticket</string>
   <string name="ticket_sort">Sortieren</string>
+  <string name="ticket_other">Other</string>
   <string name="ticket_project">Projekt</string>
   <string name="ticket_description">Beschreibung</string>
   <string name="ticket_detail">Detail</string>
@@ -72,6 +73,11 @@
   <string name="ticket_jump">Springe</string>
   <string name="ticket_watcher">Beobachter</string>
   <string name="ticket_journal_id">#%1$d</string>
+  <string name="ticket_filter_closed">Status filter</string>
+  <string name="ticket_filter_closed_on">Filtered</string>
+  <string name="ticket_filter_closed_off">Show all</string>
+  <string name="ticket_closed">Closed</string>
+  <string name="ticket_open">Open</string>
   <string name="issue_id_string">#%1s</string>
   <string name="issue_id">#%1$d</string>
   <string name="issue_id_subject">#%1$d %2$s</string>

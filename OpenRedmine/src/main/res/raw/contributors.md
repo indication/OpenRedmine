@@ -26,7 +26,7 @@ Thank you for contribution.
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
 #### Chinese (China)
-*  [StevenGape](https://github.com/StevenGape) - #171
+-  [StevenGape](https://github.com/StevenGape) - #171
 
 #### Turkish (Turkey)
 - [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)

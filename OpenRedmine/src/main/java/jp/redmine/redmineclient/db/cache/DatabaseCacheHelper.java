@@ -35,7 +35,7 @@ import jp.redmine.redmineclient.entity.RedmineWiki;
 
 public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmineCache.db";
-	private static int DB_VERSION=17;
+	private static int DB_VERSION=18;
 
     public DatabaseCacheHelper(Context context) {
     	super(context, getDatabasePath(context), null, DB_VERSION);
@@ -123,6 +123,9 @@ public class DatabaseCacheHelper extends OrmLiteSqliteOpenHelper {
 				TableUtils.createTable(source, RedmineRecentIssue.class);
 			case 16:
 				TableUtils.createTable(source, RedmineWatcher.class);
+			case 17:
+				if(older > 1)
+					addColumn(db, RedmineFilter.class,"is_closed INTEGER");
 				break;
 			}
 

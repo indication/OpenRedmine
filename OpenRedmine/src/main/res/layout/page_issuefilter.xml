@@ -1,136 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical" >
 
 	<TabHost
-	    android:id="@android:id/tabhost"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+		android:id="@android:id/tabhost"
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1" >
 
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:orientation="vertical" >
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical" >
 
-	        <TabWidget
-	            android:id="@android:id/tabs"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content" >
-	        </TabWidget>
+			<HorizontalScrollView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				>
+				<TabWidget
+					android:id="@android:id/tabs"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+				</TabWidget>
+			</HorizontalScrollView>
 
-	        <FrameLayout
-	            android:id="@android:id/tabcontent"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent" >
+			<FrameLayout
+				android:id="@android:id/tabcontent"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" >
 
-	            <LinearLayout
-	                android:id="@+id/tab1"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent" >
-				    <ListView
-				        android:id="@+id/listViewStatus"
-				        android:layout_width="match_parent"
-				        android:layout_height="match_parent"
-				        android:choiceMode="singleChoice" >
-
-				    </ListView>
-	            </LinearLayout>
-
-	            <LinearLayout
-	                android:id="@+id/tab2"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent" >
-				    <ListView
-				        android:id="@+id/listViewVersion"
-				        android:layout_width="match_parent"
-				        android:layout_height="match_parent"
-				        android:choiceMode="singleChoice" >
-
-				    </ListView>
-	            </LinearLayout>
-	            <LinearLayout
-	                android:id="@+id/tab3"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent" >
-				    <ListView
-				        android:id="@+id/listViewCategory"
-				        android:layout_width="match_parent"
-				        android:layout_height="match_parent"
-				        android:choiceMode="singleChoice" >
-
-				    </ListView>
-	            </LinearLayout>
-	            <LinearLayout
-	                android:id="@+id/tab4"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent" >
-				    <ListView
-				        android:id="@+id/listViewTracker"
-				        android:layout_width="match_parent"
-				        android:layout_height="match_parent"
-				        android:choiceMode="singleChoice" >
-
-				    </ListView>
-	            </LinearLayout>
-	            <LinearLayout
-	                android:id="@+id/tab5"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent" >
-				    <ListView
-				        android:id="@+id/listViewPriority"
-				        android:layout_width="match_parent"
-				        android:layout_height="match_parent"
-				        android:choiceMode="singleChoice" >
-
-				    </ListView>
-	            </LinearLayout>
-	            <LinearLayout
-	                android:id="@+id/tab6"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent" >
-				    <ListView
-				        android:id="@+id/listViewUserCreated"
-				        android:layout_width="match_parent"
-				        android:layout_height="match_parent"
-				        android:choiceMode="singleChoice" >
-
-				    </ListView>
-	            </LinearLayout>
-	            <LinearLayout
-	                android:id="@+id/tab7"
-	                android:layout_width="match_parent"
-	                android:layout_height="match_parent" >
-				    <ListView
-				        android:id="@+id/listViewUserAssing"
-				        android:layout_width="match_parent"
-				        android:layout_height="match_parent"
-				        android:choiceMode="singleChoice" >
-
-				    </ListView>
-	            </LinearLayout>
 				<LinearLayout
-				    android:id="@+id/tab8"
-				    android:layout_width="match_parent"
-				    android:layout_height="match_parent" >
+					android:id="@+id/tab1"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
 					<ListView
-					    android:id="@+id/listViewSort"
-					    android:layout_width="match_parent"
-					    android:layout_height="match_parent"
-					    android:choiceMode="singleChoice" >
+						android:id="@+id/listViewStatus"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+
 					</ListView>
-	            </LinearLayout>
-	        </FrameLayout>
-	    </LinearLayout>
+				</LinearLayout>
+
+				<LinearLayout
+					android:id="@+id/tab2"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
+					<ListView
+						android:id="@+id/listViewVersion"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+
+					</ListView>
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/tab3"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
+					<ListView
+						android:id="@+id/listViewCategory"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+
+					</ListView>
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/tab4"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
+					<ListView
+						android:id="@+id/listViewTracker"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+
+					</ListView>
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/tab5"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
+					<ListView
+						android:id="@+id/listViewPriority"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+
+					</ListView>
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/tab6"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
+					<ListView
+						android:id="@+id/listViewUserCreated"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+
+					</ListView>
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/tab7"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
+					<ListView
+						android:id="@+id/listViewUserAssing"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+
+					</ListView>
+				</LinearLayout>
+				<LinearLayout
+					android:id="@+id/tab8"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" >
+					<ListView
+						android:id="@+id/listViewSort"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:choiceMode="singleChoice" >
+					</ListView>
+				</LinearLayout>
+				<RelativeLayout
+					android:id="@+id/tab9"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:orientation="vertical" >
+
+					<android.support.v7.widget.SwitchCompat
+						android:id="@+id/toggleClosed"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/ticket_filter_closed"
+						android:textOn="@string/ticket_filter_closed_on"
+						android:textOff="@string/ticket_filter_closed_off"
+						android:paddingTop="20dp"
+						android:layout_marginLeft="10dp"
+						android:layout_marginStart="10dp"
+						/>
+
+					<RadioGroup
+						android:id="@+id/radioClosed"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_alignParentEnd="true"
+						android:layout_alignParentLeft="true"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentStart="true"
+						android:layout_below="@+id/toggleClosed"
+						android:layout_marginLeft="20dp"
+						android:layout_marginStart="20dp">
+
+						<RadioButton
+							android:id="@+id/radioClosedOff"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="20dp"
+							android:layout_weight="1"
+							android:text="@string/ticket_open"/>
+
+						<RadioButton
+							android:id="@+id/radioClosedOn"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginTop="20dp"
+							android:layout_weight="1"
+							android:text="@string/ticket_closed"/>
+					</RadioGroup>
+
+				</RelativeLayout>
+			</FrameLayout>
+		</LinearLayout>
 	</TabHost>
+
 	<Button
-	    android:id="@+id/buttonSave"
-	    android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-	    android:text="@string/save" />
+		android:id="@+id/buttonSave"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/save" />
 
 
 </LinearLayout>

@@ -206,13 +206,11 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		DatabaseCacheHelper helper = getHelper();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
 
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		if(intent.hasFilterId())
 			task = new SelectDataTask(helper,connection,null,intent.getFilterId());
 		else
 			task = new SelectDataTask(helper,connection,intent.getProjectId());
 
-		task.setFetchAll(sp.getBoolean("issue_get_all", false));
 		task.execute(0,10,isFlush ? 1 : 0);
 		if(isFlush && !intent.hasFilterId()){
 			RedmineProject project = null;

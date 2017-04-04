@@ -28,8 +28,12 @@ import jp.redmine.redmineclient.entity.RedmineUser;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.support.v7.widget.SwitchCompat;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
@@ -38,6 +42,10 @@ public class RedmineIssueFilter {
 	private HashMap<Integer,RedmineIssueFilterExpander> dic = new HashMap<Integer,RedmineIssueFilterExpander>();
 	public Button buttonSave;
 	public TabHost tabHost;
+	public SwitchCompat toggleClosed;
+	public RadioButton radioClosedOn;
+	public RadioButton radioClosedOff;
+	public RadioGroup radioClosed;
 	protected ArrayAdapter<RedmineFilterSortItem> adapterSort;
 	RedmineFilterModel mFilter;
 
@@ -54,10 +62,17 @@ public class RedmineIssueFilter {
 	public void setup(final Activity activity, DatabaseCacheHelper helper){
 		if (tabHost != null)
 			return;
+		toggleClosed = (SwitchCompat)activity.findViewById(R.id.toggleClosed);
+		radioClosed = (RadioGroup)activity.findViewById(R.id.radioClosed);
+		radioClosedOn = (RadioButton) activity.findViewById(R.id.radioClosedOn);
+		radioClosedOff = (RadioButton) activity.findViewById(R.id.radioClosedOff);
+		radioClosedOff.setChecked(true);
 		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
 		tabHost=(TabHost)activity.findViewById(android.R.id.tabhost);
 		tabHost.setup();
 		mFilter = new RedmineFilterModel(helper);
+
+		addTab(activity,R.string.ticket_other,R.id.tab9,null);
 
 		RedmineIssueFilterExpander expStatus = generate(activity, R.id.listViewStatus);
 		addList(expStatus,activity, new RedmineStatusModel(helper),R.string.ticket_status);
@@ -102,6 +117,16 @@ public class RedmineIssueFilter {
 		for(RedmineIssueFilterExpander ex: dic.values()){
 			ex.setupEvent();
 		}
+		CompoundButton.OnCheckedChangeListener handler = new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				radioClosed.setEnabled(isChecked);
+				radioClosedOn.setEnabled(isChecked);
+				radioClosedOff.setEnabled(isChecked);
+			}
+		};
+		toggleClosed.setOnCheckedChangeListener(handler);
+		handler.onCheckedChanged(toggleClosed, toggleClosed.isChecked());
 	}
 	public void refresh(){
 		for(RedmineIssueFilterExpander ex: dic.values()){
@@ -136,6 +161,9 @@ public class RedmineIssueFilter {
 		setFilter(R.string.ticket_author,filter.getAuthor());
 		setFilter(R.string.ticket_assigned,filter.getAssigned());
 		setFilter(R.string.ticket_sort,RedmineFilterSortItem.setupFilter(new RedmineFilterSortItem(), filter.getSort()));
+		toggleClosed.setChecked(filter.isClosed() != null);
+		if(filter.isClosed() != null)
+			(filter.isClosed() ? radioClosedOn : radioClosedOff).setChecked(true);
 
 	}
 
@@ -157,6 +185,7 @@ public class RedmineIssueFilter {
 		filter.setAssigned((RedmineUser)			getFilter(R.string.ticket_assigned));
 
 		filter.setSort(RedmineFilterSortItem.getFilter((RedmineFilterSortItem)getFilter(R.string.ticket_sort)));
+		filter.setClosed(toggleClosed.isChecked() ? radioClosedOn.isChecked() : null);
 		return filter;
 	}
 	protected IMasterRecord getFilterRaw(int key){

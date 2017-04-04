@@ -61,6 +61,7 @@
   <string name="ticket_activity">Действия</string>
   <string name="ticket_issue">Задача</string>
   <string name="ticket_sort">Порядок</string>
+  <string name="ticket_other">Other</string>
   <string name="ticket_project">Проект</string>
   <string name="ticket_description">Описание</string>
   <string name="ticket_detail">Детали</string>
@@ -70,6 +71,11 @@
   <string name="ticket_jump">Перейти</string>
   <string name="ticket_watcher">наблюдатель</string>
   <string name="ticket_journal_id">#%1$d</string>
+  <string name="ticket_filter_closed">Status filter</string>
+  <string name="ticket_filter_closed_on">Filtered</string>
+  <string name="ticket_filter_closed_off">Show all</string>
+  <string name="ticket_closed">Closed</string>
+  <string name="ticket_open">Open</string>
   <string name="issue_id_string">#%1s</string>
   <string name="issue_id">#%1$d</string>
   <string name="issue_id_subject">#%1$d %2$s</string>

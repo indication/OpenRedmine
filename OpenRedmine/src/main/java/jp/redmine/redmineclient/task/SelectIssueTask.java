@@ -23,7 +23,6 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	protected Long project_id;
 	protected Integer filter_id;
 	protected RedmineConnection connection;
-	private boolean isFetchAll = false;
 	public SelectIssueTask(DatabaseCacheHelper helper,RedmineConnection con,long proj){
 		this.helper = helper;
 		this.project_id = proj;
@@ -71,7 +70,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 	@Override
 	protected Void doInBackground(Integer... params) {
 		long limit = params[1];
-		boolean isRest = (params.length > 2 && params[2] == 1) ? true : false;
+		boolean isRest = (params.length > 2 && params[2] == 1);
 		RedmineFilterModel mFilter = new RedmineFilterModel(helper);
 		RedmineFilter filter = getFilter(mFilter);
 		if(filter == null)
@@ -111,7 +110,7 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 			}
 		};
 		RemoteUrlIssues url = new RemoteUrlIssues();
-		RemoteUrlIssues.setupFilter(url, filter, isFetchAll());
+		RemoteUrlIssues.setupFilter(url, filter, filter.isClosed() == null ? true : filter.isClosed());
 		try {
 			boolean isFirst = true;
 			while(fetched < lastfetched){
@@ -153,14 +152,5 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 	}
 
-
-	public boolean isFetchAll() {
-		return isFetchAll;
-	}
-
-
-	public void setFetchAll(boolean isFetchAll) {
-		this.isFetchAll = isFetchAll;
-	}
 
 }

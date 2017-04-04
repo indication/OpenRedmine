@@ -15,14 +15,16 @@
 		android:text="@string/ticket_private"
 		android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
 		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
 		android:gravity="center_horizontal"
 		android:layout_margin="5dp"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_project"
 		android:id="@+id/labelProject"
 		android:layout_marginLeft="44dp"
@@ -33,6 +35,7 @@
 		android:layout_alignBottom="@+id/textProject"
 		android:gravity="fill_vertical"
 		android:layout_marginRight="5dp"
+		android:layout_marginEnd="5dp"
 		android:labelFor="@+id/textProject"
 		android:layout_alignTop="@+id/textProject"/>
 
@@ -45,12 +48,13 @@
 		android:layout_alignParentRight="true"
 		android:layout_alignParentEnd="true"
 		android:layout_below="@+id/textPrivate"
-		android:layout_toRightOf="@+id/labelProject"/>
+		android:layout_toRightOf="@+id/labelProject"
+		android:layout_toEndOf="@+id/labelProject"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_status"
 		android:layout_below="@+id/labelProject"
 		android:layout_alignRight="@+id/labelProject"
@@ -82,12 +86,14 @@
 		android:layout_toRightOf="@+id/textStatus"
 		android:layout_toEndOf="@+id/textStatus"
 		android:layout_alignParentRight="true"
-		android:layout_marginLeft="5dp"/>
+		android:layout_alignParentEnd="true"
+		android:layout_marginLeft="5dp"
+		android:layout_marginStart="5dp"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_tracker"
 		android:layout_below="@+id/labelStatus"
 		android:layout_alignRight="@+id/labelProject"
@@ -107,12 +113,13 @@
 		android:layout_below="@+id/textStatus"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentEnd="true"
-		android:layout_alignLeft="@+id/textProject"/>
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textProject"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_assigned_to"
 		android:layout_below="@+id/labelTracker"
 		android:layout_alignRight="@+id/labelProject"
@@ -131,12 +138,15 @@
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_below="@+id/textTracker"
 		android:layout_alignLeft="@+id/textProject"
-		android:layout_alignParentRight="true"/>
+		android:layout_alignStart="@+id/textProject"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
+		/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_category"
 		android:layout_below="@+id/labelAssignedTo"
 		android:layout_alignRight="@+id/labelProject"
@@ -159,10 +169,11 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_progress"
 		android:layout_below="@+id/labelCategory"
 		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelProject"
 		android:layout_alignBottom="@+id/progressissue"
 		android:layout_alignTop="@+id/progressissue"
 		android:id="@+id/labelProgress"/>
@@ -192,12 +203,13 @@
 		android:layout_toEndOf="@+id/textProgress"
 		android:layout_below="@+id/textCategory"
 		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
 		android:layout_margin="5dp"/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_date"
 		android:layout_below="@+id/labelProgress"
 		android:layout_alignRight="@+id/labelProject"
@@ -215,7 +227,9 @@
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		tools:ignore="HardcodedText"
 		android:layout_below="@+id/progressissue"
-		android:layout_alignLeft="@+id/textProject"/>
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textProject"
+		/>
 
 	<TextView
 		android:layout_width="wrap_content"
@@ -242,9 +256,10 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_version"
 		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelProject"
 		android:layout_alignBottom="@+id/textVersion"
 		android:layout_alignTop="@+id/textVersion"
 		android:gravity="fill_vertical"
@@ -257,14 +272,17 @@
 		android:text="@string/ticket_version"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_below="@+id/textDateFrom"
-		android:layout_alignLeft="@+id/textProject"/>
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textProject"
+		/>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_time"
 		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelProject"
 		android:layout_below="@+id/textVersion"
 		android:id="@+id/labelTime"
 		android:layout_alignTop="@+id/textTimeEntry"
@@ -279,6 +297,7 @@
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:layout_below="@+id/textVersion"
 		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textProject"
 		/>
 
 	<TextView
@@ -306,7 +325,7 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_created"
 		android:layout_below="@+id/textTimeEntry"
 		android:layout_alignRight="@+id/labelProject"
@@ -329,10 +348,11 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_gravity="right|center_vertical"
+		android:layout_gravity="end|center_vertical"
 		android:text="@string/ticket_modified"
 		android:id="@+id/labelModified"
 		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelProject"
 		android:layout_below="@+id/textCreated"
 		android:layout_alignTop="@+id/textModified"
 		android:layout_alignBottom="@+id/textModified"
@@ -344,14 +364,39 @@
 		android:layout_height="wrap_content"
 		android:text="@string/ticket_modified_by"
 		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textProject"
 		android:layout_below="@+id/textCreated"
 		android:layout_marginBottom="2dp"
 		android:layout_marginTop="2dp"/>
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="end|center_vertical"
+		android:text="@string/ticket_date_closed"
+		android:id="@+id/labelClosed"
+		android:layout_alignRight="@+id/labelProject"
+		android:layout_alignEnd="@+id/labelProject"
+		android:layout_below="@+id/textModified"
+		android:layout_alignTop="@+id/textClosed"
+		android:layout_alignBottom="@+id/textClosed"
+		android:gravity="fill_vertical"/>
+
+	<TextView
+		android:id="@+id/textClosed"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/ticket_date_closed"
+		android:layout_alignLeft="@+id/textProject"
+		android:layout_alignStart="@+id/textProject"
+		android:layout_below="@+id/textModified"
+		android:layout_marginBottom="2dp"
+		android:layout_marginTop="2dp"/>
+
 	<ProgressBar
 		style="?android:attr/progressBarStyleHorizontal"
 		android:layout_width="fill_parent"
 		android:layout_height="1dp"
-		android:layout_below="@+id/textModified"
+		android:layout_below="@+id/textClosed"
 		android:id="@+id/holizen"/>
 
 	<TextView

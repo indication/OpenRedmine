@@ -42,6 +42,9 @@ Thank you for contribution.
 
 #### English
 - (base language)
+- [elmanytas](https://github.com/elmanytas) spelling fixes - #191
+- [ka7](https://github.com/ka7) spelling fixes - #198
+
 
 [You can join localization team via Transifex.](https://www.transifex.com/indication/openredmine/)
 

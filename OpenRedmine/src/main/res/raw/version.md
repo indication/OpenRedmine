@@ -9,7 +9,7 @@ TODO
 
 Next Release
 ===========
-
+- Spelling fixes by ka7 (#198)
 
 v3.20 - 53 - 2017/04/01
 ===========

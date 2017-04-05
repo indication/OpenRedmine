@@ -27,15 +27,15 @@ public class ParserStatus extends BaseParserInternal<RedmineConnection,RedmineSt
 		if(xml.getDepth() <= 2)
 			return;
 		if("id".equalsIgnoreCase(xml.getName())){
-			String work = getNextText();
-			if("".equals(work))	return;
-			item.setStatusId(TypeConverter.parseInteger(work));
+			Integer work = TypeConverter.parseInteger(getNextText());
+			if(work == null)	return;
+			item.setStatusId(work);
 		} else if("name".equalsIgnoreCase(xml.getName())){
 			item.setName(getNextText());
 		} else if("is_closed".equalsIgnoreCase(xml.getName())){
-			item.setIs_close("true".equalsIgnoreCase(getNextText()));
+			item.setClose("true".equalsIgnoreCase(getNextText()));
 		} else if("is_default".equalsIgnoreCase(xml.getName())){
-			item.setIs_default("true".equalsIgnoreCase(getNextText()));
+			item.setDefault("true".equalsIgnoreCase(getNextText()));
 
 		} else if("created_on".equalsIgnoreCase(xml.getName())){
 			item.setCreated(TypeConverter.parseDateTime(getNextText()));

@@ -94,34 +94,20 @@ public class RedmineStatus
 	}
 
 
-	/**
-	 * @param is_default セットする is_default
-	 */
-	public void setIs_default(boolean is_default) {
+	public void setDefault(boolean is_default) {
 		this.is_default = is_default;
 	}
 
-
-	/**
-	 * @return is_default
-	 */
-	public boolean isIs_default() {
+	public boolean isDefault() {
 		return is_default;
 	}
 
 
-	/**
-	 * @param is_close セットする is_close
-	 */
-	public void setIs_close(boolean is_close) {
+	public void setClose(boolean is_close) {
 		this.is_close = is_close;
 	}
 
-
-	/**
-	 * @return is_close
-	 */
-	public boolean isIs_close() {
+	public boolean isClose() {
 		return is_close;
 	}
 

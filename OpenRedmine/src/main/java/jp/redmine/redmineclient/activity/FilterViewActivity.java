@@ -3,7 +3,7 @@ package jp.redmine.redmineclient.activity;
 
 import java.sql.SQLException;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
+import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.helper.ActivityHelper;
@@ -18,15 +18,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>  {
+public class FilterViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper> {
 	public FilterViewActivity(){
 		super();
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-	}
 	private RedmineIssueFilter form;
 
 	/** Called when the activity is first created. */
@@ -35,6 +31,7 @@ public class FilterViewActivity extends OrmLiteBaseActivity<DatabaseCacheHelper>
 		super.onCreate(savedInstanceState);
 		ActivityHelper.setupTheme(this);
 		setContentView(R.layout.page_issuefilter);
+		getSupportActionBar();
 
 		form = new RedmineIssueFilter();
 		form.setup(this,getHelper());

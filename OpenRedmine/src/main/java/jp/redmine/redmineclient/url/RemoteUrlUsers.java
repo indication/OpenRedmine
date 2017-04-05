@@ -24,7 +24,7 @@ public class RemoteUrlUsers extends RemoteUrl {
 		StringBuilder sb = new StringBuilder();
 		sb.append(isCurrent ? "users/current" : "users");
 		sb.append(".");
-		sb.append(getExtention());
+		sb.append(getExtension());
 		url.appendEncodedPath(sb.toString());
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){

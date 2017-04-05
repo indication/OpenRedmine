@@ -122,7 +122,7 @@ public class RemoteUrlIssues extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("issues."+getExtention());
+		url.appendEncodedPath("issues."+ getExtension());
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){
 				url.appendQueryParameter(data.getKey(), data.getValue());

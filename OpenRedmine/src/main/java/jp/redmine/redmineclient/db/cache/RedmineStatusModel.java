@@ -109,6 +109,9 @@ public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 
 	public void refreshItem(RedmineIssue data) throws SQLException{
 		RedmineStatus item = refreshItem(data.getConnectionId(),data.getStatus());
+
+		if(!item.isClose() && data.getClosed() != null)
+			data.setClosed(null);
 		data.setStatus(item);
 	}
 	public RedmineStatus refreshItem(RedmineConnection info,RedmineStatus data) throws SQLException{

@@ -3,4 +3,5 @@
 	<!-- Ignore error for: format_name	-->
 	<issue id="StringFormatMatches" severity="warning" />
 	<issue id="GradleDynamicVersion" severity="warning" />
+	<issue id="MissingTranslation" severity="warning" />
 </lint>

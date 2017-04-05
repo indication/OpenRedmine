@@ -135,7 +135,7 @@ public class IssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Long, Data
 
 	protected void setupWhere(RedmineFilter filter,
 								Where<RedmineIssue, Long> where) throws SQLException {
-		Hashtable<String, Object> dic = new Hashtable<String, Object>();
+		Hashtable<String, Object> dic = new Hashtable<>();
 		if(filter.getConnectionId() != null) dic.put(RedmineFilter.CONNECTION,	filter.getConnectionId());
 		if(filter.getProject()	 != null) dic.put(RedmineFilter.PROJECT,		filter.getProject()		);
 		if(filter.getTracker()	 != null) dic.put(RedmineFilter.TRACKER,		filter.getTracker()		);
@@ -147,6 +147,13 @@ public class IssueListAdapter extends RedmineDaoAdapter<RedmineIssue, Long, Data
 		if(filter.getPriority()	 != null) dic.put(RedmineFilter.PRIORITY,		filter.getPriority()	);
 	
 		boolean isFirst = true;
+		if(filter.isClosed() != null) {
+			isFirst = false;
+			if(filter.isClosed())
+				where.isNotNull(RedmineFilter.CLOSED);
+			else
+				where.isNull(RedmineFilter.CLOSED);
+		}
 		for(Enumeration<String> e = dic.keys() ; e.hasMoreElements() ;){
 			String key = e.nextElement();
 			if(dic.get(key) == null)

@@ -37,10 +37,10 @@ public class RemoteUrlWatcher extends RemoteUrl {
 			url.appendEncodedPath(String.valueOf(issue_id));
 		}
 		if(watcher_id == null){
-			url.appendEncodedPath("watchers." + getExtention());
+			url.appendEncodedPath("watchers." + getExtension());
 		} else {
 			url.appendEncodedPath("watchers");
-			url.appendEncodedPath(String.valueOf(watcher_id) + "." + getExtention());
+			url.appendEncodedPath(String.valueOf(watcher_id) + "." + getExtension());
 		}
 		return url;
 	}

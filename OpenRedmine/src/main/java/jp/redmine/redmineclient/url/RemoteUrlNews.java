@@ -20,7 +20,7 @@ public class RemoteUrlNews extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("projects/"+project+"/news."+getExtention());
+		url.appendEncodedPath("projects/"+project+"/news."+ getExtension());
 		return url;
 	}
 }

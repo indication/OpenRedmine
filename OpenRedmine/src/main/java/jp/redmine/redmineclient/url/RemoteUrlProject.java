@@ -26,7 +26,7 @@ public class RemoteUrlProject extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("projects/"+ProjectID+"."+getExtention());
+		url.appendEncodedPath("projects/"+ProjectID+"."+ getExtension());
 		if(!"".equals(Includes)) {
 			url.appendQueryParameter("include", Includes);
 		}

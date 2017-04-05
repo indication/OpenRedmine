@@ -32,9 +32,9 @@ public class RemoteUrlTimeEntries extends RemoteUrl {
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
 		if(timeentry_id == null){
-			url.appendEncodedPath("time_entries." + getExtention());
+			url.appendEncodedPath("time_entries." + getExtension());
 		} else {
-			url.appendEncodedPath("time_entries/"+String.valueOf(timeentry_id)+"."+getExtention());
+			url.appendEncodedPath("time_entries/"+String.valueOf(timeentry_id)+"."+ getExtension());
 		}
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){

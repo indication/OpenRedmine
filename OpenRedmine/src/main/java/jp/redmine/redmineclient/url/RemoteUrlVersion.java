@@ -20,7 +20,7 @@ public class RemoteUrlVersion extends RemoteUrl {
 		Uri.Builder url = convertUrl(baseurl);
 		url.appendEncodedPath("projects");
 		url.appendEncodedPath(project);
-		url.appendEncodedPath("versions." + getExtention());
+		url.appendEncodedPath("versions." + getExtension());
 		return url;
 	}
 }

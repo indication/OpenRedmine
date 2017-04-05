@@ -61,7 +61,7 @@ public class RemoteUrlWiki extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("projects/"+project+"/wiki/"+title+"." + getExtention());
+		url.appendEncodedPath("projects/"+project+"/wiki/"+title+"." + getExtension());
 
 		for(Map.Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){

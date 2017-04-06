@@ -43,10 +43,8 @@ public class RedmineIssueRelationModel {
 		.and()
 		.eq(RedmineIssueRelation.RELATION_ID, journalId)
 		.prepare();
-		RedmineIssueRelation item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineIssueRelation();
-		return item;
+		List<RedmineIssueRelation> items = dao.query(query);
+		return items.size() < 1 ? new RedmineIssueRelation() : items.get(0);
 	}
 
 	public RedmineIssueRelation fetchById(long id) throws SQLException{
@@ -105,11 +103,8 @@ public class RedmineIssueRelationModel {
 				.eq(RedmineIssueRelation.CONNECTION, connection_id)
 				;
 		Log.d(TAG,builder.prepareStatementString());
-		RedmineIssueRelation item = builder.queryForFirst();
-		if(item == null){
-			item = new RedmineIssueRelation();
-		}
-		return item;
+		List<RedmineIssueRelation> items = builder.query();
+		return items.size() < 1 ? new RedmineIssueRelation() : items.get(0);
 	}
 
 	public int insert(RedmineIssueRelation item) throws SQLException{

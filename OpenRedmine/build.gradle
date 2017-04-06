@@ -38,7 +38,7 @@ android {
     }
     lintOptions {
         abortOnError true
-        disable 'MissingTranslation', 'StringFormatMatches'
+        disable 'MissingTranslation', 'StringFormatMatches', 'InvalidPackage'
     }
     signingConfigs {
         release
@@ -85,8 +85,8 @@ dependencies {
     implementation 'com.andreabaccega:android-form-edittext:1.2.1'
     //implementation 'se.emilsjolander:stickylistheaders:2.7.0'
     implementation 'com.github.mtotschnig:StickyListHeaders:2.7.1'
-    implementation 'com.j256.ormlite:ormlite-core:4.48'
-    implementation 'com.j256.ormlite:ormlite-android:4.48'
+    implementation 'com.j256.ormlite:ormlite-core:5.1'
+    implementation 'com.j256.ormlite:ormlite-android:5.1'
     implementation 'org.apache.commons:commons-lang3:3.4'
     implementation 'net.java:textile-j:2.2'
     implementation 'org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0'

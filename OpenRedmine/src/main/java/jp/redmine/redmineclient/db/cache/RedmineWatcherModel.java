@@ -49,8 +49,6 @@ public class RedmineWatcherModel {
 				.eq(RedmineWatcher.ISSUE_ID, issueId)
 				.prepare();
 		List<RedmineWatcher> items = dao.query(query);
-		if(items == null)
-			items = new ArrayList<RedmineWatcher>();
 		return items;
 	}
 

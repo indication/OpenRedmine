@@ -46,10 +46,8 @@ public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 		.eq(RedmineStatus.STATUS_ID, statusId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
-		RedmineStatus item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineStatus();
-		return item;
+		List<RedmineStatus> items = dao.query(query);
+		return items.size() < 1 ? new RedmineStatus() : items.get(0);
 	}
 
 	public RedmineStatus fetchById(int id) throws SQLException{
@@ -87,10 +85,8 @@ public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 				//.and()
 				//.eq(RedmineStatus.PROJECT_ID, project_id)
 				;
-		RedmineStatus item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineStatus();
-		return item;
+		List<RedmineStatus> items = builder.query();
+		return items.size() < 1 ? new RedmineStatus() : items.get(0);
 	}
 
 	public int insert(RedmineStatus item) throws SQLException{

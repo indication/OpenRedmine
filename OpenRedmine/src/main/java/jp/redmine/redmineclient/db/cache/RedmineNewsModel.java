@@ -7,6 +7,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineNews;
@@ -30,10 +31,8 @@ public class RedmineNewsModel {
 		.eq(RedmineNews.NEWS_ID, newsId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
-		RedmineNews item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineNews();
-		return item;
+		List<RedmineNews> items = dao.query(query);
+		return items.size() < 1 ? new RedmineNews() : items.get(0);
 	}
 
 	public RedmineNews fetchById(long id) throws SQLException{

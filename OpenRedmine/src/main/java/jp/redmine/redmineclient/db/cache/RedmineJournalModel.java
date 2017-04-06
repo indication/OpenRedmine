@@ -42,10 +42,8 @@ public class RedmineJournalModel {
 		.and()
 		.eq(RedmineJournal.JOURNAL_ID, journalId)
 		.prepare();
-		RedmineJournal item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineJournal();
-		return item;
+		List<RedmineJournal> items = dao.query(query);
+		return items.size() < 1 ? new RedmineJournal() : items.get(0);
 	}
 
 	public RedmineJournal fetchById(long id) throws SQLException{

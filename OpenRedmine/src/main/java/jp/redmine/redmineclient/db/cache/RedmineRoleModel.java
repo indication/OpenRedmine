@@ -46,10 +46,8 @@ public class RedmineRoleModel implements IMasterModel<RedmineRole> {
 		.eq(RedmineRole.ROLE_ID, statusId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
-		RedmineRole item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineRole();
-		return item;
+		List<RedmineRole> items = dao.query(query);
+		return items.size() < 1 ? new RedmineRole() : items.get(0);
 	}
 
 	public RedmineRole fetchById(int id) throws SQLException{
@@ -87,10 +85,8 @@ public class RedmineRoleModel implements IMasterModel<RedmineRole> {
 				//.and()
 				//.eq(RedmineStatus.PROJECT_ID, project_id)
 				;
-		RedmineRole item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineRole();
-		return item;
+		List<RedmineRole> items = builder.query();
+		return items.size() < 1 ? new RedmineRole() : items.get(0);
 	}
 
 	public int insert(RedmineRole item) throws SQLException{

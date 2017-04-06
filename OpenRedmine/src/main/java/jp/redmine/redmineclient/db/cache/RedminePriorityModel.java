@@ -47,10 +47,8 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 		.eq(RedminePriority.PRIORITY_ID, statusId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
-		RedminePriority item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedminePriority();
-		return item;
+		List<RedminePriority> items = dao.query(query);
+		return items.size() < 1 ? new RedminePriority() : items.get(0);
 	}
 
 	public RedminePriority fetchById(int id) throws SQLException{
@@ -132,9 +130,7 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 				//.and()
 				//.eq(RedmineStatus.PROJECT_ID, project_id)
 				;
-		RedminePriority item = builder.queryForFirst();
-		if(item == null)
-			item = new RedminePriority();
-		return item;
+		List<RedminePriority> items = builder.query();
+		return items.size() < 1 ? new RedminePriority() : items.get(0);
 	}
 }

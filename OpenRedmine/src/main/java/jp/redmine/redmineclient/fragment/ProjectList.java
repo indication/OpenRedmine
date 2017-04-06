@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.WebArgument;
@@ -120,7 +120,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
 		mSwipeRefreshLayout = result.layout;
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
 		return result.parent;
 	}
 
@@ -164,8 +164,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
 		}
 
 		// can use UI thread here
@@ -175,8 +174,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 			adapter.notifyDataSetChanged();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
 		}
 
 		@Override

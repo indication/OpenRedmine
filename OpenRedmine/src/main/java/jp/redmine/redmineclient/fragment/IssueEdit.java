@@ -27,6 +27,7 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.IssueEditForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssuePost;
@@ -160,13 +161,11 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 						ActivityHelper.toastRemoteError(getActivity(), statuscode);
 						super.onErrorRequest(statuscode);
 					}
+
 					@Override
 					protected void onPostExecute(List<RedmineIssue> result) {
 						super.onPostExecute(result);
-						if(mSwipeRefreshLayout != null) {
-							mSwipeRefreshLayout.setRefreshing(false);
-							mSwipeRefreshLayout.setEnabled(false);
-						}
+						SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false, false);
 						if(isSuccess){
 							if(getActivity() != null)
 								Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
@@ -175,10 +174,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 						}
 					}
 				};
-				if(mSwipeRefreshLayout != null) {
-					mSwipeRefreshLayout.setEnabled(true);
-					mSwipeRefreshLayout.setRefreshing(true);
-				}
+				SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true, true);
 				post.execute(issue);
 
 				return true;

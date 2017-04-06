@@ -38,6 +38,7 @@ import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.fragment.form.IssueCommentForm;
 import jp.redmine.redmineclient.fragment.form.IssueViewForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.WebArgument;
@@ -143,16 +144,14 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing())
-							mSwipeRefreshLayout.setRefreshing(false);
+						SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
 						if(isSuccess){
 							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 							formComment.clear();
 						}
 					}
 				};
-				if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-					mSwipeRefreshLayout.setRefreshing(true);
+				SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
 				post.execute(journal);
 			}
 		});
@@ -173,7 +172,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		mFooter.setVisibility(View.GONE);
 		View view = inflater.inflate(R.layout.page_issue, container, false);
 		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layoutSwipeRefresh);
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
         list = (StickyListHeadersListView)view.findViewById(R.id.list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -270,13 +269,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.post(new Runnable() {
-					@Override
-					public void run() {
-						mSwipeRefreshLayout.setRefreshing(true);
-					}
-				});
+			SwipeRefreshLayoutHelper.setRefreshingPost(mSwipeRefreshLayout, true);
 		}
 
 		// can use UI thread here
@@ -295,17 +288,11 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			onStopped();
 		}
 
-		protected void onStopped(){
+		void onStopped(){
 			mFooter.setVisibility(View.GONE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.post(new Runnable() {
-					@Override
-					public void run() {
-						mSwipeRefreshLayout.setRefreshing(false);
-					}
-				});
+			SwipeRefreshLayoutHelper.setRefreshingPost(mSwipeRefreshLayout, false);
 		}
 	}
 	@Override

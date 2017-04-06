@@ -43,6 +43,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
@@ -164,7 +165,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
 		mSwipeRefreshLayout = result.layout;
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
 		return result.parent;
 	}
 
@@ -259,8 +260,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
 		}
 
 		// can use UI thread here
@@ -270,8 +270,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 			onRefreshList();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
 		}
 
 		@Override

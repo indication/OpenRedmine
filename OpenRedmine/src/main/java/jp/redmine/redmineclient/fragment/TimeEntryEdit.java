@@ -23,6 +23,7 @@ import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.fragment.form.TimeEntryEditForm;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
@@ -141,19 +142,13 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 					}
 					@Override
 					protected void onPreExecute() {
-						if(mSwipeRefreshLayout != null) {
-							mSwipeRefreshLayout.setEnabled(true);
-							mSwipeRefreshLayout.setRefreshing(true);
-						}
+						SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true, true);
 						super.onPreExecute();
 					}
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						if(mSwipeRefreshLayout != null) {
-							mSwipeRefreshLayout.setEnabled(false);
-							mSwipeRefreshLayout.setRefreshing(false);
-						}
+						SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false, false);
 						if(isSuccess){
 							if(getActivity() != null)
 								Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();

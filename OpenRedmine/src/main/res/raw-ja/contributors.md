@@ -26,7 +26,7 @@
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
 #### 中国語 (中国)
-*  [StevenGape](https://github.com/StevenGape) - #171
+-  [StevenGape](https://github.com/StevenGape) - #171
 
 #### トルコ語 (トルコ)
 - [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
@@ -42,5 +42,8 @@
 
 #### 英語
 - (ネイティブ)
+- [elmanytas](https://github.com/elmanytas) スペルミスを修正 - #191
+- [ka7](https://github.com/ka7) スペルミスを修正 - #198
+
 
 [Transifesを通して翻訳チームに参加することができます。](https://www.transifex.com/indication/openredmine/)

@@ -9,7 +9,8 @@ OpenRedmine
 
 下一发布版本
 ===========
-
+- Add issue filter to limit open or closed issues (#199)
+- Spelling fixes by ka7 (#198)
 
 v3.20 - 53 - 2017/04/01
 ===========

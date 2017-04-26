@@ -26,7 +26,7 @@ Katkınız için teşekkürler.
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
 #### Çince (Çin)
-*  [StevenGape](https://github.com/StevenGape) - #171
+-  [StevenGape](https://github.com/StevenGape) - #171
 
 #### Turkish (Turkey)
 - [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
@@ -42,5 +42,8 @@ Katkınız için teşekkürler.
 
 #### İngilizce
 - (temel dil)
+- [elmanytas](https://github.com/elmanytas) spelling fixes - #191
+- [ka7](https://github.com/ka7) spelling fixes - #198
+
 
 [Transifex aracılığıyla çeviri ekibine katılabilirsiniz.](https://www.transifex.com/indication/openredmine/)

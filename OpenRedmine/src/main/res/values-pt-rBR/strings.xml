@@ -19,7 +19,7 @@
   <string name="menu_setting_list_menu_title">%1$s :</string>
   <string name="comment">Comentar</string>
   <string name="delete">Remover</string>
-  <string name="menu_settings_loading">Recebendo dados do item..</string>
+  <string name="menu_settings_loading">Obtendo dados do item...</string>
   <string name="menu_settings_uploading">Enviando dados do item..</string>
   <string name="menu_confirm_delete_msg">Tem certeza que deseja remover esta conexão?</string>
   <string name="preference_category_issue">Tarefas</string>
@@ -63,7 +63,7 @@
   <string name="ticket_activity">Atividad</string>
   <string name="ticket_issue">Tarefa</string>
   <string name="ticket_sort">Ordenar</string>
-  <string name="ticket_other">Other</string>
+  <string name="ticket_other">Outro</string>
   <string name="ticket_project">Projeto</string>
   <string name="ticket_description">Descrição</string>
   <string name="ticket_detail">Detalhe</string>
@@ -73,11 +73,11 @@
   <string name="ticket_jump">Pular</string>
   <string name="ticket_watcher">Observadores</string>
   <string name="ticket_journal_id">#%1$d</string>
-  <string name="ticket_filter_closed">Status filter</string>
-  <string name="ticket_filter_closed_on">Filtered</string>
-  <string name="ticket_filter_closed_off">Show all</string>
-  <string name="ticket_closed">Closed</string>
-  <string name="ticket_open">Open</string>
+  <string name="ticket_filter_closed">Filtro de status</string>
+  <string name="ticket_filter_closed_on">Filtrado</string>
+  <string name="ticket_filter_closed_off">Mostrar tudo</string>
+  <string name="ticket_closed">Fechado</string>
+  <string name="ticket_open">Aberto</string>
   <string name="issue_id_string">#%1s</string>
   <string name="issue_id">#%1$d</string>
   <string name="issue_id_subject">#%1$d %2$s</string>

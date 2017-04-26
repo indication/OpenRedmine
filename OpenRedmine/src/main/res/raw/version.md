@@ -6,6 +6,8 @@ TODO
 ===========
 - Check date to update bug (#83)
 - Add share button on issue (#18)
+- Update German translation by Atalanttore
+- Update Portuguese(BR) translation by etcho
 
 Next Release
 ===========

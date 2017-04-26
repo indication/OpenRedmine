@@ -26,7 +26,7 @@ Vielen Dank für den Beitrag.
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
 #### Chinesisch (China)
-*  [StevenGape](https://github.com/StevenGape) - #171
+-  [StevenGape](https://github.com/StevenGape) - #171
 
 #### Türkisch (Türkei)
 - [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
@@ -42,5 +42,8 @@ Vielen Dank für den Beitrag.
 
 #### Englisch
 - (Ausgangssprache)
+- [elmanytas](https://github.com/elmanytas) spelling fixes - #191
+- [ka7](https://github.com/ka7) spelling fixes - #198
+
 
 [Sie können dem Lokalisierungsteam über Transifex beitreten.](https://www.transifex.com/indication/openredmine/)

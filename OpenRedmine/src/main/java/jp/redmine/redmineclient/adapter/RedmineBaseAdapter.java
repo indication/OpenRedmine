@@ -109,7 +109,7 @@ abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCache.IFe
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = getItemView(infalInflater);
+			convertView = getItemView(infalInflater, parent);
 			convertView.setTag(getItemViewId());
 		}
 		if(convertView != null){
@@ -122,8 +122,8 @@ abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCache.IFe
 		}
 		return convertView;
 	}
-	protected View getItemView(LayoutInflater infalInflater){
-		return infalInflater.inflate(getItemViewId(), null);
+	protected View getItemView(LayoutInflater infalInflater, ViewGroup parent){
+		return infalInflater.inflate(getItemViewId(), parent, false);
 	}
 	
 	@Override

@@ -6,13 +6,15 @@ TODO
 ===========
 - Check date to update bug (#83)
 - Add share button on issue (#18)
-- Update German translation by Atalanttore
-- Update Portuguese(BR) translation by etcho
 
 Next Release
 ===========
 - Add issue filter to limit open or closed issues (#199)
+- Update German translation by Atalanttore
+- Update Portuguese(BR) translation by etcho
 - Spelling fixes by ka7 (#198)
+- Fix crash on FileDownload (#202)
+- Try to fix infrator exception
 
 v3.20 - 53 - 2017/04/01
 ===========

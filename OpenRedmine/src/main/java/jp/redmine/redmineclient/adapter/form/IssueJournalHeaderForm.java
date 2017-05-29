@@ -21,10 +21,13 @@ public class IssueJournalHeaderForm extends FormHelper {
 		textUser = (TextView)view.findViewById(R.id.user);
 		textDate = (TextView)view.findViewById(R.id.date);
 		textNo = (TextView)view.findViewById(R.id.no);
-		textNo.setText("");
+		clearJournalNo();
 	}
 	public void setJournalNo(int no){
 		textNo.setText(textNo.getContext().getString(R.string.ticket_journal_id, no));
+	}
+	public void clearJournalNo(){
+		textNo.setText("");
 	}
 	public void setValue(RedmineJournal jr){
 		setUserName(textUser, jr.getUser());

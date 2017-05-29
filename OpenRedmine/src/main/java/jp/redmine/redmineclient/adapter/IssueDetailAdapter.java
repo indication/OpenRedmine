@@ -97,6 +97,7 @@ class IssueDetailAdapter extends RedmineDaoAdapter<RedmineIssue, Long, DatabaseC
 		}
 		RedmineIssue rec = super.getDbItem(position);
 		form.setValue(rec);
+		form.clearJournalNo();
 		return convertView;
 	}
 

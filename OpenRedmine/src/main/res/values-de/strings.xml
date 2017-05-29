@@ -19,7 +19,7 @@
   <string name="menu_setting_list_menu_title">%1$s :</string>
   <string name="comment">Kommentar</string>
   <string name="delete">Löschen</string>
-  <string name="menu_settings_loading">Lade Elemente ...</string>
+  <string name="menu_settings_loading">Elementdaten werden abgerufen.. </string>
   <string name="menu_settings_uploading">Schreibe Elemente ...</string>
   <string name="menu_confirm_delete_msg">Sind Sie sicher, dass Sie diese Verbindung löschen wollen?</string>
   <string name="preference_category_issue">Tickets</string>
@@ -63,7 +63,7 @@
   <string name="ticket_activity">Aktivität</string>
   <string name="ticket_issue">Ticket</string>
   <string name="ticket_sort">Sortieren</string>
-  <string name="ticket_other">Other</string>
+  <string name="ticket_other">Andere</string>
   <string name="ticket_project">Projekt</string>
   <string name="ticket_description">Beschreibung</string>
   <string name="ticket_detail">Detail</string>
@@ -73,11 +73,11 @@
   <string name="ticket_jump">Springe</string>
   <string name="ticket_watcher">Beobachter</string>
   <string name="ticket_journal_id">#%1$d</string>
-  <string name="ticket_filter_closed">Status filter</string>
-  <string name="ticket_filter_closed_on">Filtered</string>
-  <string name="ticket_filter_closed_off">Show all</string>
-  <string name="ticket_closed">Closed</string>
-  <string name="ticket_open">Open</string>
+  <string name="ticket_filter_closed">Statusfilter</string>
+  <string name="ticket_filter_closed_on">Gefiltert</string>
+  <string name="ticket_filter_closed_off">Alle anzeigen</string>
+  <string name="ticket_closed">Geschlossen</string>
+  <string name="ticket_open">Offen</string>
   <string name="issue_id_string">#%1s</string>
   <string name="issue_id">#%1$d</string>
   <string name="issue_id_subject">#%1$d %2$s</string>
@@ -108,7 +108,7 @@
   <string name="changes_remove_from">Lösche <s>%2$s</s> von <b>%1$s</b></string>
   <string name="remote_401">Authentifizierung wird benötigt. Bitte überprüfen Sie Ihre Rolle oder den API-Schlüssel.</string>
   <string name="remote_403">Etwas ist mit den Verbindungseinstellungen falsch.</string>
-  <string name="remote_404">Etwas mit der Verbindungseinstellungen ist falsch. Versuchen Sie es später noch einmal.</string>
+  <string name="remote_404">Etwas ging mit der Verbindung schief. Versuchen Sie es später erneut.</string>
   <string name="remote_407">Eine Proxy-Verbindung wird noch nicht unterstützt.</string>
   <string name="remote_4xx">Etwas mit der Verbindung ist falsch. Versuchen Sie es bitter mit einem Browser.</string>
   <string name="remote_5xx">Etwas mit der Verbindung ist falsch. Versuchen Sie es bitter mit einem Browser.</string>

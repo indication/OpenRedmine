@@ -9,9 +9,10 @@ NOCH ZU MACHEN
 
 Nächste Veröffentlichung
 ===========
+- Add issue filter to limit open or closed issues (#199)
+- Spelling fixes by ka7 (#198)
 
-
-v3.20 - 53 - 2017/04/01
+v3.20 - 53 - 01.04.2017
 ===========
 - Add journal id to header and performance up (#195)
 - Add favorite project list to connection (#194)
@@ -142,7 +143,7 @@ v3.4 - 35 - 10.12.2013
 
 v3.4 - 34 - 09.12.2013
 ===========
-- Switch list via swipe
+- Liste durch Wischen wechseln
 - Support pull to refresh
 - (Interne Änderungen) Auf Android Studio portieren
 

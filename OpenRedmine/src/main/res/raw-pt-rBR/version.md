@@ -9,20 +9,21 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+- Adicionado filtro de tarefas para limitar tarefas fechadas e abertas (#199)
+- Correções de ortografia feitas por ka7 (#198)
 
-
-v3.20 - 53 - 2017/04/01
+v3.20 - 53 - 01/04/2017
 ===========
-- Add journal id to header and performance up (#195)
+- Adicionado id do journal no cabeçalho e melhorias de perfórmance (#195)
 - Adicionada lista de projetos favoritos na conexão (#194)
 - Adicionada lista de tarefas recentes na conexão (#194)
-- Update German translation by Atalanttore (#193)
-- Update Portuguese(BR) translation by etcho (#193)
-- Add french translations by MagicFab (#193)
-- Add Turkish (Turkey) translations by halis.simsek (#193)
-- Add Spanish (Spain) translations by Bernat13 (#193)
-- Update minimum API version from 8 to 9 (Android 2.2 no more supported by support-library)
-- Fix little mistake by elmanytas (#191)
+- Tradução para alemão atualizada por Atalanttore (#193)
+- Tradução para português(BR) atualizada por etcho (#193)
+- Adicionada tradução para francês por MagicFab (#193)
+- Adicionada tradução para turco (Turquia) por halis.simsek (#193)
+- Adicionada tradução para espanhol por Bernat13 (#193)
+- Atualizada a versão da API mínima necessária de 8 para 9 (Android 2.2 não possui mais suporte)
+- Corrigindo pequeno erro feito por elmanytas (#191)
 
 v3.19 - 52 - 30/06/2016
 ===========

@@ -26,7 +26,7 @@
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
 #### 中文
-* [StevenGape](https://github.com/StevenGape) - #171
+-  [StevenGape](https://github.com/StevenGape) - #171
 
 #### Turkish (Turkey)
 - [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
@@ -42,5 +42,8 @@
 
 #### 英语
 - (基本语言)
+- [elmanytas](https://github.com/elmanytas) spelling fixes - #191
+- [ka7](https://github.com/ka7) spelling fixes - #198
+
 
 [你可以通过Transifex加入本地化团队](https://www.transifex.com/indication/openredmine/)

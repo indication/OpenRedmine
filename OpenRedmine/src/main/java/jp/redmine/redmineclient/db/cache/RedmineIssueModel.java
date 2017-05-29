@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ public class RedmineIssueModel {
 		return item;
 	}
 	
-	public Long getIdByIssue(int connection, int issueId) throws SQLException{
+	public Long getIdByIssue(int connection, int issueId) throws SQLException, IOException{
 		QueryBuilder<RedmineIssue, Long> builder = builderByIssue(dao, connection,issueId);
 
 		builder.selectRaw(RedmineIssue.ID);

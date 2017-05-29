@@ -63,7 +63,7 @@
   <string name="ticket_activity">活動</string>
   <string name="ticket_issue">チケット</string>
   <string name="ticket_sort">ソート</string>
-  <string name="ticket_other">Other</string>
+  <string name="ticket_other">その他</string>
   <string name="ticket_project">プロジェクト</string>
   <string name="ticket_description">説明</string>
   <string name="ticket_detail">詳細</string>
@@ -73,11 +73,11 @@
   <string name="ticket_jump">ジャンプ</string>
   <string name="ticket_watcher">ウォッチャー</string>
   <string name="ticket_journal_id">#%1$d</string>
-  <string name="ticket_filter_closed">Status filter</string>
-  <string name="ticket_filter_closed_on">Filtered</string>
-  <string name="ticket_filter_closed_off">Show all</string>
-  <string name="ticket_closed">Closed</string>
-  <string name="ticket_open">Open</string>
+  <string name="ticket_filter_closed">状態フィルタ</string>
+  <string name="ticket_filter_closed_on">フィルタ済</string>
+  <string name="ticket_filter_closed_off">すべて表示</string>
+  <string name="ticket_closed">クローズ</string>
+  <string name="ticket_open">オープン</string>
   <string name="issue_id_string">#%1s</string>
   <string name="issue_id">#%1$d</string>
   <string name="issue_id_subject">#%1$d %2$s</string>

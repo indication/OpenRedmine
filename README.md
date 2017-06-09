@@ -1,8 +1,11 @@
 OpenRedmine
 ===========
 
-OpenRedmine is an android Redmine client.
-This project is open source.
+OpenRedmine is an android Redmine client. This project is open source.
+
+<a href="https://f-droid.org/repository/browse/?fdid=jp.redmine.redmineclient" target="_blank"><img src="https://f-droid.org/badge/get-it-on.png" height="90"/></a>
+<a href="https://play.google.com/store/apps/details?id=jp.redmine.redmineclient" target="_blank">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="90"/></a>
 
 Features
 ==========
@@ -13,12 +16,10 @@ Features
 * Download file
 * Wiki
 
-
 Version
 ==========
 Current commit is alpha version.
 Some feature is not complete or incorrect.
-
 
 License
 ==========

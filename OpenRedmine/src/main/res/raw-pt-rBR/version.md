@@ -10,7 +10,11 @@ Coisas a serem feitas
 Próxima Release
 ===========
 - Adicionado filtro de tarefas para limitar tarefas fechadas e abertas (#199)
+- Tradução para alemão atualizada por Atalanttore
+- Tradução para o Português(BR) por etcho
 - Correções de ortografia feitas por ka7 (#198)
+- Correção de travamento em FileDownload (#202)
+- Tentando corrigir a infrator exception
 
 v3.20 - 53 - 01/04/2017
 ===========

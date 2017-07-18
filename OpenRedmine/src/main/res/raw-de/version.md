@@ -10,7 +10,11 @@ NOCH ZU MACHEN
 Nächste Veröffentlichung
 ===========
 - Add issue filter to limit open or closed issues (#199)
+- Update German translation by Atalanttore
+- Update Portuguese(BR) translation by etcho
 - Spelling fixes by ka7 (#198)
+- Fix crash on FileDownload (#202)
+- Try to fix infrator exception
 
 v3.20 - 53 - 01.04.2017
 ===========

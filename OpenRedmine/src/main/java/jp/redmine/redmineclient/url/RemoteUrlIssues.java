@@ -102,19 +102,19 @@ public class RemoteUrlIssues extends RemoteUrl {
 		}
 	}
 
-	public void filterDate(String key,Date from,Date to){
+	private void filterDate(String key,Date from,Date to){
 		StringBuilder sb = new StringBuilder();
 		if(from == null && to != null){
 			sb.append("<");
-			sb.append(DateFormat.format("YYYY-mm-dd", to));
+			sb.append(DateFormat.format("yyyy-MM-dd", to));
 		} else if(from != null && to == null){
 			sb.append(">");
-			sb.append(DateFormat.format("YYYY-mm-dd", from));
+			sb.append(DateFormat.format("yyyy-MM-dd", from));
 		} else if(from != null && to != null){
 			sb.append("<>");
-			sb.append(DateFormat.format("YYYY-mm-dd", from));
+			sb.append(DateFormat.format("yyyy-MM-dd", from));
 			sb.append("|");
-			sb.append(DateFormat.format("YYYY-mm-dd", to));
+			sb.append(DateFormat.format("yyyy-MM-dd", to));
 		}
 		params.put(key, sb.toString());
 	}

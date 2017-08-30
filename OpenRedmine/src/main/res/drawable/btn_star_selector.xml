@@ -3,11 +3,11 @@
 		android:state_checked="true"
 		android:state_window_focused="true"
 		android:state_enabled="true"
-		android:drawable="@android:drawable/btn_star_big_on" />
+		android:drawable="@drawable/ic_star_fill" />
 
 	<item
 		android:state_checked="false"
 		android:state_window_focused="true"
 		android:state_enabled="true"
-		android:drawable="@android:drawable/btn_star_big_off" />
+		android:drawable="@drawable/ic_star_border" />
 </selector>

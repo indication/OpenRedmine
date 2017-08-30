@@ -12,6 +12,7 @@ Next Release
 
 v3.21 - 56 - 2017/07/28
 ===========
+- Update icons
 - Add issue filter to limit open or closed issues (#199)
 - Update German translation by Atalanttore
 - Update Portuguese(BR) translation by etcho

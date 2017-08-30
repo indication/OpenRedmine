@@ -30,7 +30,7 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 				})
 						.setParam(null)
 						.setName(getString(R.string.connection))
-						.setIcon(android.R.drawable.ic_menu_mapmode)
+						.setIcon(R.drawable.ic_domain)
 		);
 
 		list.add((new CorePage<Void>() {
@@ -41,7 +41,7 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 				})
 				.setParam(null)
 				.setName(getString(R.string.favorite))
-				.setIcon(android.R.drawable.btn_star)
+				.setIcon(R.drawable.ic_project_favorite)
 		);
 		list.add((new CorePage<Void>() {
 					@Override
@@ -51,7 +51,7 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 				})
 						.setParam(null)
 						.setName(getString(R.string.recent_issues))
-						.setIcon(android.R.drawable.ic_menu_recent_history)
+						.setIcon(R.drawable.ic_recent)
 		);
 		return list;
 	}

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/buttonAdd"
-    style="listViewStyle"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="fill_vertical"
-    android:drawableLeft="@android:drawable/ic_menu_add"
-    android:drawablePadding="5dp"
-    android:padding="10dp"
-    android:text="@string/add"
-    android:textAppearance="?android:attr/textAppearanceMedium" >
+		  android:id="@+id/buttonAdd"
+		  style="listViewStyle"
+		  android:layout_width="fill_parent"
+		  android:layout_height="wrap_content"
+		  android:layout_gravity="fill_vertical"
+		  android:drawableLeft="@drawable/ic_add_circle"
+		  android:drawablePadding="5dp"
+		  android:padding="10dp"
+		  android:text="@string/add"
+		  android:textAppearance="?android:attr/textAppearanceMedium">
 
 </TextView>

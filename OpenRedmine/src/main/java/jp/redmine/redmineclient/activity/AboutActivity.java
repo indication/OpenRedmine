@@ -23,11 +23,11 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 	@Override
 	protected List<CorePage> getTabs(){
 
-		List<CorePage> list = new ArrayList<CorePage>();
+		List<CorePage> list = new ArrayList<>();
 
 		list.add((new PageInformation()).setParam(null)
 						.setName(getString(R.string.information))
-						.setIcon(android.R.drawable.ic_menu_gallery)
+						.setIcon(R.drawable.ic_info)
 		);
 
 		ResourceArgument intent;
@@ -36,7 +36,7 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setResource(R.raw.lisence);
 		list.add((new PageMarkdown()).setParam(intent)
 				.setName(getString(R.string.license))
-				.setIcon(android.R.drawable.ic_menu_share)
+				.setIcon(R.drawable.ic_book)
 		);
 
 		intent = new ResourceArgument();
@@ -44,7 +44,7 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setResource(R.raw.contributors);
 		list.add((new PageMarkdown()).setParam(intent)
 				.setName(getString(R.string.contributors))
-				.setIcon(android.R.drawable.ic_menu_compass)
+				.setIcon(R.drawable.ic_people)
 		);
 
 		intent = new ResourceArgument();
@@ -52,7 +52,7 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setResource(R.raw.version);
 		list.add((new PageMarkdown()).setParam(intent)
 						.setName(getString(R.string.ticket_version))
-						.setIcon(android.R.drawable.ic_menu_recent_history)
+						.setIcon(R.drawable.ic_history)
 		);
 
 		intent = new ResourceArgument();
@@ -60,7 +60,7 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 		intent.setResource(R.raw.store);
 		list.add((new PageMarkdown()).setParam(intent)
 						.setName(getString(R.string.product))
-						.setIcon(android.R.drawable.ic_menu_slideshow)
+						.setIcon(R.drawable.ic_project)
 		);
 		return list;
 	}

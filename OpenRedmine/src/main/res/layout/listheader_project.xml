@@ -14,7 +14,7 @@
 		android:layout_alignParentStart="true"
 		android:layout_centerVertical="true"
 		android:contentDescription="@string/ticket_relations"
-		android:src="@android:drawable/ic_menu_mapmode"/>
+		android:src="@drawable/ic_project"/>
 	<TextView
 		android:id="@+id/name"
 		android:layout_width="fill_parent"

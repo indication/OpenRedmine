@@ -53,7 +53,7 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				})
 				.setParam(argList)
 				.setName(getString(R.string.ticket_project))
-				.setIcon(android.R.drawable.ic_menu_mapmode)
+				.setIcon(R.drawable.ic_project)
 		);
 
 		RedmineUserModel mUserModel = new RedmineUserModel(getHelper());
@@ -103,7 +103,7 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				})
 						.setParam(argFavorite)
 						.setName(getString(R.string.favorite))
-						.setIcon(android.R.drawable.btn_star)
+						.setIcon(R.drawable.ic_project_favorite)
 		);
 
 		ConnectionArgument argRecent = new ConnectionArgument();
@@ -117,7 +117,7 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				})
 						.setParam(argRecent)
 						.setName(getString(R.string.recent_issues))
-						.setIcon(android.R.drawable.ic_menu_recent_history)
+						.setIcon(R.drawable.ic_recent)
 		);
 
 		return list;

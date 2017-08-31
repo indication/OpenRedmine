@@ -1,6 +1,8 @@
 package jp.redmine.redmineclient.activity;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,14 @@ public class ConnectionListActivity extends TabActivity<DatabaseCacheHelper>
 	implements ActivityInterface {
 	public ConnectionListActivity(){
 		super();
+	}
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setTitle(R.string.title_home);
 	}
 	@Override
 	protected List<CorePage> getTabs(){

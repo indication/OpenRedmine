@@ -42,7 +42,7 @@ Using Icons
 - [redmine](http://www.redmine.org/projects/redmine/wiki/Logo) ([by-sa/2.5](http://creativecommons.org/licenses/by-sa/2.5/))
  Redmine Logo is Copyright (C) 2009 Martin Herr and is licensed under the Creative Commons Attribution-Share Alike 2.5 Generic license.
 
-- [Action Bar Icon Pack](http://developer.android.com/design/downloads/) ([by/2.5](http://creativecommons.org/licenses/by/2.5/))
+- [Android Vector Asset Studio](https://developer.android.com/studio/write/vector-asset-studio.html) ([Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt))
 
 Used references
 ==========

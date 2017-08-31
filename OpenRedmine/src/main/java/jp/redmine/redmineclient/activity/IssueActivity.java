@@ -98,7 +98,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 					})
 					.setParam(argWatchers)
 					.setName(getString(R.string.ticket_watcher))
-					.setIcon(android.R.drawable.ic_menu_view)
+					.setIcon(R.drawable.ic_supervisor_account)
 			);
 		}
 		if(isValidIssue && isEditable){
@@ -114,7 +114,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 				})
 				.setParam(argTimeentry)
 				.setName(getString(R.string.ticket_time))
-				.setIcon(android.R.drawable.ic_menu_recent_history)
+				.setIcon(R.drawable.ic_recent)
 			);
 		}
 
@@ -130,7 +130,7 @@ public class IssueActivity extends TabActivity<DatabaseCacheHelper>
 					})
 							.setParam(argEdit)
 							.setName(getString(R.string.edit))
-							.setIcon(android.R.drawable.ic_menu_edit)
+							.setIcon(R.drawable.ic_mode_edit)
 			);
 		}
 

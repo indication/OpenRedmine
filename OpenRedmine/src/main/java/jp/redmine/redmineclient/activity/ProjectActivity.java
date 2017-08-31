@@ -116,6 +116,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				})
 				.setParam(argProject)
 				.setName(getString(R.string.ticket_project))
+				.setIcon(R.drawable.ic_project)
 		);
 
 		// wiki
@@ -130,6 +131,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				})
 				.setParam(argWiki)
 				.setName(getString(R.string.wiki))
+				.setIcon(R.drawable.ic_text_fields)
 		);
 
 
@@ -145,6 +147,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				})
 				.setParam(argVersion)
 				.setName(getString(R.string.ticket_version))
+				.setIcon(R.drawable.ic_version)
 		);
 
 
@@ -160,6 +163,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				})
 				.setParam(argCategory)
 				.setName(getString(R.string.ticket_category))
+				.setIcon(R.drawable.ic_category)
 		);
 
 		// news
@@ -174,6 +178,7 @@ public class ProjectActivity extends TabActivity<DatabaseCacheHelper>
 				})
 				.setParam(argNews)
 				.setName(getString(R.string.news))
+				.setIcon(R.drawable.ic_news)
 		);
 		return list;
 	}

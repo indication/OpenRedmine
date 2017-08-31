@@ -40,12 +40,11 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 	public void onCreate(Bundle savedInstanceState) {
 		ActivityHelper.setupTheme(this);
 		super.onCreate(savedInstanceState);
-		getSupportActionBar();
+		final ActionBar actionBar = getSupportActionBar();
 		setContentView(R.layout.page_fragment_pager);
 
 		List<CorePage> list = getTabs();
 
-		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		actionBar.setDisplayShowTitleEnabled(true);

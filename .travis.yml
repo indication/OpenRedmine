@@ -1,12 +1,13 @@
 language: android
-jdk: oraclejdk8
 sudo: false
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 notifications:
   email: false
@@ -14,13 +15,19 @@ notifications:
 
 android:
   components:
+    # Uncomment the lines below if you want to
+    # use the latest revision of Android SDK Tools
     - tools
-    - build-tools-25.0.0
     - platform-tools
-    - android-23
-    - sys-img-armeabi-v7a-android-19
+    - tools
+    # The BuildTools version used by your project
+    - build-tools-25.0.0
+    - android-25
     - extra-android-support
     - extra-android-m2repository
+    # emulator(s)
+    - android-22
+    - sys-img-armeabi-v7a-android-22
   licenses:
     - 'android-sdk-license-5be876d5'
     - 'android-sdk-license-c81a61d9'
@@ -28,10 +35,10 @@ android:
     - 'google-gdk-license-9529f459'
 
 before_script:
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - adb wait-for-device
+  # Emulator Management: Create, Start and Wait
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
   - adb shell input keyevent 82 &
   # Setup build envrionment
   - openssl aes-256-cbc -K $encrypted_7fcdb5fbc52e_key -iv $encrypted_7fcdb5fbc52e_iv -in external/localsettings.tar.gz.enc -out localsettings.tar.gz -d

@@ -28,11 +28,14 @@ android:
     - android-22
     - sys-img-armeabi-v7a-android-22
   licenses:
-    - 'android-sdk-license-5be876d5'
-    - 'android-sdk-license-c81a61d9'
+    - 'android-sdk-preview-license-52d11cd2'
+##    - 'android-sdk-license-5be876d5'
+#    - 'android-sdk-license-c81a61d9'
 #    - 'android-sdk-preview-license-52d11cd2'
 #    - 'android-googletv-license-99eda7fb'
-    - 'google-gdk-license-9529f459'
+    - 'android-sdk-license-.+'
+#    - 'google-gdk-license-9529f459'
+    - 'google-gdk-license-.+'
 
 before_script:
   # Emulator Management: Create, Start and Wait

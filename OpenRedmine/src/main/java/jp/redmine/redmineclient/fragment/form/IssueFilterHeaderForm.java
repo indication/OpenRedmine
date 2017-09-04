@@ -36,6 +36,7 @@ public class IssueFilterHeaderForm {
 		addRow(item.getStatus(), R.string.ticket_status);
 		addRow(item.getTracker(), R.string.ticket_tracker);
 		addRow(item.getVersion(), R.string.ticket_version);
+		addRow(item.isClosed(), R.string.ticket_status, R.string.ticket_closed, R.string.ticket_open);
 
 		if (!TextUtils.isEmpty(item.getSort())) {
 			RedmineFilterSortItem sort = RedmineFilterSortItem.setupFilter(new RedmineFilterSortItem(), item.getSort());
@@ -48,6 +49,12 @@ public class IssueFilterHeaderForm {
 		if (changes == null)
 			return;
 		layoutTable.addView(generateRow(layoutTable.getContext(), changes.getName(), title_id));
+	}
+	protected void addRow(Boolean changes, int title_id, int positive, int negative) {
+		if (changes == null)
+			return;
+		String value = layoutTable.getContext().getString(changes ? positive : negative);
+		layoutTable.addView(generateRow(layoutTable.getContext(), value, title_id));
 	}
 
 	static protected TableRow generateRow(Context context, String setting, int title_id) {

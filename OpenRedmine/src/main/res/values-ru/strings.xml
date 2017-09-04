@@ -19,7 +19,7 @@
   <string name="menu_setting_list_menu_title">%1$s :</string>
   <string name="comment">Коммент.</string>
   <string name="delete">Удалить</string>
-  <string name="menu_settings_loading">Получение данных элемента.. </string>
+  <string name="menu_settings_loading">Получение данных элемента..</string>
   <string name="menu_settings_uploading">Отправка данных элемента.. </string>
   <string name="menu_confirm_delete_msg">Вы действительно хотите удалить это соединение?</string>
   <string name="preference_category_issue">Задачи</string>
@@ -125,5 +125,11 @@
   <string name="web">сеть</string>
   <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
   <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
+  <string name="ticket_other">Other</string>
+  <string name="ticket_filter_closed">Status filter</string>
+  <string name="ticket_filter_closed_on">Filtered</string>
+  <string name="ticket_filter_closed_off">Show all</string>
+  <string name="ticket_closed">Closed</string>
+  <string name="ticket_open">Open</string>
   <string name="contributors">Contributors</string>
 </resources>

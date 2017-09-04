@@ -12,7 +12,7 @@ public class RemoteUrlAttachment extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("attachments/"+attachment+"." + getExtention());
+		url.appendEncodedPath("attachments/"+attachment+"." + getExtension());
 		return url;
 	}
 }

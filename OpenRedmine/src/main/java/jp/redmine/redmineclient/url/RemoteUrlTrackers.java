@@ -7,7 +7,7 @@ public class RemoteUrlTrackers extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("trackers." + getExtention());
+		url.appendEncodedPath("trackers." + getExtension());
 		return url;
 	}
 }

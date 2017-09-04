@@ -17,6 +17,7 @@ public class IssueDetailForm extends IssueBaseForm {
 	public TextView textProject;
 	public TextView textPrivate;
 	public TextView textCreated;
+	public TextView textClosed;
 	public TextView textProgress;
 	public TextView textTimeEstimate;
 	public TextView textTimeEntry;
@@ -28,6 +29,7 @@ public class IssueDetailForm extends IssueBaseForm {
 	public TextView labelAssignedTo;
 	public TextView labelTime;
 	public TextView labelTimeSlice;
+	public TextView labelClosed;
 	public TextView labelProject;
 	public TextView textView;
 	public TextViewHelper textViewHelper;
@@ -60,6 +62,8 @@ public class IssueDetailForm extends IssueBaseForm {
 		labelTime = (TextView)view.findViewById(R.id.labelTime);
 		labelTimeSlice = (TextView)view.findViewById(R.id.labelTimeSlice);
 		labelProject = (TextView)view.findViewById(R.id.labelProject);
+		textClosed = (TextView)view.findViewById(R.id.textClosed);
+		labelClosed = (TextView)view.findViewById(R.id.labelClosed);
 		textView = (TextView)view.findViewById(R.id.textView);
 	}
 
@@ -75,9 +79,11 @@ public class IssueDetailForm extends IssueBaseForm {
 		setPrivate(rd.isPrivate());
 		setTime(textTimeEstimate,R.string.ticket_time_estimate,rd.getEstimatedHours());
 		setMasterName(textCategory,rd.getCategory());
+		setDateTime(textClosed, rd.getClosed());
 		setVisible(rd.getCategory(), labelCategory, textCategory);
 		setVisible(rd.getVersion(), labelVersion, textVersion);
 		setVisible(rd.getAssigned(), labelAssignedTo, textAssignedTo);
+		setVisible(rd.getClosed() != null, labelClosed, textClosed);
 		setVisible(!(rd.getDateStart() == null && rd.getDateDue() == null), labelDate,textDateFrom, textDateTo, labelDateArrow);
 		setVisible(rd.getEstimatedHours() != 0, labelTime, textTimeEstimate, labelTimeSlice);
 		setMasterName(textProject, rd.getProject());

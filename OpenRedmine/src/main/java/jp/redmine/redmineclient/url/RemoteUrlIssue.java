@@ -53,9 +53,9 @@ public class RemoteUrlIssue extends RemoteUrl {
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
 		if(issue_id == null){
-			url.appendEncodedPath("issues."+getExtention());
+			url.appendEncodedPath("issues."+ getExtension());
 		} else {
-			url.appendEncodedPath("issues/" + String.valueOf(issue_id) + "."+getExtention());
+			url.appendEncodedPath("issues/" + String.valueOf(issue_id) + "."+ getExtension());
 		}
 		for(Entry<String,String> data : params.entrySet()){
 			if(data.getValue() != null){

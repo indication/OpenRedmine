@@ -50,12 +50,12 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 		return null;
 	}
 
-	protected void doInBackgroundIssue(SelectDataTaskRedmineConnectionHandler client,Integer... params) {
+	private void doInBackgroundIssue(SelectDataTaskRedmineConnectionHandler client, Integer... params) {
 		final ParserIssue parser = new ParserIssue();
 		final List<Integer> listAdditionalIssue = new ArrayList<Integer>();
 		DataCreationHandler<RedmineConnection,RedmineIssue> relationHandler = new DataCreationHandler<RedmineConnection,RedmineIssue>() {
 			private RedmineIssueModel mRelation = new RedmineIssueModel(helper);
-			public void onData(RedmineConnection con,RedmineIssue data) throws SQLException {
+			public void onData(RedmineConnection con,RedmineIssue data) throws SQLException, IOException {
 				if(data.getParentId() != 0){
 					if(mRelation.getIdByIssue(con.getId(), data.getParentId()) == null)
 						listAdditionalIssue.add(data.getParentId());
@@ -104,7 +104,7 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 		
 	}
 
-	protected void doInBackgroundTimeEntry(SelectDataTaskRedmineConnectionHandler client,Integer... params) {
+	private void doInBackgroundTimeEntry(SelectDataTaskRedmineConnectionHandler client, Integer... params) {
 		final RedmineTimeEntryModel model = new RedmineTimeEntryModel(helper);
 		final RedmineTimeActivityModel mActivity = new RedmineTimeActivityModel(helper);
 		final RedmineUserModel mUser = new RedmineUserModel(helper);

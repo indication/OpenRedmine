@@ -19,7 +19,7 @@ public class RemoteUrlCategory extends RemoteUrl {
 	@Override
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
-		url.appendEncodedPath("projects/"+project+"/issue_categories."+getExtention());
+		url.appendEncodedPath("projects/"+project+"/issue_categories."+ getExtension());
 		return url;
 	}
 }

@@ -39,10 +39,6 @@ abstract public class BaseParser<CON,TYPE> {
 			throws XmlPullParserException, IOException, SQLException {
 		if(BuildConfig.DEBUG) Log.d("BaseParser","START_DOCUMENT");
 	}
-	protected void onDocumentEnd(CON con)
-			throws XmlPullParserException, IOException, SQLException{
-		if(BuildConfig.DEBUG) Log.d("BaseParser","END_DOCUMENT");
-	}
 	protected abstract void onTagStart(CON con)
 			throws XmlPullParserException, IOException, SQLException;
 	protected abstract void onTagEnd(CON con)
@@ -74,10 +70,6 @@ abstract public class BaseParser<CON,TYPE> {
 			case XmlPullParser.START_DOCUMENT:
 				if(BuildConfig.DEBUG) Log.d("BaseParser","END_DOCUMENT ");
 				onDocumentStart(con);
-				break;
-			case XmlPullParser.END_DOCUMENT:
-				if(BuildConfig.DEBUG) Log.d("BaseParser","END_DOCUMENT ");
-				onDocumentEnd(con);
 				break;
 			case XmlPullParser.START_TAG:
 				if(BuildConfig.DEBUG) Log.d("BaseParser","START_TAG ".concat(xml.getName()));
@@ -119,7 +111,7 @@ abstract public class BaseParser<CON,TYPE> {
 		this.handlerDataCreation.remove(ev);
 	}
 
-	protected void notifyDataCreation(CON con,TYPE data) throws SQLException{
+	void notifyDataCreation(CON con, TYPE data) throws SQLException, IOException{
 		dataCount++;
 		//inherit from http://www.ibm.com/developerworks/jp/java/library/j-jtp07265/
 		for(DataCreationHandler<CON,TYPE> ev:this.handlerDataCreation){

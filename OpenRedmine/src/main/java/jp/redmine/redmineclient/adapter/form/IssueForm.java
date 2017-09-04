@@ -47,7 +47,7 @@ public class IssueForm extends IssueBaseForm {
 		textDescription.setText(rd.getDescription());
 
 		boolean isEnabled = true;
-		if(rd.getStatus() != null && rd.getStatus().isIs_close()){
+		if(rd.getStatus() != null && rd.getStatus().isClose()){
 			isEnabled = false;
 		}
 		performSetEnabled((ViewGroup)(textSubject.getParent()), isEnabled);

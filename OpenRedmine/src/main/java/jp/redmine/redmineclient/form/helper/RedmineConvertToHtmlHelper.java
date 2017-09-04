@@ -83,7 +83,7 @@ class RedmineConvertToHtmlHelper {
 		input = wiki.restore(input);
 		input = issue.restore(input);
 		input = pre.restore(input); //must last
-		input = input.replace("{{fnlist}}",""); //support for wiki extention
+		input = input.replace("{{fnlist}}",""); //support for wiki extension
 		return input;
 	}
 

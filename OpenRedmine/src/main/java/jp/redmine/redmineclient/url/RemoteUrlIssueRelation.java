@@ -35,12 +35,12 @@ public class RemoteUrlIssueRelation extends RemoteUrl {
 		if(issue_id != null){
 			url.appendEncodedPath("issues");
 			url.appendEncodedPath(String.valueOf(issue_id));
-			url.appendEncodedPath("relations." + getExtention());
+			url.appendEncodedPath("relations." + getExtension());
 		} else 	if(relations_id == null){
-			url.appendEncodedPath("relations." + getExtention());
+			url.appendEncodedPath("relations." + getExtension());
 		} else {
 			url.appendEncodedPath("relations");
-			url.appendEncodedPath(String.valueOf(relations_id) + "." + getExtention());
+			url.appendEncodedPath(String.valueOf(relations_id) + "." + getExtension());
 		}
 		return url;
 	}

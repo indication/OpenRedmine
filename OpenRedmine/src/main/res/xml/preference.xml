@@ -7,12 +7,6 @@
             android:defaultValue="default"
             android:key="appearance_themes"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/preference_category_issue">
-        <CheckBoxPreference android:title="@string/preference_issue_get_all"
-            android:summary="@string/preference_issue_description_get_all"
-            android:key="issue_get_all"
-            android:defaultValue="false"/>
-    </PreferenceCategory>
 
 
 </PreferenceScreen>

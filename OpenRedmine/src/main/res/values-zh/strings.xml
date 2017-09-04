@@ -126,4 +126,10 @@
   <string name="contributors">贡献者</string>
   <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
   <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
+  <string name="ticket_other">Other</string>
+  <string name="ticket_filter_closed">Status filter</string>
+  <string name="ticket_filter_closed_on">Filtered</string>
+  <string name="ticket_filter_closed_off">Show all</string>
+  <string name="ticket_closed">Closed</string>
+  <string name="ticket_open">Open</string>
 </resources>

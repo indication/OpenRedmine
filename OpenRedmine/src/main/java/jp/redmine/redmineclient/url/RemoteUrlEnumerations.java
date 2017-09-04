@@ -35,7 +35,7 @@ public class RemoteUrlEnumerations extends RemoteUrl {
 	public Uri.Builder getUrl(String baseurl) {
 		Uri.Builder url = convertUrl(baseurl);
 		url.appendEncodedPath("enumerations");
-		url.appendEncodedPath(getTypeString() + "." + getExtention());
+		url.appendEncodedPath(getTypeString() + "." + getExtension());
 		return url;
 	}
 }

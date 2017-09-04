@@ -101,6 +101,12 @@ public class RedmineFilterModel {
 				return a.equals(b);
 			}
 		};
+		Compare<Boolean> compareBoolean = new Compare<Boolean>() {
+			@Override
+			public boolean isSameInner(Boolean a, Boolean b) {
+				return a.equals(b);
+			}
+		};
 		for(RedmineFilter item : fetchAllByConnection(filter.getConnectionId())){
 			if(!compareMaster.isSame(filter.getProject(), item.getProject()))
 				continue;
@@ -120,8 +126,8 @@ public class RedmineFilterModel {
 				continue;
 			if(!compareString.isSame(filter.getSort(), item.getSort()))
 				continue;
-
-
+			if(!compareBoolean.isSame(filter.isClosed(), item.isClosed()))
+				continue;
 			return item;
 		}
 		return null;

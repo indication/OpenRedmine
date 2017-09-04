@@ -26,6 +26,7 @@ public class RedmineFilter
 	public final static String CATEGORY = "category_id";
 	public final static String VERSION = "version_id";
 	public final static String CURRENT = "is_current";
+	public final static String CLOSED = "closed";
 
     @DatabaseField(generatedId = true)
     private Integer id;
@@ -59,6 +60,8 @@ public class RedmineFilter
     private String name;
     @DatabaseField
     private String sort;
+	@DatabaseField
+	private Boolean is_closed;
 
     @DatabaseField
     private Date created_from;
@@ -401,7 +404,7 @@ public class RedmineFilter
 		StringBuffer sb = new StringBuffer();
 		for(RedmineFilterSortItem item : items){
 			if(sb.length()>0)
-				sb.append(",");
+				sb.append("/");
 			sb.append(item.getRemoteKey());
 			if(!item.isAscending())
 				sb.append(" desc");
@@ -410,4 +413,11 @@ public class RedmineFilter
 	}
 
 
+	public Boolean isClosed() {
+		return is_closed;
+	}
+
+	public void setClosed(Boolean is_closed) {
+		this.is_closed = is_closed;
+	}
 }

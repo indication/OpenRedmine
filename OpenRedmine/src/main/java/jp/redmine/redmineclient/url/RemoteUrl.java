@@ -20,7 +20,7 @@ public abstract class RemoteUrl {
 
 	abstract public Uri.Builder getUrl(String baseurl);
 
-	protected final String getExtention(){
+	protected final String getExtension(){
 		return request.toString();
 	}
 

@@ -19,7 +19,6 @@ android:
     # use the latest revision of Android SDK Tools
     - tools
     - platform-tools
-    - tools
     # The BuildTools version used by your project
     - build-tools-25.0.0
     - extra-android-support
@@ -45,8 +44,7 @@ before_script:
   - openssl aes-256-cbc -K $encrypted_7fcdb5fbc52e_key -iv $encrypted_7fcdb5fbc52e_iv -in external/localsettings.tar.gz.enc -out localsettings.tar.gz -d
   - tar xzf localsettings.tar.gz && mv id_edca ~/.ssh/ && mv id_config ~/.ssh/config
   # search setups
-  - ls /usr/local/android-sdk/licenses
-  - cat /usr/local/android-sdk/licenses/android-sdk-license
+  - yes | sdkmanager --licenses
 
 script:
   - ./gradlew build connectedCheck

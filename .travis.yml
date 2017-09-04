@@ -45,10 +45,8 @@ before_script:
   # Setup build envrionment
   - openssl aes-256-cbc -K $encrypted_7fcdb5fbc52e_key -iv $encrypted_7fcdb5fbc52e_iv -in external/localsettings.tar.gz.enc -out localsettings.tar.gz -d
   - tar xzf localsettings.tar.gz && mv id_edca ~/.ssh/ && mv id_config ~/.ssh/config
-  # fix gradle license errors
-  - mkdir -p "/usr/local/android-sdk/licenses"
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "/usr/local/android-sdk/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "/usr/local/android-sdk/licenses/android-sdk-preview-license"
+  # run external scripts
+  - ./external/before_script.sh
 
 script:
   - ./gradlew build connectedCheck

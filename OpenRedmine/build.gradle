@@ -8,8 +8,8 @@ android {
         minSdkVersion 9
         targetSdkVersion 23
 
-        versionCode 56
-        versionName '3.21'
+        versionCode 57
+        versionName '3.22-rc1'
         testApplicationId "jp.redmine.redmineclienttest"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
         testHandleProfiling true

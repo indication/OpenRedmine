@@ -9,6 +9,8 @@ TODO
 
 Next Release
 ===========
+- Update icons and Show title on issue or wiki (#207)
+- Update Portuguese(BR) translation by etcho
 
 v3.21 - 56 - 2017/07/28
 ===========

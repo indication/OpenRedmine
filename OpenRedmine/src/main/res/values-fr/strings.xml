@@ -132,7 +132,7 @@
   <string name="activity_not_found">The activity is not found for this file.</string>
   <string name="recent_issues">Resent issues</string>
   <string name="web">Web</string>
-	<string name="title_home">Home</string>
-	<string name="title_category">Category %1$s</string>
+  <string name="title_home">Home</string>
+  <string name="title_category">Category %1$s</string>
   <string name="title_version">Version %1$s</string>
 </resources>

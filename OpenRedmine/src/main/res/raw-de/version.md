@@ -9,12 +9,18 @@ NOCH ZU MACHEN
 
 Nächste Veröffentlichung
 ===========
+
+v3.21 - 56 - 28.07.2017
+===========
+- Update icons
+- Show title on issue or wiki
 - Add issue filter to limit open or closed issues (#199)
 - Update German translation by Atalanttore
 - Update Portuguese(BR) translation by etcho
 - Spelling fixes by ka7 (#198)
 - Fix crash on FileDownload (#202)
 - Try to fix infrator exception
+- Fix several bugs
 
 v3.20 - 53 - 01.04.2017
 ===========

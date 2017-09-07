@@ -132,7 +132,7 @@
   <string name="remote_saved">Has been saved to remote</string>
   <string name="input_error_invalid_decimal">Input valid number.</string>
   <string name="input_error_select">Select %1$s</string>
-	<string name="title_home">Home</string>
-	<string name="title_category">Category %1$s</string>
-	<string name="title_version">Version %1$s</string>
+  <string name="title_home">Home</string>
+  <string name="title_category">Category %1$s</string>
+  <string name="title_version">Version %1$s</string>
 </resources>

@@ -46,4 +46,4 @@
 - [ka7](https://github.com/ka7) スペルミスを修正 - #198
 
 
-[Transifesを通して翻訳チームに参加することができます。](https://www.transifex.com/indication/openredmine/)
+[Transifexを通して翻訳チームに参加することができます。](https://www.transifex.com/indication/openredmine/)

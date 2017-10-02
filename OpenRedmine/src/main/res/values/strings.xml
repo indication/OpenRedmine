@@ -8,9 +8,9 @@
 	<string name="menu_setting_label_accesstoken">Access Token</string>
 	<string name="menu_setting_edit_accesstoken">0e7c82.... 40 characters</string>
 	<string name="menu_setting_label_authid">ID</string>
-	<string name="menu_setting_edit_authid">Basic Authcation ID</string>
+	<string name="menu_setting_edit_authid">Basic Authentication ID</string>
 	<string name="menu_setting_label_authpasswd">Password</string>
-	<string name="menu_setting_edit_authpasswd">Basic Authcation Password</string>
+	<string name="menu_setting_edit_authpasswd">Basic Authentication Password</string>
 	<string name="name">Name</string>
 	<string name="label_name">Label Name</string>
 	<string name="save">Save</string>
@@ -120,7 +120,7 @@
 	<string name="has_been_saved">Has been saved</string>
 	<string name="input_error_invalid_decimal">Input valid number.</string>
 	<string name="input_error_select">Select %1$s</string>
-	<string name="warning_experimental_feature">This is EXPERIMANTAL. This feature may affect bad to your redmine.</string>
+	<string name="warning_experimental_feature">This is EXPERIMENTAL. This feature may affect bad to your redmine.</string>
 	<string name="size">Size</string>
 	<string name="progress">Progress</string>
 	<string name="download">Download</string>
@@ -132,7 +132,7 @@
 	<string name="homepage">Homepage</string>
 	<string name="news">News</string>
 	<string name="activity_not_found">The activity is not found for this file.</string>
-	<string name="recent_issues">Resent issues</string>
+	<string name="recent_issues">Recent issues</string>
 	<string name="web">Web</string>
 	<string name="contributors">Contributors</string>
 	<string name="title_home">Home</string>

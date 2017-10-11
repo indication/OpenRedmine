@@ -132,7 +132,11 @@
   <string name="recent_issues">Tarefas recentes</string>
   <string name="web">Web</string>
   <string name="contributors">Colaboradores</string>
-	<string name="title_home">Home</string>
-	<string name="title_category">Category %1$s</string>
-	<string name="title_version">Version %1$s</string>
+  <string name="title_home">Home</string>
+  <string name="title_category">Category %1$s</string>
+  <string name="title_version">Version %1$s</string>
+  <string name="text_type">Text format</string>
+  <string name="text_type_textile">Textile</string>
+  <string name="text_type_markdown">Markdown</string>
+  <string name="text_type_none">None</string>
 </resources>

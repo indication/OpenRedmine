@@ -18,9 +18,12 @@ import jp.redmine.redmineclient.activity.WebViewActivity;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
+import jp.redmine.redmineclient.db.store.RedmineConnectionModel;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.ProjectForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.param.WebArgument;
 
@@ -54,6 +57,8 @@ public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 		intent.setArgument(getArguments());
 
 		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
+
 		RedmineProject project = null;
 		try {
 			project = mProject.fetchById(intent.getProjectId());
@@ -63,7 +68,7 @@ public class ProjectDetail extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		ProjectForm form = new ProjectForm(getView());
 		form.setupWebView(mListener);
-		form.setValue(project);
+		form.setValue(connection, project);
 	}
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

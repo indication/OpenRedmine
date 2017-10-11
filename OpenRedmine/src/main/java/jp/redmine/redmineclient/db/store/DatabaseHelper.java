@@ -14,7 +14,7 @@ import com.j256.ormlite.table.TableUtils;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private static String DB_NAME="OpenRedmine.db";
-	private static int DB_VERSION=1;
+	private static int DB_VERSION=2;
 
     public DatabaseHelper(Context context) {
     	super(context, DB_NAME, null, DB_VERSION);
@@ -31,9 +31,23 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, ConnectionSource arg1, int arg2,
-			int arg3) {
+	public void onUpgrade(SQLiteDatabase db, ConnectionSource source,  int older,int newer) {
 
+		switch (older) {
+			case 1:
+				addColumnNotNull(db, RedmineConnection.class, "text_type INTEGER", RedmineConnection.TEXT_TYPE_TEXTTILE);
+		}
 	}
+
+	private void addColumnNotNull(SQLiteDatabase db, Class<?> name, String column, int default_value){
+		db.execSQL("ALTER TABLE "
+				+ name.getSimpleName()
+				+ " ADD COLUMN "
+				+ column
+				+ " NOT NULL DEFAULT "
+				+ default_value
+				+ ";");
+	}
+
 
 }

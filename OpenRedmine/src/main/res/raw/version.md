@@ -9,6 +9,7 @@ TODO
 
 Next Release
 ===========
+- Markdown support
 
 v3.21 - 56 - 2017/07/28
 ===========

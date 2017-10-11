@@ -26,7 +26,7 @@ public class TextViewHelper {
 	}
 
 	public void setContent(TextView view, final int connectionid, final long project, final String text){
-		String content = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Texttile, connectionid, project);
+		String content = converter.parse(text, WikiType.Texttile, connectionid, project);
 		setTextViewHTML(view, content, new ClickLink() {
 			@Override
 			public void onClick(View view, URLSpan span) {

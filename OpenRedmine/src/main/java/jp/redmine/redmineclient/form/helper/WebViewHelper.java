@@ -41,17 +41,13 @@ public class WebViewHelper {
 		});
 	}
 
-	public void setContent(WebView view, final int connectionid, final long project, final String text){
-		String inner = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Texttile, connectionid, project);
+	public void setContent(WebView view, WikiType type, final int connectionid, final long project, final String text){
+		String inner = converter.parse(text, type, connectionid, project);
 		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
 
-	public void setContent(WebView view, String text){
-		String inner = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Texttile);
-		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
-	}
-	public void setContentMarkdown(WebView view, String text){
-		String inner = converter.parse(text, RedmineConvertToHtmlHelper.WikiType.Markdown);
+	public void setContent(WebView view, String text, WikiType type){
+		String inner = converter.parse(text, type);
 		view.loadDataWithBaseURL("", HtmlHelper.getHtml(view.getContext(),inner,""), "text/html", "UTF-8", "");
 	}
 }

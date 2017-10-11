@@ -96,6 +96,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		RedmineWikiModel model = new RedmineWikiModel(getHelper());
 		WikiArgument intent = new WikiArgument();
 		intent.setArgument(getArguments());
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
 		try {
 			RedmineWiki wiki = model.fetchById(intent.getConnectionId(), intent.getProjectId(), intent.getWikiTitle());
 			if(!TextUtils.isEmpty(wiki.getTitle())){
@@ -114,7 +115,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 				}
 				content.append(wiki.getBody());
 			}
-			webViewHelper.setContent(webView, intent.getConnectionId(),intent.getProjectId(), content.toString());
+			webViewHelper.setContent(webView, connection.getWikiType(), intent.getConnectionId(),intent.getProjectId(), content.toString());
 		} catch (SQLException e) {
 			Log.e(TAG, "loadWebView", e);
 		}

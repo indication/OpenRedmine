@@ -9,6 +9,7 @@ TODO
 
 Next Release
 ===========
+- Update icons and Show title on issue or wiki (#207)
 - Markdown support
 - Update Portuguese(BR) translation by etcho
 - Update Russian translation by roman.yagodin

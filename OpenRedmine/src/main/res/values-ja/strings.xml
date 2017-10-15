@@ -132,9 +132,9 @@
   <string name="recent_issues">最近のチケット</string>
   <string name="web">ウェブ</string>
   <string name="contributors">投稿者</string>
-  <string name="title_home">Home</string>
-  <string name="title_category">Category %1$s</string>
-  <string name="title_version">Version %1$s</string>
+  <string name="title_home">ホーム</string>
+  <string name="title_category">カテゴリ %1$s</string>
+  <string name="title_version">バージョン %1$s</string>
   <string name="text_type">Text format</string>
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>

@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 
 import com.andreabaccega.widget.FormEditText;
 
@@ -26,6 +27,8 @@ public class ConnectionForm extends FormHelper {
 	public LinearLayout formHttpAuth;
 	public CheckBox checkUnsafeConnection;
 	public EditText editCertKey;
+	public RadioGroup radioTextType;
+
 	public Button buttonAccess;
 	public Button buttonUrl1;
 	public Button buttonUrl2;
@@ -35,6 +38,7 @@ public class ConnectionForm extends FormHelper {
 		this.setup(activity);
 		this.setupDefaults();
 	}
+	private static Integer[] radioTextTypeIds = {R.id.radioButtonTextile, R.id.radioButtonMarkdown, R.id.radioButtonNone};
 
 
 	public void setup(View activity){
@@ -49,6 +53,7 @@ public class ConnectionForm extends FormHelper {
 		checkHttpAuth = (CheckBox)activity.findViewById(R.id.checkHttpAuth);
 		checkUnsafeConnection = (CheckBox)activity.findViewById(R.id.checkPermitUnsafe);
 		editCertKey = (EditText)activity.findViewById(R.id.editCertKey);
+		radioTextType = (RadioGroup) activity.findViewById(R.id.radioGroupTextType);
 
 		buttonUrl1 = (Button)activity.findViewById(R.id.buttonUrl1);
 		buttonUrl2 = (Button)activity.findViewById(R.id.buttonUrl2);
@@ -100,7 +105,7 @@ public class ConnectionForm extends FormHelper {
 				,editToken
 				);
 		boolean isValidUrl = validateUrl();
-		return isValidForm && isValidUrl;
+		return isValidForm && isValidUrl && radioTextType.getCheckedRadioButtonId() != -1;
 	}
 
 	protected boolean validateUrl(){
@@ -161,6 +166,8 @@ public class ConnectionForm extends FormHelper {
 		editAuthPasswd.setText(rd.getAuthPasswd());
 		checkUnsafeConnection.setChecked(rd.isPermitUnsafe());
 		editCertKey.setText(rd.getCertKey());
+		if (radioTextTypeIds.length > rd.getTextType() && rd.getTextType() > 0)
+			radioTextType.check(radioTextTypeIds[rd.getTextType()]);
 		setupDefaults();
 	}
 	public void getValue(RedmineConnection rd){
@@ -173,6 +180,8 @@ public class ConnectionForm extends FormHelper {
 		rd.setAuthPasswd(editAuthPasswd.getText().toString());
 		rd.setPermitUnsafe(checkUnsafeConnection.isChecked());
 		rd.setCertKey(editCertKey.getText().toString());
+		rd.setTextType(java.util.Arrays.asList(radioTextTypeIds).indexOf(radioTextType.getCheckedRadioButtonId()));
+
 	}
 }
 

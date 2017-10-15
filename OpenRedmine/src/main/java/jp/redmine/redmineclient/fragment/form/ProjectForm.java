@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
+import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.form.helper.FormHelper;
 import jp.redmine.redmineclient.form.helper.TextViewHelper;
@@ -46,11 +47,11 @@ public class ProjectForm extends FormHelper {
 
 	}
 
-	public void setValue(RedmineProject rd){
+	public void setValue(RedmineConnection con, RedmineProject rd){
 		setMasterName(textProject, rd);
 		textStatus.setText(textStatus.getContext().getString(rd.getStatus().getResourceId()));
 		textViewHelper.setContent(textHomepage, rd.getConnectionId(), rd.getId(), nvl(rd.getHomepage()));
-		webViewHelper.setContent(webView, rd.getConnectionId(), rd.getId(), nvl(rd.getDescription()));
+		webViewHelper.setContent(webView, con.getWikiType(), rd.getConnectionId(), rd.getId(), nvl(rd.getDescription()));
 		setDateTime(textCreated, rd.getCreated());
 		setDateTime(textModified, rd.getModified());
 	}

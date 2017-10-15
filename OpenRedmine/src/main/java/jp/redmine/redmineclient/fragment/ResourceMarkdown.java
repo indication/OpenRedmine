@@ -18,6 +18,7 @@ import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.form.helper.WebViewHelper;
+import jp.redmine.redmineclient.form.helper.WikiType;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
 import jp.redmine.redmineclient.param.ResourceArgument;
 
@@ -72,7 +73,7 @@ public class ResourceMarkdown extends OrmLiteFragment<DatabaseCacheHelper> {
 			text.append(str);
 			text.append("\n");
 		}
-		webViewHelper.setContentMarkdown(webView, text.toString());
+		webViewHelper.setContent(webView, text.toString(), WikiType.Markdown);
 	}
 
 	@Override

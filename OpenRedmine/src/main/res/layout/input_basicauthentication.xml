@@ -21,6 +21,7 @@
             android:ems="10"
             android:hint="@string/menu_setting_edit_authid"
             android:singleLine="true"
+            android:inputType="text"
             android:imeOptions="actionNext"  >
 
             <requestFocus />

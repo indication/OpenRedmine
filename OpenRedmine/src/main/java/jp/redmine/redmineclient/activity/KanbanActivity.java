@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionHandler;
@@ -44,6 +46,7 @@ public class KanbanActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 		super();
 	}
 	private ViewIdGenerator generator = new ViewIdGenerator();
+	private static final String keyListFragments = "KanbanListFragments";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -60,22 +63,14 @@ public class KanbanActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 		if(savedInstanceState != null)
 			return;
 
-		renewFragments();
+		renewFragments(savedInstanceState);
 	}
 
-	protected void renewFragments(){
+	protected void renewFragments(Bundle savedInstanceState){
 		FragmentManager manager =  getSupportFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		if(manager.getFragments() != null) {
-			for (Fragment fragment : manager.getFragments()) {
-				if (fragment instanceof IssueList) {
-					transaction.remove(fragment);
-				}
-			}
-		}
 		LinearLayout layout = (LinearLayout)findViewById(R.id.list);
 
-		//transaction.add();
 		ProjectArgument arg = new ProjectArgument();
 		arg.setIntent(getIntent());
 		RedmineStatusModel mStatus = new RedmineStatusModel(getHelper());
@@ -103,12 +98,18 @@ public class KanbanActivity extends OrmLiteFragmentActivity<DatabaseCacheHelper>
 				argFilter.importArgument(arg);
 				argFilter.setFilterId(target.getId());
 
-				int idlayout = generator.getViewId(layout);
-				LinearLayout addlayout = new LinearLayout(this);
-				addlayout.setId(idlayout);
-
-				layout.addView(addlayout);
-				transaction.add(idlayout,IssueList.newInstance(argFilter));
+				String keyLayout = keyListFragments + target.getId();
+				Integer idLayout = savedInstanceState.getInt(keyLayout, -1);
+				if (idLayout == -1) {
+					idLayout = generator.getViewId(layout);
+					LinearLayout addlayout = new LinearLayout(this);
+					addlayout.setId(idLayout);
+					layout.addView(addlayout);
+					transaction.add(idLayout, IssueList.newInstance(argFilter));
+					savedInstanceState.putInt(keyLayout, idLayout);
+				} else {
+					transaction.replace(idLayout, IssueList.newInstance(argFilter));
+				}
 			}
 		} catch (SQLException e) {
 			Log.e(TAG, "renewFragments", e);

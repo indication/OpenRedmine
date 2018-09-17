@@ -9,6 +9,9 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+
+v3.22 - ??? - 2018/09/28
+===========
 -  Ícones atualizados e agora é exibido o título na tarefa ou wiki (#207)
 - Suporte a markdown
 - Tradução para o Português(BR) por etcho

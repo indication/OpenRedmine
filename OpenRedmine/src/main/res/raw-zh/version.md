@@ -9,6 +9,9 @@ OpenRedmine
 
 下一发布版本
 ===========
+
+v3.22 - ??? - 2018/09/28
+===========
 - Update icons and Show title on issue or wiki (#207)
 - Markdown support
 - Update Portuguese(BR) translation by etcho

@@ -5,7 +5,7 @@
 OpenRedmine Android является клиентом .
 ]]></string>
   <string name="product">продукт</string>
-  <string name="message_first_time"><![CDATA[Я скачал, спасибо.
+  <string name="message_first_time"><![CDATA[Спасибо, что используете OpenRedmine.
 
  ]]></string>
   <string name="license">лицензия</string>

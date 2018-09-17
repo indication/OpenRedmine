@@ -1,6 +1,8 @@
 OpenRedmine
 ===========
 
+[![Join the chat at https://gitter.im/OpenRedmine/Lobby](https://badges.gitter.im/OpenRedmine/Lobby.svg)](https://gitter.im/OpenRedmine/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 OpenRedmine is an android Redmine client. This project is open source.
 
 <a href="https://f-droid.org/repository/browse/?fdid=jp.redmine.redmineclient" target="_blank"><img src="https://f-droid.org/badge/get-it-on.png" height="90"/></a>

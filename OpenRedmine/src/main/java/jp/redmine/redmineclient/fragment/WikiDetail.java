@@ -1,9 +1,12 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.app.FragmentBreadCrumbs;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -93,8 +96,14 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		RedmineWikiModel model = new RedmineWikiModel(getHelper());
 		WikiArgument intent = new WikiArgument();
 		intent.setArgument(getArguments());
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
 		try {
 			RedmineWiki wiki = model.fetchById(intent.getConnectionId(), intent.getProjectId(), intent.getWikiTitle());
+			if(!TextUtils.isEmpty(wiki.getTitle())){
+				ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+				if (actionBar != null)
+					actionBar.setTitle(wiki.getTitle());
+			}
 			StringBuilder content = new StringBuilder();
 			if(isRefresh && TextUtils.isEmpty(wiki.getBody())) {
 				onRefresh();
@@ -106,7 +115,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 				}
 				content.append(wiki.getBody());
 			}
-			webViewHelper.setContent(webView, intent.getConnectionId(),intent.getProjectId(), content.toString());
+			webViewHelper.setContent(webView, connection.getWikiType(), intent.getConnectionId(),intent.getProjectId(), content.toString());
 		} catch (SQLException e) {
 			Log.e(TAG, "loadWebView", e);
 		}

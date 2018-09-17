@@ -1,5 +1,6 @@
 language: android
 sudo: false
+dist: precise
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -8,7 +9,11 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
-
+env:
+  global:
+    - ANDROID_BUILD_TOOL_VERSION=28.0.2
+    - ANDROID_COMPILE_SDK_VERSION=25
+    - ANDROID_TARGET_SDK_VERSION=25
 notifications:
   email: false
   webhooks: "https://zapier.com/hooks/catch/opzg6m/"
@@ -22,23 +27,27 @@ android:
     - platform-tools
     - tools
     # The BuildTools version used by your project
-    - build-tools-25.0.0
+    - build-tools-28.0.2
     - extra-android-support
     - extra-google-m2repository
     - extra-android-m2repository
+    - android-25
     # emulator(s)
-    - android-22
-    - sys-img-armeabi-v7a-android-22
+    - sys-img-armeabi-v7a-android-21
+
   licenses:
     - 'android-sdk-preview-license-52d11cd2'
-#    - 'android-sdk-license-5be876d5'
     - 'android-sdk-license-c81a61d9'
 #    - 'android-googletv-license-99eda7fb'
     - 'google-gdk-license-9529f459'
+    #for emulator
+    - 'android-sdk-license-5be876d5'
+    - 'android-sdk-license-2742d1c5'
 
 before_script:
   # Emulator Management: Create, Start and Wait
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - android list targets
+  - echo no | android create avd --force -n test -t android-10 --abi armeabi -c 32M
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
@@ -47,8 +56,8 @@ before_script:
   - tar xzf localsettings.tar.gz && mv id_edca ~/.ssh/ && mv id_config ~/.ssh/config
   # fix gradle license errors
   - mkdir -p "/usr/local/android-sdk/licenses"
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "/usr/local/android-sdk/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "/usr/local/android-sdk/licenses/android-sdk-preview-license"
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "/usr/local/android-sdk/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\nd77a45cfde8d8db5135a9d01fce4bdfa23a033dd" > "/usr/local/android-sdk/licenses/android-sdk-preview-license"
 
 script:
   - ./gradlew build connectedCheck

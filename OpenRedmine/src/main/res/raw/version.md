@@ -10,8 +10,17 @@ TODO
 Next Release
 ===========
 
+v3.22 - ??? - 2018/09/28
+===========
+- Update icons and Show title on issue or wiki (#207)
+- Markdown support
+- Update Portuguese(BR) translation by etcho
+- Update Russian translation by roman.yagodin
+
 v3.21 - 56 - 2017/07/28
 ===========
+- Update icons
+- Show title on issue or wiki
 - Add issue filter to limit open or closed issues (#199)
 - Update German translation by Atalanttore
 - Update Portuguese(BR) translation by etcho

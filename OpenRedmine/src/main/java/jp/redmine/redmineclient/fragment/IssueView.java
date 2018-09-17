@@ -229,6 +229,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			Log.e(TAG,"onRefresh",e);
 		}
 		if(issue != null && issue.getId() != null){
+			//set title
+			getActivity().setTitle(getString(R.string.issue_id_subject, issue.getIssueId(), issue.getSubject()));
 			formTitle.setValue(issue);
 			adapter.setupParameter(intent.getConnectionId(), issue.getId());
 			adapter.notifyDataSetChanged();

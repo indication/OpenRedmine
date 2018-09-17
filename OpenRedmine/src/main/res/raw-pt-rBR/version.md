@@ -9,12 +9,25 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+
+v3.22 - ??? - 2018/09/28
+===========
+-  Ícones atualizados e agora é exibido o título na tarefa ou wiki (#207)
+- Suporte a markdown
+- Tradução para o Português(BR) por etcho
+- Tradução para russo atualizada por roman.yagodin
+
+v3.21 - 56 - 28/07/2017
+===========
+- Atualização de ícones
+- Mostrando título na tarefa ou wiki
 - Adicionado filtro de tarefas para limitar tarefas fechadas e abertas (#199)
 - Tradução para alemão atualizada por Atalanttore
 - Tradução para o Português(BR) por etcho
 - Correções de ortografia feitas por ka7 (#198)
 - Correção de travamento em FileDownload (#202)
 - Tentando corrigir a infrator exception
+- Correção de vários bugs
 
 v3.20 - 53 - 01/04/2017
 ===========

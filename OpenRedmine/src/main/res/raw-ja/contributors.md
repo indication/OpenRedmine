@@ -16,6 +16,7 @@
 
 #### ロシア語
 - [box789](https://github.com/box789)
+- [roman.yagodin](https://www.transifex.com/user/profile/roman.yagodin/)
 
 #### ドイツ語
 - [markusr](https://github.com/markusr)
@@ -46,4 +47,4 @@
 - [ka7](https://github.com/ka7) スペルミスを修正 - #198
 
 
-[Transifesを通して翻訳チームに参加することができます。](https://www.transifex.com/indication/openredmine/)
+[Transifexを通して翻訳チームに参加することができます。](https://www.transifex.com/indication/openredmine/)

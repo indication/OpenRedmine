@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:app="http://schemas.android.com/apk/res-auto" >
-	<item android:id="@+id/menu_access_addnew"
-	    android:title="@string/add"
-	    app:showAsAction="ifRoom"
-	    android:icon="@android:drawable/ic_menu_add" />
+	<item
+		android:id="@+id/menu_access_addnew"
+		android:icon="@drawable/ic_add_circle"
+		android:title="@string/add"
+		app:showAsAction="ifRoom"/>
 	<item android:id="@+id/menu_access_removecache"
 	    android:title="@string/remove_cache_all"
 	    android:icon="@android:drawable/ic_menu_delete" />
-	<item android:id="@+id/menu_settings"
-		app:showAsAction="ifRoom"
-	    android:title="@string/menu_settings"
-	    android:icon="@android:drawable/ic_menu_preferences" />
+	<item
+		android:id="@+id/menu_settings"
+		android:icon="@drawable/ic_settings"
+		android:title="@string/menu_settings"
+		app:showAsAction="ifRoom"/>
 	<item android:id="@+id/menu_about"
 		  android:title="@string/information"
 		  android:icon="@android:drawable/ic_dialog_info" />

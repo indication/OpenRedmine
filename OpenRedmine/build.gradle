@@ -1,21 +1,39 @@
 apply plugin: 'com.android.application'
-
 android {
-    compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    //Apply versions
+    def compile_version = System.getenv("ANDROID_COMPILE_SDK_VERSION") ?: "25"
+    def build_tool_version = System.getenv("ANDROID_BUILD_TOOL_VERSION") ?: '28.0.2'
+    def target_sdk_version =System.getenv("ANDROID_TARGET_SDK_VERSION") ?: "25"
+    println "Compile SDK: $compile_version Tool version: $build_tool_version Target version: $target_sdk_version"
+
+    //Make version code
+    def version = System.getenv("TRAVIS_TAG") ?: ""
+    if (version == "") {version = "${System.env.TRAVIS_BRANCH}-${System.env.TRAVIS_BUILD_NUMBER}"}
+    else {version = version.replace("v", "")}
+    if (version == "null-null") {version = "dev"}
+    def version_code = System.getenv("TRAVIS_BUILD_NUMBER") ?: "0"
+
+    println "Build version: $version ($version_code)"
+
+    compileSdkVersion Integer.decode(compile_version)
+    buildToolsVersion build_tool_version
     testBuildType "debug"
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion Integer.decode(target_sdk_version)
 
-        versionCode 56
-        versionName '3.21'
+        versionCode Integer.decode(version_code)
+        versionName version
         testApplicationId "jp.redmine.redmineclienttest"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
         testHandleProfiling true
         testFunctionalTest true
         multiDexEnabled false
 
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     lintOptions {
         abortOnError true
@@ -41,6 +59,8 @@ android {
 
             debuggable false
             zipAlignEnabled true
+            //minifyEnabled true
+            //shrinkResources true
             buildConfigField 'boolean', 'DEBUG_XML', 'false'
             if (project.hasProperty('keyAlias')) {
                 signingConfig signingConfigs.release
@@ -50,19 +70,20 @@ android {
 }
 
 dependencies {
-    androidTestCompile 'com.google.guava:guava:20.0'
-    androidTestCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:23.2.0'
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.android.support:animated-vector-drawable:23.2.0'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.andreabaccega:android-form-edittext:1.2.1'
-    compile 'se.emilsjolander:stickylistheaders:2.7.0'
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'net.java:textile-j:2.2'
-    compile 'org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0'
+    androidTestImplementation 'com.google.guava:guava:22.0'
+    androidTestImplementation 'junit:junit:4.12'
+    //implementation 'com.android.support:support-v4:25.3.1'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:support-fragment:25.3.1'
+    implementation 'com.android.support:animated-vector-drawable:25.3.1'
+    implementation 'com.android.support:design:25.3.1'
+    implementation 'com.andreabaccega:android-form-edittext:1.2.1'
+    implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+    implementation 'com.j256.ormlite:ormlite-core:4.48'
+    implementation 'com.j256.ormlite:ormlite-android:4.48'
+    implementation 'org.apache.commons:commons-lang3:3.4'
+    implementation 'net.java:textile-j:2.2'
+    implementation 'org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0'
 }
 
 if (project.hasProperty('keyAlias')) {

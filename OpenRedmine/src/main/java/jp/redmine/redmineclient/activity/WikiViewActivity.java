@@ -46,9 +46,7 @@ public class WikiViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelpe
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			setupBreadCubs();
-		/**
+		/*
 		 * Add fragment on first view only
 		 * On rotate, this method would be called with savedInstanceState.
 		 */
@@ -66,29 +64,6 @@ public class WikiViewActivity extends OrmLiteFragmentActivity<DatabaseCacheHelpe
 				.commit();
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	protected void setupBreadCubs(){
-
-		ActionBar mActionBar = getSupportActionBar();
-
-		mFragmentBreadCrumbs = new FragmentBreadCrumbs(this);
-		mActionBar.setCustomView(mFragmentBreadCrumbs);
-		mActionBar.setDisplayShowCustomEnabled(true);
-
-		mActionBar.setDisplayShowTitleEnabled(false);
-		mFragmentBreadCrumbs.setActivity(this);
-
-		mFragmentBreadCrumbs.setParentTitle(getString(R.string.wiki), null,
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						FragmentManager fm = getSupportFragmentManager();
-						for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
-							fm.popBackStack();
-						}
-					}
-				});
-	}
 	@SuppressWarnings("unchecked")
 	public <T> T getHandler(Class<T> cls){
 		Core.ActivityRegistry registry = new Core.ActivityRegistry(){

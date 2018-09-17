@@ -16,6 +16,7 @@ Vielen Dank für den Beitrag.
 
 #### Russisch
 - [box789](https://github.com/box789)
+- [roman.yagodin](https://www.transifex.com/user/profile/roman.yagodin/)
 
 #### Deutsch
 - [markusr](https://github.com/markusr)
@@ -42,8 +43,8 @@ Vielen Dank für den Beitrag.
 
 #### Englisch
 - (Ausgangssprache)
-- [elmanytas](https://github.com/elmanytas) spelling fixes - #191
-- [ka7](https://github.com/ka7) spelling fixes - #198
+- [elmanytas](https://github.com/elmanytas) Rechtschreibkorrekturen - #191
+- [ka7](https://github.com/ka7) Rechtschreibkorrekturen - #198
 
 
 [Sie können dem Lokalisierungsteam über Transifex beitreten.](https://www.transifex.com/indication/openredmine/)

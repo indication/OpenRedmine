@@ -30,7 +30,7 @@
 				android:ems="10"
 				android:hint="@string/name"
 				android:inputType="text"
-				android:singleLine="true"
+				android:maxLines="1"
 				validate:testType="nocheck" >
 
 				<requestFocus />
@@ -52,37 +52,37 @@
 					android:id="@+id/buttonUrl1"
 					style="?android:attr/buttonStyleSmall"
 					android:layout_width="wrap_content"
-					android:layout_height="34dp"
+					android:layout_height="36dp"
 					android:tag="^https?://"
 					android:text="http://"
-					tools:ignore="HardcodedText" />
+					tools:ignore="HardcodedText"/>
 
 				<Button
 					android:id="@+id/buttonUrl2"
 					style="?android:attr/buttonStyleSmall"
 					android:layout_width="wrap_content"
-					android:layout_height="34dp"
+					android:layout_height="36dp"
 					android:tag="^https?://"
 					android:text="https://"
-					tools:ignore="HardcodedText" />
+					tools:ignore="HardcodedText"/>
 
 				<Button
 					android:id="@+id/buttonUrl3"
 					style="?android:attr/buttonStyleSmall"
 					android:layout_width="34dp"
-					android:layout_height="34dp"
+					android:layout_height="36dp"
 					android:tag="/$"
 					android:text="/"
-					tools:ignore="HardcodedText" />
+					tools:ignore="HardcodedText"/>
 
 				<Button
 					android:id="@+id/buttonUrl4"
 					style="?android:attr/buttonStyleSmall"
 					android:layout_width="wrap_content"
-					android:layout_height="34dp"
+					android:layout_height="36dp"
 					android:tag="redmine$"
 					android:text="redmine"
-					tools:ignore="HardcodedText" />
+					tools:ignore="HardcodedText"/>
 
 			</LinearLayout>
 
@@ -94,7 +94,7 @@
 				android:ems="10"
 				android:hint="@string/menu_setting_edit_accessurl"
 				android:inputType="textUri"
-				android:singleLine="true" />
+				android:maxLines="1" />
 
 			<LinearLayout
 				android:layout_width="fill_parent"
@@ -111,8 +111,8 @@
 				<Button
 					android:id="@+id/buttonAccess"
 					android:layout_width="fill_parent"
-					android:layout_height="34dp"
-					android:text="@string/menu_setting_goto_redmine" />
+					android:layout_height="36dp"
+					android:text="@string/menu_setting_goto_redmine"/>
 			</LinearLayout>
 
 			<com.andreabaccega.widget.FormEditText
@@ -123,16 +123,46 @@
 				android:ems="10"
 				android:hint="@string/menu_setting_edit_accesstoken"
 				android:inputType="textVisiblePassword"
-				android:singleLine="true"
+				android:maxLines="1"
 				validate:emptyAllowed="true"
 				validate:testType="alphaNumeric" />
 
 			<TextView
-				android:id="@+id/textView1"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="10dp"
 				android:text="@string/menu_setting_message_accesstoken" />
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:text="@string/text_type"
+				android:textAppearance="?android:attr/textAppearanceMedium" />
+			<RadioGroup
+				android:id="@+id/radioGroupTextType"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="10dp"
+				>
+				<RadioButton
+					android:id="@+id/radioButtonTextile"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:checked="true"
+					android:text="@string/text_type_textile"/>
+				<RadioButton
+					android:id="@+id/radioButtonMarkdown"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/text_type_markdown"/>
+				<RadioButton
+					android:id="@+id/radioButtonNone"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/text_type_none"/>
+			</RadioGroup>
+
 
 			<CheckBox
 				android:id="@+id/checkHttpAuth"
@@ -162,7 +192,7 @@
 					android:ems="10"
 					android:hint="@string/menu_setting_edit_authid"
 					android:inputType="textPhonetic"
-					android:singleLine="true" />
+					android:maxLines="1" />
 
 				<TextView
 					android:layout_width="wrap_content"
@@ -177,7 +207,7 @@
 					android:ems="10"
 					android:hint="@string/menu_setting_edit_authpasswd"
 					android:inputType="textPassword"
-					android:singleLine="true" />
+					android:maxLines="1" />
 			</LinearLayout>
 
 			<CheckBox

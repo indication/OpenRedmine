@@ -9,6 +9,7 @@ import com.j256.ormlite.android.apptools.OrmLiteListFragment;
 
 import java.sql.SQLException;
 
+import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;
 import jp.redmine.redmineclient.adapter.VersionListAdapter;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -75,6 +76,7 @@ public class VersionList extends OrmLiteListFragment<DatabaseCacheHelper> {
 		RedmineProjectVersion item = (RedmineProjectVersion) listitem;
 
 		RedmineFilter filter = new RedmineFilter();
+		filter.setName(getString(R.string.title_version, item.getName()));
 		filter.setConnectionId(item.getConnectionId());
 		filter.setProject(item.getProject());
 		filter.setVersion(item);

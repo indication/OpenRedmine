@@ -37,11 +37,6 @@ class RedmineConvertToHtmlHelper {
 		}
 
 	};
-	public enum WikiType{
-		Texttile,
-		Markdown,
-		None
-	}
 
 	public RedmineConvertToHtmlHelper(){
 		helpers.put(WikiType.Markdown, new MarkdownHelper());

@@ -8,9 +8,9 @@
   <string name="menu_setting_label_accesstoken">Token de Acesso</string>
   <string name="menu_setting_edit_accesstoken">0e7c82.... 40 caracteres</string>
   <string name="menu_setting_label_authid">ID</string>
-  <string name="menu_setting_edit_authid">ID do Authcation Básico</string>
+  <string name="menu_setting_edit_authid">ID de Autenticação Básica</string>
   <string name="menu_setting_label_authpasswd">Senha</string>
-  <string name="menu_setting_edit_authpasswd">Senha do Authcation Básico</string>
+  <string name="menu_setting_edit_authpasswd">Senha de Autenticação Básica</string>
   <string name="name">Nom</string>
   <string name="label_name">Nome do Rótulo</string>
   <string name="save">Salvar</string>
@@ -117,7 +117,7 @@
   <string name="has_been_saved">Foi salvo</string>
   <string name="input_error_invalid_decimal">Informe um número válido.</string>
   <string name="input_error_select">Selecione %1$s</string>
-  <string name="warning_experimental_feature">Isto é EXPERIMENTAL. Esta funcionalidade pode afetar negativamente seu redmine.</string>
+  <string name="warning_experimental_feature">Isto é EXPERIMENTAL. Isto pode afetar negativamente seu redmine.</string>
   <string name="size">Tamanho</string>
   <string name="progress">Progresso</string>
   <string name="download">Baixar</string>
@@ -132,4 +132,11 @@
   <string name="recent_issues">Tarefas recentes</string>
   <string name="web">Web</string>
   <string name="contributors">Colaboradores</string>
+  <string name="title_home">Início</string>
+  <string name="title_category">Categoria %1$s</string>
+  <string name="title_version">Versão %1$s</string>
+  <string name="text_type">Formato de texto</string>
+  <string name="text_type_textile">Textile</string>
+  <string name="text_type_markdown">Markdown</string>
+  <string name="text_type_none">Nenhum</string>
 </resources>

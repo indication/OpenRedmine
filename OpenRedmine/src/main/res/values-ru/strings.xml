@@ -127,6 +127,7 @@
   <string name="activity_not_found">Приложение не найдено за этот файл.</string>
   <string name="recent_issues">Последние задачи</string>
   <string name="web">сеть</string>
+  <string name="text_type_none">Нет</string>
   <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
   <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="ticket_filter_closed_on">Filtered</string>
@@ -138,5 +139,4 @@
   <string name="text_type">Text format</string>
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>
-  <string name="text_type_none">None</string>
 </resources>

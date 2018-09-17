@@ -124,6 +124,8 @@
   <string name="recent_issues">最近的任务</string>
   <string name="web">网页</string>
   <string name="contributors">贡献者</string>
+  <string name="title_category">分类 %1$s</string>
+  <string name="title_version">版本 %1$s</string>
   <string name="menu_setting_unsafe_title">Unsafe SSL site</string>
   <string name="menu_setting_unsafe_confimation">Connect to unsafe SSL site</string>
   <string name="ticket_other">Other</string>
@@ -133,8 +135,6 @@
   <string name="ticket_closed">Closed</string>
   <string name="ticket_open">Open</string>
   <string name="title_home">Home</string>
-  <string name="title_category">Category %1$s</string>
-  <string name="title_version">Version %1$s</string>
   <string name="text_type">Text format</string>
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>

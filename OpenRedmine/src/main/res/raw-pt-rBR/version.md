@@ -9,6 +9,10 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+-  Ícones atualizados e agora é exibido o título na tarefa ou wiki (#207)
+- Suporte a markdown
+- Tradução para o Português(BR) por etcho
+- Tradução para russo atualizada por roman.yagodin
 
 v3.21 - 56 - 28/07/2017
 ===========

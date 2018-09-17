@@ -9,6 +9,10 @@ NOCH ZU MACHEN
 
 Nächste Veröffentlichung
 ===========
+- Update icons and Show title on issue or wiki (#207)
+- Markdown-Unterstützung
+- Update Portuguese(BR) translation by etcho
+- Update Russian translation by roman.yagodin
 
 v3.21 - 56 - 28.07.2017
 ===========

@@ -16,6 +16,7 @@
 
 #### ロシア語
 - [box789](https://github.com/box789)
+- [roman.yagodin](https://www.transifex.com/user/profile/roman.yagodin/)
 
 #### ドイツ語
 - [markusr](https://github.com/markusr)

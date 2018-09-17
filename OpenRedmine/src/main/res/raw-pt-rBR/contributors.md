@@ -16,6 +16,7 @@ Obrigado pela contribuição de vocês.
 
 #### Russo
 - [box789](https://github.com/box789)
+- [roman.yagodin](https://www.transifex.com/user/profile/roman.yagodin/)
 
 #### Alemão
 - [markusr](https://github.com/markusr)

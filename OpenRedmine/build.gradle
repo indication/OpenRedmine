@@ -25,7 +25,7 @@ android {
         versionCode Integer.decode(version_code)
         versionName version
         testApplicationId "jp.redmine.redmineclienttest"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testHandleProfiling true
         testFunctionalTest true
         multiDexEnabled false
@@ -70,8 +70,11 @@ android {
 }
 
 dependencies {
-    androidTestImplementation 'com.google.guava:guava:22.0'
-    androidTestImplementation 'junit:junit:4.12'
+    testImplementation 'com.google.guava:guava:22.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
     //implementation 'com.android.support:support-v4:25.3.1'
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.android.support:support-fragment:25.3.1'

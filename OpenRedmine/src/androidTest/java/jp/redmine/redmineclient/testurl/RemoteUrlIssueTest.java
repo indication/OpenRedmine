@@ -1,12 +1,12 @@
 package jp.redmine.redmineclient.testurl;
 
-import android.test.AndroidTestCase;
+import junit.framework.TestCase;
 
 import jp.redmine.redmineclient.url.RemoteUrl.requests;
 import jp.redmine.redmineclient.url.RemoteUrlIssue;
 
 
-public class RemoteUrlIssueTest extends AndroidTestCase {
+public class RemoteUrlIssueTest extends TestCase {
 
 	private final String testurl = "http://test/";
 	public RemoteUrlIssueTest() {

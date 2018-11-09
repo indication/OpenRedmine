@@ -1,50 +1,50 @@
-Proje
+Projekt
 ==========
 - [Github](https://github.com/indication/OpenRedmine)
 
-Katkıda bulunanlar
+Přispěvatelé
 ==========
 
-Katkınız için teşekkürler.
+Thank you for contribution.
 
-## Ürün
+## Production
 
-- [insink71](https://twitter.com/insink71/statuses/425297982078996480) - Tanıtım [redmine wiki](http://www.redmine.org/projects/redmine/wiki/ThirdPartyTools)
-- [ironAss](https://github.com/ironAss) - Ekran döndürme desteği #88
+- [insink71](https://twitter.com/insink71/statuses/425297982078996480) - Promotion in [redmine wiki](http://www.redmine.org/projects/redmine/wiki/ThirdPartyTools)
+- [ironAss](https://github.com/ironAss) - Screen rotation support #88
 
-## Yerelleştirme
+## Localization
 
-#### Rusça
+#### Russian
 - [box789](https://github.com/box789)
 - [roman.yagodin](https://www.transifex.com/user/profile/roman.yagodin/)
 
-#### Almanca
+#### German
 - [markusr](https://github.com/markusr)
 - [Atalanttore](https://www.transifex.com/user/profile/Atalanttore/)
 - [DJaeger](https://www.transifex.com/user/profile/DJaeger/)
 
-#### Portekizce (Brezilya)
+#### Portuguese (Brazil)
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
-#### Çince (Çin)
-- [StevenGape](https://github.com/StevenGape) - #171
+#### Chinese (China)
+-  [StevenGape](https://github.com/StevenGape) - #171
 
-#### Türkçe (Türkiye)
+#### Turkish (Turkey)
 - [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
 
-#### Fransızca
+#### French
 - [MagicFab](https://www.transifex.com/user/profile/MagicFab/)
 
-#### İspanyolca (İspanya)
+#### Spanish (Spain)
 - [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
 
-#### Japonca
+#### Japanese
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 
-#### İngilizce
-- (temel dil)
+#### English
+- (base language)
 - [elmanytas](https://github.com/elmanytas) spelling fixes - #191
 - [ka7](https://github.com/ka7) spelling fixes - #198
 
 
-[Transifex aracılığıyla çeviri ekibine katılabilirsiniz.](https://www.transifex.com/indication/openredmine/)
+[You can join localization team via Transifex.](https://www.transifex.com/indication/openredmine/)

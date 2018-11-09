@@ -9,8 +9,11 @@ Coisas a serem feitas
 
 Próxima Release
 ===========
+- Atualizando a versão do SDK para 28
+- Tentando corrigir erro na obtenção do token (#218)
+- Tentando corrigir crash no Android 8 (#219)
 
-v3.22 - ??? - 2018/09/28
+v3.22 - 652 - 28/09/2018
 ===========
 -  Ícones atualizados e agora é exibido o título na tarefa ou wiki (#207)
 - Suporte a markdown

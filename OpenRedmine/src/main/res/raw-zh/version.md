@@ -9,8 +9,11 @@ OpenRedmine
 
 下一发布版本
 ===========
+- Upgrade target SDK version to 28
+- Try to fix get token is failed (#218)
+- Try to fix crash on Android 8 (#219)
 
-v3.22 - ??? - 2018/09/28
+v3.22 - 652 - 2018/09/28
 ===========
 - Update icons and Show title on issue or wiki (#207)
 - Markdown support

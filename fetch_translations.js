@@ -105,7 +105,7 @@ map(objFSO,pathTranslation+"/openredmine.stringsxml-49_merge",pathRoot+"/OpenRed
 map(objFSO,pathTranslation+"/openredmine.storemd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","store.md");
 map(objFSO,pathTranslation+"/openredmine.versionmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","version.md");
 map(objFSO,pathTranslation+"/openredmine.contributorsmd",pathRoot+"/OpenRedmine/src/main/res/raw-XX","contributors.md");
-//WScript.Echo("DONE!");
+WScript.Echo("DONE!");
 
 
 /* Download file
@@ -176,7 +176,7 @@ function mergeTranslation(fso, objWS, merger, pathInput, pathExport, basefile){
 			)).join(" ");
 		d("transcode",cmd);
 		//WScript.Echo("transcode" + ": " + cmd);
-		objWS.Run(cmd,1,true);
+		objWS.Run(cmd,0,true);
 	}
 }
 

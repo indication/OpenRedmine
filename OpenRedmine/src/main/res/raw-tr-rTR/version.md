@@ -7,7 +7,7 @@ YAPILACAKLAR
 - Güncelleme hatasını düzeltmek için tarihi kontrol et (#83)
 - İşlere paylaş butonu ekle (#18)
 
-Bir sonraki sürüm
+$current_version$ - $current_build$
 ===========
 - Upgrade target SDK version to 28
 - Try to fix get token is failed (#218)

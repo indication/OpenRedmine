@@ -7,7 +7,7 @@ TODO
 - 日付を確認して更新 (#83)
 - 共有ボタンをチケットに追加 (#18)
 
-次期リリース
+$current_version$ - $current_build$
 ===========
 - Upgrade target SDK version to 28
 - Try to fix get token is failed (#218)

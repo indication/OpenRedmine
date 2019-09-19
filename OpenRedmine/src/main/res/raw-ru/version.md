@@ -7,7 +7,7 @@ TODO
 - Дата Проверить обновления (#83)
 - Добавить кнопку Отправить по вопросу (#18)
 
-Next Release
+$current_version$ - $current_build$
 ===========
 - Upgrade target SDK version to 28
 - Try to fix get token is failed (#218)

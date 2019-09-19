@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.WebviewActionInterface;
 import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
@@ -69,8 +70,12 @@ public class ResourceMarkdown extends OrmLiteFragment<DatabaseCacheHelper> {
 		StringBuilder text = new StringBuilder();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		String str;
+		String versionCode = String.valueOf(BuildConfig.VERSION_CODE);
 		while((str = reader.readLine()) != null){
-			text.append(str);
+			text.append(str
+					.replace("$current_version$", BuildConfig.VERSION_NAME)
+					.replace("$current_build$", versionCode)
+			);
 			text.append("\n");
 		}
 		webViewHelper.setContent(webView, text.toString(), WikiType.Markdown);

@@ -7,7 +7,7 @@ TODO
 - Check date to update bug (#83)
 - Add share button on issue (#18)
 
-Next Release
+$current_version$ - $current_build$
 ===========
 - Upgrade target SDK version to 28
 - Try to fix get token is failed (#218)

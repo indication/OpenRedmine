@@ -7,7 +7,7 @@ TODO
 - Datum überprüfen, um Fehler zu aktualisieren (#83)
 - Teilen-Schaltfläche auf Frage hinzufügen (#18)
 
-Nächste Veröffentlichung
+$current_version$ - $current_build$
 ===========
 - Upgrade target SDK version to 28
 - Try to fix get token is failed (#218)

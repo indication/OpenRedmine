@@ -7,7 +7,7 @@ Coisas a serem feitas
 - Verificar data para o bug de atualização (#83)
 - Adicionar botão de compartilhamento na tarefa (#18)
 
-Próxima Release
+$current_version$ - $current_build$
 ===========
 - Atualizando a versão do SDK para 28
 - Tentando corrigir erro na obtenção do token (#218)

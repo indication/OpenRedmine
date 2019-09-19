@@ -12,6 +12,7 @@ $current_version$ - $current_build$
 - Atualizando a versão do SDK para 28
 - Tentando corrigir erro na obtenção do token (#218)
 - Tentando corrigir crash no Android 8 (#219)
+- Adicionada tradução para o tcheco por Mongata (#220)
 
 v3.22 - 652 - 28/09/2018
 ===========

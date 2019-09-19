@@ -9,9 +9,10 @@ TODO
 
 $current_version$ - $current_build$
 ===========
-- Upgrade target SDK version to 28
-- Try to fix get token is failed (#218)
-- Try to fix crash on Android 8 (#219)
+- SDKバージョンを28へ更新
+- トークンの取得失敗の修正を試行 (#218)
+- Android 8でのクラッシュを修正 (#219)
+- Mongataによるチェコ語を追加 (#220)
 
 v3.22 - 652 - 2018/09/28
 ===========

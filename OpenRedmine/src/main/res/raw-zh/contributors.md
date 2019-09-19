@@ -38,6 +38,9 @@
 #### Spanish (Spain)
 - [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
 
+#### Czech (Czech republic)
+- [Mongata] (https://github.com/Mongata) - #220
+
 #### 日语
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

@@ -11,7 +11,7 @@ android {
     if (version == "") {version = "${System.env.TRAVIS_BRANCH}-${System.env.TRAVIS_BUILD_NUMBER}"}
     else {version = version.replace("v", "")}
     if (version == "null-null") {version = "dev"}
-    def version_code = System.getenv("TRAVIS_BUILD_NUMBER") ?: "0"
+    def version_code = System.getenv("TRAVIS_BUILD_NUMBER") ?: "1"
 
     println "Build version: $version ($version_code)"
 

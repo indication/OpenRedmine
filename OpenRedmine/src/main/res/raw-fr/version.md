@@ -7,11 +7,12 @@ TODO
 - Check date to update bug (#83)
 - Add share button on issue (#18)
 
-Next Release
+$current_version$ - $current_build$
 ===========
 - Upgrade target SDK version to 28
 - Try to fix get token is failed (#218)
 - Try to fix crash on Android 8 (#219)
+- Add czech translation by Mongata (#220)
 
 v3.22 - 652 - 2018/09/28
 ===========

@@ -6,6 +6,11 @@ Breve descrição
 ===========
 O OpenRedmine é um cliente Redmine totalmente de graça e de código aberto no GitHub.
 
+Descrição de imagem de promoção
+===========
+Gerenciador de projetos portátil
+Permitido editar, ver tarefa e conteúdos relacionados
+
 Descrição
 ==========
 O OpenRedmine é cliente Redmine para android.

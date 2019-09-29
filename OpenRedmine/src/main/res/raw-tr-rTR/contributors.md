@@ -38,6 +38,9 @@ Katkınız için teşekkürler.
 #### İspanyolca (İspanya)
 - [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
 
+#### Czech (Czech republic)
+- [Mongata] (https://github.com/Mongata) - #220
+
 #### Japonca
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

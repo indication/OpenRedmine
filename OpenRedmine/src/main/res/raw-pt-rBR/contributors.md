@@ -38,6 +38,9 @@ Obrigado pela contribuição de vocês.
 #### Espanhol (Espanha)
 - [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
 
+#### Tcheco(República Tcheca)
+- [Mongata] (https://github.com/Mongata) - #220
+
 #### Japonês
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

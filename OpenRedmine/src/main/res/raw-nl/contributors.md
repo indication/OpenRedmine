@@ -2,7 +2,7 @@ Project
 ==========
 - [Github](https://github.com/indication/OpenRedmine)
 
-Contributors
+Bijdragers
 ==========
 
 Thank you for contribution.
@@ -41,9 +41,6 @@ Thank you for contribution.
 #### Czech (Czech republic)
 - [Mongata] (https://github.com/Mongata) - #220
 
-#### Dutch (the Netherlands)
-- [PanderMusubi](https://github.com/PanderMusubi) - #224
-
 #### Japanese
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 
@@ -54,4 +51,3 @@ Thank you for contribution.
 
 
 [You can join localization team via Transifex.](https://www.transifex.com/indication/openredmine/)
-

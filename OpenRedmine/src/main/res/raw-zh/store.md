@@ -6,6 +6,11 @@ OpenRedmine
 ===========
 OpenRedmine是一个管理平台客户端，它是完全免费的，并在GitHub上的开源
 
+Promotion image description
+===========
+Portable project management
+Allow to edit, view issue and relative contents
+
 描述
 ==========
 OpenRedmine 是一款 Android 上的 Redmine 客户端。

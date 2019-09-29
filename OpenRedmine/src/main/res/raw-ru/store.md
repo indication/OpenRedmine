@@ -6,6 +6,11 @@ OpenRedmine
 ===========
 Клиент Redmine является полностью бесплатной открытым исходным кодом на GitHub
 
+Promotion image description
+===========
+Portable project management
+Allow to edit, view issue and relative contents
+
 Description
 ==========
 OpenRedmine Android является клиентом .

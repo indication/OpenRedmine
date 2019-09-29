@@ -6,6 +6,11 @@ OpenRedmine
 ===========
 OpenRedmine, bütünen özgür ve açık kaynaklı bir Redmine istemcisidir. GitHub üzerinde mevcuttur.
 
+Promotion image description
+===========
+Portable project management
+Allow to edit, view issue and relative contents
+
 Açıklama
 ==========
 OpenRedmine, Android için bir Redmine istemcisidir.

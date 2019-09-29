@@ -32,8 +32,6 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
     - android-$ANDROID_COMPILE_SDK_VERSION
-    # emulator(s)
-    - sys-img-armeabi-v7a-android-21
 
   licenses:
     - 'android-sdk-preview-license-52d11cd2'
@@ -41,17 +39,9 @@ android:
     - 'android-sdk-license-e6a904e8'
 #    - 'android-googletv-license-99eda7fb'
     - 'google-gdk-license-9529f459'
-    #for emulator
     - 'android-sdk-license-5be876d5'
-    - 'android-sdk-license-2742d1c5'
 
 before_script:
-  # Emulator Management: Create, Start and Wait
-  - android list targets
-  - echo no | android create avd --force -n test -t android-15 --abi armeabi-v7a -c 32M
-  - emulator -avd test -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
   # Setup build envrionment
   - openssl aes-256-cbc -K $encrypted_7fcdb5fbc52e_key -iv $encrypted_7fcdb5fbc52e_iv -in external/localsettings.tar.gz.enc -out localsettings.tar.gz -d
   - tar xzf localsettings.tar.gz && mv id_edca ~/.ssh/ && mv id_config ~/.ssh/config
@@ -61,7 +51,6 @@ before_script:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\nd77a45cfde8d8db5135a9d01fce4bdfa23a033dd" > "/usr/local/android-sdk/licenses/android-sdk-preview-license"
 
 script:
-  - ./gradlew build connectedCheck
   - ./gradlew assembleDebug assembleRelease
 
 after_success:

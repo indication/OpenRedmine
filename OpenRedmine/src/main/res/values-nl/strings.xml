@@ -25,6 +25,7 @@
   <string name="preference_category_issue">Issues</string>
   <string name="preference_issue_get_all">Haal alle issues op</string>
   <string name="preference_issue_description_get_all">Haal standaard ONGESLOTEN issues op van de remote server. Als je alle issies wil ophalen, vink deze optie aan.</string>
+  <string name="preference_category_appearance">Interface</string>
   <string name="preference_category_appearance_themes">Thema</string>
   <string name="menu_refresh">Ververs lijst</string>
   <string name="menu_setting_unsafe_title">Onveilige SSL-site</string>
@@ -138,5 +139,4 @@
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>
   <string name="text_type_none">Geen</string>
-  <string name="preference_category_appearance">Appearance</string>
 </resources>

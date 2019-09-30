@@ -41,6 +41,9 @@ Thank you for contribution.
 #### Czech (Czech republic)
 - [Mongata] (https://github.com/Mongata) - #220
 
+#### Dutch (the Netherlands)
+- [PanderMusubi](https://github.com/PanderMusubi) - #224
+
 #### Japanese
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

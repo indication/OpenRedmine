@@ -41,6 +41,9 @@
 #### チェコ語 (チェコ共和国)
 - [Mongata] (https://github.com/Mongata) - #220
 
+#### オランダ語 (オランダ国)
+- [PanderMusubi](https://github.com/PanderMusubi) - #224
+
 #### 日本語
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)
 

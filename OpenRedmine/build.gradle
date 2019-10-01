@@ -8,9 +8,14 @@ android {
 
     //Make version code
     def version = "v3.23"
-    def version_code = "653"
+    def version_code = "664"
+    def build_environment = "dev"
+    if ("${System.env.CI_JOB_NAME}" != "null")
+        build_environment = "f-droid:${System.env.CI_JOB_NAME}"
+    else if ("${System.env.TRAVIS_BRANCH}" != "null")
+        build_environment = "Travis CI:${System.env.TRAVIS_BRANCH}-${System.env.TRAVIS_BUILD_NUMBER}"
 
-    println "Build version: $version ($version_code)"
+    println "Build version: $version ($version_code) - $build_environment"
 
     compileSdkVersion Integer.decode(compile_version)
     buildToolsVersion build_tool_version
@@ -26,6 +31,7 @@ android {
         testHandleProfiling true
         testFunctionalTest true
         multiDexEnabled false
+        buildConfigField 'String', 'BUILD_ENV', '"$build_environment"'
 
     }
     compileOptions {
@@ -99,5 +105,3 @@ if (project.hasProperty('storeFile')) {
 if (project.hasProperty('storePassword')) {
     android.signingConfigs.release.storePassword = storePassword
 }
-
-

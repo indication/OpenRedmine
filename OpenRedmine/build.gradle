@@ -7,8 +7,8 @@ android {
     println "Compile SDK: $compile_version Tool version: $build_tool_version Target version: $target_sdk_version"
 
     //Make version code
-    def version = "v3.23"
-    def version_code = "664"
+    def version = "3.23"
+    def version_code = "665"
     def build_environment = "dev"
     if ("${System.env.CI_JOB_NAME}" != "null")
         build_environment = "f-droid:${System.env.CI_JOB_NAME}"
@@ -31,7 +31,7 @@ android {
         testHandleProfiling true
         testFunctionalTest true
         multiDexEnabled false
-        buildConfigField 'String', 'BUILD_ENV', '"$build_environment"'
+        buildConfigField 'String', 'BUILD_ENV', '"' + "$build_environment" + '"'
 
     }
     compileOptions {

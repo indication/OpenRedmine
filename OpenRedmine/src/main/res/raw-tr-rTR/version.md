@@ -1,29 +1,34 @@
 OpenRedmine
 ===========
-Release history
+Sürüm geçmişi
 
 YAPILACAKLAR
 ===========
-- Check date to update bug (#83)
-- Add share button on issue (#18)
+- Güncelleme hatasını düzeltmek için tarihi kontrol et (#83)
+- İşlere paylaş butonu ekle (#18)
 
-Next Release
+$current_version$ - $current_build$
 ===========
+- Upgrade target SDK version to 28
+- Try to fix get token is failed (#218)
+- Try to fix crash on Android 8 (#219)
+- Add czech translation by Mongata (#220)
+- Add dutch translations by PanderMusubi (#224)
 
-v3.22 - ??? - 2018/09/28
+v3.22 - 652 - 2018/09/28
 ===========
-- Update icons and Show title on issue or wiki (#207)
-- Markdown support
-- Update Portuguese(BR) translation by etcho
-- Update Russian translation by roman.yagodin
+- Simgeleri, wikide ve işlerdeki "Başlığı göster" butonunu güncelle (#207)
+- Markdown desteği
+- Portekizce çeviriyi güncelle (etcho tarafından)
+- Rusça çeviriyi güncelle (roman.yagodin tarafından)
 
 v3.21 - 56 - 2017/07/28
 ===========
-- Update icons
+- Simgeleri güncelle
 - Show title on issue or wiki
 - Add issue filter to limit open or closed issues (#199)
 - Update German translation by Atalanttore
-- Update Portuguese(BR) translation by etcho
+- Portekizce çeviriyi güncelle (etcho tarafından)
 - Spelling fixes by ka7 (#198)
 - Fix crash on FileDownload (#202)
 - Try to fix infrator exception

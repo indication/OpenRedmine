@@ -27,16 +27,22 @@ Katkınız için teşekkürler.
 - [etcho](https://www.transifex.com/user/profile/etcho/)
 
 #### Çince (Çin)
--  [StevenGape](https://github.com/StevenGape) - #171
+- [StevenGape](https://github.com/StevenGape) - #171
 
-#### Turkish (Turkey)
+#### Türkçe (Türkiye)
 - [halis.simsek](https://www.transifex.com/user/profile/halis.simsek/)
 
-#### French
+#### Fransızca
 - [MagicFab](https://www.transifex.com/user/profile/MagicFab/)
 
-#### Spanish (Spain)
+#### İspanyolca (İspanya)
 - [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
+
+#### Czech (Czech republic)
+- [Mongata] (https://github.com/Mongata) - #220
+
+#### Dutch (the Netherlands)
+- [PanderMusubi](https://github.com/PanderMusubi) - #224
 
 #### Japonca
 - [in_dow](https://www.transifex.com/user/profile/in_dow/)

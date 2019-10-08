@@ -20,7 +20,7 @@ public class AboutFragment extends Fragment {
 		if (text != null)
 			text.setText(getString(R.string.footer_version,
 					BuildConfig.APPLICATION_ID, BuildConfig.VERSION_NAME,
-					BuildConfig.VERSION_CODE, BuildConfig.BUILD_TYPE
+					BuildConfig.VERSION_CODE, BuildConfig.BUILD_ENV
 			));
 		return view;
 	}

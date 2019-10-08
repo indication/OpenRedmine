@@ -1,8 +1,8 @@
-Project
+Projekt
 ==========
 - [Github](https://github.com/indication/OpenRedmine)
 
-Contributors
+Přispěvatelé
 ==========
 
 Thank you for contribution.
@@ -54,4 +54,3 @@ Thank you for contribution.
 
 
 [You can join localization team via Transifex.](https://www.transifex.com/indication/openredmine/)
-

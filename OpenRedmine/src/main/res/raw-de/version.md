@@ -2,15 +2,20 @@ OpenRedmine
 ===========
 Veröffentlichungschronik
 
-NOCH ZU MACHEN
+TODO
 ===========
 - Datum überprüfen, um Fehler zu aktualisieren (#83)
 - Teilen-Schaltfläche auf Frage hinzufügen (#18)
 
-Nächste Veröffentlichung
+$current_version$ - $current_build$
 ===========
+- Upgrade target SDK version to 28
+- Try to fix get token is failed (#218)
+- Try to fix crash on Android 8 (#219)
+- Add czech translation by Mongata (#220)
+- Add dutch translations by PanderMusubi (#224)
 
-v3.22 - ??? - 2018/09/28
+v3.22 - 652 - 2018/09/28
 ===========
 - Update icons and Show title on issue or wiki (#207)
 - Markdown-Unterstützung

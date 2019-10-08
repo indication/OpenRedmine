@@ -2,47 +2,52 @@ Başlık
 ===========
 OpenRedmine
 
-Brief description
+Özet
 ===========
-OpenRedmine is a Redmine client which is totally free and open-source on GitHub.
+OpenRedmine, bütünen özgür ve açık kaynaklı bir Redmine istemcisidir. GitHub üzerinde mevcuttur.
+
+Promotion image description
+===========
+Portable project management
+Allow to edit, view issue and relative contents
 
 Açıklama
 ==========
-OpenRedmine is an android Redmine client.
+OpenRedmine, Android için bir Redmine istemcisidir.
 
 Gereksinimler:
 * Redmine 1.2 sonrası
 * API erişim anahtarı ("Hesabım"dan değiştir)
 
 DİKKAT:
-* Cache data(downloaded issues) are stored WITHOUT encryption. To remove cache data immediately , open connection list - show menu - remove all cache 
-* This is gamma release, so it is not safe for anything. On Android 2.x, the view would be wrong some times.
+Önbelleklenmiş veri (indirilen işler) ŞİFRELENMEMİŞ halde tutulmaktadır. Önbelleği derhal silmek için, "Bağlantı listesi -> Menüyü göster -> Tüm önbelleği sil" yolunu izleyebilirsiniz. 
+Bu bir "gamma" sürümüdür, hiçbir şey için güvenli değildir. Android 2.x üzerinde görünümde zaman zaman hatalar olabilir.
 
 Bağlantı:
-* Allow to connect UNSAFE SSL sites powered by transdroid
-* Allow to connect via Basic Authentication
-* Get API key from web site semi-automatically
-* Connection via gzip(compresstion)
+* Transdroid tarafından sağlanan GÜVENSİZ SSL sitelerine bağlanmaya izin ver
+* Basit doğrulama ile bağlanmaya izin ver
+* API anahtarını siteden yarı otomatik biçimde al
+* gzip ile bağlan (sıkıştırma ile)
 
 Özellikler:
 * İşleri çevrimdışı görüntüle
-* Filter (Status/Tracker/Category/Priority/Author/Assined)
+* Süzgeç (Durum/İş Takip/Kategori/Öncelik/Yazar/Atanan)
 * Sırala (İşID/Oluşturulma/Değiştirilme/... vb)
-* Show changelogs, relative issues
-* Create or modify issue/timeentry
-* Download file related with issues
-* View wiki
-* View news
+* Sürüm notlarını ve ilişkili işleri görüntüle
+* İş oluştur/düzenle
+* İşlerle ilgili dosyayı indir
+* Wikiyi görüntüle
+* Haberleri görüntüle
 
 İzinler:
-* INTERNET - connect to redmine server
-* VIBRATE - notify with vibrate on tap the list item
+* INTERNET - Redmine sunucusuna bağlan
+* TİTREŞİM - Listedeki bir girdiye dokununca titreşimle uyar
 
-Reports:
-If you detect the crash, bless us by the report via twitter, github, reviews with 1 star.
+Raporlar:
+Eğer bir hata ile karşılaşırsanız, lütfen Twitter, GitHub veya 1 yıldızlı yorumlar ile bize bildirin.
 
-Note:
-* This app is open source(GPL exclude libraries), you can contribute.
-* You can translate your language via https://www.transifex.com/projects/p/openredmine/ . (tr-TR: halis.simsek)
-* Notice via https://github.com/indication/OpenRedmine or twitter @OpenRedmine if you feel something good or bad.
-* Beta would be released on https://play.google.com/apps/testing/jp.redmine.redmineclient .
+Not:
+* Bu uygulama özgür yazılımdır (kütüphaneler hariç GPL), siz de katkı verebilirsiniz.
+* Yazılımı kendi dilinize Transfex üzerinden çevirebilirsiniz:  https://www.transifex.com/projects/p/openredmine/ . (tr-TR: ooguz, halis.simsek)
+* Eğer iyi veya kötü bir düşünceniz varsa, https://github.com/indication/OpenRedmine veya @OpenRedmine Twitter hesabı üzerinden bildirebilirsiniz.
+* Beta sürümleri https://play.google.com/apps/testing/jp.redmine.redmineclient adresinden yayınlanacaktır.

@@ -1,19 +1,21 @@
 apply plugin: 'com.android.application'
 android {
     //Apply versions
-    def compile_version = System.getenv("ANDROID_COMPILE_SDK_VERSION") ?: "25"
-    def build_tool_version = System.getenv("ANDROID_BUILD_TOOL_VERSION") ?: '28.0.2'
-    def target_sdk_version =System.getenv("ANDROID_TARGET_SDK_VERSION") ?: "25"
+    def compile_version = System.getenv("ANDROID_COMPILE_SDK_VERSION") ?: "28"
+    def build_tool_version = System.getenv("ANDROID_BUILD_TOOL_VERSION") ?: '28.0.3'
+    def target_sdk_version =System.getenv("ANDROID_TARGET_SDK_VERSION") ?: "28"
     println "Compile SDK: $compile_version Tool version: $build_tool_version Target version: $target_sdk_version"
 
     //Make version code
-    def version = System.getenv("TRAVIS_TAG") ?: ""
-    if (version == "") {version = "${System.env.TRAVIS_BRANCH}-${System.env.TRAVIS_BUILD_NUMBER}"}
-    else {version = version.replace("v", "")}
-    if (version == "null-null") {version = "dev"}
-    def version_code = System.getenv("TRAVIS_BUILD_NUMBER") ?: "0"
+    def version = "3.23"
+    def version_code = "665"
+    def build_environment = "dev"
+    if ("${System.env.CI_JOB_NAME}" != "null")
+        build_environment = "f-droid:${System.env.CI_JOB_NAME}"
+    else if ("${System.env.TRAVIS_BRANCH}" != "null")
+        build_environment = "Travis CI:${System.env.TRAVIS_BRANCH}-${System.env.TRAVIS_BUILD_NUMBER}"
 
-    println "Build version: $version ($version_code)"
+    println "Build version: $version ($version_code) - $build_environment"
 
     compileSdkVersion Integer.decode(compile_version)
     buildToolsVersion build_tool_version
@@ -25,10 +27,11 @@ android {
         versionCode Integer.decode(version_code)
         versionName version
         testApplicationId "jp.redmine.redmineclienttest"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testHandleProfiling true
         testFunctionalTest true
         multiDexEnabled false
+        buildConfigField 'String', 'BUILD_ENV', '"' + "$build_environment" + '"'
 
     }
     compileOptions {
@@ -70,15 +73,19 @@ android {
 }
 
 dependencies {
-    androidTestImplementation 'com.google.guava:guava:22.0'
-    androidTestImplementation 'junit:junit:4.12'
+    testImplementation 'com.google.guava:guava:22.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
     //implementation 'com.android.support:support-v4:25.3.1'
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.android.support:support-fragment:25.3.1'
     implementation 'com.android.support:animated-vector-drawable:25.3.1'
     implementation 'com.android.support:design:25.3.1'
     implementation 'com.andreabaccega:android-form-edittext:1.2.1'
-    implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+    //implementation 'se.emilsjolander:stickylistheaders:2.7.0'
+    implementation 'com.github.mtotschnig:StickyListHeaders:2.7.1'
     implementation 'com.j256.ormlite:ormlite-core:4.48'
     implementation 'com.j256.ormlite:ormlite-android:4.48'
     implementation 'org.apache.commons:commons-lang3:3.4'
@@ -98,5 +105,3 @@ if (project.hasProperty('storeFile')) {
 if (project.hasProperty('storePassword')) {
     android.signingConfigs.release.storePassword = storePassword
 }
-
-

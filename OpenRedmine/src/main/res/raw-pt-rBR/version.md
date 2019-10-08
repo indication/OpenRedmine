@@ -7,10 +7,15 @@ Coisas a serem feitas
 - Verificar data para o bug de atualização (#83)
 - Adicionar botão de compartilhamento na tarefa (#18)
 
-Próxima Release
+$current_version$ - $current_build$
 ===========
+- Atualizando a versão do SDK para 28
+- Tentando corrigir erro na obtenção do token (#218)
+- Tentando corrigir crash no Android 8 (#219)
+- Adicionada tradução para o tcheco por Mongata (#220)
+- Add dutch translations by PanderMusubi (#224)
 
-v3.22 - ??? - 2018/09/28
+v3.22 - 652 - 28/09/2018
 ===========
 -  Ícones atualizados e agora é exibido o título na tarefa ou wiki (#207)
 - Suporte a markdown

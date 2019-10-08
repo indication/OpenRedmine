@@ -6,6 +6,11 @@ Kurze Beschreibung
 ===========
 OpenRedmine ist ein Redmine-Client der opensource ist und auf GitHub gehostet ist.
 
+Promotion image description
+===========
+Portable project management
+Allow to edit, view issue and relative contents
+
 Beschreibung
 ==========
 OpenRedmine ist ein Android Redmine-Client.

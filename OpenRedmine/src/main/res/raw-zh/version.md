@@ -7,10 +7,15 @@ OpenRedmine
 - Check date to update bug (#83)
 -任务内添加分享按钮(#18)
 
-下一发布版本
+$current_version$ - $current_build$
 ===========
+- Upgrade target SDK version to 28
+- Try to fix get token is failed (#218)
+- Try to fix crash on Android 8 (#219)
+- Add czech translation by Mongata (#220)
+- Add dutch translations by PanderMusubi (#224)
 
-v3.22 - ??? - 2018/09/28
+v3.22 - 652 - 2018/09/28
 ===========
 - Update icons and Show title on issue or wiki (#207)
 - Markdown support

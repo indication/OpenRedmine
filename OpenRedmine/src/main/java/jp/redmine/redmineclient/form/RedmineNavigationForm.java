@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class RedmineNavigationForm extends FormHelper {
 	private Activity activity;
 	public WebView  webView ;
@@ -147,14 +149,25 @@ public class RedmineNavigationForm extends FormHelper {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 
-			if(url.endsWith("my/account")){
+			if(url.endsWith("my/api_key")) {
+				if (view.getTitle().contains("404 error")) {
+					//fall back to user account settings
+					view.loadUrl(LimitUrl + "/my/account");
+				} else {
+					// HTMLソース上のpinコードを取得するためのJavaScript
+					String script = "javascript:";
+					script += "var elem = document.getElementById('content');";
+					script += "if(elem) alert(elem.getElementsByClassName('box')[0].innerText);";
+					view.loadUrl(script);
+				}
+			} else if(url.endsWith("my/account")){
 				// HTMLソース上のpinコードを取得するためのJavaScript
 				String script = "javascript:";
 				script += "var elem = document.getElementById('api-access-key');";
 				script += "if(elem) alert(elem.childNodes[0].nodeValue);";
 				view.loadUrl(script);
 			} else if(!url.endsWith("login")){
-				view.loadUrl(LimitUrl + "/my/account");
+				view.loadUrl(LimitUrl + "/my/api_key");
 			}
 			setHeaderVisible(false);
 		}
@@ -177,10 +190,10 @@ public class RedmineNavigationForm extends FormHelper {
 	private class CustomWebChromeClient extends WebChromeClient {
 		@Override
 		public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-			if (message == null) {
+			if (message == null || StringUtils.isEmpty(message)) {
 				return false;
 			}
-			performAction(message);
+			performAction(message.trim());
 			result.confirm();
 			// アラートダイアログをこのメソッド内で処理したか
 			// falseを返すとAndroid APIによるデフォルトのアラートダイアログが表示されるため、今回はtrueを返す

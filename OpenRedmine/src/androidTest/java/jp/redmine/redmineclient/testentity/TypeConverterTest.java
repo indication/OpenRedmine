@@ -1,12 +1,12 @@
 package jp.redmine.redmineclient.testentity;
 
-import android.test.AndroidTestCase;
+import junit.framework.TestCase;
 
 import java.util.Date;
 
 import jp.redmine.redmineclient.entity.TypeConverter;
 
-public class TypeConverterTest extends AndroidTestCase {
+public class TypeConverterTest extends TestCase {
 	public void testDateTimeUTC(){
 		Date result = TypeConverter.parseDateTime("2014-04-30T13:51:56Z");
 		assertNotNull(result);

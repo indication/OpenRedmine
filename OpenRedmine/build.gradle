@@ -7,15 +7,13 @@ android {
     println "Compile SDK: $compile_version Tool version: $build_tool_version Target version: $target_sdk_version"
 
     //Make version code
-    def version = "3.23"
-    def version_code = "665"
     def build_environment = "dev"
     if ("${System.env.CI_JOB_NAME}" != "null")
         build_environment = "f-droid:${System.env.CI_JOB_NAME}"
     else if ("${System.env.TRAVIS_BRANCH}" != "null")
         build_environment = "Travis CI:${System.env.TRAVIS_BRANCH}-${System.env.TRAVIS_BUILD_NUMBER}"
 
-    println "Build version: $version ($version_code) - $build_environment"
+    println "Build environment: $build_environment"
 
     compileSdkVersion Integer.decode(compile_version)
     buildToolsVersion build_tool_version
@@ -24,8 +22,8 @@ android {
         minSdkVersion 9
         targetSdkVersion Integer.decode(target_sdk_version)
 
-        versionCode Integer.decode(version_code)
-        versionName version
+        versionCode 665
+        versionName '3.23'
         testApplicationId "jp.redmine.redmineclienttest"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testHandleProfiling true

@@ -51,13 +51,13 @@ before_script:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\nd77a45cfde8d8db5135a9d01fce4bdfa23a033dd" > "/usr/local/android-sdk/licenses/android-sdk-preview-license"
 
 script:
-  - ./gradlew assembleDebug assembleRelease
+  - ./gradlew assembleDebug assembleRelease bundleDebug bundleRelease
 
 after_success:
   - export BUILD_RESULT="success"
 
 after_failure:
-  - export BUILD_RESULT="ERRORED"
+  - export BUILD_RESULT="ERROR"
 
 after_script:
   - ./external/report.sh

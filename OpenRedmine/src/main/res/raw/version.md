@@ -9,6 +9,9 @@ TODO
 
 $current_version$ - $current_build$
 ===========
+
+v3.23 - 665 - 2019/10/08
+===========
 - Upgrade target SDK version to 28
 - Try to fix get token is failed (#218)
 - Try to fix crash on Android 8 (#219)

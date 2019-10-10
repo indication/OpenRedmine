@@ -40,11 +40,11 @@ public class RedmineNavigationForm extends FormHelper {
 
 
 	public void setup(){
-		webView = (WebView)activity.findViewById(R.id.webView);
-		editToken = (FormEditText)activity.findViewById(R.id.editToken);
-		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
+		webView = activity.findViewById(R.id.webView);
+		editToken = activity.findViewById(R.id.editToken);
+		buttonSave = activity.findViewById(R.id.buttonSave);
 		webClient = new LocalWebViewClient(activity, webView);
-		header = (LinearLayout)activity.findViewById(R.id.layoutHeader);
+		header = activity.findViewById(R.id.layoutHeader);
 	}
 
 

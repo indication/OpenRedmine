@@ -17,10 +17,10 @@ public class TimeEntryForm extends FormHelper {
 
 
 	public void setup(View view){
-		textAuthor = (TextView)view.findViewById(R.id.textAuthor);
-		textActivity = (TextView)view.findViewById(R.id.textActivity);
-		textSpentsOn = (TextView)view.findViewById(R.id.textSpentsOn);
-		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
+		textAuthor = view.findViewById(R.id.textAuthor);
+		textActivity = view.findViewById(R.id.textActivity);
+		textSpentsOn = view.findViewById(R.id.textSpentsOn);
+		textTimeEntry = view.findViewById(R.id.textTimeEntry);
 	}
 
 

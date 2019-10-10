@@ -171,37 +171,30 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		View view = inflater.inflate(R.layout.page_issue, container, false);
-		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layoutSwipeRefresh);
+		mSwipeRefreshLayout = view.findViewById(R.id.layoutSwipeRefresh);
 		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
-        list = (StickyListHeadersListView)view.findViewById(R.id.list);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        list = view.findViewById(R.id.list);
+        list.setOnItemClickListener((adapterView, currentView, position, id) -> {
 
                 Object item = id < 0 ? null : adapter.getItem(position);
                 if (item == null) {
                 } else if (item instanceof RedmineTimeEntry) {
                     RedmineTimeEntry entry = (RedmineTimeEntry) item;
                     mTimeEntryListener.onTimeEntrySelected(entry.getConnectionId(), entry.getIssueId(), entry.getTimeentryId());
-                    return;
                 } else if (item instanceof RedmineIssueRelation) {
                     RedmineIssueRelation relation = (RedmineIssueRelation) item;
                     if (relation.getIssue() != null) {
                         mListener.onIssueSelected(relation.getConnectionId(), relation.getIssue().getIssueId());
-                        return;
                     }
                 } else if (item instanceof RedmineIssue) {
                     RedmineIssue issue = (RedmineIssue) item;
-                    if (view.getId() == R.id.textProject && issue.getProject() != null) {
+                    if (currentView.getId() == R.id.textProject && issue.getProject() != null) {
                         mListener.onIssueList(issue.getConnectionId(), issue.getProject().getId());
-                        return;
                     }
                 } else if (item instanceof RedmineAttachment) {
                     RedmineAttachment attachment = (RedmineAttachment) item;
                     mAttachmentListener.onAttachmentSelected(attachment.getConnectionId(), attachment.getAttachmentId());
-                    return;
                 }
-            }
         });
         return view;
 	}

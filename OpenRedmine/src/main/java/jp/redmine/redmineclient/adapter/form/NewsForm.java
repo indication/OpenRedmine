@@ -19,8 +19,8 @@ public class NewsForm extends FormHelper {
 
 
 	public void setup(View view){
-		textView = (TextView)view.findViewById(R.id.textView);
-		textSubject = (TextView)view.findViewById(R.id.textSubject);
+		textView = view.findViewById(R.id.textView);
+		textSubject = view.findViewById(R.id.textSubject);
 	}
 
 	public void setupWebView(WebviewActionInterface act){

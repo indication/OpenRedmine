@@ -13,7 +13,7 @@ public class ConnectionForm extends FormHelper {
 
 
 	public void setup(View view){
-		textSubject = (TextView)view.findViewById(android.R.id.text1);
+		textSubject = view.findViewById(android.R.id.text1);
 	}
 
 

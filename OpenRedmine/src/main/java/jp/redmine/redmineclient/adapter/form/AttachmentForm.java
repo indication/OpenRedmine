@@ -21,9 +21,9 @@ public class AttachmentForm extends FormHelper {
 
 
 	public void setup(View view){
-		textSubject = (TextView)view.findViewById(R.id.textSubject);
-		textSize = (TextView)view.findViewById(R.id.textSize);
-		textCreated = (TextView)view.findViewById(R.id.textCreated);
+		textSubject = view.findViewById(R.id.textSubject);
+		textSize = view.findViewById(R.id.textSize);
+		textCreated = view.findViewById(R.id.textCreated);
 
 	}
 	public void setValue(RedmineAttachment rd){
@@ -39,7 +39,7 @@ public class AttachmentForm extends FormHelper {
 		BigDecimal base = new BigDecimal(1024);
 		String exportname = "";
 		NumberFormat df = NumberFormat.getIntegerInstance();
-		export.setScale(1, RoundingMode.HALF_UP);
+		export = export.setScale(1, RoundingMode.HALF_UP);
 		for(String sizename : sizes){
 			exportname = sizename;
 			if(export.longValue() < base.longValue())

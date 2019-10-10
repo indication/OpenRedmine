@@ -123,7 +123,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onListItemClick(ListView listView, View v, int position, long id) {
 		super.onListItemClick(listView, v, position, id);
 		Object item =  listView.getItemAtPosition(position);
-		if(item == null || !(item instanceof RedmineProject))
+		if(!(item instanceof RedmineProject))
 			return;
 		RedmineProject project = (RedmineProject)item;
 		//mListener.onIssueList(project.getConnectionId(), project.getId());

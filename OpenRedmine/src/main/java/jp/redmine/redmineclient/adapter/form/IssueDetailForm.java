@@ -47,24 +47,24 @@ public class IssueDetailForm extends IssueBaseForm {
 
 	public void setup(View view){
 		super.setup(view);
-		textProject = (TextView)view.findViewById(R.id.textProject);
-		textPrivate = (TextView)view.findViewById(R.id.textPrivate);
-		textCreated = (TextView)view.findViewById(R.id.textCreated);
-		textProgress = (TextView)view.findViewById(R.id.textProgress);
-		textTimeEstimate = (TextView)view.findViewById(R.id.textEstimate);
-		textTimeEntry = (TextView)view.findViewById(R.id.textTimeEntry);
-		textCategory = (TextView)view.findViewById(R.id.textCategory);
-		labelCategory = (TextView)view.findViewById(R.id.labelCategory);
-		labelDate = (TextView)view.findViewById(R.id.labelDate);
-		labelDateArrow = (TextView)view.findViewById(R.id.labelDateArrow);
-		labelVersion = (TextView)view.findViewById(R.id.labelVersion);
-		labelAssignedTo = (TextView)view.findViewById(R.id.labelAssignedTo);
-		labelTime = (TextView)view.findViewById(R.id.labelTime);
-		labelTimeSlice = (TextView)view.findViewById(R.id.labelTimeSlice);
-		labelProject = (TextView)view.findViewById(R.id.labelProject);
-		textClosed = (TextView)view.findViewById(R.id.textClosed);
-		labelClosed = (TextView)view.findViewById(R.id.labelClosed);
-		textView = (TextView)view.findViewById(R.id.textView);
+		textProject = view.findViewById(R.id.textProject);
+		textPrivate = view.findViewById(R.id.textPrivate);
+		textCreated = view.findViewById(R.id.textCreated);
+		textProgress = view.findViewById(R.id.textProgress);
+		textTimeEstimate = view.findViewById(R.id.textEstimate);
+		textTimeEntry = view.findViewById(R.id.textTimeEntry);
+		textCategory = view.findViewById(R.id.textCategory);
+		labelCategory = view.findViewById(R.id.labelCategory);
+		labelDate = view.findViewById(R.id.labelDate);
+		labelDateArrow = view.findViewById(R.id.labelDateArrow);
+		labelVersion = view.findViewById(R.id.labelVersion);
+		labelAssignedTo = view.findViewById(R.id.labelAssignedTo);
+		labelTime = view.findViewById(R.id.labelTime);
+		labelTimeSlice = view.findViewById(R.id.labelTimeSlice);
+		labelProject = view.findViewById(R.id.labelProject);
+		textClosed = view.findViewById(R.id.textClosed);
+		labelClosed = view.findViewById(R.id.labelClosed);
+		textView = view.findViewById(R.id.textView);
 	}
 
 

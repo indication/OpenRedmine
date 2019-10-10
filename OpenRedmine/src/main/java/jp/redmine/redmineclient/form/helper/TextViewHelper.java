@@ -85,7 +85,7 @@ public class TextViewHelper {
 							}
 						} else {
 							if(first){
-								output.append("\n\t"+index+". ");
+								output.append("\n\t").append(String.valueOf(index)).append(". ");
 								first= false;
 								index++;
 							} else {

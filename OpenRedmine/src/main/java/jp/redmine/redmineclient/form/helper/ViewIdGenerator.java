@@ -14,10 +14,10 @@ public class ViewIdGenerator {
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
 			return getAndroidViewId();
 		else
-			return getCustomVireId(checkView);
+			return getCustomViewId(checkView);
 	}
 
-	protected int getCustomVireId(View checkView){
+	private int getCustomViewId(View checkView){
 		for(;;){
 			int customid = seq.incrementAndGet();
 			if(customid > 0x00FFFFFF) {

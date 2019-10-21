@@ -38,6 +38,7 @@ android {
     }
     lintOptions {
         abortOnError true
+        disable 'MissingTranslation', 'StringFormatMatches'
     }
     signingConfigs {
         release

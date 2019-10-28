@@ -62,13 +62,13 @@ public class RedmineIssueFilter {
 	public void setup(final Activity activity, DatabaseCacheHelper helper){
 		if (tabHost != null)
 			return;
-		toggleClosed = (SwitchCompat)activity.findViewById(R.id.toggleClosed);
-		radioClosed = (RadioGroup)activity.findViewById(R.id.radioClosed);
-		radioClosedOn = (RadioButton) activity.findViewById(R.id.radioClosedOn);
-		radioClosedOff = (RadioButton) activity.findViewById(R.id.radioClosedOff);
+		toggleClosed = activity.findViewById(R.id.toggleClosed);
+		radioClosed = activity.findViewById(R.id.radioClosed);
+		radioClosedOn =  activity.findViewById(R.id.radioClosedOn);
+		radioClosedOff =  activity.findViewById(R.id.radioClosedOff);
 		radioClosedOff.setChecked(true);
-		buttonSave = (Button)activity.findViewById(R.id.buttonSave);
-		tabHost=(TabHost)activity.findViewById(android.R.id.tabhost);
+		buttonSave = activity.findViewById(R.id.buttonSave);
+		tabHost=activity.findViewById(android.R.id.tabhost);
 		tabHost.setup();
 		mFilter = new RedmineFilterModel(helper);
 

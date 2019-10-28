@@ -13,7 +13,7 @@ import jp.redmine.redmineclient.external.lib.LRUCache;
 
 abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCache.IFetchObject<Integer> {
 	private static final String TAG = "RedmineBaseAdapter";
-	protected LRUCache<Integer,T> cache = new LRUCache<Integer,T>(20);
+	protected LRUCache<Integer,T> cache = new LRUCache<>(20);
 	protected abstract int getItemViewId();
 	protected abstract void setupView(View view,T data);
 	protected abstract int getDbCount() throws SQLException;

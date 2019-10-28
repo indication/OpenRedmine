@@ -31,6 +31,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.form.helper.WebViewHelper;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.param.WikiArgument;
@@ -145,8 +146,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		protected void onPreExecute() {
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
 		}
 
 		// can use UI thread here
@@ -155,8 +155,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 			loadWebView(false);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
 		}
 
 	}
@@ -170,7 +169,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
 		mSwipeRefreshLayout = result.layout;
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
 		return result.parent;
 	}
 

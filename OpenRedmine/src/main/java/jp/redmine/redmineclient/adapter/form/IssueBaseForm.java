@@ -24,15 +24,15 @@ abstract class IssueBaseForm extends FormHelper {
 
 
 	public void setup(View view){
-		textStatus = (TextView)view.findViewById(R.id.textStatus);
-		textAssignedTo = (TextView)view.findViewById(R.id.textAssignedTo);
-		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
-		textTracker = (TextView)view.findViewById(R.id.textTracker);
-		textPriority = (TextView)view.findViewById(R.id.textPriority);
-		textDateFrom = (TextView)view.findViewById(R.id.textDateFrom);
-		textDateTo = (TextView)view.findViewById(R.id.textDateTo);
-		textVersion = (TextView)view.findViewById(R.id.textVersion);
-		textModified = (TextView)view.findViewById(R.id.textModified);
+		textStatus = view.findViewById(R.id.textStatus);
+		textAssignedTo = view.findViewById(R.id.textAssignedTo);
+		progressBar = view.findViewById(R.id.progressissue);
+		textTracker = view.findViewById(R.id.textTracker);
+		textPriority = view.findViewById(R.id.textPriority);
+		textDateFrom = view.findViewById(R.id.textDateFrom);
+		textDateTo = view.findViewById(R.id.textDateTo);
+		textVersion = view.findViewById(R.id.textVersion);
+		textModified = view.findViewById(R.id.textModified);
 	}
 
 

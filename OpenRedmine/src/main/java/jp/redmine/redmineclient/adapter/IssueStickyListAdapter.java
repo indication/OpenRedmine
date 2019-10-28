@@ -37,7 +37,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 	private IssueRelativeListAdapter adapterRelation;
 	private IssueTimeEntryListAdapter adapterTimeEntry;
 	private AttachmentListAdapter adapterAttachment;
-	private final List<AggrigateAdapter> mapAdapters = new ArrayList<>();
+	private final List<AggregateAdapter> mapAdapters = new ArrayList<>();
 
 	public IssueStickyListAdapter(DatabaseCacheHelper m, Context context, WebviewActionInterface act){
 		adapterJournal = new JournalListAdapter(m,context, act);
@@ -45,19 +45,19 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 		adapterRelation = new IssueRelativeListAdapter(m,context);
 		adapterTimeEntry = new IssueTimeEntryListAdapter(m,context);
 		adapterAttachment = new AttachmentListAdapter(m,context);
-		mapAdapters.add(new AggrigateAdapter(adapterIssue, R.string.ticket_detail));
-		mapAdapters.add(new AggrigateAdapter(adapterRelation, R.string.ticket_relations));
-		mapAdapters.add(new AggrigateAdapter(adapterTimeEntry, R.string.ticket_time));
-		mapAdapters.add(new AggrigateAdapter(adapterAttachment, R.string.ticket_attachments));
-		mapAdapters.add(new AggrigateAdapter(adapterJournal, R.string.ticket_journals));
+		mapAdapters.add(new AggregateAdapter(adapterIssue, R.string.ticket_detail));
+		mapAdapters.add(new AggregateAdapter(adapterRelation, R.string.ticket_relations));
+		mapAdapters.add(new AggregateAdapter(adapterTimeEntry, R.string.ticket_time));
+		mapAdapters.add(new AggregateAdapter(adapterAttachment, R.string.ticket_attachments));
+		mapAdapters.add(new AggregateAdapter(adapterJournal, R.string.ticket_journals));
 	}
 
-	protected class AggrigateAdapter {
+	protected class AggregateAdapter {
 		public final BaseAdapter adapter;
 		public int count;
 		public int head;
 		public final int res;
-		public AggrigateAdapter(BaseAdapter a, int r){
+		public AggregateAdapter(BaseAdapter a, int r){
 			adapter = a;
 			res = r;
 		}
@@ -85,7 +85,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 	public void notifyDataSetChanged() {
 
 		int current = 0;
-		for(AggrigateAdapter adapter : mapAdapters){
+		for(AggregateAdapter adapter : mapAdapters){
 			adapter.adapter.notifyDataSetChanged();
 			adapter.head = current;
 			adapter.count = adapter.adapter.getCount();
@@ -93,9 +93,9 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 		}
 		super.notifyDataSetChanged();
 	}
-	protected AggrigateAdapter getInner(int pos){
-		AggrigateAdapter lastadapter = null;
-		for(AggrigateAdapter item : mapAdapters){
+	protected AggregateAdapter getInner(int pos){
+		AggregateAdapter lastadapter = null;
+		for(AggregateAdapter item : mapAdapters){
 			if(item.head <= pos){
 				lastadapter = item;
 			}
@@ -118,17 +118,15 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 
 	@Override
 	public void notifyDataSetInvalidated() {
-		if(mapAdapters != null){
-			for(AggrigateAdapter adapter : mapAdapters){
-				adapter.adapter.notifyDataSetInvalidated();
-			}
+		for(AggregateAdapter adapter : mapAdapters){
+			adapter.adapter.notifyDataSetInvalidated();
 		}
 		super.notifyDataSetInvalidated();
 	}
 	
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
-		AggrigateAdapter adapter = getInner(position);
+		AggregateAdapter adapter = getInner(position);
 		if(adapter.adapter instanceof StickyListHeadersAdapter){
             convertView = ((StickyListHeadersAdapter) adapter.adapter).getHeaderView(adapter.getInnerPos(position), convertView, parent);
 		} else {
@@ -136,8 +134,8 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.listheader_issuetitle, parent, false);
 			if (convertView != null){
-				TextView text = (TextView) convertView.findViewById(R.id.textTitle);
-				text.setText(adapter == null ? "" : convertView.getContext().getString(getInner(position).res));
+				TextView text = convertView.findViewById(R.id.textTitle);
+				text.setText(convertView.getContext().getString(getInner(position).res));
 			}
 		}
         //fix background to hide transparent headers
@@ -147,19 +145,19 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 
 	@Override
 	public long getHeaderId(int pos) {
-		AggrigateAdapter adapter = getInner(pos);
+		AggregateAdapter adapter = getInner(pos);
 		if(adapter.adapter instanceof StickyListHeadersAdapter){
 			// To take a uniq id by plus resource id for the adapter
 			// Be careful with using ids on child adapter that use the lower bits of the id.
 			return	 ((long)((StickyListHeadersAdapter) adapter.adapter).getHeaderId(adapter.getInnerPos(pos))) | (((long)adapter.res) << Integer.SIZE) ;
 		}
-		return adapter == null ? 0 : adapter.res;
+		return adapter.res;
 	}
 
 	@Override
 	public int getCount() {
-		AggrigateAdapter lastadapter = null;
-		for(AggrigateAdapter item : mapAdapters){
+		AggregateAdapter lastadapter = null;
+		for(AggregateAdapter item : mapAdapters){
 			lastadapter = item;
 		}
 		return lastadapter == null ? 0 : lastadapter.head + lastadapter.count;
@@ -171,7 +169,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 
 	@Override
 	public int getItemViewType(int pos) {
-		AggrigateAdapter adapter = getInner(pos);
+		AggregateAdapter adapter = getInner(pos);
 		return adapter == null ? android.R.layout.simple_list_item_1 : adapter.getItemViewType(pos);
 	}
 	
@@ -188,7 +186,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 
 	@Override
 	public View getView(int pos, View convertView, ViewGroup parent) {
-		AggrigateAdapter adapter = getInner(pos);
+		AggregateAdapter adapter = getInner(pos);
 		convertView = adapter == null ? null : adapter.getView(pos, convertView, parent);
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()
@@ -200,7 +198,7 @@ public class IssueStickyListAdapter extends BaseAdapter implements StickyListHea
 	
 	@Override
 	public View getDropDownView(int pos, View convertView, ViewGroup parent) {
-		AggrigateAdapter adapter = getInner(pos);
+		AggregateAdapter adapter = getInner(pos);
 		convertView = adapter == null ? null : adapter.getDropDownView(pos, convertView, parent);
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) parent.getContext()

@@ -18,9 +18,9 @@ public class IssueJournalHeaderForm extends FormHelper {
 
 
 	public void setup(View view){
-		textUser = (TextView)view.findViewById(R.id.user);
-		textDate = (TextView)view.findViewById(R.id.date);
-		textNo = (TextView)view.findViewById(R.id.no);
+		textUser = view.findViewById(R.id.user);
+		textDate = view.findViewById(R.id.date);
+		textNo = view.findViewById(R.id.no);
 		clearJournalNo();
 	}
 	public void setJournalNo(int no){

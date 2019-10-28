@@ -52,9 +52,9 @@ class JournalListAdapter extends RedmineDaoAdapter<RedmineJournal, Long, Databas
 	protected Long issue_id;
 	protected Long project_id;
 	protected WebviewActionInterface action;
-	protected HashMap<String,fetchHelper> fetchMap = new HashMap<String, JournalListAdapter.fetchHelper>();
+	private HashMap<String,fetchHelper> fetchMap = new HashMap<>();
 
-	protected void setupHashmap(final Context context){
+	private void setupHashmap(final Context context){
 		fetchMap.put("is_private", new fetchHelper(){
 			@Override
 			protected IMasterRecord getRawItem(String input) {

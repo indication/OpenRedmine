@@ -13,8 +13,8 @@ import java.util.HashMap;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 
 public class RedmineWebViewClient extends WebViewClient {
-	String loginCookie;
-	RedmineConnection mConnection;
+	private String loginCookie;
+	private RedmineConnection mConnection;
 	protected CookieManager cookieManager;
 	protected IConnectionEventHadler mHandler;
 
@@ -74,7 +74,7 @@ public class RedmineWebViewClient extends WebViewClient {
 	}
 
 	static public HashMap<String, String> generateRedmineHeader(RedmineConnection con){
-		HashMap<String, String> extraHeaders = new HashMap<String, String>();
+		HashMap<String, String> extraHeaders = new HashMap<>();
 		setRedmineHeader(con, extraHeaders);
 		return extraHeaders;
 	}

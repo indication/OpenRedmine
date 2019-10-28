@@ -44,7 +44,7 @@ public class FavoriteProjectListAdapter extends RedmineDaoAdapter<RedmineProject
 		if(convertView == null)
 			return null;
 		RedmineConnection connection = mConnection.getItem((int)getHeaderId(i));
-		TextView text = (TextView)convertView.findViewById(R.id.name);
+		TextView text = convertView.findViewById(R.id.name);
 		if(text != null)
 			text.setText((TextUtils.isEmpty(connection.getName())) ? "" : connection.getName());
 		//fix background to hide transparent headers

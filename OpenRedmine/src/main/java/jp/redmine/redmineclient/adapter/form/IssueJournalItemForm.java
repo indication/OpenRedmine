@@ -24,8 +24,8 @@ public class IssueJournalItemForm extends FormHelper {
 
 
 	public void setup(View view){
-		textView = (TextView)view.findViewById(R.id.textView);
-		formChanges = (LinearLayout)view.findViewById(R.id.formChanges);
+		textView = view.findViewById(R.id.textView);
+		formChanges = view.findViewById(R.id.formChanges);
 	}
 
 	public void setupWebView(WebviewActionInterface act){

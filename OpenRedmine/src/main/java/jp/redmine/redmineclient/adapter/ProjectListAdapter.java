@@ -50,9 +50,7 @@ public class ProjectListAdapter extends  RedmineDaoAdapter<RedmineProject, Long,
 		} else {
 			form = new ProjectForm(view);
 		}
-		form.ratingBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+		form.ratingBar.setOnCheckedChangeListener((compoundButton, b) -> {
 				data.setFavorite(b ? 1 : 0);
 				try {
 					model.update(data);
@@ -60,7 +58,6 @@ public class ProjectListAdapter extends  RedmineDaoAdapter<RedmineProject, Long,
 					Log.e(TAG, "onCheckedChanged" , e);
 				}
 				notifyDataSetChanged();
-			}
 		});
 		form.setValue(data);
 	}

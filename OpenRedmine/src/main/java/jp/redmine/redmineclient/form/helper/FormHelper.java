@@ -160,27 +160,31 @@ abstract public class FormHelper {
 	/**
 	 * Set ct to v
 	 * @param v TextView to set user name
-	 * @param ct User name
+	 * @param date Date
 	 */
 	protected void setDate(TextView v,Date date){
 		v.setText(convertDate(v,date));
 	}
 	/**
-	 * Set ct to v
-	 * @param v TextView to set user name
-	 * @param ct User name
+	 * Set date to v
+	 * @param v TextView to set date
+	 * @param date Date
 	 */
 	protected void setDateTime(TextView v,Date date){
 		v.setText(convertDateTime(v,date));
 	}
+	/**
+	 * Set date to v
+	 * @param v TextView to set date
+	 * @param date Date
+	 */
 	protected void setDateTimeSpan(TextView v,Date date){
 		v.setText(date == null ? "" : DateUtils.getRelativeTimeSpanString(date.getTime()));
 	}
 
 	/**
 	 * Set ct to v
-	 * @param v TextView to set user name
-	 * @param ct User name
+	 * @param v TextView to set date
 	 */
 	protected Date getDate(TextView v){
 		if(TextUtils.isEmpty(v.getText()))

@@ -18,8 +18,8 @@ public class HttpAuthDialogForm extends FormHelper {
 
 
 	public void setup(){
-		editAuthID = (EditText)view.findViewById(R.id.editAuthID);
-		editAuthPasswd = (EditText)view.findViewById(R.id.editAuthPasswd);
+		editAuthID = view.findViewById(R.id.editAuthID);
+		editAuthPasswd = view.findViewById(R.id.editAuthPasswd);
 	}
 
 

@@ -23,12 +23,12 @@ public class RelationForm extends FormHelper {
 
 
 	public void setup(View view){
-		textSubject = (TextView)view.findViewById(R.id.textSubject);
-		textTicketid = (TextView)view.findViewById(R.id.textTicketid);
-		textStatus = (TextView)view.findViewById(R.id.textStatus);
-		textDelay = (TextView)view.findViewById(R.id.textDelay);
-		progressBar = (ProgressBar)view.findViewById(R.id.progressissue);
-		imageIcon = (ImageView)view.findViewById(R.id.icon);
+		textSubject = view.findViewById(R.id.textSubject);
+		textTicketid = view.findViewById(R.id.textTicketid);
+		textStatus = view.findViewById(R.id.textStatus);
+		textDelay = view.findViewById(R.id.textDelay);
+		progressBar = view.findViewById(R.id.progressissue);
+		imageIcon = view.findViewById(R.id.icon);
 
 	}
 	public void setValue(RedmineIssueRelation rd){
@@ -36,7 +36,7 @@ public class RelationForm extends FormHelper {
 		textDelay.setText(textDelay.getContext().getString(type.getResourceId(),
 				(rd.getDelay() == null ? 0 : rd.getDelay().intValue()) ));
 		setValue(rd.getIssue() == null ? new RedmineIssue() : rd.getIssue());
-		int drawable = R.drawable.ic_relative_related;
+		int drawable;
 		switch(type){
 		case Blocks:
 			drawable = R.drawable.ic_relative_base_to;

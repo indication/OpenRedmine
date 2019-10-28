@@ -9,7 +9,7 @@ public class RedmineIssueFilterExpander {
 	public BaseAdapter adapter;
 	public ListView list;
 	public void setup(Activity activity,int listid){
-		list = (ListView)activity.findViewById(listid);
+		list = activity.findViewById(listid);
 
 	}
 	public void setupEvent(){

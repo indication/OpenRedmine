@@ -24,7 +24,7 @@ public class RedmineWebviewForm extends FormHelper {
 	}
 
 	public void setup(Activity view){
-		webView = (WebView)view.findViewById(R.id.webView);
+		webView = view.findViewById(R.id.webView);
 	}
 
 	@SuppressLint({ "SetJavaScriptEnabled" })

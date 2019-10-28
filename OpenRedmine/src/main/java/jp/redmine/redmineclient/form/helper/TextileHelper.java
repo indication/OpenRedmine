@@ -8,7 +8,7 @@ import java.io.StringWriter;
 
 public class TextileHelper implements ConvertToHtmlHelper {
 
-	MarkupParser parser = new MarkupParser(new TextileDialect());
+	private MarkupParser parser = new MarkupParser(new TextileDialect());
 
 	@Override
 	public String getHtml(String textile) {

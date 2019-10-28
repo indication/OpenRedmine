@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class MarkdownHelper implements ConvertToHtmlHelper {
 	private static final String TAG = MarkdownHelper.class.getSimpleName();
-	Markdown4jProcessor proc = new Markdown4jProcessor();
+	private Markdown4jProcessor proc = new Markdown4jProcessor();
 
 	@Override
 	public String getHtml(String text) {

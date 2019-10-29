@@ -156,20 +156,14 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 				RemoteUrlAttachment url = new RemoteUrlAttachment();
 				url.setAttachment(attachment_id);
 				final ParserAttachment parserAttachment = new ParserAttachment();
-				parserAttachment.registerDataCreation(new DataCreationHandler<RedmineIssue, RedmineAttachment>() {
-					@Override
-					public void onData(RedmineIssue info, RedmineAttachment data) throws SQLException {
-						data.setRedmineConnection(connection);
-						model.refreshItem(data);
-					}
+				parserAttachment.registerDataCreation((info, data) -> {
+					data.setRedmineConnection(connection);
+					model.refreshItem(data);
 				});
 				boolean fetch_status = Fetcher.fetchData(client, errorHandler, client.getUrl(url)
-						, new SelectDataTaskDataHandler() {
-					@Override
-					public void onContent(InputStream stream) throws XmlPullParserException, IOException, SQLException {
+						, (stream) -> {
 						Fetcher.setupParserStream(stream,parserAttachment);
 						parserAttachment.parse(null);
-					}
 				});
 				if (!fetch_status){
 					Log.e(TAG, "Fetch failed: "+  client.getUrl(url));
@@ -189,12 +183,9 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 			public void run() {
 				super.run();
 				if (BuildConfig.DEBUG) Log.i(TAG, "Fetch start");
-				Fetcher.fetchData(client, errorHandler, attachment.getContentUrl(), new SelectDataTaskDataHandler() {
-					@Override
-					public void onContent(InputStream stream) throws XmlPullParserException, IOException, SQLException {
-						if (BuildConfig.DEBUG) Log.i(TAG, "Fetch incoming data");
-						model.saveData(attachment,stream);
-					}
+				Fetcher.fetchData(client, errorHandler, attachment.getContentUrl(), stream -> {
+					if (BuildConfig.DEBUG) Log.i(TAG, "Fetch incoming data");
+					model.saveData(attachment,stream);
 				});
 				if (BuildConfig.DEBUG) Log.i(TAG, "Fetch end");
 			}
@@ -209,15 +200,8 @@ public class Attachment extends OrmLiteContentProvider<DatabaseCacheHelper> {
 		RedmineAttachment attachment = getAttachment(uri, model);
 		if (attachment.getId() == null)
 			return null;
-		String extention = attachment.getFilenameExt();
-
-		// Fix content type
-		if("log".equalsIgnoreCase(extention))
-			extention = "txt";
-		else if("patch".equalsIgnoreCase(extention))
-			extention = "txt";
-
-		String mimetype = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extention);
+		String extension = attachment.getFilenameExt();
+		String mimetype = TypeConverter.getMimeType(extension);
 		if (BuildConfig.DEBUG) Log.d(TAG,"file: " + uri.toString() + " mimetype: " + mimetype + " -- " + attachment.getContentType());
 		return mimetype;
 	}

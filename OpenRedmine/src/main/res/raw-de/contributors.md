@@ -38,10 +38,10 @@ Vielen Dank für den Beitrag.
 #### Spanisch (Spanien)
 - [Bernat13](https://www.transifex.com/user/profile/Bernat13/)
 
-#### Czech (Czech republic)
+#### Tschechische Sprache
 - [Mongata] (https://github.com/Mongata) - #220
 
-#### Dutch (the Netherlands)
+#### Niederländisch
 - [PanderMusubi](https://github.com/PanderMusubi) - #224
 
 #### Japanisch

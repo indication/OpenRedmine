@@ -9,11 +9,15 @@ Coisas a serem feitas
 
 $current_version$ - $current_build$
 ===========
+- Solicitar permissão ao baixar (#228)
+
+v3.23 - 665 - 08/10/2019
+===========
 - Atualizando a versão do SDK para 28
 - Tentando corrigir erro na obtenção do token (#218)
 - Tentando corrigir crash no Android 8 (#219)
 - Adicionada tradução para o tcheco por Mongata (#220)
-- Add dutch translations by PanderMusubi (#224)
+- Adicionando tradução para o holandês por PanderMusubi (#224)
 
 v3.22 - 652 - 28/09/2018
 ===========

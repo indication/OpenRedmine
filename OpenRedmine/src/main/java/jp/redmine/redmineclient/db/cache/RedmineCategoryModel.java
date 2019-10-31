@@ -130,9 +130,7 @@ public class RedmineCategoryModel implements IMasterModel<RedmineProjectCategory
 				.and()
 				.eq(RedmineProjectCategory.PROJECT_ID, project_id)
 				;
-		RedmineProjectCategory item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineProjectCategory();
-		return item;
+		List<RedmineProjectCategory> items = builder.query();
+		return items.size() < 1 ? new RedmineProjectCategory() : items.get(0);
 	}
 }

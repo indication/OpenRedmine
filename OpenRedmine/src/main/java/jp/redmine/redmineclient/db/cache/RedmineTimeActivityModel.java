@@ -47,10 +47,8 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 		.eq(RedmineTimeActivity.ACTIVITY_ID, statusId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
-		RedmineTimeActivity item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineTimeActivity();
-		return item;
+		List<RedmineTimeActivity> items = dao.query(query);
+		return items.size() < 1 ? new RedmineTimeActivity() : items.get(0);
 	}
 
 	public RedmineTimeActivity fetchById(int id) throws SQLException{
@@ -83,10 +81,8 @@ public class RedmineTimeActivityModel implements IMasterModel<RedmineTimeActivit
 			.where()
 				.eq(RedmineTimeActivity.CONNECTION, connection_id)
 				;
-		RedmineTimeActivity item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineTimeActivity();
-		return item;
+		List<RedmineTimeActivity> items = builder.query();
+		return items.size() < 1 ? new RedmineTimeActivity() : items.get(0);
 	}
 
 	public int insert(RedmineTimeActivity item) throws SQLException{

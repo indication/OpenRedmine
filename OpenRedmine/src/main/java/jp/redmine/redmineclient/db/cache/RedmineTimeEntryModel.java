@@ -46,10 +46,8 @@ public class RedmineTimeEntryModel {
 		.eq(RedmineTimeEntry.TIMEENTRY_ID, statusId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
-		RedmineTimeEntry item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineTimeEntry();
-		return item;
+		List<RedmineTimeEntry> items = dao.query(query);
+		return items.size() < 1 ? new RedmineTimeEntry() : items.get(0);
 	}
 
 	public RedmineTimeEntry fetchById(int id) throws SQLException{

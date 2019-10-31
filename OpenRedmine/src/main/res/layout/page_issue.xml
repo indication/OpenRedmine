@@ -52,7 +52,6 @@
 		android:layout_height="0dp"
 		>
 		<se.emilsjolander.stickylistheaders.StickyListHeadersListView
-			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:id="@+id/list"
 			android:focusable="false"
 			android:layout_width="match_parent"

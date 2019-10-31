@@ -11,6 +11,7 @@ import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineIssue;
+import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
 
 
@@ -45,10 +46,8 @@ public class RedmineProjectModel{
 		.eq(RedmineProject.PROJECT_ID, projectId)
 		.prepare();
 		Log.d(TAG,query.getStatement());
-		RedmineProject item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineProject();
-		return item;
+		List<RedmineProject> items = dao.query(query);
+		return items.size() < 1 ? new RedmineProject() : items.get(0);
 	}
 
 	public RedmineProject fetchById(long id) throws SQLException{

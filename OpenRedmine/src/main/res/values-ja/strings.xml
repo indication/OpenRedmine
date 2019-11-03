@@ -139,4 +139,5 @@
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">マークダウン</string>
   <string name="text_type_none">なし</string>
+  <string name="download_cancelled">Download was cancelled. Try again.</string>
 </resources>

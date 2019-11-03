@@ -122,6 +122,7 @@
   <string name="progress">Fortschritt</string>
   <string name="download">Download</string>
   <string name="download_with_manager">Download via Download Manager</string>
+  <string name="download_cancelled">Download wurde abgebrochen. Erneut versuchen.</string>
   <string name="wiki">Wiki</string>
   <string name="connection">Verbindung</string>
   <string name="favorite">Favoriten</string>

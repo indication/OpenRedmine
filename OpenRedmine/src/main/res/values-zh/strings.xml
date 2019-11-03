@@ -134,6 +134,7 @@
   <string name="ticket_filter_closed_off">Show all</string>
   <string name="ticket_closed">Closed</string>
   <string name="ticket_open">Open</string>
+  <string name="download_cancelled">Download was cancelled. Try again.</string>
   <string name="title_home">Home</string>
   <string name="text_type">Text format</string>
   <string name="text_type_textile">Textile</string>

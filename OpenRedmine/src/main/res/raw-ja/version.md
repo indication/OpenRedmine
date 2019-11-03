@@ -9,6 +9,10 @@ TODO
 
 $current_version$ - $current_build$
 ===========
+- Request permission on Download (#228)
+
+v3.23 - 665 - 2019/10/08
+===========
 - SDKバージョンを28へ更新
 - トークンの取得失敗の修正を試行 (#218)
 - Android 8でのクラッシュを修正 (#219)

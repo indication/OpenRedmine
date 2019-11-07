@@ -48,6 +48,6 @@ OpenRedmine Android является клиентом .
 
 Примечание:
 * Данное приложение является (GPL , за исключением библиотек и т.д.) с открытым исходным кодом . Вы можете принять участие . (Например, перевод)
-* Вы можете перевести свой ​​язык через https://www.transifex.com/projects/p/openredmine/ . (ru: box789)
+* Вы можете перевести свой ​​язык через https://www.transifex.com/projects/p/openredmine/ . (ru: box789, roman.yagodin)
 * Обратите внимание, с помощью https://github.com/indication/OpenRedmine или щебет @OpenRedmine если вы чувствуете что-то хорошее или плохое.
 * Бета будет выпущен есть https://play.google.com/apps/testing/jp.redmine.redmineclient

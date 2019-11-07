@@ -109,24 +109,18 @@ public class SelectIssueJournalTask extends SelectDataTask<Void,Integer> {
 		final RedmineTimeActivityModel mActivity = new RedmineTimeActivityModel(helper);
 		final RedmineUserModel mUser = new RedmineUserModel(helper);
 		final ParserTimeEntry parser = new ParserTimeEntry();
-		parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTimeEntry>() {
-			public void onData(RedmineConnection con,RedmineTimeEntry data) throws SQLException {
-				data.setConnectionId(con.getId());
-				if(data.getActivity() != null){
-					data.getActivity().setConnectionId(con.getId());
-					mActivity.refreshItem(data);
-				}
-				mUser.refreshItem(data);
-				model.refreshItem(con,data);
+		parser.registerDataCreation((con, data) -> {
+			data.setConnectionId(con.getId());
+			if(data.getActivity() != null){
+				data.getActivity().setConnectionId(con.getId());
+				mActivity.refreshItem(data);
 			}
+			mUser.refreshItem(data);
+			model.refreshItem(con,data);
 		});
-		SelectDataTaskDataHandler handler = new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		SelectDataTaskDataHandler handler = stream -> {
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		};
 
 		RemoteUrlTimeEntries url = new RemoteUrlTimeEntries();

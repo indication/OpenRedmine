@@ -39,7 +39,7 @@ import jp.redmine.redmineclient.task.SelectWikiTask;
 
 public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = WikiDetail.class.getSimpleName();
-	private SelectDataTask task;
+	private SelectWikiTask task;
 	private MenuItem menu_refresh;
 	private WebViewHelper webViewHelper;
 	private WebView webView;
@@ -136,35 +136,11 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		super.onResume();
 	}
 
-	private class SelectDataTask extends SelectWikiTask {
-		public SelectDataTask(DatabaseCacheHelper helper, RedmineConnection con, long proj_id){
-			super(helper,con,proj_id);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			loadWebView(false);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		}
-
-	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.page_webview, container, false);
-		webView = (WebView) view.findViewById(R.id.webView);
+		webView = view.findViewById(R.id.webView);
 		webViewHelper = new WebViewHelper();
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
@@ -181,7 +157,19 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
-		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
+		task = new SelectWikiTask(getHelper(), connection, (long)intent.getProjectId());
+		task.setOnPreExecute(() -> {
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(false);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
+		});
+		task.setOnPostExecute(data -> {
+			loadWebView(false);
+			if(menu_refresh != null)
+				menu_refresh.setEnabled(true);
+			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
+		});
+
 		task.execute(intent.getWikiTitle());
 	}
 	@Override

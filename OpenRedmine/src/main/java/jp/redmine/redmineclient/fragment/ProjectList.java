@@ -38,7 +38,7 @@ import jp.redmine.redmineclient.task.SelectProjectTask;
 public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = ProjectList.class.getSimpleName();
 	private ProjectListAdapter adapter;
-	private SelectDataTask task;
+	private SelectProjectTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private IssueActionInterface mListener;
@@ -149,40 +149,25 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
-		task = new SelectDataTask(getHelper());
-		task.execute(connection);
-	}
-
-	private class SelectDataTask extends SelectProjectTask {
-		public SelectDataTask(DatabaseCacheHelper helper) {
-			super(helper);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
+		task = new SelectProjectTask(getHelper());
+		task.setOnPreExecute(() -> {
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
 			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
+		});
+		task.setOnPostExecute((b) -> {
 			mFooter.setVisibility(View.GONE);
 			adapter.notifyDataSetChanged();
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
 			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
+		});
+		task.setOnProgressHandler((max, proc) -> {
 			adapter.notifyDataSetInvalidated();
 			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
-		}
+		});
+		task.execute(connection);
 	}
 
 	@Override

@@ -224,12 +224,4 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 		});
 	}
 
-	@Override
-	protected void onErrorRequest(int statuscode) {
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
-	}
-
 }

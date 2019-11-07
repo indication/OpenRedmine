@@ -91,14 +91,4 @@ public class SelectProjectEnumerationTask extends SelectDataTask<Void,Integer> {
 			}
 		});
 	}
-	@Override
-	protected void onErrorRequest(int statuscode) {
-
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
-
-	}
-
 }

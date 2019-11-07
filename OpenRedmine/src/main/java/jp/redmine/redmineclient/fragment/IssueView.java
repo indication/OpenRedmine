@@ -89,6 +89,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		super.onPause();
 	}
 
+	private boolean isSuccess = true;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -127,30 +128,23 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 				journal.setIssueId((long) intent.getIssueId());
 				formComment.getValue(journal);
 
-				SelectIssueJournalPost post = new SelectIssueJournalPost(getHelper(), connection){
-					private boolean isSuccess = true;
-					@Override
-					protected void onError(Exception lasterror) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
-						super.onError(lasterror);
+				SelectIssueJournalPost post = new SelectIssueJournalPost(getHelper(), connection);
+				isSuccess = true;
+				post.setOnErrorHandler((lasterror) -> {
+					isSuccess = false;
+					ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
+				});
+				post.setOnErrorRequestHandler((statuscode) -> {
+					isSuccess = false;
+					ActivityHelper.toastRemoteError(getActivity(), statuscode);
+				});
+				post.setOnPostExecute((b) -> {
+					SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
+					if(isSuccess){
+						Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+						formComment.clear();
 					}
-					@Override
-					protected void onErrorRequest(int statuscode) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), statuscode);
-						super.onErrorRequest(statuscode);
-					}
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-						if(isSuccess){
-							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							formComment.clear();
-						}
-					}
-				};
+				});
 				SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
 				post.execute(journal);
 			}

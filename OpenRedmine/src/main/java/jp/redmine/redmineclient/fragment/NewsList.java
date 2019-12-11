@@ -139,22 +139,8 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
 		task = new SelectNewsTask(getHelper(),connection);
-		task.setOnPreExecute(() -> {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		});
-		task.setOnPostExecute((b) -> {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		});
-		task.setOnProgressHandler((max,proc) -> {
-			adapter.notifyDataSetChanged();
-		});
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> adapter.notifyDataSetChanged());
+		task.setOnProgressHandler((max, proc) -> adapter.notifyDataSetChanged());
 		try {
 			RedmineProject proj = mProject.fetchById(intent.getProjectId());
 			task.execute(proj);

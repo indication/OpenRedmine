@@ -128,22 +128,8 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		task = new SelectWikiTask(getHelper(), connection, (long)intent.getProjectId());
-		task.setOnProgressHandler(((max, proc) -> {
-			adapter.notifyDataSetChanged();
-		}));
-		task.setOnPreExecute(() -> {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		});
-		task.setOnPostExecute((data) -> {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		});
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> adapter.notifyDataSetChanged());
+		task.setOnProgressHandler((max, proc) -> adapter.notifyDataSetChanged());
 		task.execute("");
 	}
 

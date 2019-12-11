@@ -158,18 +158,7 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		task = new SelectWikiTask(getHelper(), connection, (long)intent.getProjectId());
-		task.setOnPreExecute(() -> {
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		});
-		task.setOnPostExecute(data -> {
-			loadWebView(false);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		});
-
+		task.setupEventWithRefresh(null, menu_refresh, mSwipeRefreshLayout, (data) -> loadWebView(false));
 		task.execute(intent.getWikiTitle());
 	}
 	@Override

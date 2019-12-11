@@ -213,22 +213,8 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		else
 			task = new SelectIssueTask(helper,connection,intent.getProjectId());
 
-		task.setOnPostExecute((b) ->{
-			mFooter.setVisibility(View.GONE);
-			onRefreshList();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		});
-		task.setOnProgressHandler((max, proc) -> {
-			onRefreshList();
-		});
-		task.setOnPreExecute(() ->{
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		});
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> onRefreshList());
+		task.setOnProgressHandler((max, proc) -> onRefreshList());
 		task.execute(0,10,isFlush ? 1 : 0);
 		if(isFlush && !intent.hasFilterId()){
 			RedmineProject project = null;

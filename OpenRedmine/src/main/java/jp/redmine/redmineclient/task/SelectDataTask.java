@@ -1,7 +1,10 @@
 package jp.redmine.redmineclient.task;
 
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -9,6 +12,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.InputStream;
 import java.util.List;
 
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.parser.BaseParser;
 import jp.redmine.redmineclient.url.RemoteUrl;
 
@@ -59,6 +63,28 @@ public abstract class SelectDataTask<T,P> extends AsyncTask<P, Integer, T> {
 		preExecute = handler;
 	}
 
+	public interface OnItemRefreshed<T> {
+		void onItemRefreshed(T data);
+	}
+	public void setupEventWithRefresh(View footer, MenuItem menuRefresh, SwipeRefreshLayout swipe, OnItemRefreshed itemRefreshed){
+
+		setOnPostExecute((b) ->{
+			if (footer != null)
+				footer.setVisibility(View.GONE);
+			if (itemRefreshed != null)
+				itemRefreshed.onItemRefreshed(b);
+			if(menuRefresh != null)
+				menuRefresh.setEnabled(true);
+			SwipeRefreshLayoutHelper.setRefreshing(swipe, false);
+		});
+		setOnPreExecute(() ->{
+			if (footer != null)
+				footer.setVisibility(View.VISIBLE);
+			if(menuRefresh != null)
+				menuRefresh.setEnabled(false);
+			SwipeRefreshLayoutHelper.setRefreshing(swipe, true);
+		});
+	}
 	/**
 	 * Store the last exception (reference by UI thread)
 	 */

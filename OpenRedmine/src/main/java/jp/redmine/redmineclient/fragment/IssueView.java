@@ -135,14 +135,12 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 				isSuccess = false;
 				ActivityHelper.toastRemoteError(getActivity(), statuscode);
 			});
-			post.setOnPostExecute((b) -> {
-				SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
+			task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout,  (data) ->{
 				if(isSuccess){
 					Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 					formComment.clear();
 				}
 			});
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
 			post.execute(journal);
 		});
 

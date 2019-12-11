@@ -150,23 +150,8 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		task = new SelectProjectTask(getHelper());
-		task.setOnPreExecute(() -> {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		});
-		task.setOnPostExecute((b) -> {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		});
-		task.setOnProgressHandler((max, proc) -> {
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
-		});
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> adapter.notifyDataSetChanged());
+		task.setOnProgressHandler((max, proc) -> adapter.notifyDataSetChanged());
 		task.execute(connection);
 	}
 

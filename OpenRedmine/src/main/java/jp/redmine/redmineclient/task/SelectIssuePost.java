@@ -79,14 +79,5 @@ public class SelectIssuePost extends SelectDataPost<List<RedmineIssue>,RedmineIs
 		return list;
 	}
 
-	@Override
-	protected void onErrorRequest(int statuscode) {
-
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
-
-	}
 
 }

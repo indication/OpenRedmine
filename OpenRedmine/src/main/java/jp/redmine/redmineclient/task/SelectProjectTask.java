@@ -1,10 +1,5 @@
 package jp.redmine.redmineclient.task;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,13 +11,7 @@ import jp.redmine.redmineclient.db.cache.RedmineTimeActivityModel;
 import jp.redmine.redmineclient.db.cache.RedmineTrackerModel;
 import jp.redmine.redmineclient.db.cache.RedmineUserModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
-import jp.redmine.redmineclient.entity.RedminePriority;
 import jp.redmine.redmineclient.entity.RedmineProject;
-import jp.redmine.redmineclient.entity.RedmineStatus;
-import jp.redmine.redmineclient.entity.RedmineTimeActivity;
-import jp.redmine.redmineclient.entity.RedmineTracker;
-import jp.redmine.redmineclient.entity.RedmineUser;
-import jp.redmine.redmineclient.parser.DataCreationHandler;
 import jp.redmine.redmineclient.parser.ParserEnumerationIssuePriority;
 import jp.redmine.redmineclient.parser.ParserEnumerationTimeEntryActivity;
 import jp.redmine.redmineclient.parser.ParserProject;
@@ -44,6 +33,7 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 	}
 
 
+	@SuppressWarnings("unused")
 	public SelectProjectTask() {
 	}
 
@@ -87,20 +77,14 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 		url.filterLimit(limit);
 		if(offset != 0)
 			url.filterOffset(offset);
-		fetchData(client, url, new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				ParserProject parser = new ParserProject();
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineProject>() {
-					public void onData(RedmineConnection con,RedmineProject data) throws SQLException {
-						model.refreshItem(con,data);
-						projects.add(data);
-					}
-				});
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		fetchData(client, url, stream -> {
+			ParserProject parser = new ParserProject();
+			parser.registerDataCreation((con, data) -> {
+				model.refreshItem(con,data);
+				projects.add(data);
+			});
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		});
 		return projects;
 	}
@@ -108,38 +92,22 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 		final RedmineStatusModel model = new RedmineStatusModel(helper);
 		RemoteUrlStatus url = new RemoteUrlStatus();
 
-		fetchData(client, url, new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				ParserStatus parser = new ParserStatus();
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineStatus>() {
-					public void onData(RedmineConnection con,RedmineStatus data) throws SQLException {
-						model.refreshItem(con,data);
-					}
-				});
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		fetchData(client, url, stream -> {
+			ParserStatus parser = new ParserStatus();
+			parser.registerDataCreation((con, data) -> model.refreshItem(con,data));
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		});
 	}
 	protected void fetchTracker(final RedmineConnection connection, SelectDataTaskRedmineConnectionHandler client){
 		final RedmineTrackerModel model = new RedmineTrackerModel(helper);
 		RemoteUrlTrackers url = new RemoteUrlTrackers();
 
-		fetchData(client, url, new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				ParserTracker parser = new ParserTracker();
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTracker>() {
-					public void onData(RedmineConnection con,RedmineTracker data) throws SQLException {
-						model.refreshItem(con,data);
-					}
-				});
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		fetchData(client, url, stream -> {
+			ParserTracker parser = new ParserTracker();
+			parser.registerDataCreation((info, data) -> model.refreshItem(info, data));
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		});
 	}
 	protected void fetchPriority(final RedmineConnection connection, SelectDataTaskRedmineConnectionHandler client){
@@ -147,19 +115,11 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 		RemoteUrlEnumerations url = new RemoteUrlEnumerations();
 		url.setType(EnumerationType.IssuePriorities);
 
-		fetchData(client, url, new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				ParserEnumerationIssuePriority parser = new ParserEnumerationIssuePriority();
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedminePriority>() {
-					public void onData(RedmineConnection con,RedminePriority data) throws SQLException {
-						model.refreshItem(con,data);
-					}
-				});
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		fetchData(client, url, stream -> {
+			ParserEnumerationIssuePriority parser = new ParserEnumerationIssuePriority();
+			parser.registerDataCreation((con, data) -> model.refreshItem(con,data));
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		});
 	}
 	protected void fetchTimeEntryActivity(final RedmineConnection connection, SelectDataTaskRedmineConnectionHandler client){
@@ -167,39 +127,25 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 		RemoteUrlEnumerations url = new RemoteUrlEnumerations();
 		url.setType(EnumerationType.TimeEntryActivities);
 
-		fetchData(client, url, new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				ParserEnumerationTimeEntryActivity parser = new ParserEnumerationTimeEntryActivity();
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineTimeActivity>() {
-					public void onData(RedmineConnection con,RedmineTimeActivity data) throws SQLException {
-						model.refreshItem(con,data);
-					}
-				});
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		fetchData(client, url, stream -> {
+			ParserEnumerationTimeEntryActivity parser = new ParserEnumerationTimeEntryActivity();
+			parser.registerDataCreation((con, data) -> model.refreshItem(con,data));
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		});
 	}
 	protected void fetchUsers(final RedmineConnection connection, SelectDataTaskRedmineConnectionHandler client){
 		final RedmineUserModel model = new RedmineUserModel(helper);
 		RemoteUrlUsers url = new RemoteUrlUsers();
 
-		fetchData(client, url, new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				ParserUser parser = new ParserUser();
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineUser>() {
-					public void onData(RedmineConnection con,RedmineUser data) throws SQLException {
-						data.setupNameFromSeparated();
-						model.refreshItem(con,data);
-					}
-				});
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		fetchData(client, url, stream -> {
+			ParserUser parser = new ParserUser();
+			parser.registerDataCreation((con, data) -> {
+				data.setupNameFromSeparated();
+				model.refreshItem(con,data);
+			});
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		});
 	}
 	protected void fetchCurrentUser(final RedmineConnection connection, SelectDataTaskRedmineConnectionHandler client){
@@ -207,29 +153,15 @@ public class SelectProjectTask extends SelectDataTask<Void,RedmineConnection> {
 		RemoteUrlUsers url = new RemoteUrlUsers();
 		url.filterCurrentUser();
 
-		fetchData(client, url, new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				ParserUser parser = new ParserUser();
-				parser.registerDataCreation(new DataCreationHandler<RedmineConnection,RedmineUser>() {
-					public void onData(RedmineConnection con,RedmineUser data) throws SQLException {
-						data.setupNameFromSeparated();
-						model.refreshCurrentUser(con,data);
-					}
-				});
-				helperSetupParserStream(stream,parser);
-				parser.parse(connection);
-			}
+		fetchData(client, url, stream -> {
+			ParserUser parser = new ParserUser();
+			parser.registerDataCreation((con, data) -> {
+				data.setupNameFromSeparated();
+				model.refreshCurrentUser(con,data);
+			});
+			helperSetupParserStream(stream,parser);
+			parser.parse(connection);
 		});
-	}
-
-	@Override
-	protected void onErrorRequest(int statuscode) {
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
 	}
 
 }

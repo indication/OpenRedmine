@@ -70,14 +70,4 @@ public class SelectTimeEntriesPost extends SelectDataPost<Void,RedmineTimeEntry>
 		return null;
 	}
 
-	@Override
-	protected void onErrorRequest(int statuscode) {
-
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
-
-	}
-
 }

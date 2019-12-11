@@ -100,15 +100,4 @@ public class SelectWikiTask extends SelectDataTask<Void,String> {
 		}
 		return null;
 	}
-
-	@Override
-	protected void onErrorRequest(int statuscode) {
-
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
-
-	}
-
 }

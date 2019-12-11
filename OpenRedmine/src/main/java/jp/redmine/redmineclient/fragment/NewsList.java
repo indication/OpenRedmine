@@ -39,7 +39,7 @@ import jp.redmine.redmineclient.task.SelectNewsTask;
 public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = NewsList.class.getSimpleName();
 	private NewsListAdapter adapter;
-	private SelectDataTask task;
+	private SelectNewsTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private WebviewActionInterface mListener;
@@ -138,43 +138,14 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+		task = new SelectNewsTask(getHelper(),connection);
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> adapter.notifyDataSetChanged());
+		task.setOnProgressHandler((max, proc) -> adapter.notifyDataSetChanged());
 		try {
 			RedmineProject proj = mProject.fetchById(intent.getProjectId());
-			task = new SelectDataTask(getHelper(),connection);
 			task.execute(proj);
 		} catch (SQLException e) {
 			Log.e(TAG, "onRefresh", e);
-		}
-	}
-
-	private class SelectDataTask extends SelectNewsTask {
-		public SelectDataTask(DatabaseCacheHelper helper, RedmineConnection con) {
-			super(helper, con);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
 		}
 	}
 

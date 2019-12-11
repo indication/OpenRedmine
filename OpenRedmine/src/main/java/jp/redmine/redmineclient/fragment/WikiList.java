@@ -33,7 +33,7 @@ import jp.redmine.redmineclient.task.SelectWikiTask;
 public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = WikiList.class.getSimpleName();
 	private WikiListAdapter adapter;
-	private SelectDataTask task;
+	private SelectWikiTask task;
 	private View mFooter;
 	private MenuItem menu_refresh;
 	SwipeRefreshLayout mSwipeRefreshLayout;
@@ -107,38 +107,6 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		mListener.wiki(item.getConnectionId(),item.getProject().getId(),item.getTitle());
 	}
 
-	private class SelectDataTask extends SelectWikiTask {
-		public SelectDataTask(DatabaseCacheHelper helper, RedmineConnection con, long proj_id){
-			super(helper,con,proj_id);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
-		}
-	}
-
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
@@ -159,7 +127,9 @@ public class WikiList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
-		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
+		task = new SelectWikiTask(getHelper(), connection, (long)intent.getProjectId());
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> adapter.notifyDataSetChanged());
+		task.setOnProgressHandler((max, proc) -> adapter.notifyDataSetChanged());
 		task.execute("");
 	}
 

@@ -37,6 +37,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	private IssueEditForm form;
 	private IssueActionInterface mListener;
 	private SwipeRefreshLayout mSwipeRefreshLayout;
+	private boolean loaded = false;
 
 	public IssueEdit(){
 		super();
@@ -46,7 +47,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	static public IssueEdit newInstance(IssueArgument intent){
 		IssueEdit instance = new IssueEdit();
 		instance.setArguments(intent.getArgument());
-		return instance;
+ 		return instance;
 	}
 
 	@Override
@@ -75,7 +76,9 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 	public void onStart() {
 		super.onStart();
 		try {
-			onRefresh(true);
+			if (!loaded) {
+				onRefresh(true);
+			}
 		} catch (SQLException e) {
 			Log.e(TAG,"onStart",e);
 		}
@@ -103,6 +106,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 		form.setupParameter(connectionid, projectid);
 		form.setValue(issue);
+		loaded = true;
 	}
 
 	@Override
@@ -173,6 +177,9 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 							if(result.size() == 1)
 								mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
 						}
+						Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+						if(result.size() == 1)
+							mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
 					}
 				};
 				if(mSwipeRefreshLayout != null) {

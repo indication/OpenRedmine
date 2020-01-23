@@ -148,7 +148,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 						if(isSuccess){
 							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 							formComment.clear();
-						}
+							onRefresh();
+ 						}
 					}
 				};
 				if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())

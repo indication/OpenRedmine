@@ -33,6 +33,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 
 	private ConnectionModel modelConnection;
 	private ConnectionActionInterface mListener;
+	private boolean loaded = false;
 
 	public ConnectionEdit(){
 		super();
@@ -94,7 +95,9 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		ConnectionArgument intent = new ConnectionArgument();
 		intent.setArgument(getArguments());
 		idEditing = intent.getConnectionId();
-		loadData();
+		if (!loaded) {
+			loadData();
+		}
 	}
 
 
@@ -109,6 +112,7 @@ public class ConnectionEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		if(con.getId() != null)
 		{
 			form.setValue(con);
+			loaded = true;
 		} else {
 			idEditing = -1;
 		}

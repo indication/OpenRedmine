@@ -62,7 +62,12 @@ public class SelectIssuePost extends SelectDataPost<List<RedmineIssue>,RedmineIs
 			if (item.getIssueId() == null) {
 				url.setIssueId((Integer) null);
 
-				postData(client, url, handler, puthandler);
+				try {
+					postData(client, url, handler, puthandler);
+
+				} catch (Exception e) {
+
+				}
 			} else {
 				url.setIssueId(item.getIssueId());
 				boolean isSuccess = putData(client, url, handler, puthandler);

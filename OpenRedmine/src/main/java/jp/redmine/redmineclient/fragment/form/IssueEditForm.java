@@ -171,10 +171,10 @@ public class IssueEditForm extends FormHelper {
 	}
 
 	public void setupParameter(int connection, long project){
-		setupParameter(spinnerStatus, adapterStatus, connection, project, true);
-		setupParameter(spinnerTracker, adapterTracker, connection, project, true);
+		setupParameter(spinnerStatus, adapterStatus, connection, project, false);
+		setupParameter(spinnerTracker, adapterTracker, connection, project, false);
 		setupParameter(spinnerCategory, adapterCategory, connection, project, true);
-		setupParameter(spinnerPriority, adapterPriority, connection, project, true);
+		setupParameter(spinnerPriority, adapterPriority, connection, project, false);
 		setupParameter(spinnerAssigned, adapterUser, connection, project, true);
 		setupParameter(spinnerVersion, adapterVersion, connection, project, true);
 

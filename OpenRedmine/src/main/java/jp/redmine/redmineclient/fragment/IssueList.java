@@ -171,7 +171,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 	@Override
 	public void onResume() {
 		super.onResume();
-		onRefreshList();
+		onRefresh();
 	}
 
 	@Override

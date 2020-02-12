@@ -99,15 +99,11 @@ public class SelectIssueTask extends SelectDataTask<Void,Integer> {
 
 		SelectDataTaskRedmineConnectionHandler client = new SelectDataTaskRedmineConnectionHandler(connection);
 		final ParserIssue parser = new ParserIssue();
-		SelectDataTaskDataHandler taskhandler = new SelectDataTaskDataHandler() {
-			@Override
-			public void onContent(InputStream stream)
-					throws XmlPullParserException, IOException, SQLException {
-				IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
-				parser.registerDataCreation(handler);
-				helperSetupParserStream(stream, parser);
-				parser.parse(connection);
-			}
+		SelectDataTaskDataHandler taskhandler = stream -> {
+			IssueModelDataCreationHandler handler = new IssueModelDataCreationHandler(helper);
+			parser.registerDataCreation(handler);
+			helperSetupParserStream(stream, parser);
+			parser.parse(connection);
 		};
 		RemoteUrlIssues url = new RemoteUrlIssues();
 		RemoteUrlIssues.setupFilter(url, filter, filter.isClosed() == null ? true : filter.isClosed());

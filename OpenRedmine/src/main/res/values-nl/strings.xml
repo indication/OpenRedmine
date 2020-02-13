@@ -122,6 +122,7 @@
   <string name="progress">Voortgang</string>
   <string name="download">Download</string>
   <string name="download_with_manager">Download via downloadmanager</string>
+  <string name="download_cancelled">Download was geannuleerd. Probeer nogmaals.</string>
   <string name="wiki">Wiki</string>
   <string name="connection">Connectie</string>
   <string name="favorite">Favoriet</string>
@@ -139,5 +140,4 @@
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>
   <string name="text_type_none">Geen</string>
-  <string name="download_cancelled">Download was cancelled. Try again.</string>
 </resources>

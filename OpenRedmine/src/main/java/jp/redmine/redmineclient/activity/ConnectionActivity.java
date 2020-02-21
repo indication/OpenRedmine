@@ -17,6 +17,7 @@ import jp.redmine.redmineclient.entity.RedmineFilter;
 import jp.redmine.redmineclient.entity.RedmineFilterSortItem;
 import jp.redmine.redmineclient.entity.RedmineUser;
 import jp.redmine.redmineclient.fragment.IssueList;
+import jp.redmine.redmineclient.fragment.IssueListAll;
 import jp.redmine.redmineclient.fragment.ProjectFavoriteList;
 import jp.redmine.redmineclient.fragment.ProjectList;
 import jp.redmine.redmineclient.fragment.RecentIssueList;
@@ -117,6 +118,20 @@ public class ConnectionActivity extends TabActivity<DatabaseCacheHelper> {
 				})
 						.setParam(argRecent)
 						.setName(getString(R.string.recent_issues))
+						.setIcon(R.drawable.ic_recent)
+		);
+
+		ConnectionArgument argRecent2 = new ConnectionArgument();
+		argRecent2.setArgument();
+		argRecent2.importArgument(intent);
+		list.add((new CorePage<ConnectionArgument>() {
+					@Override
+					public Fragment getRawFragment(ConnectionArgument param) {
+						return IssueListAll.newInstance(param);
+					}
+				})
+						.setParam(argRecent2)
+						.setName("Issues search")
 						.setIcon(R.drawable.ic_recent)
 		);
 

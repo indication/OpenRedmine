@@ -56,6 +56,19 @@ public class RedmineFilterModel {
 		item = dao.queryForFirst(builder.prepare());
 		return item;
 	}
+	public RedmineFilter fetchByCurrent(int connection) throws SQLException{
+		RedmineFilter item;
+		QueryBuilder<RedmineFilter, Integer> builder = dao.queryBuilder();
+		Where<RedmineFilter, Integer> where = builder.where()
+				.eq(RedmineFilter.CONNECTION, connection)
+				.and()
+				.eq(RedmineFilter.CURRENT, true)
+				;
+		builder.setWhere(where);
+		Log.d(TAG,builder.prepareStatementString());
+		item = dao.queryForFirst(builder.prepare());
+		return item;
+	}
 	public List<RedmineFilter> fetchAllByConnection(int connection) throws SQLException{
 		List<RedmineFilter> list;
 		QueryBuilder<RedmineFilter, Integer> builder = dao.queryBuilder();
@@ -75,6 +88,13 @@ public class RedmineFilterModel {
 		RedmineFilter item = new RedmineFilter();
 		item.setConnectionId(connection);
 		item.setProject(project);
+		item.setDefault(true);
+		item.setFirst(new Date());
+		return item;
+	}
+	public RedmineFilter generateDefault(int connection){
+		RedmineFilter item = new RedmineFilter();
+		item.setConnectionId(connection);
 		item.setDefault(true);
 		item.setFirst(new Date());
 		return item;

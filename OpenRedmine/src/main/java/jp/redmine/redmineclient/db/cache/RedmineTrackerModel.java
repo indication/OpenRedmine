@@ -123,7 +123,7 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 		builder
 			.limit(limit)
 			.offset(offset)
-			.orderBy(RedmineTracker.NAME, true)
+			.orderBy(RedmineTracker.ID, true)
 			.where()
 				.eq(RedmineTracker.CONNECTION, connection_id)
 				//.and()

@@ -340,7 +340,7 @@ public class IssueListAll extends OrmLiteListFragment<DatabaseCacheHelper> imple
 
 	protected void intentFilterAction(){
 		ConnectionArgument intent = new ConnectionArgument();
-		//intent.setArgument( getArguments() );
+		intent.setArgument( getArguments() );
 		ConnectionArgument send = new ConnectionArgument();
 		send.setIntent( getActivity(), FilterViewActivity.class );
 		send.setConnectionId(intent.getConnectionId());

@@ -81,7 +81,7 @@ public class RedmineStatusModel implements IMasterModel<RedmineStatus> {
 		builder
 			.limit(limit)
 			.offset(offset)
-			.orderBy(RedmineStatus.NAME, true)
+			.orderBy(RedmineStatus.ID, true)
 			.where()
 				.eq(RedmineStatus.CONNECTION, connection_id)
 				//.and()

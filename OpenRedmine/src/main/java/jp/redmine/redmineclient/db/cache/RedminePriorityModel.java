@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import jp.redmine.redmineclient.entity.RedmineConnection;
@@ -28,7 +29,9 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 	}
 
 	public List<RedminePriority> fetchAll() throws SQLException{
-		return dao.queryForAll();
+		List<RedminePriority> result = dao.queryForAll();
+		Collections.sort(result, (o1, o2) -> o1.isDefault() ? 1 : -1);
+		return result;
 	}
 
 	public List<RedminePriority> fetchAll(int connection) throws SQLException{
@@ -37,6 +40,7 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 		if(item == null){
 			item = new ArrayList<>();
 		}
+		Collections.sort(item, (o1, o2) -> o1.isDefault() ? 1 : -1);
 		return item;
 	}
 
@@ -126,7 +130,7 @@ public class RedminePriorityModel implements IMasterModel<RedminePriority> {
 		builder
 			.limit(limit)
 			.offset(offset)
-			.orderBy(RedminePriority.NAME, true)
+			.orderBy("is_default", false)
 			.where()
 				.eq(RedminePriority.CONNECTION, connection_id)
 				//.and()

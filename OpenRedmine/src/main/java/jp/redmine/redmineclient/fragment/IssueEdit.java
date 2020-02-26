@@ -1,6 +1,7 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
@@ -180,6 +182,8 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 						Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 						if(result.size() == 1)
 							mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
+						ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
+						viewPager.setCurrentItem(0);
 					}
 				};
 				if(mSwipeRefreshLayout != null) {

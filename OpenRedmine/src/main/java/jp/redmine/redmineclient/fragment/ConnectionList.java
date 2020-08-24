@@ -70,23 +70,14 @@ public class ConnectionList extends ListFragment {
 
 		helperStore = new DatabaseHelper(getActivity());
 
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-				ListView listView = (ListView) parent;
-				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				mListener.onConnectionEdit(item.getId());
-				return true;
-			}
+		getListView().setOnItemLongClickListener((parent, v, position, id) -> {
+			ListView listView = (ListView) parent;
+			RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
+			mListener.onConnectionEdit(item.getId());
+			return true;
 		});
 
-		mFooter.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mListener.onConnectionAdd();
-			}
-		});
+		mFooter.setOnClickListener(v -> mListener.onConnectionAdd());
 
 		adapter = new ConnectionListAdapter(helperStore, getActivity());
 		setListAdapter(adapter);

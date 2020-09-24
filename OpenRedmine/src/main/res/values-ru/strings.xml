@@ -140,4 +140,6 @@
   <string name="text_type">Text format</string>
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>
+	<string name="privacy_policy">Privacy Policy</string>
+  <string name="terms_and_conditions" />
 </resources>

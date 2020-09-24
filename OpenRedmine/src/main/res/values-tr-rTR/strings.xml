@@ -140,4 +140,6 @@
   <string name="text_type_markdown">Markdown</string>
   <string name="text_type_none">Hiçbiri</string>
   <string name="download_cancelled">Download was cancelled. Try again.</string>
+	<string name="privacy_policy">Privacy Policy</string>
+  <string name="terms_and_conditions" />
 </resources>

@@ -45,7 +45,7 @@
 			android:visibility="gone" />
 	</LinearLayout>
 
-	<android.support.v4.widget.ListFragmentSwipeRefreshLayout
+	<androidx.core.widget.ListFragmentSwipeRefreshLayout
 		android:id="@+id/layoutSwipeRefresh"
 		android:layout_weight="1"
 		android:layout_width="match_parent"
@@ -57,7 +57,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical" />
-	</android.support.v4.widget.ListFragmentSwipeRefreshLayout>
+	</androidx.core.widget.ListFragmentSwipeRefreshLayout>
 	<LinearLayout
 		android:id="@+id/layoutComment"
 		android:layout_width="fill_parent"

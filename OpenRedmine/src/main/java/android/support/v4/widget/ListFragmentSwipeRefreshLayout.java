@@ -1,7 +1,7 @@
-package android.support.v4.widget;
+package androidx.core.widget;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import java.lang.ref.WeakReference;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ListFragmentSwipeRefreshLayout extends SwipeRefreshLayout {

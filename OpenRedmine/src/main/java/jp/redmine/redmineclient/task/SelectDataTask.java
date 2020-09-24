@@ -1,7 +1,7 @@
 package jp.redmine.redmineclient.task;
 
 import android.os.AsyncTask;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;

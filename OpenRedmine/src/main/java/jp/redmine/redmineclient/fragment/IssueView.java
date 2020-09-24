@@ -3,7 +3,7 @@ package jp.redmine.redmineclient.fragment;
 import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;

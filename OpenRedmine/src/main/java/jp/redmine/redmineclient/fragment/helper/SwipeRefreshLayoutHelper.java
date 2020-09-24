@@ -2,7 +2,7 @@ package jp.redmine.redmineclient.fragment.helper;
 
 import android.annotation.TargetApi;
 import android.os.Build;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class SwipeRefreshLayoutHelper {
 	public static void setRefreshingPost(final SwipeRefreshLayout layout, final boolean isRefreshing){

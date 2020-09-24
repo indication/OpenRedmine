@@ -1,19 +1,15 @@
 package jp.redmine.redmineclient.activity;
 
-import android.annotation.TargetApi;
 import android.app.FragmentBreadCrumbs;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 
-import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionHandler;
 import jp.redmine.redmineclient.activity.handler.AttachmentActionInterface;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;

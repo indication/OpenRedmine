@@ -1,7 +1,7 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.handler.IssueActionInterface;

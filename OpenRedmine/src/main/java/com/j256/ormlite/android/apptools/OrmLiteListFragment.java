@@ -1,6 +1,6 @@
 package com.j256.ormlite.android.apptools;
 
-import android.support.v4.app.ListFragment;
+import androidx.fragment.app.ListFragment;
 
 import com.j256.ormlite.support.ConnectionSource;
 

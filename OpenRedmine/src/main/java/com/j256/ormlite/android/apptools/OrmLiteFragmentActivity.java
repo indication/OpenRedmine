@@ -2,7 +2,7 @@ package com.j256.ormlite.android.apptools;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
@@ -21,7 +21,7 @@ import com.j256.ormlite.support.ConnectionSource;
  *
  * @author graywatson, kevingalligan
  */
-public abstract class OrmLiteFragmentActivity<H extends OrmLiteSqliteOpenHelper> extends ActionBarActivity {
+public abstract class OrmLiteFragmentActivity<H extends OrmLiteSqliteOpenHelper> extends AppCompatActivity {
 
 	private volatile H helper;
 	private volatile boolean created = false;

@@ -19,13 +19,13 @@ android {
     buildToolsVersion build_tool_version
     testBuildType "debug"
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion Integer.decode(target_sdk_version)
 
         versionCode 666
         versionName '3.24'
         testApplicationId "jp.redmine.redmineclienttest"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testHandleProfiling true
         testFunctionalTest true
         multiDexEnabled false
@@ -74,13 +74,13 @@ android {
 dependencies {
     testImplementation 'com.google.guava:guava:24.1-jre'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2', {
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    implementation 'com.android.support:appcompat-v7:25.3.1'
-    implementation 'com.android.support:support-fragment:25.3.1'
-    implementation 'com.android.support:animated-vector-drawable:25.3.1'
-    implementation 'com.android.support:design:25.3.1'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.fragment:fragment:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.andreabaccega:android-form-edittext:1.2.1'
     //implementation 'se.emilsjolander:stickylistheaders:2.7.0'
     implementation 'com.github.mtotschnig:StickyListHeaders:2.7.1'

@@ -2,10 +2,10 @@ package jp.redmine.redmineclient.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragmentActivity;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;

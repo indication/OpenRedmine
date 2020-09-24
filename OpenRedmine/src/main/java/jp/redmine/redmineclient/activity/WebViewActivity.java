@@ -3,8 +3,8 @@ package jp.redmine.redmineclient.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
@@ -18,7 +18,7 @@ import jp.redmine.redmineclient.form.helper.RedmineWebViewClient;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.WebArgument;
 
-public class WebViewActivity extends ActionBarActivity {
+public class WebViewActivity extends AppCompatActivity {
 	private static final String TAG = WebViewActivity.class.getSimpleName();
 	public WebViewActivity(){
 		super();

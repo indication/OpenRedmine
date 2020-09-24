@@ -3,14 +3,13 @@ package jp.redmine.redmineclient.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.widget.ListFragmentSwipeRefreshLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.SearchView;
+
+import androidx.core.widget.ListFragmentSwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;

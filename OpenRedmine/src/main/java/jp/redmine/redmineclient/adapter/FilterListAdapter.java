@@ -62,7 +62,7 @@ public class FilterListAdapter extends RedmineBaseAdapter<IMasterRecord> {
 	}
 	@Override
 	protected void setupView(View view, IMasterRecord data) {
-		TextView text = (TextView)view.findViewById(android.R.id.text1);
+		TextView text = view.findViewById(android.R.id.text1);
 		text.setText(data.getName());
 	}
 	@Override

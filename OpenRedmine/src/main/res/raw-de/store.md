@@ -8,7 +8,7 @@ OpenRedmine ist ein Redmine-Client der opensource ist und auf GitHub gehostet is
 
 Promotion image description
 ===========
-Portable project management
+Portables Projekt Management
 Allow to edit, view issue and relative contents
 
 Beschreibung

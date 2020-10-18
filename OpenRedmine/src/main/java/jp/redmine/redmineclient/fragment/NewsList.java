@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +30,7 @@ import jp.redmine.redmineclient.db.cache.RedmineProjectModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ProjectArgument;
 import jp.redmine.redmineclient.param.WebArgument;
@@ -39,7 +39,7 @@ import jp.redmine.redmineclient.task.SelectNewsTask;
 public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = NewsList.class.getSimpleName();
 	private NewsListAdapter adapter;
-	private SelectDataTask task;
+	private SelectNewsTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private WebviewActionInterface mListener;
@@ -107,7 +107,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
 		mSwipeRefreshLayout = result.layout;
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
 		return result.parent;
 	}
 
@@ -123,7 +123,7 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 	public void onListItemClick(ListView listView, View v, int position, long id) {
 		super.onListItemClick(listView, v, position, id);
 		Object item =  listView.getItemAtPosition(position);
-		if(item == null || !(item instanceof RedmineProject))
+		if(!(item instanceof RedmineProject))
 			return;
 		RedmineProject project = (RedmineProject)item;
 		//mListener.onIssueList(project.getConnectionId(), project.getId());
@@ -138,45 +138,14 @@ public class NewsList extends OrmLiteListFragment<DatabaseCacheHelper> implement
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
 		RedmineProjectModel mProject = new RedmineProjectModel(getHelper());
+		task = new SelectNewsTask(getHelper(),connection);
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> adapter.notifyDataSetChanged());
+		task.setOnProgressHandler((max, proc) -> adapter.notifyDataSetChanged());
 		try {
 			RedmineProject proj = mProject.fetchById(intent.getProjectId());
-			task = new SelectDataTask(getHelper(),connection);
 			task.execute(proj);
 		} catch (SQLException e) {
 			Log.e(TAG, "onRefresh", e);
-		}
-	}
-
-	private class SelectDataTask extends SelectNewsTask {
-		public SelectDataTask(DatabaseCacheHelper helper, RedmineConnection con) {
-			super(helper, con);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
 		}
 	}
 

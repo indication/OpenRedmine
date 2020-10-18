@@ -122,6 +122,7 @@
   <string name="progress">Progresso</string>
   <string name="download">Baixar</string>
   <string name="download_with_manager">Baixar via Download Manager</string>
+  <string name="download_cancelled">O download foi cancelado. Tente novamente.</string>
   <string name="wiki">Wiki</string>
   <string name="connection">Conexão</string>
   <string name="favorite">Favorito</string>
@@ -139,4 +140,6 @@
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>
   <string name="text_type_none">Nenhum</string>
+	<string name="privacy_policy">Privacy Policy</string>
+  <string name="terms_and_conditions" />
 </resources>

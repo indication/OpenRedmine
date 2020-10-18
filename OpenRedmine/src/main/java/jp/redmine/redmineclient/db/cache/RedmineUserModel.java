@@ -47,10 +47,8 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 		.and()
 		.eq(RedmineUser.USER_ID, userId)
 		.prepare();
-		RedmineUser item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineUser();
-		return item;
+		List<RedmineUser> items = dao.query(query);
+		return items.size() < 1 ? new RedmineUser() : items.get(0);
 	}
 
 	public RedmineUser fetchById(int id) throws SQLException{
@@ -81,7 +79,8 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 		.and()
 		.eq(RedmineUser.IS_CURRENT, true)
 		.prepare();
-		return dao.queryForFirst(query);
+		List<RedmineUser> items = dao.query(query);
+		return items.size() < 1 ? null : items.get(0);
 	}
 
 	protected void clearCurrentUser(int connection_id) throws SQLException{
@@ -165,9 +164,7 @@ public class RedmineUserModel implements IMasterModel<RedmineUser> {
 			.where()
 				.eq(RedmineUser.CONNECTION, connection_id)
 				;
-		RedmineUser item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineUser();
-		return item;
+		List<RedmineUser> items = builder.query();
+		return items.size() < 1 ? new RedmineUser() : items.get(0);
 	}
 }

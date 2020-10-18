@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteFragment;
@@ -38,6 +37,7 @@ import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.fragment.form.IssueCommentForm;
 import jp.redmine.redmineclient.fragment.form.IssueViewForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.param.WebArgument;
@@ -49,7 +49,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 	private final String TAG = IssueView.class.getSimpleName();
 	private IssueStickyListAdapter adapter;
     private StickyListHeadersListView list;
-	private SelectDataTask task;
+	private SelectIssueJournalTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private WebviewActionInterface mActionListener;
@@ -88,6 +88,7 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		super.onPause();
 	}
 
+	private boolean isSuccess = true;
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -113,49 +114,35 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 
 		onRefresh(true);
 
-		formComment.buttonOK.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(!formComment.Validate())
-					return;
-				IssueArgument intent = new IssueArgument();
-				intent.setArgument(getArguments());
+		formComment.buttonOK.setOnClickListener(v -> {
+			if(!formComment.Validate())
+				return;
+			IssueArgument intent = new IssueArgument();
+			intent.setArgument(getArguments());
 
-				RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
-				RedmineJournal journal = new RedmineJournal();
-				journal.setIssueId((long) intent.getIssueId());
-				formComment.getValue(journal);
+			RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
+			RedmineJournal journal = new RedmineJournal();
+			journal.setIssueId((long) intent.getIssueId());
+			formComment.getValue(journal);
 
-				SelectIssueJournalPost post = new SelectIssueJournalPost(getHelper(), connection){
-					private boolean isSuccess = true;
-					@Override
-					protected void onError(Exception lasterror) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
-						super.onError(lasterror);
-					}
-					@Override
-					protected void onErrorRequest(int statuscode) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), statuscode);
-						super.onErrorRequest(statuscode);
-					}
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing())
-							mSwipeRefreshLayout.setRefreshing(false);
-						if(isSuccess){
-							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							formComment.clear();
-							onRefresh();
- 						}
-					}
-				};
-				if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-					mSwipeRefreshLayout.setRefreshing(true);
-				post.execute(journal);
-			}
+			SelectIssueJournalPost post = new SelectIssueJournalPost(getHelper(), connection);
+			isSuccess = true;
+			post.setOnErrorHandler((lasterror) -> {
+				isSuccess = false;
+				ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
+			});
+			post.setOnErrorRequestHandler((statuscode) -> {
+				isSuccess = false;
+				ActivityHelper.toastRemoteError(getActivity(), statuscode);
+			});
+			task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout,  (data) ->{
+				if(isSuccess){
+					Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+					formComment.clear();
+					onRefresh();
+				}
+			});
+			post.execute(journal);
 		});
 
 
@@ -173,37 +160,30 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		mFooter = inflater.inflate(R.layout.listview_footer,null);
 		mFooter.setVisibility(View.GONE);
 		View view = inflater.inflate(R.layout.page_issue, container, false);
-		mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.layoutSwipeRefresh);
-		mSwipeRefreshLayout.setOnRefreshListener(this);
-        list = (StickyListHeadersListView)view.findViewById(R.id.list);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+		mSwipeRefreshLayout = view.findViewById(R.id.layoutSwipeRefresh);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
+        list = view.findViewById(R.id.list);
+        list.setOnItemClickListener((adapterView, currentView, position, id) -> {
 
                 Object item = id < 0 ? null : adapter.getItem(position);
                 if (item == null) {
                 } else if (item instanceof RedmineTimeEntry) {
                     RedmineTimeEntry entry = (RedmineTimeEntry) item;
                     mTimeEntryListener.onTimeEntrySelected(entry.getConnectionId(), entry.getIssueId(), entry.getTimeentryId());
-                    return;
                 } else if (item instanceof RedmineIssueRelation) {
                     RedmineIssueRelation relation = (RedmineIssueRelation) item;
                     if (relation.getIssue() != null) {
                         mListener.onIssueSelected(relation.getConnectionId(), relation.getIssue().getIssueId());
-                        return;
                     }
                 } else if (item instanceof RedmineIssue) {
                     RedmineIssue issue = (RedmineIssue) item;
-                    if (view.getId() == R.id.textProject && issue.getProject() != null) {
+                    if (currentView.getId() == R.id.textProject && issue.getProject() != null) {
                         mListener.onIssueList(issue.getConnectionId(), issue.getProject().getId());
-                        return;
                     }
                 } else if (item instanceof RedmineAttachment) {
                     RedmineAttachment attachment = (RedmineAttachment) item;
                     mAttachmentListener.onAttachmentSelected(attachment.getConnectionId(), attachment.getAttachmentId());
-                    return;
                 }
-            }
         });
         return view;
 	}
@@ -252,63 +232,29 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 			return;
 		IssueArgument intent = new IssueArgument();
 		intent.setArgument(getArguments());
-		task = new SelectDataTask();
-		task.execute(intent.getIssueId());
-	}
 
-	private class SelectDataTask extends SelectIssueJournalTask{
-		public SelectDataTask() {
-			super();
-			helper = getHelper();
-			IssueArgument intent = new IssueArgument();
-			intent.setArgument(getArguments());
-			int connectionid = intent.getConnectionId();
-			connection = ConnectionModel.getItem(getActivity(), connectionid);
-		}
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
+		RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
+		task = new SelectIssueJournalTask(getHelper(), connection, null);
+		task.setOnPreExecute(() -> {
 			mFooter.setVisibility(View.VISIBLE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.post(new Runnable() {
-					@Override
-					public void run() {
-						mSwipeRefreshLayout.setRefreshing(true);
-					}
-				});
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void v) {
+			SwipeRefreshLayoutHelper.setRefreshingPost(mSwipeRefreshLayout, true);
+		});
+		task.setOnPostExecute(data -> {
 			onRefresh(false);
-			onStopped();
-
-			IssueArgument intent = new IssueArgument();
-			intent.setArgument(getArguments());
-			mListener.onIssueRefreshed(intent.getConnectionId(), intent.getIssueId());
-		}
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-			onStopped();
-		}
-
-		protected void onStopped(){
 			mFooter.setVisibility(View.GONE);
 			if(menu_refresh != null)
 				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.post(new Runnable() {
-					@Override
-					public void run() {
-						mSwipeRefreshLayout.setRefreshing(false);
-					}
-				});
-		}
+			SwipeRefreshLayoutHelper.setRefreshingPost(mSwipeRefreshLayout, false);
+
+			IssueArgument intentIssue = new IssueArgument();
+			intentIssue.setArgument(getArguments());
+			mListener.onIssueRefreshed(intentIssue.getConnectionId(), intentIssue.getIssueId());
+		});
+		task.execute(intent.getIssueId());
 	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{

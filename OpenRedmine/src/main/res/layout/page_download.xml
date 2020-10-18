@@ -35,6 +35,19 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:paddingTop="10dp" >
+			<ImageView
+				android:id="@+id/imageView"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:layout_span="2"
+				tools:ignore="contentDescription"
+				/>
+		</TableRow>
+
+		<TableRow
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="10dp" >
 			
 			<TextView
 				android:layout_width="wrap_content"

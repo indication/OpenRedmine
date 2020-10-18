@@ -43,6 +43,7 @@ import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.form.IssueFilterHeaderForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.FilterArgument;
@@ -55,7 +56,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 	private static final String TAG = IssueList.class.getSimpleName();
 	private static final int ACTIVITY_FILTER = 2001;
 	private IssueListAdapter adapter;
-	private SelectDataTask task;
+	private SelectIssueTask task;
 	private MenuItem menu_refresh;
 	private MenuItem menu_add;
 	private View mFooter;
@@ -164,7 +165,7 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
 		mSwipeRefreshLayout = result.layout;
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
 		return result.parent;
 	}
 
@@ -208,10 +209,12 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), intent.getConnectionId());
 
 		if(intent.hasFilterId())
-			task = new SelectDataTask(helper,connection,null,intent.getFilterId());
+			task = new SelectIssueTask(helper,connection,null,intent.getFilterId());
 		else
-			task = new SelectDataTask(helper,connection,intent.getProjectId());
+			task = new SelectIssueTask(helper,connection,intent.getProjectId());
 
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> onRefreshList());
+		task.setOnProgressHandler((max, proc) -> onRefreshList());
 		task.execute(0,10,isFlush ? 1 : 0);
 		if(isFlush && !intent.hasFilterId()){
 			RedmineProject project = null;
@@ -245,41 +248,6 @@ public class IssueList extends OrmLiteListFragment<DatabaseCacheHelper> implemen
 		onRefresh(true);
 	}
 
-	private class SelectDataTask extends SelectIssueTask {
-		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection, long project) {
-			super(helper,connection,project);
-		}
-		public SelectDataTask(DatabaseCacheHelper helper,RedmineConnection connection,Long proj, int filter) {
-			super(helper,connection,proj,filter);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			onRefreshList();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			onRefreshList();
-			super.onProgress(max, proc);
-		}
-	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

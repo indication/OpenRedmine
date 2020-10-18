@@ -122,6 +122,7 @@
   <string name="progress">Progress</string>
   <string name="download">Download</string>
   <string name="download_with_manager">Download via Download Manager</string>
+  <string name="download_cancelled">Download was cancelled. Try again.</string>
   <string name="wiki">Wiki</string>
   <string name="connection">Connection</string>
   <string name="favorite">Favorite</string>
@@ -139,4 +140,6 @@
   <string name="text_type_textile">Textile</string>
   <string name="text_type_markdown">Markdown</string>
   <string name="text_type_none">None</string>
+	<string name="privacy_policy">Privacy Policy</string>
+  <string name="terms_and_conditions" />
 </resources>

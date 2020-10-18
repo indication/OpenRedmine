@@ -84,10 +84,8 @@ public class RedmineIssueModel {
 	}
 	protected RedmineIssue fetchBy(QueryBuilder<RedmineIssue, Long> builder) throws SQLException{
 		Log.d(TAG,builder.prepareStatementString());
-		RedmineIssue item = dao.queryForFirst(builder.prepare());
-		if(item == null)
-			item = new RedmineIssue();
-		return item;
+		List<RedmineIssue> items = dao.query(builder.prepare());
+		return items.size() < 1 ? new RedmineIssue() : items.get(0);
 	}
 
 	protected List<RedmineIssue> fetchAllBy(QueryBuilder<RedmineIssue, Long> builder) throws SQLException{
@@ -102,10 +100,8 @@ public class RedmineIssueModel {
 	public RedmineIssue fetchById(int connection, int issueId) throws SQLException{
 		PreparedQuery<RedmineIssue> query = builderByIssue(dao, connection,issueId).prepare();
 		Log.d(TAG,query.getStatement());
-		RedmineIssue item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineIssue();
-		return item;
+		List<RedmineIssue> items = dao.query(query);
+		return items.size() < 1 ? new RedmineIssue() : items.get(0);
 	}
 	
 	public Long getIdByIssue(int connection, int issueId) throws SQLException, IOException{

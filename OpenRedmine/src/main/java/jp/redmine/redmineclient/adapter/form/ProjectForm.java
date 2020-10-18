@@ -17,8 +17,8 @@ public class ProjectForm extends FormHelper {
 
 
 	public void setup(View view){
-		textSubject = (TextView)view.findViewById(R.id.textSubject);
-		ratingBar = (CheckBox)view.findViewById(R.id.checkStar);
+		textSubject = view.findViewById(R.id.textSubject);
+		ratingBar = view.findViewById(R.id.checkStar);
 		ratingBar.setFocusable(false);
 	}
 

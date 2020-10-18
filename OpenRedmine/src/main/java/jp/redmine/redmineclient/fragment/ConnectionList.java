@@ -1,10 +1,16 @@
 package jp.redmine.redmineclient.fragment;
 
+import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,14 +22,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
-import java.io.File;
-
+import jp.redmine.redmineclient.BuildConfig;
 import jp.redmine.redmineclient.R;
 import jp.redmine.redmineclient.activity.AboutActivity;
 import jp.redmine.redmineclient.activity.CommonPreferenceActivity;
 import jp.redmine.redmineclient.activity.handler.ConnectionActionInterface;
 import jp.redmine.redmineclient.adapter.ConnectionListAdapter;
-import jp.redmine.redmineclient.db.cache.DatabaseCacheHelper;
 import jp.redmine.redmineclient.db.store.DatabaseHelper;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
@@ -66,23 +70,14 @@ public class ConnectionList extends ListFragment {
 
 		helperStore = new DatabaseHelper(getActivity());
 
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-				ListView listView = (ListView) parent;
-				RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
-				mListener.onConnectionEdit(item.getId());
-				return true;
-			}
+		getListView().setOnItemLongClickListener((parent, v, position, id) -> {
+			ListView listView = (ListView) parent;
+			RedmineConnection item = (RedmineConnection) listView.getItemAtPosition(position);
+			mListener.onConnectionEdit(item.getId());
+			return true;
 		});
 
-		mFooter.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mListener.onConnectionAdd();
-			}
-		});
+		mFooter.setOnClickListener(v -> mListener.onConnectionAdd());
 
 		adapter = new ConnectionListAdapter(helperStore, getActivity());
 		setListAdapter(adapter);
@@ -134,12 +129,7 @@ public class ConnectionList extends ListFragment {
 			}
 			case R.id.menu_access_removecache:
 			{
-				String path = DatabaseCacheHelper.getDatabasePath(getActivity().getApplicationContext());
-				File file = new File(path);
-				if(file.delete()) {
-					Log.d("Cache Deleted", path);
-				}
-				getActivity().finish();
+				ClearCacheAndRestart();
 				//@todo show dialog
 				return true;
 			}
@@ -159,6 +149,22 @@ public class ConnectionList extends ListFragment {
 			}
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+
+	private void ClearCacheAndRestart(){
+		FragmentActivity context = getActivity();
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			ActivityManager am = (ActivityManager) context.getSystemService(Service.ACTIVITY_SERVICE);
+			am.clearApplicationUserData();
+		} else {
+			Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:"+ BuildConfig.APPLICATION_ID));
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(intent);
+		}
+		// Force close app to close database completely
+		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
 }

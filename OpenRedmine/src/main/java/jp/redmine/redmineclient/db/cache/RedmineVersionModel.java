@@ -88,10 +88,10 @@ public class RedmineVersionModel implements IMasterModel<RedmineProjectVersion> 
 				.and()
 				.eq(RedmineProjectVersion.PROJECT_ID, project_id)
 				;
-		RedmineProjectVersion item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineProjectVersion();
-		return item;
+		List<RedmineProjectVersion> items = builder.query();
+		if(items.size() < 1)
+			return new RedmineProjectVersion();
+		return items.get(0);
 	}
 
 	public int insert(RedmineProjectVersion item) throws SQLException{

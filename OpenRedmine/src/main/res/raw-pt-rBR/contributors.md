@@ -41,7 +41,7 @@ Obrigado pela contribuição de vocês.
 #### Tcheco(República Tcheca)
 - [Mongata] (https://github.com/Mongata) - #220
 
-#### Dutch (the Netherlands)
+#### Holandês (Holanda)
 - [PanderMusubi](https://github.com/PanderMusubi) - #224
 
 #### Japonês

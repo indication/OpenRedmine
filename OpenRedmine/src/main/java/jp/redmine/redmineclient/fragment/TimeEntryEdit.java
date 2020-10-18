@@ -23,6 +23,7 @@ import jp.redmine.redmineclient.db.cache.RedmineTimeEntryModel;
 import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineTimeEntry;
 import jp.redmine.redmineclient.fragment.form.TimeEntryEditForm;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.TimeEntryArgument;
 import jp.redmine.redmineclient.task.SelectTimeEntriesPost;
@@ -100,6 +101,7 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
         inflater.inflate( R.menu.edit, menu );
         super.onCreateOptionsMenu(menu, inflater);
 	}
+	private boolean isSuccess = true;
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -125,42 +127,26 @@ public class TimeEntryEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 					}
 				}
 				form.getValue(timeentry);
-				SelectTimeEntriesPost post = new SelectTimeEntriesPost(getHelper(), connection){
-					private boolean isSuccess = true;
-					@Override
-					protected void onError(Exception lasterror) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
-						super.onError(lasterror);
+				SelectTimeEntriesPost post = new SelectTimeEntriesPost(getHelper(), connection);
+				post.setOnErrorHandler((lasterror) -> {
+					isSuccess = false;
+					ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
+				});
+				post.setOnErrorRequestHandler((statuscode) -> {
+					isSuccess = false;
+					ActivityHelper.toastRemoteError(getActivity(), statuscode);
+				});
+				post.setOnPreExecute(() -> {
+					SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true, true);
+				});
+				post.setOnPostExecute((result) ->{
+					SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false, false);
+					if(isSuccess){
+						if(getActivity() != null)
+							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+						getFragmentManager().popBackStack();
 					}
-					@Override
-					protected void onErrorRequest(int statuscode) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), statuscode);
-						super.onErrorRequest(statuscode);
-					}
-					@Override
-					protected void onPreExecute() {
-						if(mSwipeRefreshLayout != null) {
-							mSwipeRefreshLayout.setEnabled(true);
-							mSwipeRefreshLayout.setRefreshing(true);
-						}
-						super.onPreExecute();
-					}
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						if(mSwipeRefreshLayout != null) {
-							mSwipeRefreshLayout.setEnabled(false);
-							mSwipeRefreshLayout.setRefreshing(false);
-						}
-						if(isSuccess){
-							if(getActivity() != null)
-								Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							getFragmentManager().popBackStack();
-						}
-					}
-				};
+				});
 				if(timeentry.getId() == null){
 					timeentry.setIssueId(intent.getIssueId());
 				}

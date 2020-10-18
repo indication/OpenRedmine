@@ -3,6 +3,7 @@ package jp.redmine.redmineclient.entity;
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -71,5 +72,15 @@ public class TypeConverter {
 		SimpleDateFormat format = new SimpleDateFormat();
 		format.applyPattern(FORMAT_DATE);
 		return format.format(date);
+	}
+
+	public static String getMimeType(String extension){
+		// Fix content type
+		if("log".equalsIgnoreCase(extension))
+			extension = "txt";
+		else if("patch".equalsIgnoreCase(extension))
+			extension = "txt";
+
+		return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
 	}
 }

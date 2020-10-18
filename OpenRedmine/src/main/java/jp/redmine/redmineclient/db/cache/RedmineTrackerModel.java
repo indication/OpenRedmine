@@ -45,10 +45,8 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 		.and()
 		.eq(RedmineTracker.STATUS_ID, statusId)
 		.prepare();
-		RedmineTracker item = dao.queryForFirst(query);
-		if(item == null)
-			item = new RedmineTracker();
-		return item;
+		List<RedmineTracker> items = dao.query(query);
+		return items.size() < 1 ? new RedmineTracker() : items.get(0);
 	}
 
 	public RedmineTracker fetchById(int id) throws SQLException{
@@ -129,10 +127,8 @@ public class RedmineTrackerModel implements IMasterModel<RedmineTracker> {
 				//.and()
 				//.eq(RedmineStatus.PROJECT_ID, project_id)
 				;
-		RedmineTracker item = builder.queryForFirst();
-		if(item == null)
-			item = new RedmineTracker();
-		return item;
+		List<RedmineTracker> items = builder.query();
+		return items.size() < 1 ? new RedmineTracker() : items.get(0);
 	}
 
 }

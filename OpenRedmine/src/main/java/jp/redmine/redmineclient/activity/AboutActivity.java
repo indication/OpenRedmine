@@ -62,6 +62,21 @@ public class AboutActivity extends TabActivity<DatabaseCacheHelper>
 						.setName(getString(R.string.product))
 						.setIcon(R.drawable.ic_project)
 		);
+
+		intent = new ResourceArgument();
+		intent.setArgument();
+		intent.setResource(R.raw.privacy_policy);
+		list.add((new PageMarkdown()).setParam(intent)
+				.setName(getString(R.string.privacy_policy))
+				.setIcon(R.drawable.ic_project)
+		);
+		intent = new ResourceArgument();
+		intent.setArgument();
+		intent.setResource(R.raw.terms_and_conditions);
+		list.add((new PageMarkdown()).setParam(intent)
+				.setName(getString(R.string.terms_and_conditions))
+				.setIcon(R.drawable.ic_project)
+		);
 		return list;
 	}
 

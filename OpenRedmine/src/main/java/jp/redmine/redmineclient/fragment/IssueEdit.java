@@ -29,6 +29,7 @@ import jp.redmine.redmineclient.entity.RedmineIssue;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.fragment.form.IssueEditForm;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.IssueArgument;
 import jp.redmine.redmineclient.task.SelectIssuePost;
@@ -117,6 +118,7 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
+	private boolean isSuccess = true;
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -152,13 +154,28 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 						issue.setProject(project);
 				}
 				form.getValue(issue);
-				SelectIssuePost post = new SelectIssuePost(getHelper(), connection){
-					private boolean isSuccess = true;
-					@Override
-					protected void onError(Exception lasterror) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
-						super.onError(lasterror);
+				SelectIssuePost post = new SelectIssuePost(getHelper(), connection);
+				isSuccess = true;
+				post.setOnErrorHandler((lasterror) -> {
+					isSuccess = false;
+					ActivityHelper.toastRemoteError(getActivity(), ActivityHelper.ERROR_APP);
+				});
+				post.setOnErrorRequestHandler((statuscode) -> {
+					isSuccess = false;
+					ActivityHelper.toastRemoteError(getActivity(), statuscode);
+				});
+				post.setOnPostExecute((result) ->{
+					SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, false, false);
+					if(isSuccess){
+						if(getActivity() != null)
+							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+						if(result.size() == 1)
+							mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
+						Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+						if(result.size() == 1)
+							mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
+						ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
+						viewPager.setCurrentItem(0);
 					}
 					@Override
 					protected void onErrorRequest(int statuscode) {
@@ -179,17 +196,9 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 							if(result.size() == 1)
 								mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
 						}
-						Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-						if(result.size() == 1)
-							mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
-						ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
-						viewPager.setCurrentItem(0);
 					}
 				};
-				if(mSwipeRefreshLayout != null) {
-					mSwipeRefreshLayout.setEnabled(true);
-					mSwipeRefreshLayout.setRefreshing(true);
-				}
+				SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true, true);
 				post.execute(issue);
 
 				return true;

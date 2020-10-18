@@ -31,6 +31,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineWiki;
 import jp.redmine.redmineclient.form.helper.WebViewHelper;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.WebArgument;
 import jp.redmine.redmineclient.param.WikiArgument;
@@ -38,7 +39,7 @@ import jp.redmine.redmineclient.task.SelectWikiTask;
 
 public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = WikiDetail.class.getSimpleName();
-	private SelectDataTask task;
+	private SelectWikiTask task;
 	private MenuItem menu_refresh;
 	private WebViewHelper webViewHelper;
 	private WebView webView;
@@ -135,42 +136,16 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		super.onResume();
 	}
 
-	private class SelectDataTask extends SelectWikiTask {
-		public SelectDataTask(DatabaseCacheHelper helper, RedmineConnection con, long proj_id){
-			super(helper,con,proj_id);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			loadWebView(false);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.page_webview, container, false);
-		webView = (WebView) view.findViewById(R.id.webView);
+		webView = view.findViewById(R.id.webView);
 		webViewHelper = new WebViewHelper();
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
 		mSwipeRefreshLayout = result.layout;
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
 		return result.parent;
 	}
 
@@ -182,7 +157,8 @@ public class WikiDetail extends OrmLiteFragment<DatabaseCacheHelper> implements 
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
-		task = new SelectDataTask(getHelper(), connection, (long)intent.getProjectId());
+		task = new SelectWikiTask(getHelper(), connection, (long)intent.getProjectId());
+		task.setupEventWithRefresh(null, menu_refresh, mSwipeRefreshLayout, (data) -> loadWebView(false));
 		task.execute(intent.getWikiTitle());
 	}
 	@Override

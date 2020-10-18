@@ -21,10 +21,10 @@ public class IssueForm extends IssueBaseForm {
 	@Override
 	public void setup(View view){
 		super.setup(view);
-		textSubject = (TextView)view.findViewById(R.id.textSubject);
-		textTicketid = (TextView)view.findViewById(R.id.textTicketid);
-		textDescription = (TextView)view.findViewById(R.id.description);
-		imageRecent = (ImageView)view.findViewById(R.id.imageRecent);
+		textSubject = view.findViewById(R.id.textSubject);
+		textTicketid = view.findViewById(R.id.textTicketid);
+		textDescription = view.findViewById(R.id.description);
+		imageRecent = view.findViewById(R.id.imageRecent);
 	}
 
 	public void setValue(RedmineRecentIssue recent){

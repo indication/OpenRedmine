@@ -1,7 +1,6 @@
 package jp.redmine.redmineclient.fragment;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import jp.redmine.redmineclient.entity.RedmineConnection;
 import jp.redmine.redmineclient.entity.RedmineProject;
 import jp.redmine.redmineclient.entity.TypeConverter;
 import jp.redmine.redmineclient.fragment.helper.ActivityHandler;
+import jp.redmine.redmineclient.fragment.helper.SwipeRefreshLayoutHelper;
 import jp.redmine.redmineclient.model.ConnectionModel;
 import jp.redmine.redmineclient.param.ConnectionArgument;
 import jp.redmine.redmineclient.param.WebArgument;
@@ -38,7 +38,7 @@ import jp.redmine.redmineclient.task.SelectProjectTask;
 public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implements SwipeRefreshLayout.OnRefreshListener {
 	private static final String TAG = ProjectList.class.getSimpleName();
 	private ProjectListAdapter adapter;
-	private SelectDataTask task;
+	private SelectProjectTask task;
 	private MenuItem menu_refresh;
 	private View mFooter;
 	private IssueActionInterface mListener;
@@ -120,7 +120,7 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		ListFragmentSwipeRefreshLayout.ViewRefreshLayout result
 				= ListFragmentSwipeRefreshLayout.inject(container, view);
 		mSwipeRefreshLayout = result.layout;
-		mSwipeRefreshLayout.setOnRefreshListener(this);
+		SwipeRefreshLayoutHelper.setEvent(mSwipeRefreshLayout, this);
 		return result.parent;
 	}
 
@@ -149,42 +149,10 @@ public class ProjectList extends OrmLiteListFragment<DatabaseCacheHelper> implem
 		intent.setArgument(getArguments());
 		int id = intent.getConnectionId();
 		RedmineConnection connection = ConnectionModel.getItem(getActivity(), id);
-		task = new SelectDataTask(getHelper());
+		task = new SelectProjectTask(getHelper());
+		task.setupEventWithRefresh(mFooter, menu_refresh, mSwipeRefreshLayout, (data) -> adapter.notifyDataSetChanged());
+		task.setOnProgressHandler((max, proc) -> adapter.notifyDataSetChanged());
 		task.execute(connection);
-	}
-
-	private class SelectDataTask extends SelectProjectTask {
-		public SelectDataTask(DatabaseCacheHelper helper) {
-			super(helper);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPreExecute() {
-			mFooter.setVisibility(View.VISIBLE);
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(false);
-			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
-				mSwipeRefreshLayout.setRefreshing(true);
-		}
-
-		// can use UI thread here
-		@Override
-		protected void onPostExecute(Void b) {
-			mFooter.setVisibility(View.GONE);
-			adapter.notifyDataSetChanged();
-			if(menu_refresh != null)
-				menu_refresh.setEnabled(true);
-			if(mSwipeRefreshLayout != null)
-				mSwipeRefreshLayout.setRefreshing(false);
-		}
-
-		@Override
-		protected void onProgress(int max, int proc) {
-			adapter.notifyDataSetInvalidated();
-			adapter.notifyDataSetChanged();
-			super.onProgress(max, proc);
-		}
 	}
 
 	@Override

@@ -142,6 +142,8 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 					onRefresh();
 				}
 			});
+			if(mSwipeRefreshLayout != null && !mSwipeRefreshLayout.isRefreshing())
+				mSwipeRefreshLayout.setRefreshing(true);
 			post.execute(journal);
 		});
 

@@ -171,34 +171,17 @@ public class IssueEdit extends OrmLiteFragment<DatabaseCacheHelper> {
 							Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
 						if(result.size() == 1)
 							mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
-						Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-						if(result.size() == 1)
-							mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
-						ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
-						viewPager.setCurrentItem(0);
 					}
-					@Override
-					protected void onErrorRequest(int statuscode) {
-						isSuccess = false;
-						ActivityHelper.toastRemoteError(getActivity(), statuscode);
-						super.onErrorRequest(statuscode);
-					}
-					@Override
-					protected void onPostExecute(List<RedmineIssue> result) {
-						super.onPostExecute(result);
-						if(mSwipeRefreshLayout != null) {
-							mSwipeRefreshLayout.setRefreshing(false);
-							mSwipeRefreshLayout.setEnabled(false);
-						}
-						if(isSuccess){
-							if(getActivity() != null)
-								Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
-							if(result.size() == 1)
-								mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
-						}
-					}
-				};
-				SwipeRefreshLayoutHelper.setRefreshing(mSwipeRefreshLayout, true, true);
+					Toast.makeText(getActivity().getApplicationContext(), R.string.remote_saved, Toast.LENGTH_LONG).show();
+					if(result.size() == 1)
+						mListener.onIssueRefreshed(connection.getId(), result.get(0).getIssueId());
+					ViewPager viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
+					viewPager.setCurrentItem(0);
+				});
+				if(mSwipeRefreshLayout != null) {
+					mSwipeRefreshLayout.setEnabled(true);
+					mSwipeRefreshLayout.setRefreshing(true);
+				}
 				post.execute(issue);
 
 				return true;

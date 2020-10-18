@@ -142,15 +142,6 @@ public class SelectIssueTaskAll extends SelectDataTask<Void,Integer> {
 		return null;
 	}
 
-	@Override
-	protected void onErrorRequest(int statuscode) {
-
-	}
-
-	@Override
-	protected void onProgress(int max, int proc) {
-
-	}
 
 
 }

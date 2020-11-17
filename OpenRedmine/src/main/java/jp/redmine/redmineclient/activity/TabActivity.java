@@ -6,14 +6,15 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.GravityCompat;
-import androidx.appcompat.widget.DrawerLayout;
-import androidx.appcompat.widget.ActionBarDrawerToggle;
+
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -86,6 +87,8 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 		super.onCreate(savedInstanceState);
 
 
+		Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+		setSupportActionBar(toolBar);
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
@@ -213,7 +216,7 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 		if (mActionBarToolbar == null) {
 			mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
 			if (mActionBarToolbar != null) {
-				setSupportActionBar(mActionBarToolbar);
+				//setSupportActionBar(mActionBarToolbar);
 			}
 		}
 		return mActionBarToolbar;

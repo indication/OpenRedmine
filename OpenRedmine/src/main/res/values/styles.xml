@@ -9,4 +9,7 @@
 	<style name="ThemeDefault" parent="Theme.AppCompat.NoActionBar">
 		<item name="android:windowActionBar">false</item>
 	</style>
+	<style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.NoActionBar">
+		<item name="android:windowActionBar">false</item>
+	</style>
 </resources>

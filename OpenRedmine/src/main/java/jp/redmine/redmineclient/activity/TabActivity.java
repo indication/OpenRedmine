@@ -86,9 +86,7 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 		setUp();
 		super.onCreate(savedInstanceState);
 
-
-		Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-		setSupportActionBar(toolBar);
+		setSupportActionBar(getActionBarToolbar());
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
@@ -215,9 +213,6 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 	protected Toolbar getActionBarToolbar() {
 		if (mActionBarToolbar == null) {
 			mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-			if (mActionBarToolbar != null) {
-				//setSupportActionBar(mActionBarToolbar);
-			}
 		}
 		return mActionBarToolbar;
 	}

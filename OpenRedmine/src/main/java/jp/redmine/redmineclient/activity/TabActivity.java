@@ -82,7 +82,7 @@ abstract class TabActivity<T extends OrmLiteSqliteOpenHelper> extends OrmLiteFra
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		ActivityHelper.setupTheme(this);
-		setContentView(R.layout.navigation_list);
+		setContentView(R.layout.page_tab);
 		setUp();
 		super.onCreate(savedInstanceState);
 

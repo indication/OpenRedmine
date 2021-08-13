@@ -17,7 +17,7 @@
 				<TextView
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content"
-					android:drawableTop="@drawable/ic_launcher"
+					android:drawableTop="@mipmap/ic_launcher_round"
 					android:gravity="center"
 					android:text="@string/app_name"
 					android:textAppearance="?android:attr/textAppearanceLarge" />

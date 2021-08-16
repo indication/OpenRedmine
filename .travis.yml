@@ -37,7 +37,7 @@ android:
 
 before_install:
   - touch $HOME/.android/repositories.cfg
-  - JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre;yes | sdkmanager "platforms;android-$ANDROID_COMPILE_SDK_VERSION" "build-tools;$ANDROID_BUILD_TOOL_VERSION"
+  - JAVA_HOME_LAST=$JAVA_HOME;JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre;yes | sdkmanager "platforms;android-$ANDROID_COMPILE_SDK_VERSION" "build-tools;$ANDROID_BUILD_TOOL_VERSION";JAVA_HOME=$JAVA_HOME_LAST
   # fix gradle license errors
   - mkdir -p "/usr/local/android-sdk/licenses"
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "/usr/local/android-sdk/licenses/android-sdk-license"

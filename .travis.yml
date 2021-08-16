@@ -1,6 +1,6 @@
 language: android
 dist: trusty
-jdk: openjdk11
+jdk: oraclejdk11
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -22,7 +22,6 @@ notifications:
 
 android:
   components:
-    - tools
     - platform-tools
     # The BuildTools version used by your project
     - extra-android-support

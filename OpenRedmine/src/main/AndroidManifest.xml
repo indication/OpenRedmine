@@ -79,7 +79,7 @@
 				  android:configChanges="orientation|screenSize|keyboardHidden" />
 		<provider
 			android:name=".provider.Attachment"
-			android:authorities="jp.redmine.redmineclient.attachment"
+			android:authorities="${applicationId}.attachment"
 			tools:ignore="ExportedContentProvider"
 			/>
     </application>

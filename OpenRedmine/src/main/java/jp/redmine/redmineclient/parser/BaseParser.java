@@ -29,15 +29,15 @@ abstract public class BaseParser<CON,TYPE> {
 	public volatile List<DataCreationHandler<CON,TYPE>> handlerDataCreation = new ArrayList<DataCreationHandler<CON,TYPE>>();
 	protected void onParseStart(CON con)
 			throws XmlPullParserException, IOException, SQLException {
-		if(BuildConfig.DEBUG) Log.d("BaseParser","START");
+		if(BuildConfig.DEBUG_XML) Log.d("BaseParser","START");
 	}
 	protected void onParseEnd(CON con)
 			throws XmlPullParserException, IOException, SQLException{
-		if(BuildConfig.DEBUG) Log.d("BaseParser","END");
+		if(BuildConfig.DEBUG_XML) Log.d("BaseParser","END");
 	}
 	protected void onDocumentStart(CON con)
 			throws XmlPullParserException, IOException, SQLException {
-		if(BuildConfig.DEBUG) Log.d("BaseParser","START_DOCUMENT");
+		if(BuildConfig.DEBUG_XML) Log.d("BaseParser","START_DOCUMENT");
 	}
 	protected abstract void onTagStart(CON con)
 			throws XmlPullParserException, IOException, SQLException;
@@ -45,7 +45,7 @@ abstract public class BaseParser<CON,TYPE> {
 			throws XmlPullParserException, IOException, SQLException;
 	protected void onText(CON con)
 			throws XmlPullParserException, IOException, SQLException{
-		if(BuildConfig.DEBUG) Log.d("BaseParser","TEXT ".concat(xml.getText()));
+		if(BuildConfig.DEBUG_XML) Log.d("BaseParser","TEXT ".concat(xml.getText()));
 	}
 
 	public void setXml(XmlPullParser xml){
@@ -68,19 +68,19 @@ abstract public class BaseParser<CON,TYPE> {
 		while (eventType != XmlPullParser.END_DOCUMENT && !isHalt) {
 			switch (eventType){
 			case XmlPullParser.START_DOCUMENT:
-				if(BuildConfig.DEBUG) Log.d("BaseParser","END_DOCUMENT ");
+				if(BuildConfig.DEBUG_XML) Log.d("BaseParser","END_DOCUMENT ");
 				onDocumentStart(con);
 				break;
 			case XmlPullParser.START_TAG:
-				if(BuildConfig.DEBUG) Log.d("BaseParser","START_TAG ".concat(xml.getName()));
+				if(BuildConfig.DEBUG_XML) Log.d("BaseParser","START_TAG ".concat(xml.getName()));
 				onTagStart(con);
 				break;
 			case XmlPullParser.END_TAG:
-				if(BuildConfig.DEBUG) Log.d("BaseParser","END_TAG ".concat(xml.getName()));
+				if(BuildConfig.DEBUG_XML) Log.d("BaseParser","END_TAG ".concat(xml.getName()));
 				onTagEnd(con);
 				break;
 			case XmlPullParser.TEXT:
-				if(BuildConfig.DEBUG) Log.d("BaseParser","TEXT ".concat(xml.getText()));
+				if(BuildConfig.DEBUG_XML) Log.d("BaseParser","TEXT ".concat(xml.getText()));
 				onText(con);
 				break;
 			}
@@ -100,7 +100,7 @@ abstract public class BaseParser<CON,TYPE> {
 			work = xml.getText();
 		}
 		if(work == null)	work = "";
-		if(BuildConfig.DEBUG) Log.d("BaseParser","TEXT ".concat(work));
+		if(BuildConfig.DEBUG_XML) Log.d("BaseParser","TEXT ".concat(work));
 		return work;
 	}
 

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 android {
     //Apply versions
     def compile_version = System.getenv("ANDROID_COMPILE_SDK_VERSION") ?: "30"
-    def build_tool_version = System.getenv("ANDROID_BUILD_TOOL_VERSION") ?: '30.0.0'
+    def build_tool_version = System.getenv("ANDROID_BUILD_TOOL_VERSION") ?: '30.0.3'
     def target_sdk_version =System.getenv("ANDROID_TARGET_SDK_VERSION") ?: "30"
     println "Compile SDK: $compile_version Tool version: $build_tool_version Target version: $target_sdk_version"
 
@@ -32,10 +32,6 @@ android {
         buildConfigField 'String', 'BUILD_ENV', '"' + "$build_environment" + '"'
 
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     lintOptions {
         abortOnError true
         disable 'MissingTranslation', 'StringFormatMatches', 'InvalidPackage'
@@ -43,11 +39,6 @@ android {
     signingConfigs {
         release
     }
-    //productFlavors {
-    //    lollipop {
-    //        minSdkVersion 21
-    //    }
-    //}
     buildTypes {
         debug {
             debuggable true
@@ -65,15 +56,30 @@ android {
             //shrinkResources true
             buildConfigField 'boolean', 'DEBUG_XML', 'false'
             if (project.hasProperty('keyAlias')) {
+                signingConfigs.release.keyAlias = keyAlias
+                signingConfigs.release.keyPassword = keyPassword
+                signingConfigs.release.storeFile = file(storeFile)
+                signingConfigs.release.storePassword = storePassword
                 signingConfig signingConfigs.release
             }
+        }
+    }
+    bundle {
+        language {
+            enableSplit = true
+        }
+        density {
+            enableSplit = true
+        }
+        abi {
+            enableSplit = true
         }
     }
 }
 
 dependencies {
     testImplementation 'com.google.guava:guava:24.1-jre'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
@@ -91,15 +97,3 @@ dependencies {
     implementation 'org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0'
 }
 
-if (project.hasProperty('keyAlias')) {
-    android.signingConfigs.release.keyAlias = keyAlias
-}
-if (project.hasProperty('keyPassword')) {
-    android.signingConfigs.release.keyPassword = keyPassword
-}
-if (project.hasProperty('storeFile')) {
-    android.signingConfigs.release.storeFile = file(storeFile)
-}
-if (project.hasProperty('storePassword')) {
-    android.signingConfigs.release.storePassword = storePassword
-}

@@ -1,5 +1,6 @@
 language: android
 dist: trusty
+jdk: openjdk11
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -14,6 +15,7 @@ env:
     - ANDROID_BUILD_TOOL_VERSION=30.0.3
     - ANDROID_COMPILE_SDK_VERSION=30
     - ANDROID_TARGET_SDK_VERSION=30
+
 notifications:
   email: false
   webhooks: "https://hooks.zapier.com/hooks/catch/491059/opzg6m/"
@@ -40,17 +42,15 @@ android:
 
 before_install:
   - touch $HOME/.android/repositories.cfg
-  - yes | sdkmanager "platforms;android-$ANDROID_COMPILE_SDK_VERSION"
-  - yes | sdkmanager "build-tools;$ANDROID_BUILD_TOOL_VERSION"
+  # fix gradle license errors
+  - mkdir -p "/usr/local/android-sdk/licenses"
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "/usr/local/android-sdk/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\nd77a45cfde8d8db5135a9d01fce4bdfa23a033dd" > "/usr/local/android-sdk/licenses/android-sdk-preview-license"
 
 before_script:
   # Setup build envrionment
   - openssl aes-256-cbc -K $encrypted_7fcdb5fbc52e_key -iv $encrypted_7fcdb5fbc52e_iv -in external/localsettings.tar.gz.enc -out localsettings.tar.gz -d
   - tar xzf localsettings.tar.gz && mv id_edca ~/.ssh/ && mv id_config ~/.ssh/config
-  # fix gradle license errors
-  - mkdir -p "/usr/local/android-sdk/licenses"
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "/usr/local/android-sdk/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\nd77a45cfde8d8db5135a9d01fce4bdfa23a033dd" > "/usr/local/android-sdk/licenses/android-sdk-preview-license"
 
 script:
   - ./gradlew lintRelease assembleDebug assembleRelease bundleDebug bundleRelease

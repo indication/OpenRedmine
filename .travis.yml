@@ -22,6 +22,7 @@ notifications:
 
 android:
   components:
+    - tools
     - platform-tools
     # The BuildTools version used by your project
     - extra-android-support

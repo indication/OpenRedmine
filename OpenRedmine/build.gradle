@@ -32,10 +32,6 @@ android {
         buildConfigField 'String', 'BUILD_ENV', '"' + "$build_environment" + '"'
 
     }
-    lintOptions {
-        abortOnError true
-        disable 'MissingTranslation', 'StringFormatMatches', 'InvalidPackage'
-    }
     signingConfigs {
         release
     }
@@ -75,6 +71,11 @@ android {
             enableSplit = true
         }
     }
+    lint {
+        abortOnError true
+        disable 'MissingTranslation', 'StringFormatMatches', 'InvalidPackage'
+    }
+    namespace 'jp.redmine.redmineclient'
 }
 
 dependencies {

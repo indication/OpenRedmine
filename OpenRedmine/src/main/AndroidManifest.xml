@@ -20,6 +20,7 @@
 		android:restoreNeedsApplication="true"
 		tools:ignore="UnusedAttribute">
         <activity android:name=".activity.SplashActivity"
+			  android:exported="true"
         	  android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

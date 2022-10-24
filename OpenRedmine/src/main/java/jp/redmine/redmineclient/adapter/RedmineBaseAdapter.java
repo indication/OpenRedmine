@@ -77,8 +77,9 @@ abstract class RedmineBaseAdapter<T> extends BaseAdapter implements LRUCache.IFe
 	 */
 	@Override
 	public Object getItem(Integer position) {
-		if(!isValidParameter())
-            return null;
+		if(!isValidParameter()) {
+			return null;
+		}
         try {
 			return getDbItem(position);
 		} catch (SQLException e) {

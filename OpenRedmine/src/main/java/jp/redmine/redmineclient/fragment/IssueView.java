@@ -99,9 +99,9 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		mTimeEntryListener = ActivityHandler.getHandler(activity, TimeentryActionInterface.class);
 		mAttachmentListener = ActivityHandler.getHandler(activity, AttachmentActionInterface.class);
 
-        list.addFooterView(mFooter);
+		list.addFooterView(mFooter);
 
-		adapter = new IssueStickyListAdapter(getHelper(),activity, mActionListener);
+        adapter = new IssueStickyListAdapter(getHelper(),activity, mActionListener);
         list.setAdapter(adapter);
 		
         list.setFastScrollEnabled(true);
@@ -260,8 +260,9 @@ public class IssueView extends OrmLiteFragment<DatabaseCacheHelper> implements S
 		inflater.inflate( R.menu.issue_view, menu );
 		inflater.inflate( R.menu.web, menu );
 		menu_refresh = menu.findItem(R.id.menu_refresh);
-		if(task != null && task.getStatus() == Status.RUNNING)
+		if(task != null && task.getStatus() == Status.RUNNING) {
 			menu_refresh.setEnabled(false);
+		}
         super.onCreateOptionsMenu(menu, inflater);
 	}
 

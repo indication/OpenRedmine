@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 android {
     //Apply versions
-    def compile_version = System.getenv("ANDROID_COMPILE_SDK_VERSION") ?: "30"
-    def build_tool_version = System.getenv("ANDROID_BUILD_TOOL_VERSION") ?: '30.0.3'
-    def target_sdk_version =System.getenv("ANDROID_TARGET_SDK_VERSION") ?: "30"
+    def compile_version = System.getenv("ANDROID_COMPILE_SDK_VERSION") ?: "32"
+    def build_tool_version = System.getenv("ANDROID_BUILD_TOOL_VERSION") ?: '32.0.0'
+    def target_sdk_version =System.getenv("ANDROID_TARGET_SDK_VERSION") ?: "32"
     println "Compile SDK: $compile_version Tool version: $build_tool_version Target version: $target_sdk_version"
 
     //Make version code
@@ -19,7 +19,7 @@ android {
     buildToolsVersion build_tool_version
     testBuildType "debug"
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 12
         targetSdkVersion Integer.decode(target_sdk_version)
 
         versionCode 666
@@ -31,10 +31,6 @@ android {
         multiDexEnabled false
         buildConfigField 'String', 'BUILD_ENV', '"' + "$build_environment" + '"'
 
-    }
-    lintOptions {
-        abortOnError true
-        disable 'MissingTranslation', 'StringFormatMatches', 'InvalidPackage'
     }
     signingConfigs {
         release
@@ -75,11 +71,16 @@ android {
             enableSplit = true
         }
     }
+    lint {
+        abortOnError true
+        disable 'MissingTranslation', 'StringFormatMatches', 'InvalidPackage'
+    }
+    namespace 'jp.redmine.redmineclient'
 }
 
 dependencies {
     testImplementation 'com.google.guava:guava:24.1-jre'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
